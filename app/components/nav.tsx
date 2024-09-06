@@ -4,11 +4,11 @@ const navItems = {
   '/': {
     name: 'home',
   },
-  '/blog': {
-    name: 'blog',
-  },
   'https://github.com/kWAYTV': {
     name: 'github',
+  },
+  '/blog': {
+    name: 'blog',
   },
 };
 
