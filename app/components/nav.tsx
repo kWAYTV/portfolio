@@ -1,4 +1,4 @@
-import Link from 'next/link'
+import Link from 'next/link';
 
 const navItems = {
   '/': {
@@ -7,10 +7,10 @@ const navItems = {
   '/blog': {
     name: 'blog',
   },
-  'https://vercel.com/templates/next.js/portfolio-starter-kit': {
-    name: 'deploy',
+  'https://github.com/kWAYTV': {
+    name: 'github',
   },
-}
+};
 
 export function Navbar() {
   return (
@@ -30,11 +30,11 @@ export function Navbar() {
                 >
                   {name}
                 </Link>
-              )
+              );
             })}
           </div>
         </nav>
       </div>
     </aside>
-  )
+  );
 }
