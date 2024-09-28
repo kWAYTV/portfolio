@@ -1,20 +1,4 @@
-export function ArrowIcon() {
-    return (
-        <svg
-            width="12"
-            height="12"
-            viewBox="0 0 12 12"
-            fill="none"
-            xmlns="http://www.w3.org/2000/svg"
-        >
-            <path
-                d="M2.07102 11.3494L0.963068 10.2415L9.2017 1.98864H2.83807L2.85227 0.454545H11.8438V9.46023H10.2955L10.3097 3.09659L2.07102 11.3494Z"
-                fill="currentColor"
-            />
-        </svg>
-    );
-}
-
+// Navbar
 export function HomeIcon() {
     return (
         <svg
@@ -26,6 +10,56 @@ export function HomeIcon() {
             <path
                 d="M6 1L1 5.5V11H4.5V7.5H7.5V11H11V5.5L6 1Z"
                 fill="currentColor"
+            />
+        </svg>
+    );
+}
+
+export function BlogIcon() {
+    return (
+        <svg
+            viewBox="0 0 12 12"
+            fill="none"
+            xmlns="http://www.w3.org/2000/svg"
+            className="w-full h-full"
+        >
+            <path
+                d="M2 1V11H10V3.5L7.5 1H2ZM7 4V1.5L9.5 4H7ZM3.5 5H8.5V6H3.5V5ZM3.5 7H8.5V8H3.5V7ZM3.5 9H6.5V10H3.5V9Z"
+                fill="currentColor"
+            />
+        </svg>
+    );
+}
+
+export function TerminalIcon() {
+    return (
+        <svg
+            viewBox="0 0 12 12"
+            fill="none"
+            xmlns="http://www.w3.org/2000/svg"
+            className="w-full h-full"
+        >
+            <rect
+                x="1"
+                y="1"
+                width="10"
+                height="10"
+                rx="1"
+                stroke="currentColor"
+                strokeWidth="1"
+            />
+            <path
+                d="M2.5 3.5L4 5L2.5 6.5"
+                stroke="currentColor"
+                strokeWidth="1"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+            />
+            <path
+                d="M5 7.5H7.5"
+                stroke="currentColor"
+                strokeWidth="1"
+                strokeLinecap="round"
             />
         </svg>
     );
@@ -47,16 +81,18 @@ export function GitHubIcon() {
     );
 }
 
-export function BlogIcon() {
+// Footer
+export function ArrowIcon() {
     return (
         <svg
+            width="12"
+            height="12"
             viewBox="0 0 12 12"
             fill="none"
             xmlns="http://www.w3.org/2000/svg"
-            className="w-full h-full"
         >
             <path
-                d="M2 1V11H10V3.5L7.5 1H2ZM7 4V1.5L9.5 4H7ZM3.5 5H8.5V6H3.5V5ZM3.5 7H8.5V8H3.5V7ZM3.5 9H6.5V10H3.5V9Z"
+                d="M2.07102 11.3494L0.963068 10.2415L9.2017 1.98864H2.83807L2.85227 0.454545H11.8438V9.46023H10.2955L10.3097 3.09659L2.07102 11.3494Z"
                 fill="currentColor"
             />
         </svg>

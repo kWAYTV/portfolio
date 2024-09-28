@@ -1,6 +1,11 @@
 import { Link } from "next-view-transitions";
 import React from "react";
-import { HomeIcon, GitHubIcon, BlogIcon } from "app/components/icons";
+import {
+    HomeIcon,
+    TerminalIcon,
+    GitHubIcon,
+    BlogIcon,
+} from "app/components/icons";
 
 const navItems = {
     "/": {
@@ -12,9 +17,8 @@ const navItems = {
         icon: BlogIcon,
     },
     "/github": {
-        // Add this new item
         name: "projects",
-        icon: GitHubIcon,
+        icon: TerminalIcon,
     },
     "https://github.com/kWAYTV": {
         name: "github",
