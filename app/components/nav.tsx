@@ -7,13 +7,13 @@ const navItems = {
         name: "home",
         icon: HomeIcon,
     },
-    "https://github.com/kWAYTV": {
-        name: "github",
-        icon: GitHubIcon,
-    },
     "/blog": {
         name: "blog",
         icon: BlogIcon,
+    },
+    "https://github.com/kWAYTV": {
+        name: "github",
+        icon: GitHubIcon,
     },
 };
 
