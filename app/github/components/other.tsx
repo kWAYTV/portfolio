@@ -1,6 +1,6 @@
-import Link from "next/link";
-import { formatDate } from "app/blog/utils";
 import type { Repo } from "app/types/github";
+import { Link } from "next-view-transitions";
+import { formatDate } from "app/blog/utils";
 
 interface OtherProjectsProps {
     repos: Repo[];
@@ -9,39 +9,28 @@ interface OtherProjectsProps {
 export function OtherProjects({ repos }: OtherProjectsProps) {
     return (
         <section>
-            <h2 className="text-2xl font-semibold mb-6 text-center">
+            <h2 className="text-3xl font-semibold mb-8 text-center">
                 Other Projects
             </h2>
-            <div className="rounded-lg overflow-hidden border">
-                <ul className="divide-y">
-                    {repos.map((repo) => (
-                        <li key={repo.id} className="p-4">
-                            <Link
-                                href={repo.html_url}
-                                target="_blank"
-                                rel="noopener noreferrer"
-                                className="flex justify-between items-center"
-                            >
-                                <div className="flex-grow">
-                                    <h3 className="text-lg font-medium truncate">
-                                        {repo.name}
-                                    </h3>
-                                    <p className="text-sm h-6 overflow-hidden">
-                                        {repo.description ||
-                                            "No description available"}
-                                    </p>
-                                </div>
-                                <div className="flex flex-col items-end text-sm ml-4">
-                                    <span>⭐ {repo.stargazers_count}</span>
-                                    <span>
-                                        Updated:{" "}
-                                        {formatDate(repo.updated_at, false)}
-                                    </span>
-                                </div>
-                            </Link>
-                        </li>
-                    ))}
-                </ul>
+            <div>
+                {repos.map((repo) => (
+                    <Link
+                        key={repo.id}
+                        href={repo.html_url}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="flex flex-col space-y-1 mb-4"
+                    >
+                        <div className="w-full flex flex-col md:flex-row space-x-0 md:space-x-2">
+                            <p className="text-neutral-600 dark:text-neutral-400 w-[100px] tabular-nums">
+                                {formatDate(repo.updated_at, false)}
+                            </p>
+                            <p className="text-neutral-900 dark:text-neutral-100 tracking-tight">
+                                {repo.name}
+                            </p>
+                        </div>
+                    </Link>
+                ))}
             </div>
         </section>
     );

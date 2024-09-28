@@ -4,31 +4,36 @@ import type { Repo } from "app/types/github";
 
 interface RepoCardProps {
     repo: Repo;
+    highlighted?: boolean;
 }
 
-export function RepoCard({ repo }: RepoCardProps) {
+export function RepoCard({ repo, highlighted = false }: RepoCardProps) {
     return (
-        <div className="rounded-lg p-6 flex flex-col justify-between h-full border">
-            <div>
+        <Link
+            href={repo.html_url}
+            target="_blank"
+            rel="noopener noreferrer"
+            className={`block rounded-lg p-6 border transition-all duration-300 hover:shadow-lg ${
+                highlighted ? "border-2" : "border"
+            }`}
+        >
+            <div className="flex flex-col h-full">
                 <h3 className="text-xl font-semibold mb-2 truncate">
                     {repo.name}
                 </h3>
-                <p className="mb-4 text-sm h-12 overflow-hidden">
+                <p className="mb-4 text-sm flex-grow">
                     {repo.description || "No description available"}
                 </p>
+                <div className="flex flex-wrap items-center text-sm mt-auto">
+                    <span className="mr-4 mb-2">
+                        ⭐ {repo.stargazers_count}
+                    </span>
+                    <span className="mr-4 mb-2">{repo.language}</span>
+                    <span className="mb-2">
+                        Updated: {formatDate(repo.updated_at, true)}
+                    </span>
+                </div>
             </div>
-            <div className="flex flex-col space-y-2 text-sm">
-                <span>⭐ {repo.stargazers_count} stars</span>
-                <span>Updated: {formatDate(repo.updated_at, true)}</span>
-                <Link
-                    href={repo.html_url}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="hover:underline text-pink-200"
-                >
-                    View on GitHub
-                </Link>
-            </div>
-        </div>
+        </Link>
     );
 }
