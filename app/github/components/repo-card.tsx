@@ -20,14 +20,16 @@ export function RepoCard({ repo, highlighted = false }: RepoCardProps) {
             }`}
         >
             <div className="flex flex-col h-full">
-                <h3 className="text-lg font-medium mb-2 truncate">
-                    {repo.name}
-                </h3>
-                <p className="mb-4 text-sm text-neutral-600 dark:text-neutral-400 flex-grow">
-                    {repo.description || "No description available"}
-                </p>
-                <div className="flex flex-wrap items-center text-xs text-neutral-500 dark:text-neutral-400 mt-auto">
-                    <div className="flex items-center space-x-4 w-full">
+                <div className="flex-grow">
+                    <h3 className="text-lg font-medium mb-2 truncate">
+                        {repo.name}
+                    </h3>
+                    <p className="mb-4 text-sm text-neutral-600 dark:text-neutral-400 line-clamp-2 h-10">
+                        {repo.description || "No description available"}
+                    </p>
+                </div>
+                <div className="flex flex-col text-xs text-neutral-500 dark:text-neutral-400">
+                    <div className="flex items-center justify-between mb-2">
                         <span className="flex items-center">
                             <svg
                                 className="w-4 h-4 mr-1"
@@ -47,9 +49,16 @@ export function RepoCard({ repo, highlighted = false }: RepoCardProps) {
                             </span>
                         )}
                     </div>
-                    <span className="w-full mt-2">
-                        Updated: {formatDate(repo.updated_at, true)}
-                    </span>
+                    <div className="flex justify-between items-center mt-2">
+                        <span className="truncate mr-2">
+                            {formatDate(repo.updated_at, false)}
+                        </span>
+                        <span className="text-xs whitespace-nowrap">
+                            {formatDate(repo.updated_at, true)
+                                .split("(")[1]
+                                .slice(0, -1)}
+                        </span>
+                    </div>
                 </div>
             </div>
         </Link>

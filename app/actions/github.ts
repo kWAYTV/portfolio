@@ -30,14 +30,16 @@ export async function getGitHubRepos(username: string): Promise<{
 
         const sorted = repos
             .filter((repo) => !repo.fork) // Exclude forked repositories
+            .sort((a, b) => b.stargazers_count - a.stargazers_count); // Sort by stars descending
+
+        const highlighted: Repo[] = sorted.slice(0, 3);
+        const other: Repo[] = sorted
+            .slice(3)
             .sort(
                 (a, b) =>
                     new Date(b.updated_at).getTime() -
                     new Date(a.updated_at).getTime()
             );
-
-        const highlighted: Repo[] = sorted.slice(0, 3);
-        const other: Repo[] = sorted.slice(3);
 
         return {
             success: true,
