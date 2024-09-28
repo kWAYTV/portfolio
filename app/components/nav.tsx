@@ -11,6 +11,11 @@ const navItems = {
         name: "blog",
         icon: BlogIcon,
     },
+    "/github": {
+        // Add this new item
+        name: "projects",
+        icon: GitHubIcon,
+    },
     "https://github.com/kWAYTV": {
         name: "github",
         icon: GitHubIcon,
