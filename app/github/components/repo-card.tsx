@@ -19,12 +19,12 @@ export function RepoCard({ repo }: RepoCardProps) {
             </div>
             <div className="flex flex-col space-y-2 text-sm">
                 <span>⭐ {repo.stargazers_count} stars</span>
-                <span>Updated: {formatDate(repo.updated_at, false)}</span>
+                <span>Updated: {formatDate(repo.updated_at, true)}</span>
                 <Link
                     href={repo.html_url}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="hover:underline"
+                    className="hover:underline text-pink-200"
                 >
                     View on GitHub
                 </Link>
