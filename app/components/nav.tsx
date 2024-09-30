@@ -16,7 +16,7 @@ const navItems = {
         name: "blog",
         icon: BlogIcon,
     },
-    "/github": {
+    "/projects": {
         name: "projects",
         icon: TerminalIcon,
     },
