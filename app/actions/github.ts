@@ -7,7 +7,7 @@ export async function getGitHubRepos(username: string): Promise<{
     data?: {
         repos: Repo[];
         highlighted: Repo[];
-        other: Repo[];
+        latest: Repo[];
     };
     error?: string;
 }> {
@@ -33,7 +33,7 @@ export async function getGitHubRepos(username: string): Promise<{
             .sort((a, b) => b.stargazers_count - a.stargazers_count); // Sort by stars descending
 
         const highlighted: Repo[] = sorted.slice(0, 3);
-        const other: Repo[] = sorted
+        const latest: Repo[] = sorted
             .slice(3)
             .filter((repo) => !repo.fork)
             .sort(
@@ -47,7 +47,7 @@ export async function getGitHubRepos(username: string): Promise<{
             data: {
                 repos: sorted,
                 highlighted,
-                other,
+                latest,
             },
         };
     } catch (error) {

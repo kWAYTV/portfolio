@@ -2,15 +2,15 @@ import type { Repo } from "@/types/github";
 import { Link } from "next-view-transitions";
 import { formatDate } from "@/blog/utils";
 
-interface OtherProjectsProps {
+interface LatestProjectsProps {
     repos: Repo[];
 }
 
-export function OtherProjects({ repos }: OtherProjectsProps) {
+export function LatestProjects({ repos }: LatestProjectsProps) {
     return (
         <section>
             <h2 className="text-3xl font-semibold mb-8 text-center">
-                Other Projects
+                Latest Projects
             </h2>
             <div>
                 {repos.map((repo) => (
