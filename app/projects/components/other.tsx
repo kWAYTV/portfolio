@@ -14,13 +14,7 @@ export function OtherProjects({ repos }: OtherProjectsProps) {
             </h2>
             <div>
                 {repos.map((repo) => (
-                    <Link
-                        key={repo.id}
-                        href={repo.html_url}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="flex flex-col space-y-1 mb-4"
-                    >
+                    <div key={repo.id} className="flex flex-col space-y-1 mb-4">
                         <div className="w-full flex flex-col md:flex-row md:items-center space-x-0 md:space-x-2">
                             <div className="text-neutral-600 dark:text-neutral-400 w-[180px] tabular-nums flex flex-col">
                                 <span>
@@ -32,9 +26,14 @@ export function OtherProjects({ repos }: OtherProjectsProps) {
                                         .slice(0, -1)}
                                 </span>
                             </div>
-                            <p className="text-neutral-900 dark:text-neutral-100 tracking-tight flex-grow">
+                            <Link
+                                href={repo.html_url}
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                className="text-neutral-900 dark:text-neutral-100 tracking-tight flex-grow hover:underline"
+                            >
                                 {repo.name}
-                            </p>
+                            </Link>
                             <div className="flex items-center text-neutral-600 dark:text-neutral-400">
                                 <svg
                                     className="w-4 h-4 mr-1"
@@ -49,7 +48,7 @@ export function OtherProjects({ repos }: OtherProjectsProps) {
                                 <span>{repo.stargazers_count}</span>
                             </div>
                         </div>
-                    </Link>
+                    </div>
                 ))}
             </div>
         </section>
