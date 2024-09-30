@@ -1,4 +1,4 @@
-import { RepoCard } from "app/github/components/repo-card";
+import { RepoCard } from "app/projects/components/repo-card";
 import type { Repo } from "app/types/github";
 
 interface HighlightedProjectsProps {

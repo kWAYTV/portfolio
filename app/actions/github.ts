@@ -13,7 +13,7 @@ export async function getGitHubRepos(username: string): Promise<{
 }> {
     try {
         const res = await fetch(
-            `https://api.github.com/users/${username}/repos?sort=updated`,
+            `https://api.github.com/users/${username}/repos?sort=updated&per_page=100`,
             {
                 headers: {
                     Accept: "application/vnd.github.v3+json",

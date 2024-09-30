@@ -1,7 +1,7 @@
 import { getGitHubRepos } from "app/actions/github";
-import { GitHubPageHeader } from "app/github/components/header";
-import { HighlightedProjects } from "app/github/components/highlighted";
-import { OtherProjects } from "app/github/components/other";
+import { GitHubPageHeader } from "app/projects/components/header";
+import { HighlightedProjects } from "app/projects/components/highlighted";
+import { OtherProjects } from "app/projects/components/other";
 
 export const revalidate = 3600; // Revalidate every hour
 
