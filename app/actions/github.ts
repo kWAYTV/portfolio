@@ -35,6 +35,7 @@ export async function getGitHubRepos(username: string): Promise<{
         const highlighted: Repo[] = sorted.slice(0, 3);
         const other: Repo[] = sorted
             .slice(3)
+            .filter((repo) => !repo.fork)
             .sort(
                 (a, b) =>
                     new Date(b.updated_at).getTime() -

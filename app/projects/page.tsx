@@ -16,20 +16,12 @@ async function getRepos() {
 export default async function GitHubPage() {
     const { highlighted, other } = await getRepos();
 
-    const sortedOtherRepos = other
-        .filter((repo) => !repo.fork)
-        .sort(
-            (a, b) =>
-                new Date(b.updated_at).getTime() -
-                new Date(a.updated_at).getTime()
-        );
-
     return (
         <div className="min-h-screen py-12 px-4 sm:px-6 lg:px-8">
             <div className="max-w-2xl mx-auto space-y-16">
                 <GitHubPageHeader />
                 <HighlightedProjects repos={highlighted} />
-                <OtherProjects repos={sortedOtherRepos} />
+                <OtherProjects repos={other} />
             </div>
         </div>
     );
