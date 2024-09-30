@@ -1,6 +1,6 @@
-import type { Repo } from "app/types/github";
+import type { Repo } from "@/types/github";
 import { Link } from "next-view-transitions";
-import { formatDate } from "app/blog/utils";
+import { formatDate } from "@/blog/utils";
 
 interface OtherProjectsProps {
     repos: Repo[];

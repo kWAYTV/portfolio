@@ -5,7 +5,7 @@ import {
     TerminalIcon,
     GitHubIcon,
     BlogIcon,
-} from "app/components/icons";
+} from "@/components/icons";
 
 const navItems = {
     "/": {

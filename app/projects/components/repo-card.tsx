@@ -1,6 +1,6 @@
 import Link from "next/link";
-import { formatDate } from "app/blog/utils";
-import type { Repo } from "app/types/github";
+import { formatDate } from "@/blog/utils";
+import type { Repo } from "@/types/github";
 
 interface RepoCardProps {
     repo: Repo;

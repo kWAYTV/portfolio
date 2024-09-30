@@ -1,6 +1,6 @@
 "use server";
 
-import { Repo } from "app/types/github";
+import { Repo } from "@/types/github";
 
 export async function getGitHubRepos(username: string): Promise<{
     success: boolean;

@@ -1,5 +1,5 @@
 import { Link } from "next-view-transitions";
-import { formatDate, getBlogPosts } from "app/blog/utils";
+import { formatDate, getBlogPosts } from "@/blog/utils";
 
 export function BlogPosts() {
     let allBlogs = getBlogPosts();
