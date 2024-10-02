@@ -31,40 +31,6 @@ export function BlogIcon() {
     );
 }
 
-export function TerminalIcon() {
-    return (
-        <svg
-            viewBox="0 0 12 12"
-            fill="none"
-            xmlns="http://www.w3.org/2000/svg"
-            className="w-full h-full"
-        >
-            <rect
-                x="1"
-                y="1"
-                width="10"
-                height="10"
-                rx="1"
-                stroke="currentColor"
-                strokeWidth="1"
-            />
-            <path
-                d="M2.5 3.5L4 5L2.5 6.5"
-                stroke="currentColor"
-                strokeWidth="1"
-                strokeLinecap="round"
-                strokeLinejoin="round"
-            />
-            <path
-                d="M5 7.5H7.5"
-                stroke="currentColor"
-                strokeWidth="1"
-                strokeLinecap="round"
-            />
-        </svg>
-    );
-}
-
 export function GitHubIcon() {
     return (
         <svg

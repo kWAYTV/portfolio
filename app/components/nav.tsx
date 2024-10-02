@@ -1,11 +1,6 @@
 import { Link } from "next-view-transitions";
 import React from "react";
-import {
-    HomeIcon,
-    TerminalIcon,
-    GitHubIcon,
-    BlogIcon,
-} from "@/components/icons";
+import { HomeIcon, GitHubIcon, BlogIcon } from "@/components/icons";
 
 const navItems = {
     "/": {
@@ -15,10 +10,6 @@ const navItems = {
     "/blog": {
         name: "blog",
         icon: BlogIcon,
-    },
-    "/projects": {
-        name: "projects",
-        icon: TerminalIcon,
     },
     "https://github.com/kWAYTV": {
         name: "github",

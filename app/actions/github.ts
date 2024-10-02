@@ -1,6 +1,7 @@
 "use server";
 
 import { Repo } from "@/types/github";
+import { getBlogPosts } from "@/blog/utils";
 
 export async function getGitHubRepos(username: string): Promise<{
     success: boolean;
@@ -13,7 +14,7 @@ export async function getGitHubRepos(username: string): Promise<{
 }> {
     try {
         const res = await fetch(
-            `https://api.github.com/users/${username}/repos?sort=updated&per_page=10`,
+            `https://api.github.com/users/${username}/repos?sort=updated&per_page=100`,
             {
                 headers: {
                     Accept: "application/vnd.github.v3+json",
@@ -28,11 +29,26 @@ export async function getGitHubRepos(username: string): Promise<{
 
         const repos: Repo[] = await res.json();
 
+        const blogPosts = getBlogPosts();
+        const portfolioPost = blogPosts.find(
+            (post) => post.slug === "hello-world"
+        );
+
+        // Convert updated_at to YYYY-MM-DD format
+        repos.forEach((repo) => {
+            repo.updated_at = repo.updated_at.split("T")[0];
+            if (repo.name === "portfolio" && portfolioPost) {
+                repo.updated_at = portfolioPost.metadata.publishedAt;
+                console.log("Portfolio updated_at:", repo.updated_at);
+            }
+        });
+
         const sorted = repos
             .filter((repo) => !repo.fork) // Exclude forked repositories
             .sort((a, b) => b.stargazers_count - a.stargazers_count); // Sort by stars descending
 
         const highlighted: Repo[] = sorted.slice(0, 3);
+
         const latest: Repo[] = sorted
             .slice(3)
             .filter((repo) => !repo.fork)
