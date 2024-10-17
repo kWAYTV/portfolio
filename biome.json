@@ -17,14 +17,14 @@
 		"enabled": true
 	},
 	"linter": {
-		"enabled": true,
+		"enabled": false,
 		"rules": {
 			"recommended": true
 		}
 	},
 	"javascript": {
 		"formatter": {
-			"quoteStyle": "double"
+			"quoteStyle": "single"
 		}
 	}
 }
