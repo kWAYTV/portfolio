@@ -6,6 +6,7 @@ export interface Repository {
   html_url: string;
   private: boolean;
   fork: boolean;
+  archived: boolean;
   created_at: string | null;
   updated_at: string | null;
   language: string | null;

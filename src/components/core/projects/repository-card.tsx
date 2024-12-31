@@ -85,6 +85,14 @@ export function RepositoryCard({ repository }: RepositoryCardProps) {
             >
               {repository.language || 'Unknown'}
             </Badge>
+            {repository.archived && (
+              <Badge
+                variant='secondary'
+                className='bg-yellow-100 text-yellow-800 hover:bg-yellow-100/80 dark:bg-yellow-900 dark:text-yellow-300 dark:hover:bg-yellow-900/80'
+              >
+                Archived
+              </Badge>
+            )}
             <span className='text-xs text-neutral-600 dark:text-neutral-400 sm:hidden'>
               {repository.updated_at && formatDate(repository.updated_at)}
             </span>

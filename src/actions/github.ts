@@ -28,6 +28,7 @@ export async function fetchGithubRepos() {
         html_url: repo.html_url,
         private: repo.private,
         fork: repo.fork,
+        archived: repo.archived,
         created_at: repo.created_at,
         updated_at: repo.updated_at,
         language: repo.language,
