@@ -41,8 +41,11 @@ export function ClientProjects() {
 
   const renderPaginationItems = () => {
     const items = [];
-    const leftSide = Math.max(1, currentPage - 1);
-    const rightSide = Math.min(totalPages, currentPage + 1);
+    // Show fewer pages on mobile
+    const isMobile = typeof window !== 'undefined' && window.innerWidth < 640;
+    const sidePages = isMobile ? 0 : 1;
+    const leftSide = Math.max(1, currentPage - sidePages);
+    const rightSide = Math.min(totalPages, currentPage + sidePages);
 
     // Previous button
     items.push(
@@ -65,7 +68,7 @@ export function ClientProjects() {
           <PaginationLink
             onClick={() => setCurrentPage(1)}
             isActive={currentPage === 1}
-            className='cursor-pointer'
+            className='h-8 w-8 cursor-pointer p-0 text-xs sm:h-9 sm:w-9 sm:text-sm'
           >
             1
           </PaginationLink>
@@ -87,7 +90,7 @@ export function ClientProjects() {
           <PaginationLink
             onClick={() => setCurrentPage(i)}
             isActive={currentPage === i}
-            className='cursor-pointer'
+            className='h-8 w-8 cursor-pointer p-0 text-xs sm:h-9 sm:w-9 sm:text-sm'
           >
             {i}
           </PaginationLink>
@@ -109,7 +112,7 @@ export function ClientProjects() {
           <PaginationLink
             onClick={() => setCurrentPage(totalPages)}
             isActive={currentPage === totalPages}
-            className='cursor-pointer'
+            className='h-8 w-8 cursor-pointer p-0 text-xs sm:h-9 sm:w-9 sm:text-sm'
           >
             {totalPages}
           </PaginationLink>
@@ -165,7 +168,7 @@ export function ClientProjects() {
         <>
           <Separator className='my-1 sm:my-2' />
           <Pagination>
-            <PaginationContent className='gap-1 sm:gap-2'>
+            <PaginationContent className='gap-0.5 sm:gap-1'>
               {renderPaginationItems()}
             </PaginationContent>
           </Pagination>
