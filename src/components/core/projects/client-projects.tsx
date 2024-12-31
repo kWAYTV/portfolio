@@ -1,7 +1,5 @@
 'use client';
 
-import { ChevronLeft, ChevronRight } from 'lucide-react';
-
 import { RepositoryCard } from '@/components/core/projects/repository-card';
 import { RepositoryCardSkeleton } from '@/components/core/projects/repository-card-skeleton';
 import { SearchInput } from '@/components/core/projects/search-input';
@@ -43,7 +41,6 @@ export function ClientProjects() {
 
   const renderPaginationItems = () => {
     const items = [];
-    const maxVisible = 3;
     const leftSide = Math.max(1, currentPage - 1);
     const rightSide = Math.min(totalPages, currentPage + 1);
 
