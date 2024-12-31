@@ -4,8 +4,8 @@ import { githubRepoUrl } from '@/lib/metadata';
 
 export default function Footer() {
   return (
-    <footer className='mb-16'>
-      <ul className='font-sm mt-8 flex flex-col space-y-2 text-neutral-600 dark:text-neutral-300 md:flex-row md:space-x-4 md:space-y-0'>
+    <footer className='mb-8 sm:mb-16'>
+      <ul className='font-sm mt-6 flex flex-row space-x-4 text-neutral-600 dark:text-neutral-300 sm:mt-8'>
         <li>
           <a
             href='/rss'
@@ -13,8 +13,8 @@ export default function Footer() {
             rel='noopener noreferrer'
             className='flex items-center hover:text-neutral-800 dark:hover:text-neutral-100'
           >
-            <ArrowUpRight />
-            <p className='ml-2'>rss</p>
+            <ArrowUpRight className='h-4 w-4' />
+            <p className='ml-1 text-sm sm:ml-2'>rss</p>
           </a>
         </li>
         <li>
@@ -24,12 +24,12 @@ export default function Footer() {
             rel='noopener noreferrer'
             className='flex items-center hover:text-neutral-800 dark:hover:text-neutral-100'
           >
-            <ArrowUpRight />
-            <p className='ml-2'>repo</p>
+            <ArrowUpRight className='h-4 w-4' />
+            <p className='ml-1 text-sm sm:ml-2'>repo</p>
           </a>
         </li>
       </ul>
-      <p className='mt-8 text-neutral-600 dark:text-neutral-300'>
+      <p className='mt-6 text-sm text-neutral-600 dark:text-neutral-300 sm:mt-8'>
         © {new Date().getFullYear()} MIT Licensed
       </p>
     </footer>

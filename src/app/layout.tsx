@@ -39,10 +39,10 @@ export default function RootLayout({
           />
         )}
         <body
-          className={`${geistSans.variable} ${geistMono.variable} mx-4 mt-8 max-w-xl antialiased lg:mx-auto`}
+          className={`${geistSans.variable} ${geistMono.variable} mx-4 mt-4 max-w-2xl antialiased sm:mt-8 lg:mx-auto`}
         >
           <Providers>
-            <main className='mt-6 flex min-w-0 flex-auto flex-col px-2 md:px-0'>
+            <main className='mt-4 flex min-w-0 flex-auto flex-col px-1 sm:mt-6 sm:px-2 md:px-0'>
               <Navbar />
               {children}
               <Footer />

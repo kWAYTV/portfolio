@@ -135,7 +135,7 @@ export function ClientProjects() {
   };
 
   return (
-    <div className='space-y-4'>
+    <div className='space-y-2 sm:space-y-4'>
       <SearchInput
         name='search'
         value={searchTerm}
@@ -146,22 +146,28 @@ export function ClientProjects() {
           ? Array.from({ length: itemsPerPage }).map((_, index) => (
               <div key={index}>
                 <RepositoryCardSkeleton />
-                {index < itemsPerPage - 1 && <Separator className='my-1' />}
+                {index < itemsPerPage - 1 && (
+                  <Separator className='my-0.5 sm:my-1' />
+                )}
               </div>
             ))
           : repos.map((repo, index) => (
               <div key={repo.id}>
                 <RepositoryCard repository={repo} />
-                {index < repos.length - 1 && <Separator className='my-1' />}
+                {index < repos.length - 1 && (
+                  <Separator className='my-0.5 sm:my-1' />
+                )}
               </div>
             ))}
       </div>
 
       {totalRepos > itemsPerPage && (
         <>
-          <Separator className='my-2' />
+          <Separator className='my-1 sm:my-2' />
           <Pagination>
-            <PaginationContent>{renderPaginationItems()}</PaginationContent>
+            <PaginationContent className='gap-1 sm:gap-2'>
+              {renderPaginationItems()}
+            </PaginationContent>
           </Pagination>
         </>
       )}

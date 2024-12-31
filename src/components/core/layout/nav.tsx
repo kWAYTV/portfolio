@@ -14,44 +14,48 @@ import type { NavPath } from '@/types/nav';
 
 export function Navbar() {
   return (
-    <aside className='mb-16 tracking-tight'>
+    <aside className='mb-8 tracking-tight sm:mb-16'>
       <div className='lg:sticky lg:top-20'>
         <nav
           className='fade relative flex scroll-pr-6 flex-row items-start px-0 pb-0 md:relative md:overflow-auto'
           id='nav'
         >
-          <div className='flex flex-row space-x-1 pr-10'>
-            {(
-              Object.entries(navItems) as [
-                NavPath,
-                (typeof navItems)[NavPath]
-              ][]
-            ).map(([path, { name, icon: Icon, tooltip }]) => (
-              <Tooltip key={path}>
-                <TooltipTrigger asChild>
-                  <Button
-                    variant='linkHover2'
-                    className='flex items-center gap-2 p-2'
-                    asChild
-                  >
-                    <Link
-                      href={path}
-                      aria-label={`Navigate to ${name}`}
-                      {...(name.toLowerCase() === 'github'
-                        ? {
-                            target: '_blank',
-                            rel: 'noopener noreferrer'
-                          }
-                        : {})}
+          <div className='flex w-full flex-row items-center justify-between pr-2 sm:justify-start sm:space-x-1 sm:pr-10'>
+            <div className='flex flex-row space-x-0 sm:space-x-1'>
+              {(
+                Object.entries(navItems) as [
+                  NavPath,
+                  (typeof navItems)[NavPath]
+                ][]
+              ).map(([path, { name, icon: Icon, tooltip }]) => (
+                <Tooltip key={path}>
+                  <TooltipTrigger asChild>
+                    <Button
+                      variant='linkHover2'
+                      className='flex items-center gap-1 p-1.5 sm:gap-2 sm:p-2'
+                      asChild
                     >
-                      <Icon className='h-4 w-4' aria-hidden='true' />
-                      <span className='capitalize'>{name}</span>
-                    </Link>
-                  </Button>
-                </TooltipTrigger>
-                <TooltipContent>{tooltip}</TooltipContent>
-              </Tooltip>
-            ))}
+                      <Link
+                        href={path}
+                        aria-label={`Navigate to ${name}`}
+                        {...(name.toLowerCase() === 'github'
+                          ? {
+                              target: '_blank',
+                              rel: 'noopener noreferrer'
+                            }
+                          : {})}
+                      >
+                        <Icon className='h-4 w-4' aria-hidden='true' />
+                        <span className='hidden capitalize sm:inline'>
+                          {name}
+                        </span>
+                      </Link>
+                    </Button>
+                  </TooltipTrigger>
+                  <TooltipContent>{tooltip}</TooltipContent>
+                </Tooltip>
+              ))}
+            </div>
             <ModeToggle />
           </div>
         </nav>

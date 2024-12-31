@@ -17,14 +17,14 @@ interface RepositoryCardProps {
 
 export function RepositoryCard({ repository }: RepositoryCardProps) {
   return (
-    <div className='group rounded-md p-2 transition-colors hover:bg-neutral-100 dark:hover:bg-neutral-900'>
-      <div className='flex w-full flex-col space-y-2'>
-        <div className='flex flex-col space-y-2 sm:flex-row sm:items-start sm:justify-between'>
-          <div className='flex items-center gap-2'>
+    <div className='group rounded-md p-1.5 transition-colors hover:bg-neutral-100 dark:hover:bg-neutral-900 sm:p-2'>
+      <div className='flex w-full flex-col space-y-1.5 sm:space-y-2'>
+        <div className='flex flex-col space-y-1.5 sm:flex-row sm:items-start sm:justify-between sm:space-y-2'>
+          <div className='flex items-center gap-1.5 sm:gap-2'>
             <Button
               variant='link'
               asChild
-              className='h-auto p-0 text-base font-medium tracking-tight text-neutral-900 hover:bg-transparent hover:text-neutral-700 dark:text-neutral-100 dark:hover:text-neutral-300'
+              className='h-auto p-0 text-sm font-medium tracking-tight text-neutral-900 hover:bg-transparent hover:text-neutral-700 dark:text-neutral-100 dark:hover:text-neutral-300 sm:text-base'
             >
               <Link
                 href={repository.html_url}
@@ -32,20 +32,20 @@ export function RepositoryCard({ repository }: RepositoryCardProps) {
                 rel='noopener noreferrer'
                 className='flex items-center gap-1'
               >
-                <LinkIcon className='h-4 w-4' />
+                <LinkIcon className='h-3.5 w-3.5 sm:h-4 sm:w-4' />
                 {repository.name}
               </Link>
             </Button>
             {repository.private && (
               <Tooltip>
                 <TooltipTrigger>
-                  <LockIcon className='h-4 w-4 text-neutral-500' />
+                  <LockIcon className='h-3.5 w-3.5 text-neutral-500 sm:h-4 sm:w-4' />
                 </TooltipTrigger>
                 <TooltipContent>Private repository</TooltipContent>
               </Tooltip>
             )}
           </div>
-          <div className='flex items-center gap-4 text-sm text-neutral-600 dark:text-neutral-400'>
+          <div className='flex items-center gap-3 text-xs text-neutral-600 dark:text-neutral-400 sm:gap-4 sm:text-sm'>
             <Tooltip>
               <TooltipTrigger asChild>
                 <span className='hidden tabular-nums transition-colors hover:text-neutral-900 dark:hover:text-neutral-100 sm:inline'>
@@ -58,7 +58,7 @@ export function RepositoryCard({ repository }: RepositoryCardProps) {
               <Tooltip>
                 <TooltipTrigger asChild>
                   <div className='flex items-center gap-1 transition-colors hover:text-neutral-900 dark:hover:text-neutral-100'>
-                    <Star className='h-4 w-4' />
+                    <Star className='h-3.5 w-3.5 sm:h-4 sm:w-4' />
                     <span>{repository.stargazers_count}</span>
                   </div>
                 </TooltipTrigger>
@@ -67,7 +67,7 @@ export function RepositoryCard({ repository }: RepositoryCardProps) {
               <Tooltip>
                 <TooltipTrigger asChild>
                   <div className='flex items-center gap-1 transition-colors hover:text-neutral-900 dark:hover:text-neutral-100'>
-                    <GitFork className='h-4 w-4' />
+                    <GitFork className='h-3.5 w-3.5 sm:h-4 sm:w-4' />
                     <span>{repository.forks_count}</span>
                   </div>
                 </TooltipTrigger>
@@ -77,18 +77,18 @@ export function RepositoryCard({ repository }: RepositoryCardProps) {
           </div>
         </div>
 
-        <div className='flex flex-col gap-2 text-sm sm:flex-row sm:items-center sm:gap-x-4'>
-          <div className='flex items-center gap-2'>
+        <div className='flex flex-col gap-1.5 text-xs sm:flex-row sm:items-center sm:gap-2 sm:gap-x-4 sm:text-sm'>
+          <div className='flex flex-wrap items-center gap-1.5 sm:gap-2'>
             <Badge
               variant='outline'
-              className='bg-neutral-50 dark:bg-neutral-900'
+              className='bg-neutral-50 px-2 py-0.5 text-xs dark:bg-neutral-900'
             >
               {repository.language || 'Unknown'}
             </Badge>
             {repository.archived && (
               <Badge
                 variant='secondary'
-                className='bg-yellow-100 text-yellow-800 hover:bg-yellow-100/80 dark:bg-yellow-900 dark:text-yellow-300 dark:hover:bg-yellow-900/80'
+                className='bg-yellow-100 px-2 py-0.5 text-xs text-yellow-800 hover:bg-yellow-100/80 dark:bg-yellow-900 dark:text-yellow-300 dark:hover:bg-yellow-900/80'
               >
                 Archived
               </Badge>
