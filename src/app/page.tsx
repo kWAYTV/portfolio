@@ -1,4 +1,4 @@
-import { BlogPosts } from '@/components/core/blog/posts';
+import { RecentPosts } from '@/components/core/blog/recent-posts';
 import { Description } from '@/components/core/home/description';
 import { Hero } from '@/components/core/home/hero';
 
@@ -8,7 +8,7 @@ export default async function HomePage() {
       <Hero />
       <Description />
       <div className='my-8'>
-        <BlogPosts />
+        <RecentPosts />
       </div>
     </section>
   );
