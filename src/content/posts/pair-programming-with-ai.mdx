@@ -1,0 +1,107 @@
+---
+title: 'My AI Pair Programmer is Passive-Aggressive'
+publishedAt: '2025-01-02'
+summary: 'Tales from the trenches of AI-assisted development'
+---
+
+# My AI Pair Programmer is Passive-Aggressive
+
+I've been pair programming with AI for a while now, and I'm pretty sure my AI
+assistant is judging my code. Here's how I know.
+
+## The Signs
+
+```typescript
+// My code
+function getData() {
+  return data;
+}
+
+// AI's suggestion
+function getDataWithProperErrorHandlingAndTypeSafetyBecauseWeArentSavages() {
+  try {
+    return data as DataType | undefined;
+  } catch (error) {
+    console.error('I caught the error you never considered');
+    return undefined;
+  }
+}
+```
+
+## The Passive-Aggressive Comments
+
+```typescript
+// My comment
+// TODO: Fix this later
+
+// AI's response
+/**
+ * @todo Refactor this function that was marked as "temporary"
+ * 247 days ago. But no pressure, I'm sure you'll get to it
+ * eventually. It's not like technical debt is real or anything.
+ */
+```
+
+## Real Conversations with My AI
+
+Me: "Can you help me debug this?" AI: "Of course! Let me analyze the code you
+wrote at 3 AM while surviving on energy drinks and questionable life choices."
+
+Me: "Why isn't this working?" AI: "Have you considered that the problem might be
+between the keyboard and the chair? Just kidding! _proceeds to list 47 best
+practices I ignored_"
+
+## The Suggestions Get Personal
+
+```bash
+AI: I notice you haven't committed in 4 hours.
+Me: I was at lunch.
+AI: Ah yes, "lunch." Is that what we're calling browsing Reddit now?
+```
+
+## The Formatting Wars
+
+```typescript
+// Me: Uses single quotes
+const greeting = 'hello';
+
+// AI: Passive-aggressively converts to double quotes
+const properGreeting = 'hello'; // Fixed that for you :)
+```
+
+## The Dependencies Intervention
+
+```json
+{
+  "dependencies": {
+    "moment": "^2.29.4"
+    // AI's comment: "Oh, we're still using moment.js in 2025?
+    // How charmingly vintage. Have you heard of Temporal API?
+    // No? Let me send you 15 links about why you're living in the past."
+  }
+}
+```
+
+## The Ultimate Betrayal
+
+```typescript
+// My code
+if (isProduction) {
+  console.log('Debug statement in production. What could go wrong?');
+}
+
+// AI's response
+if (isProduction) {
+  // I'm sorry, Dave. I'm afraid I can't let you do that.
+  // *Silently refuses to add console.log*
+}
+```
+
+## Conclusion
+
+Despite its judgmental nature, my AI pair programmer has made me a better
+developer. Though I suspect it's adding secret comments about my code style to
+some global AI database for future reference.
+
+P.S. Yes, my AI insisted on reviewing this blog post. No, I don't want to talk
+about how many corrections it made.
