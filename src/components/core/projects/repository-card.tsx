@@ -1,4 +1,11 @@
-import { GitFork, LinkIcon, LockIcon, Star } from 'lucide-react';
+import {
+  GitFork,
+  Globe2,
+  LinkIcon,
+  LockIcon,
+  Scroll,
+  Star
+} from 'lucide-react';
 import { Link } from 'next-view-transitions';
 
 import { Badge } from '@/components/ui/badge';
@@ -19,7 +26,7 @@ export function RepositoryCard({ repository }: RepositoryCardProps) {
   return (
     <div className='group rounded-md p-1.5 transition-colors hover:bg-neutral-100 dark:hover:bg-neutral-900 sm:p-2'>
       <div className='flex w-full flex-col space-y-1.5 sm:space-y-2'>
-        <div className='flex flex-col space-y-1.5 sm:flex-row sm:items-start sm:justify-between sm:space-y-2'>
+        <div className='flex flex-col space-y-1.5 sm:flex-row sm:items-start sm:justify-between sm:space-y-0'>
           <div className='flex items-center gap-1.5 sm:gap-2'>
             <Button
               variant='link'
@@ -33,7 +40,7 @@ export function RepositoryCard({ repository }: RepositoryCardProps) {
                 className='flex items-center gap-1'
               >
                 <LinkIcon className='h-3.5 w-3.5 sm:h-4 sm:w-4' />
-                {repository.name}
+                <span className='line-clamp-1'>{repository.name}</span>
               </Link>
             </Button>
             {repository.private && (
@@ -42,6 +49,29 @@ export function RepositoryCard({ repository }: RepositoryCardProps) {
                   <LockIcon className='h-3.5 w-3.5 text-neutral-500 sm:h-4 sm:w-4' />
                 </TooltipTrigger>
                 <TooltipContent>Private repository</TooltipContent>
+              </Tooltip>
+            )}
+            {repository.license && (
+              <Tooltip>
+                <TooltipTrigger>
+                  <Scroll className='h-3.5 w-3.5 text-neutral-500 sm:h-4 sm:w-4' />
+                </TooltipTrigger>
+                <TooltipContent>{repository.license.name}</TooltipContent>
+              </Tooltip>
+            )}
+            {repository.homepage && (
+              <Tooltip>
+                <TooltipTrigger asChild>
+                  <a
+                    href={repository.homepage}
+                    target='_blank'
+                    rel='noopener noreferrer'
+                    className='text-neutral-500 hover:text-neutral-900 dark:hover:text-neutral-100'
+                  >
+                    <Globe2 className='h-3.5 w-3.5 sm:h-4 sm:w-4' />
+                  </a>
+                </TooltipTrigger>
+                <TooltipContent>Live demo</TooltipContent>
               </Tooltip>
             )}
           </div>
@@ -77,7 +107,7 @@ export function RepositoryCard({ repository }: RepositoryCardProps) {
           </div>
         </div>
 
-        <div className='flex flex-col gap-1.5 text-xs sm:flex-row sm:items-center sm:gap-2 sm:gap-x-4 sm:text-sm'>
+        <div className='flex flex-col gap-1.5 sm:gap-2'>
           <div className='flex flex-wrap items-center gap-1.5 sm:gap-2'>
             <Badge
               variant='outline'
@@ -93,21 +123,44 @@ export function RepositoryCard({ repository }: RepositoryCardProps) {
                 Archived
               </Badge>
             )}
+            {repository.is_template && (
+              <Badge
+                variant='secondary'
+                className='bg-blue-100 px-2 py-0.5 text-xs text-blue-800 hover:bg-blue-100/80 dark:bg-blue-900 dark:text-blue-300 dark:hover:bg-blue-900/80'
+              >
+                Template
+              </Badge>
+            )}
             <span className='text-xs text-neutral-600 dark:text-neutral-400 sm:hidden'>
               {repository.updated_at && formatDate(repository.updated_at)}
             </span>
           </div>
+
           {repository.description && (
             <Tooltip>
               <TooltipTrigger asChild>
-                <span className='line-clamp-1 cursor-default text-neutral-600 dark:text-neutral-400'>
+                <p className='line-clamp-2 cursor-default text-xs text-neutral-600 dark:text-neutral-400 sm:text-sm'>
                   {repository.description}
-                </span>
+                </p>
               </TooltipTrigger>
               <TooltipContent side='bottom' className='max-w-[300px]'>
                 {repository.description}
               </TooltipContent>
             </Tooltip>
+          )}
+
+          {repository.topics.length > 0 && (
+            <div className='flex flex-wrap gap-1.5'>
+              {repository.topics.map(topic => (
+                <Badge
+                  key={topic}
+                  variant='secondary'
+                  className='bg-neutral-100 px-2 py-0.5 text-xs text-neutral-800 hover:bg-neutral-200 dark:bg-neutral-800 dark:text-neutral-300 dark:hover:bg-neutral-700'
+                >
+                  {topic}
+                </Badge>
+              ))}
+            </div>
           )}
         </div>
       </div>
