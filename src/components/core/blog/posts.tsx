@@ -4,7 +4,7 @@ import { Separator } from '@/components/ui/separator';
 import { getBlogPosts } from '@/lib/blog';
 import { formatDate } from '@/lib/utils';
 
-export function BlogPosts() {
+export async function BlogPosts() {
   const allBlogs = getBlogPosts();
 
   return (

@@ -6,7 +6,7 @@ import { Separator } from '@/components/ui/separator';
 import { getBlogPosts } from '@/lib/blog';
 import { formatDate } from '@/lib/utils';
 
-export function RecentPosts() {
+export async function RecentPosts() {
   const allBlogs = getBlogPosts();
   const recentPosts = allBlogs
     .sort((a, b) => {
