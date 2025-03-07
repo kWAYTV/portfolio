@@ -24,14 +24,14 @@ interface RepositoryCardProps {
 
 export function RepositoryCard({ repository }: RepositoryCardProps) {
   return (
-    <div className='group rounded-md p-1.5 transition-colors hover:bg-neutral-100 dark:hover:bg-neutral-900 sm:p-2'>
+    <div className='group rounded-md p-1.5 transition-colors hover:bg-neutral-100 sm:p-2 dark:hover:bg-neutral-900'>
       <div className='flex w-full flex-col space-y-1.5 sm:space-y-2'>
         <div className='flex flex-col space-y-1.5 sm:flex-row sm:items-start sm:justify-between sm:space-y-0'>
           <div className='flex items-center gap-1.5 sm:gap-2'>
             <Button
               variant='link'
               asChild
-              className='h-auto p-0 text-sm font-medium tracking-tight text-neutral-900 hover:bg-transparent hover:text-neutral-700 dark:text-neutral-100 dark:hover:text-neutral-300 sm:text-base'
+              className='h-auto p-0 text-sm font-medium tracking-tight text-neutral-900 hover:bg-transparent hover:text-neutral-700 sm:text-base dark:text-neutral-100 dark:hover:text-neutral-300'
             >
               <Link
                 href={repository.html_url}
@@ -75,10 +75,10 @@ export function RepositoryCard({ repository }: RepositoryCardProps) {
               </Tooltip>
             )}
           </div>
-          <div className='flex items-center gap-3 text-xs text-neutral-600 dark:text-neutral-400 sm:gap-4 sm:text-sm'>
+          <div className='flex items-center gap-3 text-xs text-neutral-600 sm:gap-4 sm:text-sm dark:text-neutral-400'>
             <Tooltip>
               <TooltipTrigger asChild>
-                <span className='hidden tabular-nums transition-colors hover:text-neutral-900 dark:hover:text-neutral-100 sm:inline'>
+                <span className='hidden tabular-nums transition-colors hover:text-neutral-900 sm:inline dark:hover:text-neutral-100'>
                   {repository.updated_at && formatDate(repository.updated_at)}
                 </span>
               </TooltipTrigger>
@@ -131,7 +131,7 @@ export function RepositoryCard({ repository }: RepositoryCardProps) {
                 Template
               </Badge>
             )}
-            <span className='text-xs text-neutral-600 dark:text-neutral-400 sm:hidden'>
+            <span className='text-xs text-neutral-600 sm:hidden dark:text-neutral-400'>
               {repository.updated_at && formatDate(repository.updated_at)}
             </span>
           </div>
@@ -139,7 +139,7 @@ export function RepositoryCard({ repository }: RepositoryCardProps) {
           {repository.description && (
             <Tooltip>
               <TooltipTrigger asChild>
-                <p className='line-clamp-2 cursor-default text-xs text-neutral-600 dark:text-neutral-400 sm:text-sm'>
+                <p className='line-clamp-2 cursor-default text-xs text-neutral-600 sm:text-sm dark:text-neutral-400'>
                   {repository.description}
                 </p>
               </TooltipTrigger>

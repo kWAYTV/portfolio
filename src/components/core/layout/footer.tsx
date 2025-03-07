@@ -5,7 +5,7 @@ import { githubRepoUrl } from '@/lib/metadata';
 export default function Footer() {
   return (
     <footer className='mb-8 sm:mb-16'>
-      <ul className='font-sm mt-6 flex flex-row space-x-4 text-neutral-600 dark:text-neutral-300 sm:mt-8'>
+      <ul className='font-sm mt-6 flex flex-row space-x-4 text-neutral-600 sm:mt-8 dark:text-neutral-300'>
         <li>
           <a
             href='/rss'
@@ -29,7 +29,7 @@ export default function Footer() {
           </a>
         </li>
       </ul>
-      <p className='mt-6 text-sm text-neutral-600 dark:text-neutral-300 sm:mt-8'>
+      <p className='mt-6 text-sm text-neutral-600 sm:mt-8 dark:text-neutral-300'>
         © {new Date().getFullYear()} MIT Licensed
       </p>
     </footer>
