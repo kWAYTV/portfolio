@@ -29,7 +29,7 @@
     "react": "19.0.0-rc-66855b96-20241106",
     "react-dom": "19.0.0-rc-66855b96-20241106",
     "sonner": "^2.0.1",
-    "sugar-high": "^0.8.4",
+    "sugar-high": "^0.9.3",
     "tailwind-merge": "^3.0.2",
     "tailwindcss-animate": "^1.0.7",
     "use-debounce": "^10.0.4",
