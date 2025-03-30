@@ -104,25 +104,45 @@ export const GithubGraph = memo(
     // Use the resolved theme to determine which color palette to use
     const colorScheme = resolvedTheme === 'dark' ? 'dark' : 'light';
 
+    // Simple scrollbar styles that work with React
+    const scrollbarColor =
+      resolvedTheme === 'dark'
+        ? 'rgba(150, 150, 150, 0.2) transparent'
+        : 'rgba(100, 100, 100, 0.3) transparent';
+
     return (
       <div className='relative'>
-        {loading && (
-          <div className='absolute inset-0 flex items-center justify-center'>
-            <div className='h-8 w-8 animate-spin rounded-full border-b-2 border-gray-900 dark:border-white'></div>
-          </div>
-        )}
-        <ActivityCalendar
-          data={contribution}
-          maxLevel={4}
-          blockMargin={blockMargin ?? 2}
-          loading={loading}
-          labels={label}
-          theme={{
-            light: lightColorPalette,
-            dark: darkColorPalette
+        <div
+          className='overflow-x-auto overflow-y-hidden pb-4'
+          style={{
+            msOverflowStyle: 'auto',
+            scrollbarWidth: 'thin',
+            scrollbarColor: scrollbarColor
           }}
-          colorScheme={colorScheme}
-        />
+        >
+          <div className='min-w-[800px]'>
+            {loading && (
+              <div className='absolute inset-0 z-10 flex items-center justify-center'>
+                <div className='h-8 w-8 animate-spin rounded-full border-b-2 border-gray-900 dark:border-white'></div>
+              </div>
+            )}
+            <ActivityCalendar
+              data={contribution}
+              maxLevel={4}
+              blockMargin={blockMargin ?? 2}
+              loading={loading}
+              labels={label}
+              theme={{
+                light: lightColorPalette,
+                dark: darkColorPalette
+              }}
+              colorScheme={colorScheme}
+            />
+          </div>
+        </div>
+        <div className='text-muted-foreground mt-1 text-center text-xs'>
+          ← Scroll horizontally to view full activity →
+        </div>
       </div>
     );
   }
