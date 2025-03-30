@@ -37,9 +37,7 @@ A modern, fast, and responsive portfolio built with cutting-edge technologies.
 - 📱 Fully responsive design
 - 🚀 Server-side rendering and static generation
 - 📝 MDX blog with frontmatter support
-- 🔍 GitHub projects showcase with search functionality
 - 🎨 Modern UI with custom animations
-- 📊 Dynamic GitHub repository stats
 - 🔄 Automatic changelog generation
 - 🌐 SEO optimized with OpenGraph images
 - 📰 RSS feed support
