@@ -7,7 +7,6 @@ export const env = createEnv({
    * Will throw if you access these variables on the client.
    */
   server: {
-    GITHUB_TOKEN: z.string(),
     UMAMI_WEBSITE_ID: z.string()
   },
   /*
@@ -25,7 +24,6 @@ export const env = createEnv({
    * 💡 You'll get type errors if not all variables from `server` & `client` are included here.
    */
   runtimeEnv: {
-    GITHUB_TOKEN: process.env.GITHUB_TOKEN,
     NEXT_PUBLIC_ENABLE_UMAMI: process.env.NEXT_PUBLIC_ENABLE_UMAMI,
     UMAMI_WEBSITE_ID: process.env.UMAMI_WEBSITE_ID
   }

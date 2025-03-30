@@ -8,11 +8,6 @@ export const navItems: NavItems = {
     icon: HomeIcon,
     tooltip: 'Go to the home page'
   },
-  '/projects': {
-    name: 'projects',
-    icon: MenuIcon,
-    tooltip: 'Dive into my GitHub projects'
-  },
   '/blog': {
     name: 'blog',
     icon: BookOpen,
