@@ -1,4 +1,4 @@
-import { BookOpen, GithubIcon, HomeIcon, MenuIcon } from 'lucide-react';
+import { BookOpen, GithubIcon, HomeIcon } from 'lucide-react';
 
 import type { NavItems } from '@/types/nav';
 
