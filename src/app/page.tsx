@@ -16,7 +16,7 @@ export default async function HomePage() {
 
       <div className='animate-in fade-in slide-in-from-bottom-4 animation-delay-400 duration-500'>
         <div className='my-8 w-full'>
-          <h3 className='mb-4 text-xl font-semibold'>GitHub Activity</h3>
+          <h3 className='mb-4 text-xl font-semibold'>Activity</h3>
           <GithubGraph
             username={githubUsername}
             blockMargin={2}
