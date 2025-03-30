@@ -1,16 +1,35 @@
-import { AnimationWrapper } from '@/components/core/home/animation-wrapper';
 import { Description } from '@/components/core/home/description';
 import { Hero } from '@/components/core/home/hero';
+import { GithubGraph } from '@/components/ui/github';
+import { githubUsername } from '@/lib/metadata';
 
 export default async function HomePage() {
   return (
     <section>
-      <AnimationWrapper direction='down'>
+      <div className='animate-in fade-in slide-in-from-top-4 duration-500'>
         <Hero />
-      </AnimationWrapper>
-      <AnimationWrapper delay={0.2}>
+      </div>
+
+      <div className='animate-in fade-in slide-in-from-bottom-4 animation-delay-200 duration-500'>
         <Description />
-      </AnimationWrapper>
+      </div>
+
+      <div className='animate-in fade-in slide-in-from-bottom-4 animation-delay-400 duration-500'>
+        <div className='my-8 w-full'>
+          <h3 className='mb-4 text-xl font-semibold'>GitHub Activity</h3>
+          <GithubGraph
+            username={githubUsername}
+            blockMargin={2}
+            darkColorPalette={[
+              '#1e1e2f',
+              '#5a3e7a',
+              '#7e5aa2',
+              '#a87cc3',
+              '#d9a9e6'
+            ]}
+          />
+        </div>
+      </div>
     </section>
   );
 }
