@@ -1,8 +1,6 @@
-import { Suspense } from 'react';
-
 import { Projects } from '@/components/core/projects/projects';
-import { ProjectsSkeleton } from '@/components/core/projects/projects-skeleton';
 
+// Cache this page for 1 hour at the edge
 export const revalidate = 3600;
 
 export default function ProjectsPage() {
@@ -11,9 +9,7 @@ export default function ProjectsPage() {
       <h1 className='mb-8 text-2xl font-semibold tracking-tighter'>
         My Projects
       </h1>
-      <Suspense fallback={<ProjectsSkeleton />}>
-        <Projects />
-      </Suspense>
+      <Projects />
     </section>
   );
 }

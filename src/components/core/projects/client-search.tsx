@@ -1,8 +1,10 @@
 'use client';
 
+import { Search } from 'lucide-react';
+import { useState } from 'react';
+
 import { RepositoryCard } from '@/components/core/projects/repository-card';
-import { RepositoryCardSkeleton } from '@/components/core/projects/repository-card-skeleton';
-import { SearchInput } from '@/components/core/projects/search-input';
+import { Input } from '@/components/ui/input';
 import {
   Pagination,
   PaginationContent,
@@ -13,26 +15,29 @@ import {
   PaginationPrevious
 } from '@/components/ui/pagination';
 import { Separator } from '@/components/ui/separator';
-import { useGithubRepos } from '@/hooks/use-github-repos';
+import type { Repository } from '@/interfaces/github';
 
-export function ClientProjects() {
-  const {
-    repos,
-    totalRepos,
-    isLoading,
-    error,
-    searchTerm,
-    setSearchTerm,
-    currentPage,
-    setCurrentPage,
-    itemsPerPage
-  } = useGithubRepos();
+interface ClientSearchProps {
+  repos: Repository[];
+}
 
-  const totalPages = Math.ceil(totalRepos / itemsPerPage);
+export function ClientSearch({ repos }: ClientSearchProps) {
+  const [searchTerm, setSearchTerm] = useState('');
+  const [currentPage, setCurrentPage] = useState(1);
+  const itemsPerPage = 5;
 
-  if (error) {
-    return <div>Error loading repositories: {error.message}</div>;
-  }
+  const filteredRepos = repos.filter(
+    repo =>
+      repo.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      repo.description?.toLowerCase().includes(searchTerm.toLowerCase())
+  );
+
+  const paginatedRepos = filteredRepos.slice(
+    (currentPage - 1) * itemsPerPage,
+    currentPage * itemsPerPage
+  );
+
+  const totalPages = Math.ceil(filteredRepos.length / itemsPerPage);
 
   const handleSearchChange = (value: string) => {
     setSearchTerm(value);
@@ -41,7 +46,6 @@ export function ClientProjects() {
 
   const renderPaginationItems = () => {
     const items = [];
-    // Show fewer pages on mobile
     const isMobile = typeof window !== 'undefined' && window.innerWidth < 640;
     const sidePages = isMobile ? 0 : 1;
     const leftSide = Math.max(1, currentPage - sidePages);
@@ -138,33 +142,36 @@ export function ClientProjects() {
   };
 
   return (
-    <div className='space-y-2 sm:space-y-4'>
-      <SearchInput
-        name='search'
-        value={searchTerm}
-        onValueChange={handleSearchChange}
-      />
-      <div>
-        {isLoading
-          ? Array.from({ length: itemsPerPage }).map((_, index) => (
-              <div key={index}>
-                <RepositoryCardSkeleton />
-                {index < itemsPerPage - 1 && (
-                  <Separator className='my-0.5 sm:my-1' />
-                )}
-              </div>
-            ))
-          : repos.map((repo, index) => (
-              <div key={repo.id}>
-                <RepositoryCard repository={repo} />
-                {index < repos.length - 1 && (
-                  <Separator className='my-0.5 sm:my-1' />
-                )}
-              </div>
-            ))}
+    <div className='space-y-4'>
+      <div className='relative'>
+        <Search className='absolute top-2.5 left-2 h-4 w-4 text-neutral-600 dark:text-neutral-400' />
+        <Input
+          name='search'
+          value={searchTerm}
+          onChange={e => handleSearchChange(e.target.value)}
+          placeholder='Search repositories...'
+          className='h-9 w-full border-neutral-200 bg-transparent pl-8 text-base text-neutral-900 placeholder:text-neutral-600 md:text-sm dark:border-neutral-800 dark:text-neutral-100 dark:placeholder:text-neutral-400'
+        />
       </div>
 
-      {totalRepos > itemsPerPage && (
+      <div>
+        {paginatedRepos.map((repo, index) => (
+          <div key={repo.id}>
+            <RepositoryCard repository={repo} />
+            {index < paginatedRepos.length - 1 && (
+              <Separator className='my-0.5 sm:my-1' />
+            )}
+          </div>
+        ))}
+
+        {paginatedRepos.length === 0 && (
+          <p className='py-4 text-center text-neutral-600 dark:text-neutral-400'>
+            No repositories found matching your search.
+          </p>
+        )}
+      </div>
+
+      {filteredRepos.length > itemsPerPage && (
         <>
           <Separator className='my-1 sm:my-2' />
           <Pagination>

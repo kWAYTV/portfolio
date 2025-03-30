@@ -1,12 +1,14 @@
 'use server';
 
 import { Octokit } from '@octokit/rest';
+import { cache } from 'react';
 
 import { env } from '@/env';
 import type { Repository } from '@/interfaces/github';
 import { githubUsername } from '@/lib/metadata';
 
-export async function fetchGithubRepos() {
+// Use React's cache function to avoid redundant GitHub API calls
+export const fetchGithubRepos = cache(async () => {
   try {
     const octokit = new Octokit({
       auth: env.GITHUB_TOKEN
@@ -64,4 +66,4 @@ export async function fetchGithubRepos() {
     console.error('Error fetching GitHub repositories:', error);
     return { error: 'Failed to fetch repositories' };
   }
-}
+});

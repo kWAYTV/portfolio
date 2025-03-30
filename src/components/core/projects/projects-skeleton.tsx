@@ -6,11 +6,11 @@ export function ProjectsSkeleton() {
   return (
     <div className='space-y-4'>
       <Skeleton className='h-9 w-full' />
-      <div className='space-y-1'>
+      <div>
         {Array.from({ length: 5 }).map((_, i) => (
           <div key={i}>
             <RepositoryCardSkeleton />
-            {i < 4 && <Separator className='my-1' />}
+            {i < 4 && <Separator className='my-0.5 sm:my-1' />}
           </div>
         ))}
       </div>
