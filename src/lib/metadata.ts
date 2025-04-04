@@ -30,3 +30,4 @@ export const baseUrl =
 export const githubUsername = 'kWAYTV';
 export const githubProfileUrl = `https://github.com/${githubUsername}`;
 export const githubRepoUrl = `https://github.com/${githubUsername}/portfolio`;
+export const twitterUsername = 'ogeperc';

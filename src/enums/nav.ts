@@ -1,4 +1,4 @@
-import { BookOpen, GithubIcon, HomeIcon } from 'lucide-react';
+import { BookOpen, HomeIcon } from 'lucide-react';
 
 import type { NavItems } from '@/types/nav';
 
@@ -12,10 +12,5 @@ export const navItems: NavItems = {
     name: 'blog',
     icon: BookOpen,
     tooltip: 'Explore my blog'
-  },
-  'https://github.com/kWAYTV': {
-    name: 'github',
-    icon: GithubIcon,
-    tooltip: 'Take a look at my GitHub profile'
   }
 } satisfies NavItems;

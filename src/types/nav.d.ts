@@ -1,6 +1,6 @@
 import { type LucideIcon } from 'lucide-react';
 
-export type NavPath = '/' | '/blog' | 'https://github.com/kWAYTV';
+export type NavPath = '/' | '/blog';
 
 export type NavItem = {
   name: string;
