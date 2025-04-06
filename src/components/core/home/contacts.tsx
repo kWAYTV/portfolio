@@ -1,8 +1,8 @@
-import { ArrowUpRight, GithubIcon, TwitterIcon } from 'lucide-react';
+import { GithubIcon, TwitterIcon } from 'lucide-react';
 import Link from 'next/link';
 
-import { Button } from '@/components/ui/button';
 import { githubUsername, twitterUsername } from '@/lib/metadata';
+import { cn } from '@/lib/utils';
 
 export function Contacts() {
   return (
@@ -13,42 +13,32 @@ export function Contacts() {
         Feel free to connect with me on these platforms
       </p>
 
-      <div className='grid grid-cols-2 gap-3 sm:flex sm:flex-row sm:gap-4'>
-        <Button
-          variant='outline'
-          size='sm'
-          className='hover:bg-muted/50 w-full justify-start transition-colors'
-          asChild
+      <div className='flex gap-4'>
+        <Link
+          href={`https://github.com/${githubUsername}`}
+          target='_blank'
+          rel='noopener noreferrer'
+          aria-label='GitHub Profile'
+          className={cn(
+            'text-muted-foreground hover:text-foreground',
+            'transition-transform hover:scale-110'
+          )}
         >
-          <Link
-            href={`https://github.com/${githubUsername}`}
-            target='_blank'
-            rel='noopener noreferrer'
-            className='group flex items-center gap-2'
-          >
-            <GithubIcon className='h-4 w-4' />
-            <span className='flex-1'>GitHub</span>
-            <ArrowUpRight className='h-3 w-3 opacity-70 transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5' />
-          </Link>
-        </Button>
+          <GithubIcon className='h-5 w-5' />
+        </Link>
 
-        <Button
-          variant='outline'
-          size='sm'
-          className='hover:bg-muted/50 w-full justify-start transition-colors'
-          asChild
+        <Link
+          href={`https://twitter.com/${twitterUsername}`}
+          target='_blank'
+          rel='noopener noreferrer'
+          aria-label='Twitter/X Profile'
+          className={cn(
+            'text-muted-foreground hover:text-foreground',
+            'transition-transform hover:scale-110'
+          )}
         >
-          <Link
-            href={`https://twitter.com/${twitterUsername}`}
-            target='_blank'
-            rel='noopener noreferrer'
-            className='group flex items-center gap-2'
-          >
-            <TwitterIcon className='h-4 w-4' />
-            <span className='flex-1'>X</span>
-            <ArrowUpRight className='h-3 w-3 opacity-70 transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5' />
-          </Link>
-        </Button>
+          <TwitterIcon className='h-5 w-5' />
+        </Link>
       </div>
     </div>
   );
