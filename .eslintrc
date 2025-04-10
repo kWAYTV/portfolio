@@ -3,8 +3,7 @@
     "next/core-web-vitals",
     "next/typescript",
     "plugin:@typescript-eslint/recommended",
-    "plugin:prettier/recommended",
-    "plugin:tailwindcss/recommended"
+    "plugin:prettier/recommended"
   ],
   "parser": "@typescript-eslint/parser",
   "parserOptions": {
@@ -24,13 +23,6 @@
     "simple-import-sort/imports": "error",
     "simple-import-sort/exports": "error",
     "prettier/prettier": "error",
-    "no-console": ["error", { "allow": ["info", "warn", "error"] }],
-    "tailwindcss/classnames-order": "error"
-  },
-  "overrides": [
-    {
-      "files": ["*.ts", "*.tsx", "*.js"],
-      "parser": "@typescript-eslint/parser"
-    }
-  ]
+    "no-console": ["error", { "allow": ["info", "warn", "error"] }]
+  }
 }
