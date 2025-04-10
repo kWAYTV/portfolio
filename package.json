@@ -8,6 +8,7 @@
     "start": "next start",
     "lint": "next lint --fix",
     "format": "prettier --write .",
+    "format:check": "prettier --check .",
     "bump": "bumpp"
   },
   "dependencies": {
@@ -40,13 +41,11 @@
     "@types/node": "^22.14.0",
     "@types/react": "^18.3.20",
     "@types/react-dom": "^18.3.6",
-    "@typescript-eslint/parser": "^8.29.1",
     "eslint": "^9.24.0",
     "eslint-config-next": "15.1.4",
     "eslint-config-prettier": "^10.1.1",
     "eslint-plugin-prettier": "^5.2.6",
     "eslint-plugin-simple-import-sort": "^12.1.1",
-    "eslint-plugin-tailwindcss": "^3.18.0",
     "postcss": "^8.5.3",
     "prettier": "^3.5.3",
     "prettier-plugin-tailwindcss": "^0.6.11",
