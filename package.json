@@ -20,7 +20,7 @@
     "bumpp": "^10.1.0",
     "class-variance-authority": "^0.7.1",
     "clsx": "^2.1.1",
-    "lucide-react": "^0.487.0",
+    "lucide-react": "^0.503.0",
     "motion": "^12.7.4",
     "next": "15.3.1-canary.10",
     "next-mdx-remote-client": "^2.1.1",
