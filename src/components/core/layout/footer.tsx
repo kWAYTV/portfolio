@@ -25,7 +25,7 @@ export default function Footer() {
             className='flex items-center hover:text-neutral-800 dark:hover:text-neutral-100'
           >
             <ArrowUpRight className='h-4 w-4' />
-            <p className='ml-1 text-sm sm:ml-2'>repo</p>
+            <p className='ml-1 text-sm sm:ml-2'>source</p>
           </a>
         </li>
       </ul>
