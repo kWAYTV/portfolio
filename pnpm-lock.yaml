@@ -54,8 +54,8 @@ importers:
         specifier: 19.0.0-rc-66855b96-20241106
         version: 19.0.0-rc-66855b96-20241106
       react-activity-calendar:
-        specifier: ^2.7.11
-        version: 2.7.11(react@19.0.0-rc-66855b96-20241106)
+        specifier: ^2.7.12
+        version: 2.7.12(react@19.0.0-rc-66855b96-20241106)
       react-dom:
         specifier: 19.0.0-rc-66855b96-20241106
         version: 19.0.0-rc-66855b96-20241106(react@19.0.0-rc-66855b96-20241106)
@@ -2533,8 +2533,8 @@ packages:
   rc9@2.1.2:
     resolution: {integrity: sha512-btXCnMmRIBINM2LDZoEmOogIZU7Qe7zn4BpomSKZ/ykbLObuBdvG+mFq11DL6fjH1DRwHhrlgtYWG96bJiC7Cg==}
 
-  react-activity-calendar@2.7.11:
-    resolution: {integrity: sha512-JHJyvdYciBVPt1ZkE2pqnmg0ZMsmer09CXD1qWe2hpl3PyMosVqFOMZmDqjLxRWI6VD2ILH4RFk5dZCuWwnaPg==}
+  react-activity-calendar@2.7.12:
+    resolution: {integrity: sha512-OzVconQ5LA/uF2ZN3zDeWZb4UxjOmGr1ymaGCSEAMLSzwjzP7ojdyZs8DyV7jcV+rZ+lmwp6BTpBJqdW8ehXyw==}
     peerDependencies:
       react: ^18.0.0 || ^19.0.0
 
@@ -5708,7 +5708,7 @@ snapshots:
       defu: 6.1.4
       destr: 2.0.5
 
-  react-activity-calendar@2.7.11(react@19.0.0-rc-66855b96-20241106):
+  react-activity-calendar@2.7.12(react@19.0.0-rc-66855b96-20241106):
     dependencies:
       date-fns: 4.1.0
       react: 19.0.0-rc-66855b96-20241106
