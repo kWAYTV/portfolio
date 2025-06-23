@@ -29,7 +29,7 @@ A modern, fast, and responsive portfolio built with cutting-edge technologies.
 - **Development**:
   - [Prettier](https://prettier.io/) for code formatting
   - [ESLint](https://eslint.org/) for code linting
-  - [pnpm](https://pnpm.io/) for package management
+  - [bun](https://bun.sh/) for package management
 
 ## Features
 
