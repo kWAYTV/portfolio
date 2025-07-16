@@ -11,7 +11,13 @@ import {
   type SortingState,
   useReactTable
 } from '@tanstack/react-table';
-import { ArrowUpDown, ExternalLink, GitFork, Lock, Star } from 'lucide-react';
+import {
+  Archive,
+  ArrowUpDown,
+  ExternalLink,
+  GitFork,
+  Star
+} from 'lucide-react';
 import { useState } from 'react';
 
 import { TablePagination } from '@/components/core/projects/table-pagination';
@@ -53,28 +59,53 @@ const columns: ColumnDef<GitHubRepository>[] = [
       </Button>
     ),
     cell: ({ row }) => (
-      <TooltipProvider>
-        <Tooltip>
-          <TooltipTrigger asChild>
-            <div className='flex min-w-0 cursor-help items-center gap-2 font-medium'>
-              {row.original.private && (
-                <Lock className='text-muted-foreground h-3 w-3 flex-shrink-0' />
-              )}
-              <span className='truncate'>{row.getValue('name')}</span>
-            </div>
-          </TooltipTrigger>
-          <TooltipContent side='right' className='max-w-xs'>
-            <div className='space-y-1'>
-              <div className='font-medium'>{row.original.full_name}</div>
-              {row.original.description && (
-                <div className='text-muted-foreground text-sm'>
-                  {row.original.description}
-                </div>
-              )}
-            </div>
-          </TooltipContent>
-        </Tooltip>
-      </TooltipProvider>
+      <div className='flex min-w-0 cursor-help items-center gap-2 font-medium'>
+        <TooltipProvider>
+          <Tooltip>
+            <TooltipTrigger asChild>
+              <span className='cursor-help truncate'>
+                {row.getValue('name')}
+              </span>
+            </TooltipTrigger>
+            <TooltipContent side='right' className='max-w-xs'>
+              <div className='space-y-1'>
+                <div className='font-medium'>{row.original.full_name}</div>
+                {row.original.description && (
+                  <div className='text-muted-foreground text-sm'>
+                    {row.original.description}
+                  </div>
+                )}
+              </div>
+            </TooltipContent>
+          </Tooltip>
+        </TooltipProvider>
+        <div className='flex flex-shrink-0 items-center gap-1'>
+          {row.original.fork && (
+            <TooltipProvider>
+              <Tooltip>
+                <TooltipTrigger asChild>
+                  <GitFork className='text-muted-foreground h-3 w-3' />
+                </TooltipTrigger>
+                <TooltipContent>
+                  <p>Forked repository</p>
+                </TooltipContent>
+              </Tooltip>
+            </TooltipProvider>
+          )}
+          {row.original.archived && (
+            <TooltipProvider>
+              <Tooltip>
+                <TooltipTrigger asChild>
+                  <Archive className='text-muted-foreground h-3 w-3' />
+                </TooltipTrigger>
+                <TooltipContent>
+                  <p>Archived repository</p>
+                </TooltipContent>
+              </Tooltip>
+            </TooltipProvider>
+          )}
+        </div>
+      </div>
     )
   },
   {
@@ -87,7 +118,9 @@ const columns: ColumnDef<GitHubRepository>[] = [
           {language}
         </Badge>
       ) : (
-        <span className='text-muted-foreground'>-</span>
+        <Badge variant='destructive' className='text-xs whitespace-nowrap'>
+          Unknown
+        </Badge>
       );
     }
   },

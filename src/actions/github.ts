@@ -24,7 +24,7 @@ export async function getGitHubRepositories(): Promise<GitHubRepository[]> {
 
     // Filter and sort with proper null handling
     return repositories
-      .filter(repo => !repo.fork && !repo.archived && repo.updated_at)
+      .filter(repo => !repo.private && repo.updated_at)
       .filter(repo => !repo.full_name.startsWith('EpicGames/'))
       .map(repo => repo as GitHubRepository)
       .sort(
