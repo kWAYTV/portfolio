@@ -147,26 +147,6 @@ const columns: ColumnDef<GitHubRepository>[] = [
     )
   },
   {
-    accessorKey: 'forks_count',
-    header: ({ column }) => (
-      <Button
-        variant='ghost'
-        onClick={() => column.toggleSorting(column.getIsSorted() === 'asc')}
-        className='h-8 px-2'
-      >
-        <GitFork className='mr-1 h-3 w-3' />
-        <span className='hidden sm:inline'>Forks</span>
-        <ArrowUpDown className='ml-2 h-4 w-4' />
-      </Button>
-    ),
-    cell: ({ row }) => (
-      <div className='flex items-center space-x-1'>
-        <GitFork className='h-3 w-3 flex-shrink-0' />
-        <span className='whitespace-nowrap'>{row.getValue('forks_count')}</span>
-      </div>
-    )
-  },
-  {
     accessorKey: 'updated_at',
     header: ({ column }) => (
       <Button
