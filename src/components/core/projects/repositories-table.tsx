@@ -26,6 +26,12 @@ import {
   TableHeader,
   TableRow
 } from '@/components/ui/table';
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger
+} from '@/components/ui/tooltip';
 import { formatDate } from '@/lib/utils';
 import type { GitHubRepository } from '@/types/github';
 
@@ -47,21 +53,28 @@ const columns: ColumnDef<GitHubRepository>[] = [
       </Button>
     ),
     cell: ({ row }) => (
-      <div className='max-w-xs space-y-1'>
-        <div className='flex items-center gap-2 font-medium'>
-          {row.original.private && (
-            <Lock className='text-muted-foreground h-3 w-3' />
-          )}
-          {row.getValue('name')}
-        </div>
-        {row.original.description && (
-          <div className='text-muted-foreground line-clamp-1 text-xs'>
-            {row.original.description.length > 60
-              ? `${row.original.description.substring(0, 60)}...`
-              : row.original.description}
-          </div>
-        )}
-      </div>
+      <TooltipProvider>
+        <Tooltip>
+          <TooltipTrigger asChild>
+            <div className='flex cursor-help items-center gap-2 font-medium'>
+              {row.original.private && (
+                <Lock className='text-muted-foreground h-3 w-3' />
+              )}
+              {row.getValue('name')}
+            </div>
+          </TooltipTrigger>
+          <TooltipContent side='right' className='max-w-xs'>
+            <div className='space-y-1'>
+              <div className='font-medium'>{row.original.full_name}</div>
+              {row.original.description && (
+                <div className='text-muted-foreground text-sm'>
+                  {row.original.description}
+                </div>
+              )}
+            </div>
+          </TooltipContent>
+        </Tooltip>
+      </TooltipProvider>
     )
   },
   {
