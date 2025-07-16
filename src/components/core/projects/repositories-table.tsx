@@ -56,11 +56,11 @@ const columns: ColumnDef<GitHubRepository>[] = [
       <TooltipProvider>
         <Tooltip>
           <TooltipTrigger asChild>
-            <div className='flex cursor-help items-center gap-2 font-medium'>
+            <div className='flex min-w-0 cursor-help items-center gap-2 font-medium'>
               {row.original.private && (
-                <Lock className='text-muted-foreground h-3 w-3' />
+                <Lock className='text-muted-foreground h-3 w-3 flex-shrink-0' />
               )}
-              {row.getValue('name')}
+              <span className='truncate'>{row.getValue('name')}</span>
             </div>
           </TooltipTrigger>
           <TooltipContent side='right' className='max-w-xs'>
@@ -83,7 +83,7 @@ const columns: ColumnDef<GitHubRepository>[] = [
     cell: ({ row }) => {
       const language = row.getValue('language') as string;
       return language ? (
-        <Badge variant='secondary' className='text-xs'>
+        <Badge variant='secondary' className='text-xs whitespace-nowrap'>
           {language}
         </Badge>
       ) : (
@@ -100,24 +100,36 @@ const columns: ColumnDef<GitHubRepository>[] = [
         className='h-8 px-2'
       >
         <Star className='mr-1 h-3 w-3' />
-        Stars
+        <span className='hidden sm:inline'>Stars</span>
         <ArrowUpDown className='ml-2 h-4 w-4' />
       </Button>
     ),
     cell: ({ row }) => (
       <div className='flex items-center space-x-1'>
-        <Star className='h-3 w-3' />
-        <span>{row.getValue('stargazers_count')}</span>
+        <Star className='h-3 w-3 flex-shrink-0' />
+        <span className='whitespace-nowrap'>
+          {row.getValue('stargazers_count')}
+        </span>
       </div>
     )
   },
   {
     accessorKey: 'forks_count',
-    header: 'Forks',
+    header: ({ column }) => (
+      <Button
+        variant='ghost'
+        onClick={() => column.toggleSorting(column.getIsSorted() === 'asc')}
+        className='h-8 px-2'
+      >
+        <GitFork className='mr-1 h-3 w-3' />
+        <span className='hidden sm:inline'>Forks</span>
+        <ArrowUpDown className='ml-2 h-4 w-4' />
+      </Button>
+    ),
     cell: ({ row }) => (
       <div className='flex items-center space-x-1'>
-        <GitFork className='h-3 w-3' />
-        <span>{row.getValue('forks_count')}</span>
+        <GitFork className='h-3 w-3 flex-shrink-0' />
+        <span className='whitespace-nowrap'>{row.getValue('forks_count')}</span>
       </div>
     )
   },
@@ -134,7 +146,7 @@ const columns: ColumnDef<GitHubRepository>[] = [
       </Button>
     ),
     cell: ({ row }) => (
-      <span className='text-muted-foreground text-sm'>
+      <span className='text-muted-foreground text-sm whitespace-nowrap'>
         {formatDate(row.getValue('updated_at'))}
       </span>
     )
@@ -185,18 +197,18 @@ export function RepositoriesTable({ repositories }: RepositoriesTableProps) {
 
   return (
     <div className='w-full space-y-4'>
-      <div className='flex items-center space-x-2'>
+      <div className='mb-4 flex items-center space-x-2'>
         <Input
           placeholder='Filter repositories...'
           value={(table.getColumn('name')?.getFilterValue() as string) ?? ''}
           onChange={event =>
             table.getColumn('name')?.setFilterValue(event.target.value)
           }
-          className='max-w-sm'
+          className='w-full max-w-sm'
         />
       </div>
 
-      <div className='rounded-md border'>
+      <div className='overflow-x-auto rounded-md border'>
         <Table>
           <TableHeader>
             {table.getHeaderGroups().map(headerGroup => (

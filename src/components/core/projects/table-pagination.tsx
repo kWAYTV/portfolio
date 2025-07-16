@@ -9,6 +9,7 @@ import {
   PaginationNext,
   PaginationPrevious
 } from '@/components/ui/pagination';
+import { cn } from '@/lib/utils';
 
 interface TablePaginationProps<TData> {
   table: Table<TData>;
@@ -21,7 +22,7 @@ export function TablePagination<TData>({ table }: TablePaginationProps<TData>) {
   // Generate page numbers to show
   const getPageNumbers = () => {
     const pages: (number | 'ellipsis')[] = [];
-    const maxVisible = 5; // Maximum visible page numbers
+    const maxVisible = 3; // Reduced for mobile
 
     if (totalPages <= maxVisible) {
       // Show all pages if total is small
@@ -32,25 +33,25 @@ export function TablePagination<TData>({ table }: TablePaginationProps<TData>) {
       // Always show first page
       pages.push(1);
 
-      if (currentPage <= 3) {
+      if (currentPage <= 2) {
         // Near the beginning
-        for (let i = 2; i <= 4; i++) {
-          pages.push(i);
+        for (let i = 2; i <= 3; i++) {
+          if (i <= totalPages) pages.push(i);
         }
-        pages.push('ellipsis');
-        pages.push(totalPages);
-      } else if (currentPage >= totalPages - 2) {
+        if (totalPages > 3) {
+          pages.push('ellipsis');
+          pages.push(totalPages);
+        }
+      } else if (currentPage >= totalPages - 1) {
         // Near the end
         pages.push('ellipsis');
-        for (let i = totalPages - 3; i <= totalPages; i++) {
+        for (let i = totalPages - 2; i <= totalPages; i++) {
           if (i > 1) pages.push(i);
         }
       } else {
         // In the middle
         pages.push('ellipsis');
-        for (let i = currentPage - 1; i <= currentPage + 1; i++) {
-          pages.push(i);
-        }
+        pages.push(currentPage);
         pages.push('ellipsis');
         pages.push(totalPages);
       }
@@ -63,63 +64,76 @@ export function TablePagination<TData>({ table }: TablePaginationProps<TData>) {
     return null;
   }
 
+  const startItem =
+    table.getState().pagination.pageIndex *
+      table.getState().pagination.pageSize +
+    1;
+  const endItem = Math.min(
+    (table.getState().pagination.pageIndex + 1) *
+      table.getState().pagination.pageSize,
+    table.getFilteredRowModel().rows.length
+  );
+  const totalItems = table.getFilteredRowModel().rows.length;
+
   return (
-    <div className='flex items-center justify-between space-x-2 py-4'>
-      <div className='text-muted-foreground text-sm'>
-        Showing{' '}
-        {table.getState().pagination.pageIndex *
-          table.getState().pagination.pageSize +
-          1}{' '}
-        to{' '}
-        {Math.min(
-          (table.getState().pagination.pageIndex + 1) *
-            table.getState().pagination.pageSize,
-          table.getFilteredRowModel().rows.length
-        )}{' '}
-        of {table.getFilteredRowModel().rows.length} repositories
+    <div className='flex flex-col items-center justify-between space-y-2 py-4 sm:flex-row sm:space-y-0 sm:space-x-2'>
+      {/* Results text - responsive */}
+      <div className='text-muted-foreground order-2 text-sm sm:order-1'>
+        <span className='hidden sm:inline'>
+          Showing {startItem} to {endItem} of {totalItems} repositories
+        </span>
+        <span className='sm:hidden'>
+          {startItem}-{endItem} of {totalItems}
+        </span>
       </div>
 
-      <Pagination>
-        <PaginationContent>
-          <PaginationItem>
-            <PaginationPrevious
-              onClick={() => table.previousPage()}
-              className={
-                !table.getCanPreviousPage()
-                  ? 'pointer-events-none opacity-50'
-                  : 'cursor-pointer'
-              }
-            />
-          </PaginationItem>
-
-          {getPageNumbers().map((page, index) => (
-            <PaginationItem key={index}>
-              {page === 'ellipsis' ? (
-                <PaginationEllipsis />
-              ) : (
-                <PaginationLink
-                  onClick={() => table.setPageIndex(page - 1)}
-                  isActive={currentPage === page}
-                  className='cursor-pointer'
-                >
-                  {page}
-                </PaginationLink>
-              )}
+      {/* Pagination controls */}
+      <div className='order-1 sm:order-2'>
+        <Pagination>
+          <PaginationContent className='gap-1'>
+            <PaginationItem>
+              <PaginationPrevious
+                onClick={() => table.previousPage()}
+                className={cn(
+                  !table.getCanPreviousPage()
+                    ? 'pointer-events-none opacity-50'
+                    : 'cursor-pointer',
+                  'h-8 px-2 text-sm'
+                )}
+              />
             </PaginationItem>
-          ))}
 
-          <PaginationItem>
-            <PaginationNext
-              onClick={() => table.nextPage()}
-              className={
-                !table.getCanNextPage()
-                  ? 'pointer-events-none opacity-50'
-                  : 'cursor-pointer'
-              }
-            />
-          </PaginationItem>
-        </PaginationContent>
-      </Pagination>
+            {getPageNumbers().map((page, index) => (
+              <PaginationItem key={index}>
+                {page === 'ellipsis' ? (
+                  <PaginationEllipsis className='flex size-8 items-center justify-center' />
+                ) : (
+                  <PaginationLink
+                    onClick={() => table.setPageIndex(page - 1)}
+                    isActive={currentPage === page}
+                    className='cursor-pointer'
+                    size='sm'
+                  >
+                    {page}
+                  </PaginationLink>
+                )}
+              </PaginationItem>
+            ))}
+
+            <PaginationItem>
+              <PaginationNext
+                onClick={() => table.nextPage()}
+                className={cn(
+                  !table.getCanNextPage()
+                    ? 'pointer-events-none opacity-50'
+                    : 'cursor-pointer',
+                  'h-8 px-2 text-sm'
+                )}
+              />
+            </PaginationItem>
+          </PaginationContent>
+        </Pagination>
+      </div>
     </div>
   );
 }
