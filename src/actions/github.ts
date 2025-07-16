@@ -9,30 +9,54 @@ export async function getGitHubRepositories(): Promise<GitHubRepository[]> {
   }
 
   try {
-    const response = await fetch(
-      'https://api.github.com/user/repos?per_page=100&sort=updated',
-      {
-        headers: {
-          Authorization: `Bearer ${env.GITHUB_TOKEN}`,
-          Accept: 'application/vnd.github.v3+json',
-          'User-Agent': 'Portfolio-App'
-        },
-        next: {
-          revalidate: 3600 // Revalidate every hour
-        }
-      }
-    );
+    const allRepositories: GitHubRepository[] = [];
+    let page = 1;
+    let hasNextPage = true;
 
-    if (!response.ok) {
-      throw new Error(
-        `GitHub API error: ${response.status} ${response.statusText}`
+    while (hasNextPage) {
+      const response = await fetch(
+        `https://api.github.com/user/repos?per_page=100&sort=updated&page=${page}`,
+        {
+          headers: {
+            Authorization: `Bearer ${env.GITHUB_TOKEN}`,
+            Accept: 'application/vnd.github.v3+json',
+            'User-Agent': 'Portfolio-App'
+          },
+          next: {
+            revalidate: 3600 // Revalidate every hour
+          }
+        }
       );
+
+      if (!response.ok) {
+        throw new Error(
+          `GitHub API error: ${response.status} ${response.statusText}`
+        );
+      }
+
+      const repositories: GitHubRepository[] = await response.json();
+
+      // If we got fewer than 100 repos, we've reached the last page
+      if (repositories.length < 100) {
+        hasNextPage = false;
+      }
+
+      allRepositories.push(...repositories);
+      page++;
+
+      // Safety check to prevent infinite loops
+      if (page > 50) {
+        console.warn(
+          'Stopped fetching after 50 pages (5000 repos) to prevent infinite loop'
+        );
+        break;
+      }
     }
 
-    const repositories: GitHubRepository[] = await response.json();
+    console.log(`Fetched ${allRepositories.length} total repositories`);
 
     // Filter out forks and archived repos, sort by updated date
-    return repositories
+    return allRepositories
       .filter(repo => !repo.fork && !repo.archived)
       .sort(
         (a, b) =>
