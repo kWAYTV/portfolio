@@ -15,7 +15,7 @@ export async function getGitHubRepositories(): Promise<GitHubRepository[]> {
 
     while (hasNextPage) {
       const response = await fetch(
-        `https://api.github.com/user/repos?per_page=100&sort=updated&page=${page}`,
+        `https://api.github.com/user/repos?per_page=100&sort=updated&page=${page}&affiliation=owner,collaborator,organization_member&type=all`,
         {
           headers: {
             Authorization: `Bearer ${env.GITHUB_TOKEN}`,
@@ -52,8 +52,6 @@ export async function getGitHubRepositories(): Promise<GitHubRepository[]> {
         break;
       }
     }
-
-    console.log(`Fetched ${allRepositories.length} total repositories`);
 
     // Filter out forks and archived repos, sort by updated date
     return allRepositories
