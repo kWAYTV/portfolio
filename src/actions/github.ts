@@ -1,5 +1,7 @@
 'use server';
 
+import { Octokit } from '@octokit/rest';
+
 import { env } from '@/env';
 import type { GitHubRepository } from '@/types/github';
 
@@ -9,53 +11,21 @@ export async function getGitHubRepositories(): Promise<GitHubRepository[]> {
   }
 
   try {
-    const allRepositories: GitHubRepository[] = [];
-    let page = 1;
-    let hasNextPage = true;
+    const octokit = new Octokit({
+      auth: env.GITHUB_TOKEN
+    });
 
-    while (hasNextPage) {
-      const response = await fetch(
-        `https://api.github.com/user/repos?per_page=100&sort=updated&page=${page}&affiliation=owner,collaborator,organization_member&type=all`,
-        {
-          headers: {
-            Authorization: `Bearer ${env.GITHUB_TOKEN}`,
-            Accept: 'application/vnd.github.v3+json',
-            'User-Agent': 'Portfolio-App'
-          },
-          next: {
-            revalidate: 3600 // Revalidate every hour
-          }
-        }
-      );
+    const { data: repositories } =
+      await octokit.rest.repos.listForAuthenticatedUser({
+        per_page: 100,
+        sort: 'updated',
+        affiliation: 'owner,collaborator,organization_member'
+      });
 
-      if (!response.ok) {
-        throw new Error(
-          `GitHub API error: ${response.status} ${response.statusText}`
-        );
-      }
-
-      const repositories: GitHubRepository[] = await response.json();
-
-      // If we got fewer than 100 repos, we've reached the last page
-      if (repositories.length < 100) {
-        hasNextPage = false;
-      }
-
-      allRepositories.push(...repositories);
-      page++;
-
-      // Safety check to prevent infinite loops
-      if (page > 50) {
-        console.warn(
-          'Stopped fetching after 50 pages (5000 repos) to prevent infinite loop'
-        );
-        break;
-      }
-    }
-
-    // Filter out forks and archived repos, sort by updated date
-    return allRepositories
-      .filter(repo => !repo.fork && !repo.archived)
+    // Filter and sort with proper null handling
+    return repositories
+      .filter(repo => !repo.fork && !repo.archived && repo.updated_at)
+      .map(repo => repo as GitHubRepository)
       .sort(
         (a, b) =>
           new Date(b.updated_at).getTime() - new Date(a.updated_at).getTime()

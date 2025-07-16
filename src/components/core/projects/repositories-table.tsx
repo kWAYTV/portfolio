@@ -11,7 +11,7 @@ import {
   type SortingState,
   useReactTable
 } from '@tanstack/react-table';
-import { ArrowUpDown, ExternalLink, GitFork, Star } from 'lucide-react';
+import { ArrowUpDown, ExternalLink, GitFork, Lock, Star } from 'lucide-react';
 import { useState } from 'react';
 
 import { TablePagination } from '@/components/core/projects/table-pagination';
@@ -48,7 +48,12 @@ const columns: ColumnDef<GitHubRepository>[] = [
     ),
     cell: ({ row }) => (
       <div className='max-w-xs space-y-1'>
-        <div className='font-medium'>{row.getValue('name')}</div>
+        <div className='flex items-center gap-2 font-medium'>
+          {row.original.private && (
+            <Lock className='text-muted-foreground h-3 w-3' />
+          )}
+          {row.getValue('name')}
+        </div>
         {row.original.description && (
           <div className='text-muted-foreground line-clamp-1 text-xs'>
             {row.original.description.length > 60
