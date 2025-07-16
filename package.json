@@ -8,8 +8,7 @@
     "start": "next start",
     "lint": "next lint --fix",
     "format": "prettier --write .",
-    "format:check": "prettier --check .",
-    "bump": "bumpp"
+    "format:check": "prettier --check ."
   },
   "dependencies": {
     "@octokit/rest": "^22.0.0",
