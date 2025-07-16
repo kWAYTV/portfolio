@@ -1,4 +1,4 @@
-import { BookOpen, HomeIcon } from 'lucide-react';
+import { BookOpen, FolderOpen, HomeIcon } from 'lucide-react';
 
 import type { NavItems } from '@/types/nav';
 
@@ -12,5 +12,10 @@ export const navItems: NavItems = {
     name: 'blog',
     icon: BookOpen,
     tooltip: 'Explore my blog'
+  },
+  '/projects': {
+    name: 'projects',
+    icon: FolderOpen,
+    tooltip: 'View my projects'
   }
 } satisfies NavItems;
