@@ -194,7 +194,7 @@ export function RepositoriesTable({ repositories }: RepositoriesTableProps) {
 
   return (
     <div className='w-full space-y-4'>
-      <div className='mb-4 flex items-center space-x-2'>
+      <div className='mb-4 flex items-center justify-between space-x-2'>
         <Input
           placeholder='Filter repositories...'
           value={(table.getColumn('name')?.getFilterValue() as string) ?? ''}
@@ -203,6 +203,9 @@ export function RepositoriesTable({ repositories }: RepositoriesTableProps) {
           }
           className='w-full max-w-sm'
         />
+        <p className='text-muted-foreground text-xs'>
+          Private repos are hidden
+        </p>
       </div>
 
       <div className='overflow-x-auto rounded-md border'>
