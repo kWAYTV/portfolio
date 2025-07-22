@@ -11,13 +11,7 @@ import {
   type SortingState,
   useReactTable
 } from '@tanstack/react-table';
-import {
-  Archive,
-  ArrowUpDown,
-  ExternalLink,
-  GitFork,
-  Star
-} from 'lucide-react';
+import { Archive, ArrowUpDown, GitFork, Star } from 'lucide-react';
 import { useState } from 'react';
 
 import { TablePagination } from '@/components/core/projects/table-pagination';
@@ -59,13 +53,19 @@ const columns: ColumnDef<GitHubRepository>[] = [
       </Button>
     ),
     cell: ({ row }) => (
-      <div className='flex min-w-0 cursor-help items-center gap-2 font-medium'>
+      <div className='flex min-w-0 items-center gap-2 font-medium'>
         <TooltipProvider>
           <Tooltip>
             <TooltipTrigger asChild>
-              <span className='cursor-help truncate'>
+              <a
+                href={row.original.html_url}
+                target='_blank'
+                rel='noopener noreferrer'
+                className='hover:text-primary cursor-pointer truncate transition-colors hover:underline'
+                aria-label={`Open ${row.original.name} on GitHub`}
+              >
                 {row.getValue('name')}
-              </span>
+              </a>
             </TooltipTrigger>
             <TooltipContent side='right' className='max-w-xs'>
               <div className='space-y-1'>
@@ -162,22 +162,6 @@ const columns: ColumnDef<GitHubRepository>[] = [
       <span className='text-muted-foreground text-sm whitespace-nowrap'>
         {formatDate(row.getValue('updated_at'))}
       </span>
-    )
-  },
-  {
-    id: 'actions',
-    header: '',
-    cell: ({ row }) => (
-      <Button variant='ghost' size='sm' asChild>
-        <a
-          href={row.original.html_url}
-          target='_blank'
-          rel='noopener noreferrer'
-          aria-label={`Open ${row.original.name} on GitHub`}
-        >
-          <ExternalLink className='h-4 w-4' />
-        </a>
-      </Button>
     )
   }
 ];

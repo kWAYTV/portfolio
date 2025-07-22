@@ -22,9 +22,7 @@ export function ProjectsSkeleton() {
               <TableHead>Repository</TableHead>
               <TableHead>Language</TableHead>
               <TableHead>Stars</TableHead>
-              <TableHead>Forks</TableHead>
               <TableHead>Updated</TableHead>
-              <TableHead></TableHead>
             </TableRow>
           </TableHeader>
           <TableBody>
@@ -43,13 +41,7 @@ export function ProjectsSkeleton() {
                   <Skeleton className='h-4 w-12' />
                 </TableCell>
                 <TableCell>
-                  <Skeleton className='h-4 w-8' />
-                </TableCell>
-                <TableCell>
                   <Skeleton className='h-4 w-20' />
-                </TableCell>
-                <TableCell>
-                  <Skeleton className='h-8 w-8' />
                 </TableCell>
               </TableRow>
             ))}
