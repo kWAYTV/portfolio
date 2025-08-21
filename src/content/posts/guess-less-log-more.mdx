@@ -1,0 +1,44 @@
+---
+title: 'Guess Less, Log More'
+publishedAt: '2025-08-21'
+summary: 'A tiny debugging habit: add logs first, fix faster.'
+---
+
+# Guess Less, Log More
+
+If you're debugging by vibes, your app deserves better. Before you tweak code,
+add a few good logs and let reality answer faster than hunches.
+
+## What to log (briefly)
+
+- Inputs and outputs (sanitized)
+- Branch decisions (which path ran)
+- External calls with duration
+- Errors with context (who/what/when)
+
+```ts
+// Minimal, useful, boringly effective
+const startedAt = performance.now();
+const response = await fetch(url, opts);
+
+console.log('http.fetch', {
+  url,
+  status: response.status,
+  ms: Math.round(performance.now() - startedAt)
+});
+```
+
+## Micro-rules that pay off
+
+- Log structure, not prose (objects > strings)
+- Include identifiers, not payloads (avoid PII)
+- One log per boundary: input, decision, output
+
+```json
+{ "op": "signup", "stage": "decision", "exists": true, "ms": 12 }
+```
+
+## Takeaway
+
+Five lines of logging beat fifty minutes of guessing. Ship the logs, then ship
+the fix.
