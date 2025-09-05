@@ -5,6 +5,32 @@ import { Octokit } from '@octokit/rest';
 import { env } from '@/env';
 import type { GitHubRepository } from '@/types/github';
 
+/**
+ * Organizations to exclude from repository list
+ */
+const EXCLUDED_ORGS = ['EpicGames'];
+
+/**
+ * Sort repositories by updated date (newest first)
+ */
+function sortByUpdatedDate(a: GitHubRepository, b: GitHubRepository): number {
+  return new Date(b.updated_at).getTime() - new Date(a.updated_at).getTime();
+}
+
+/**
+ * Check if repository should be excluded based on organization
+ */
+function isExcludedOrg(repo: any): boolean {
+  return EXCLUDED_ORGS.some(org => repo.full_name.startsWith(`${org}/`));
+}
+
+/**
+ * Filter repositories to include only public, non-excluded repos with valid dates
+ */
+function shouldIncludeRepo(repo: any): boolean {
+  return !repo.private && repo.updated_at && !isExcludedOrg(repo);
+}
+
 export async function getGitHubRepositories(): Promise<GitHubRepository[]> {
   if (!env.GITHUB_TOKEN) {
     throw new Error('GitHub token not configured');
@@ -22,15 +48,10 @@ export async function getGitHubRepositories(): Promise<GitHubRepository[]> {
         affiliation: 'owner,collaborator,organization_member'
       });
 
-    // Filter and sort with proper null handling
     return repositories
-      .filter(repo => !repo.private && repo.updated_at)
-      .filter(repo => !repo.full_name.startsWith('EpicGames/'))
+      .filter(shouldIncludeRepo)
       .map(repo => repo as GitHubRepository)
-      .sort(
-        (a, b) =>
-          new Date(b.updated_at).getTime() - new Date(a.updated_at).getTime()
-      );
+      .sort(sortByUpdatedDate);
   } catch (error) {
     console.error('Failed to fetch GitHub repositories:', error);
     throw error;
