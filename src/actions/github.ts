@@ -14,21 +14,23 @@ const EXCLUDED_ORGS = ['EpicGames'];
  * Sort repositories by updated date (newest first)
  */
 function sortByUpdatedDate(a: GitHubRepository, b: GitHubRepository): number {
-  return new Date(b.updated_at).getTime() - new Date(a.updated_at).getTime();
+  const aTime = a.updated_at ? new Date(a.updated_at).getTime() : 0;
+  const bTime = b.updated_at ? new Date(b.updated_at).getTime() : 0;
+  return bTime - aTime;
 }
 
 /**
  * Check if repository should be excluded based on organization
  */
-function isExcludedOrg(repo: any): boolean {
+function isExcludedOrg(repo: GitHubRepository): boolean {
   return EXCLUDED_ORGS.some(org => repo.full_name.startsWith(`${org}/`));
 }
 
 /**
  * Filter repositories to include only public, non-excluded repos with valid dates
  */
-function shouldIncludeRepo(repo: any): boolean {
-  return !repo.private && repo.updated_at && !isExcludedOrg(repo);
+function shouldIncludeRepo(repo: GitHubRepository): boolean {
+  return !repo.private && repo.updated_at !== null && !isExcludedOrg(repo);
 }
 
 export async function getGitHubRepositories(): Promise<GitHubRepository[]> {
