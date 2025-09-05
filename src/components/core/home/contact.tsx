@@ -14,11 +14,7 @@ export function Contact() {
     <div className='space-y-4'>
       <h2 className='text-2xl font-semibold tracking-tighter'>Contact</h2>
 
-      <p className='text-muted-foreground mb-4 text-sm'>
-        Feel free to connect with me on these platforms
-      </p>
-
-      <div className='flex gap-4'>
+      <div className='flex gap-3'>
         <Tooltip>
           <TooltipTrigger asChild>
             <Link
