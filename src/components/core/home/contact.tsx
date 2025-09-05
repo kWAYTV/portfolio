@@ -4,10 +4,10 @@ import Link from 'next/link';
 import { githubUsername, twitterUsername } from '@/lib/metadata';
 import { cn } from '@/lib/utils';
 
-export function Contacts() {
+export function Contact() {
   return (
     <div className='space-y-4'>
-      <h2 className='text-2xl font-semibold tracking-tighter'>Contacts</h2>
+      <h2 className='text-2xl font-semibold tracking-tighter'>Contact</h2>
 
       <p className='text-muted-foreground mb-4 text-sm'>
         Feel free to connect with me on these platforms

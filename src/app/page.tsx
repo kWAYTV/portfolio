@@ -1,4 +1,4 @@
-import { Contacts } from '@/components/core/home/contacts';
+import { Contact } from '@/components/core/home/contact';
 import { Description } from '@/components/core/home/description';
 import { Hero } from '@/components/core/home/hero';
 import { Separator } from '@/components/ui/separator';
@@ -19,7 +19,7 @@ export default async function HomePage() {
       <Separator className='my-8' />
 
       <div className='animate-in fade-in slide-in-from-bottom-4 animation-delay-300 duration-500'>
-        <Contacts />
+        <Contact />
       </div>
     </section>
   );
