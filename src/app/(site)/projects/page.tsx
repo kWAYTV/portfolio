@@ -9,7 +9,9 @@ export const revalidate = 600;
 export default function ProjectsPage() {
   return (
     <section>
-      <h1 className='mb-8 text-2xl font-semibold tracking-tighter'>Projects</h1>
+      <h1 className='mb-8 text-2xl font-semibold tracking-tighter'>
+        My Projects
+      </h1>
       <Suspense fallback={<ProjectsSkeleton />}>
         <ProjectsList />
       </Suspense>
