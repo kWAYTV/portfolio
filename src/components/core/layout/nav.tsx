@@ -11,6 +11,7 @@ import {
 } from '@/components/ui/tooltip';
 import { navItems } from '@/enums/nav';
 import type { NavPath } from '@/types/nav';
+import { ArrowUpRight } from 'lucide-react';
 
 export function Navbar() {
   return (
@@ -36,9 +37,14 @@ export function Navbar() {
                       asChild
                     >
                       <Link
-                        href={path}
+                        href={
+                          name.toLowerCase() === 'résumé'
+                            ? 'https://gitroll.io/profile/uezq54oxIk4VFZkLigfxGmGgm57z1'
+                            : path
+                        }
                         aria-label={`Navigate to ${name}`}
-                        {...(name.toLowerCase() === 'github'
+                        {...(name.toLowerCase() === 'github' ||
+                        name.toLowerCase() === 'résumé'
                           ? {
                               target: '_blank',
                               rel: 'noopener noreferrer'
@@ -49,6 +55,13 @@ export function Navbar() {
                         <span className='hidden capitalize sm:inline'>
                           {name}
                         </span>
+                        {(name.toLowerCase() === 'github' ||
+                          name.toLowerCase() === 'résumé') && (
+                          <ArrowUpRight
+                            className='h-3 w-3 opacity-70'
+                            aria-hidden='true'
+                          />
+                        )}
                       </Link>
                     </Button>
                   </TooltipTrigger>
