@@ -1,5 +1,6 @@
 'use client';
 
+import { ArrowUpRight } from 'lucide-react';
 import { Link } from 'next-view-transitions';
 
 import { Button } from '@/components/ui/button';
@@ -11,7 +12,6 @@ import {
 } from '@/components/ui/tooltip';
 import { navItems } from '@/enums/nav';
 import type { NavPath } from '@/types/nav';
-import { ArrowUpRight } from 'lucide-react';
 
 export function Navbar() {
   return (
