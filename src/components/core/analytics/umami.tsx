@@ -27,7 +27,7 @@ export function AnalyticsScript() {
     <Script
       async
       type='text/javascript'
-      data-website-id={env.UMAMI_WEBSITE_ID}
+      data-website-id={env.NEXT_PUBLIC_UMAMI_WEBSITE_ID}
       src='https://metrics.kway.club/script.js'
     />
   );

@@ -7,7 +7,6 @@ export const env = createEnv({
    * Will throw if you access these variables on the client.
    */
   server: {
-    UMAMI_WEBSITE_ID: z.string(),
     GITHUB_TOKEN: z.string()
   },
   /*
@@ -16,7 +15,8 @@ export const env = createEnv({
    * 💡 You'll get type errors if these are not prefixed with NEXT_PUBLIC_.
    */
   client: {
-    NEXT_PUBLIC_ENABLE_UMAMI: z.string().default('false')
+    NEXT_PUBLIC_ENABLE_UMAMI: z.string().default('false'),
+    NEXT_PUBLIC_UMAMI_WEBSITE_ID: z.string()
   },
   /*
    * Due to how Next.js bundles environment variables on Edge and Client,
@@ -26,7 +26,7 @@ export const env = createEnv({
    */
   runtimeEnv: {
     NEXT_PUBLIC_ENABLE_UMAMI: process.env.NEXT_PUBLIC_ENABLE_UMAMI,
-    UMAMI_WEBSITE_ID: process.env.UMAMI_WEBSITE_ID,
+    NEXT_PUBLIC_UMAMI_WEBSITE_ID: process.env.NEXT_PUBLIC_UMAMI_WEBSITE_ID,
     GITHUB_TOKEN: process.env.GITHUB_TOKEN
   }
 });
