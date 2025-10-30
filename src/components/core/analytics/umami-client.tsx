@@ -1,26 +1,26 @@
-'use client';
+"use client";
 
 // Umami tracking types
 declare global {
+  // biome-ignore lint/style/useConsistentTypeDefinitions: Window augmentation requires interface
   interface Window {
     umami?: {
-      track: {
-        (event: string): void;
-        (event: string, data: Record<string, unknown>): void;
-        (
-          callback: (props: Record<string, unknown>) => {
-            name: string;
-            data?: Record<string, unknown>;
-          }
-        ): void;
-      };
+      track: (
+        eventOrCallback:
+          | string
+          | ((props: Record<string, unknown>) => {
+              name: string;
+              data?: Record<string, unknown>;
+            }),
+        data?: Record<string, unknown>
+      ) => void;
     };
   }
 }
 
 export function useAnalytics() {
   const trackEvent = (event: string, data?: Record<string, unknown>) => {
-    if (typeof window === 'undefined' || !window.umami) {
+    if (typeof window === "undefined" || !window.umami) {
       return;
     }
 
@@ -32,6 +32,6 @@ export function useAnalytics() {
   };
 
   return {
-    trackEvent
+    trackEvent,
   };
 }

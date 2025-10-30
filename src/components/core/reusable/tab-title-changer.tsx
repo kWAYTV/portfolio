@@ -1,15 +1,15 @@
-'use client';
+"use client";
 
-import { useEffect, useRef } from 'react';
+import { useEffect, useRef } from "react";
 
-interface TabTitleChangerProps {
+type TabTitleChangerProps = {
   awayTitle?: string;
-}
+};
 
 export function TabTitleChanger({
-  awayTitle = "I'm a lonely tab :("
+  awayTitle = "I'm a lonely tab :(",
 }: TabTitleChangerProps) {
-  const originalTitle = useRef<string>();
+  const originalTitle = useRef<string | undefined>(undefined);
 
   useEffect(() => {
     const handleVisibilityChange = () => {
@@ -21,10 +21,10 @@ export function TabTitleChanger({
       }
     };
 
-    document.addEventListener('visibilitychange', handleVisibilityChange);
+    document.addEventListener("visibilitychange", handleVisibilityChange);
 
     return () => {
-      document.removeEventListener('visibilitychange', handleVisibilityChange);
+      document.removeEventListener("visibilitychange", handleVisibilityChange);
     };
   }, [awayTitle]);
 

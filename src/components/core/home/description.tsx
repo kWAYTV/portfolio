@@ -1,7 +1,7 @@
 export function Description() {
   return (
-    <div className='space-y-4'>
-      <p className='mb-4'>
+    <div className="space-y-4">
+      <p className="mb-4">
         {`I'm a (neo)Vim enthusiast and tab advocate, finding unmatched efficiency in
         (neo)Vim's keystroke commands and tabs' flexibility for personal viewing
         preferences. This extends to my support for static typing, where its

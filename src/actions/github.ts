@@ -1,16 +1,16 @@
-'use server';
+"use server";
 
-import { Octokit } from '@octokit/rest';
+import { Octokit } from "@octokit/rest";
 
-import { env } from '@/env';
-import type { GitHubRepository } from '@/types/github';
+import { env } from "@/env";
+import type { GitHubRepository } from "@/types/github";
 
-const EXCLUDED_ORGS = ['EpicGames'] as const;
+const EXCLUDED_ORGS = ["EpicGames"] as const;
 const REPOS_PER_PAGE = 100;
 
 export async function getGitHubRepositories(): Promise<GitHubRepository[]> {
   if (!env.GITHUB_TOKEN) {
-    throw new Error('GitHub token not configured');
+    throw new Error("GitHub token not configured");
   }
 
   const octokit = new Octokit({ auth: env.GITHUB_TOKEN });
@@ -18,23 +18,23 @@ export async function getGitHubRepositories(): Promise<GitHubRepository[]> {
   try {
     const { data } = await octokit.rest.repos.listForAuthenticatedUser({
       per_page: REPOS_PER_PAGE,
-      sort: 'updated',
-      affiliation: 'owner,collaborator,organization_member'
+      sort: "updated",
+      affiliation: "owner,collaborator,organization_member",
     });
 
     return data
       .filter(
-        repo =>
+        (repo) =>
           !repo.private &&
           repo.updated_at &&
-          !EXCLUDED_ORGS.some(org => repo.full_name.startsWith(`${org}/`))
+          !EXCLUDED_ORGS.some((org) => repo.full_name.startsWith(`${org}/`))
       )
-      .sort(
-        (a, b) =>
-          new Date(b.updated_at!).getTime() - new Date(a.updated_at!).getTime()
-      );
-  } catch (error) {
-    console.error('Failed to fetch GitHub repositories:', error);
-    throw new Error('Unable to fetch repositories from GitHub');
+      .sort((a, b) => {
+        const timeA = a.updated_at ? new Date(a.updated_at).getTime() : 0;
+        const timeB = b.updated_at ? new Date(b.updated_at).getTime() : 0;
+        return timeB - timeA;
+      });
+  } catch (_error) {
+    throw new Error("Unable to fetch repositories from GitHub");
   }
 }

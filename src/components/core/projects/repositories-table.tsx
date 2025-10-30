@@ -1,4 +1,4 @@
-'use client';
+"use client";
 
 import {
   type ColumnDef,
@@ -9,69 +9,69 @@ import {
   getPaginationRowModel,
   getSortedRowModel,
   type SortingState,
-  useReactTable
-} from '@tanstack/react-table';
-import { Archive, ArrowUpDown, GitFork, Star } from 'lucide-react';
-import { useState } from 'react';
+  useReactTable,
+} from "@tanstack/react-table";
+import { Archive, ArrowUpDown, GitFork, Star } from "lucide-react";
+import { useState } from "react";
 
-import { TablePagination } from '@/components/core/projects/table-pagination';
-import { Badge } from '@/components/ui/badge';
-import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
+import { TablePagination } from "@/components/core/projects/table-pagination";
+import { Badge } from "@/components/ui/badge";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
 import {
   Table,
   TableBody,
   TableCell,
   TableHead,
   TableHeader,
-  TableRow
-} from '@/components/ui/table';
+  TableRow,
+} from "@/components/ui/table";
 import {
   Tooltip,
   TooltipContent,
   TooltipProvider,
-  TooltipTrigger
-} from '@/components/ui/tooltip';
-import { formatDate } from '@/lib/utils';
-import type { GitHubRepository } from '@/types/github';
+  TooltipTrigger,
+} from "@/components/ui/tooltip";
+import { formatDate } from "@/lib/utils";
+import type { GitHubRepository } from "@/types/github";
 
-interface RepositoriesTableProps {
+type RepositoriesTableProps = {
   repositories: GitHubRepository[];
-}
+};
 
 const columns: ColumnDef<GitHubRepository>[] = [
   {
-    accessorKey: 'name',
+    accessorKey: "name",
     header: ({ column }) => (
       <Button
-        variant='ghost'
-        onClick={() => column.toggleSorting(column.getIsSorted() === 'asc')}
-        className='h-8 px-2'
+        className="h-8 px-2"
+        onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+        variant="ghost"
       >
         Repository
-        <ArrowUpDown className='ml-2 h-4 w-4' />
+        <ArrowUpDown className="ml-2 h-4 w-4" />
       </Button>
     ),
     cell: ({ row }) => (
-      <div className='flex min-w-0 items-center gap-2 font-medium'>
+      <div className="flex min-w-0 items-center gap-2 font-medium">
         <TooltipProvider>
           <Tooltip>
             <TooltipTrigger asChild>
               <a
-                href={row.original.html_url}
-                target='_blank'
-                rel='noopener noreferrer'
-                className='hover:text-primary cursor-pointer truncate transition-colors hover:underline'
                 aria-label={`Open ${row.original.name} on GitHub`}
+                className="cursor-pointer truncate transition-colors hover:text-primary hover:underline"
+                href={row.original.html_url}
+                rel="noopener noreferrer"
+                target="_blank"
               >
-                {row.getValue('name')}
+                {row.getValue("name")}
               </a>
             </TooltipTrigger>
-            <TooltipContent side='right' className='max-w-xs'>
-              <div className='space-y-1'>
-                <div className='font-medium'>{row.original.full_name}</div>
+            <TooltipContent className="max-w-xs" side="right">
+              <div className="space-y-1">
+                <div className="font-medium">{row.original.full_name}</div>
                 {row.original.description && (
-                  <div className='text-muted-foreground text-sm'>
+                  <div className="text-muted-foreground text-sm">
                     {row.original.description}
                   </div>
                 )}
@@ -79,12 +79,12 @@ const columns: ColumnDef<GitHubRepository>[] = [
             </TooltipContent>
           </Tooltip>
         </TooltipProvider>
-        <div className='flex flex-shrink-0 items-center gap-1'>
+        <div className="flex flex-shrink-0 items-center gap-1">
           {row.original.fork && (
             <TooltipProvider>
               <Tooltip>
                 <TooltipTrigger asChild>
-                  <GitFork className='text-muted-foreground h-3 w-3' />
+                  <GitFork className="h-3 w-3 text-muted-foreground" />
                 </TooltipTrigger>
                 <TooltipContent>
                   <p>Forked repository</p>
@@ -96,7 +96,7 @@ const columns: ColumnDef<GitHubRepository>[] = [
             <TooltipProvider>
               <Tooltip>
                 <TooltipTrigger asChild>
-                  <Archive className='text-muted-foreground h-3 w-3' />
+                  <Archive className="h-3 w-3 text-muted-foreground" />
                 </TooltipTrigger>
                 <TooltipContent>
                   <p>Archived repository</p>
@@ -106,69 +106,69 @@ const columns: ColumnDef<GitHubRepository>[] = [
           )}
         </div>
       </div>
-    )
+    ),
   },
   {
-    accessorKey: 'language',
-    header: 'Language',
+    accessorKey: "language",
+    header: "Language",
     cell: ({ row }) => {
-      const language = row.getValue('language') as string;
+      const language = row.getValue("language") as string;
       return language ? (
-        <Badge variant='secondary' className='text-xs whitespace-nowrap'>
+        <Badge className="whitespace-nowrap text-xs" variant="secondary">
           {language}
         </Badge>
       ) : (
-        <Badge variant='destructive' className='text-xs whitespace-nowrap'>
+        <Badge className="whitespace-nowrap text-xs" variant="destructive">
           Unknown
         </Badge>
       );
-    }
+    },
   },
   {
-    accessorKey: 'stargazers_count',
+    accessorKey: "stargazers_count",
     header: ({ column }) => (
       <Button
-        variant='ghost'
-        onClick={() => column.toggleSorting(column.getIsSorted() === 'asc')}
-        className='h-8 px-2'
+        className="h-8 px-2"
+        onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+        variant="ghost"
       >
-        <Star className='mr-1 h-3 w-3' />
-        <span className='hidden sm:inline'>Stars</span>
-        <ArrowUpDown className='ml-2 h-4 w-4' />
+        <Star className="mr-1 h-3 w-3" />
+        <span className="hidden sm:inline">Stars</span>
+        <ArrowUpDown className="ml-2 h-4 w-4" />
       </Button>
     ),
     cell: ({ row }) => (
-      <div className='flex items-center space-x-1'>
-        <Star className='h-3 w-3 flex-shrink-0' />
-        <span className='whitespace-nowrap'>
-          {row.getValue('stargazers_count')}
+      <div className="flex items-center space-x-1">
+        <Star className="h-3 w-3 flex-shrink-0" />
+        <span className="whitespace-nowrap">
+          {row.getValue("stargazers_count")}
         </span>
       </div>
-    )
+    ),
   },
   {
-    accessorKey: 'updated_at',
+    accessorKey: "updated_at",
     header: ({ column }) => (
       <Button
-        variant='ghost'
-        onClick={() => column.toggleSorting(column.getIsSorted() === 'asc')}
-        className='h-8 px-2'
+        className="h-8 px-2"
+        onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+        variant="ghost"
       >
         Updated
-        <ArrowUpDown className='ml-2 h-4 w-4' />
+        <ArrowUpDown className="ml-2 h-4 w-4" />
       </Button>
     ),
     cell: ({ row }) => (
-      <span className='text-muted-foreground text-sm whitespace-nowrap'>
-        {formatDate(row.getValue('updated_at'))}
+      <span className="whitespace-nowrap text-muted-foreground text-sm">
+        {formatDate(row.getValue("updated_at"))}
       </span>
-    )
-  }
+    ),
+  },
 ];
 
 export function RepositoriesTable({ repositories }: RepositoriesTableProps) {
   const [sorting, setSorting] = useState<SortingState>([
-    { id: 'updated_at', desc: true }
+    { id: "updated_at", desc: true },
   ]);
   const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([]);
 
@@ -183,37 +183,37 @@ export function RepositoriesTable({ repositories }: RepositoriesTableProps) {
     getFilteredRowModel: getFilteredRowModel(),
     state: {
       sorting,
-      columnFilters
+      columnFilters,
     },
     initialState: {
       pagination: {
-        pageSize: 5
-      }
-    }
+        pageSize: 5,
+      },
+    },
   });
 
   return (
-    <div className='w-full space-y-4'>
-      <div className='mb-4 flex items-center justify-between space-x-2'>
+    <div className="w-full space-y-4">
+      <div className="mb-4 flex items-center justify-between space-x-2">
         <Input
-          placeholder='Filter repositories...'
-          value={(table.getColumn('name')?.getFilterValue() as string) ?? ''}
-          onChange={event =>
-            table.getColumn('name')?.setFilterValue(event.target.value)
+          className="w-full max-w-sm"
+          onChange={(event) =>
+            table.getColumn("name")?.setFilterValue(event.target.value)
           }
-          className='w-full max-w-sm'
+          placeholder="Filter repositories..."
+          value={(table.getColumn("name")?.getFilterValue() as string) ?? ""}
         />
-        <p className='text-muted-foreground text-xs'>
+        <p className="text-muted-foreground text-xs">
           Private repos are hidden
         </p>
       </div>
 
-      <div className='overflow-x-auto rounded-md border'>
+      <div className="overflow-x-auto rounded-md border">
         <Table>
           <TableHeader>
-            {table.getHeaderGroups().map(headerGroup => (
+            {table.getHeaderGroups().map((headerGroup) => (
               <TableRow key={headerGroup.id}>
-                {headerGroup.headers.map(header => (
+                {headerGroup.headers.map((header) => (
                   <TableHead key={header.id}>
                     {header.isPlaceholder
                       ? null
@@ -228,12 +228,12 @@ export function RepositoriesTable({ repositories }: RepositoriesTableProps) {
           </TableHeader>
           <TableBody>
             {table.getRowModel().rows?.length ? (
-              table.getRowModel().rows.map(row => (
+              table.getRowModel().rows.map((row) => (
                 <TableRow
+                  data-state={row.getIsSelected() && "selected"}
                   key={row.id}
-                  data-state={row.getIsSelected() && 'selected'}
                 >
-                  {row.getVisibleCells().map(cell => (
+                  {row.getVisibleCells().map((cell) => (
                     <TableCell key={cell.id}>
                       {flexRender(
                         cell.column.columnDef.cell,
@@ -246,8 +246,8 @@ export function RepositoriesTable({ repositories }: RepositoriesTableProps) {
             ) : (
               <TableRow>
                 <TableCell
+                  className="h-24 text-center"
                   colSpan={columns.length}
-                  className='h-24 text-center'
                 >
                   No repositories found.
                 </TableCell>

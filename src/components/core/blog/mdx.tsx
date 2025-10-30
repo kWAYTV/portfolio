@@ -1,9 +1,14 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import Image from 'next/image';
-import { MDXRemote } from 'next-mdx-remote-client/rsc';
-import { Link } from 'next-view-transitions';
-import { createElement } from 'react';
-import { highlight } from 'sugar-high';
+/** biome-ignore-all lint/suspicious/noArrayIndexKey: <> */
+/** biome-ignore-all lint/security/noDangerouslySetInnerHtml: <> */
+/** biome-ignore-all lint/style/noMagicNumbers: <> */
+/** biome-ignore-all lint/suspicious/noExplicitAny: <> */
+
+import Image from "next/image";
+import { MDXRemote } from "next-mdx-remote-client/rsc";
+import { Link } from "next-view-transitions";
+import { createElement } from "react";
+import { highlight } from "sugar-high";
 
 function Table({ data }: { data: { headers: string[]; rows: string[][] } }) {
   const headers = data.headers.map((header, index) => (
@@ -30,7 +35,7 @@ function Table({ data }: { data: { headers: string[]; rows: string[][] } }) {
 function CustomLink(props: any) {
   const href = props.href;
 
-  if (href.startsWith('/')) {
+  if (href.startsWith("/")) {
     return (
       <Link href={href} {...props}>
         {props.children}
@@ -38,15 +43,15 @@ function CustomLink(props: any) {
     );
   }
 
-  if (href.startsWith('#')) {
+  if (href.startsWith("#")) {
     return <a {...props} />;
   }
 
-  return <a target='_blank' rel='noopener noreferrer' {...props} />;
+  return <a rel="noopener noreferrer" target="_blank" {...props} />;
 }
 
 function RoundedImage(props: any) {
-  return <Image alt={props.alt} className='rounded-lg' {...props} />;
+  return <Image alt={props.alt} className="rounded-lg" {...props} />;
 }
 
 function Code({ children, ...props }: { children: string; props: any }) {
@@ -59,10 +64,10 @@ function slugify(str: string) {
     .toString()
     .toLowerCase()
     .trim() // Remove whitespace from both ends of a string
-    .replace(/\s+/g, '-') // Replace spaces with -
-    .replace(/&/g, '-and-') // Replace & with 'and'
-    .replace(/[^\w\-]+/g, '') // Remove all non-word characters except for -
-    .replace(/\-\-+/g, '-'); // Replace multiple - with single -
+    .replace(/\s+/g, "-") // Replace spaces with -
+    .replace(/&/g, "-and-") // Replace & with 'and'
+    .replace(/[^\w-]+/g, "") // Remove all non-word characters except for -
+    .replace(/--+/g, "-"); // Replace multiple - with single -
 }
 
 function createHeading(level: number) {
@@ -72,11 +77,11 @@ function createHeading(level: number) {
       `h${level}`,
       { id: slug },
       [
-        createElement('a', {
+        createElement("a", {
           href: `#${slug}`,
           key: `link-${slug}`,
-          className: 'anchor'
-        })
+          className: "anchor",
+        }),
       ],
       children
     );
@@ -97,7 +102,7 @@ const components = {
   Image: RoundedImage,
   a: CustomLink,
   code: Code,
-  Table
+  Table,
 };
 
 export function CustomMDX(props: any) {
