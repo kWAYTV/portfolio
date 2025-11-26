@@ -56,7 +56,15 @@ export default function Home() {
           <footer className="pt-2">
             <p className="font-serif text-[11px] text-muted-foreground/40 italic leading-relaxed">
               I forgot your voice, I forgot your body, I forgot your essence, I
-              forgot, I&apos;m sorry
+              forgot,{" "}
+              <Link
+                className="transition-colors hover:text-muted-foreground/60"
+                href="https://youtu.be/qEN6Vdw21rY?si=srNzXFklhDAPxGiF&t=134"
+                rel="noopener noreferrer"
+                target="_blank"
+              >
+                I&apos;m sorry
+              </Link>
             </p>
           </footer>
         </BlurFade>
