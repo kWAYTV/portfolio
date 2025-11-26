@@ -14,7 +14,7 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "perc.dev",
+  title: "Martin Vila",
   description: "welcome to my personal space.",
 };
 

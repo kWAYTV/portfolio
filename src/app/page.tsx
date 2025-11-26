@@ -15,7 +15,7 @@ export default function Home() {
             Martin Vila
           </h1>
           <p className="text-muted-foreground text-xs sm:text-sm">
-            Developer · Gamer · Self-taught
+            developer · gamer · self-taught
           </p>
         </div>
 
@@ -32,7 +32,7 @@ export default function Home() {
             href="https://github.com/kWAYTV"
             target="_blank"
           >
-            GitHub
+            gitHub
           </Link>
 
           <Link
@@ -40,7 +40,7 @@ export default function Home() {
             href="https://twitter.com/ogeperc"
             target="_blank"
           >
-            Twitter
+            twitter
           </Link>
 
           <Link
@@ -48,7 +48,15 @@ export default function Home() {
             href="https://gitroll.io/profile/uezq54oxIk4VFZkLigfxGmGgm57z1"
             target="_blank"
           >
-            Resume
+            resume
+          </Link>
+
+          <Link
+            className="transition-colors hover:text-foreground"
+            href="https://linkedin.com/in/mvnieto"
+            target="_blank"
+          >
+            linkedin
           </Link>
         </div>
 
