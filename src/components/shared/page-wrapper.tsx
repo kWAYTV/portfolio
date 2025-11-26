@@ -38,6 +38,7 @@ export function PageWrapper({ children }: PageWrapperProps) {
       <nav className="absolute top-4 right-4 left-4 flex items-center justify-between sm:top-6 sm:right-6 sm:left-6">
         <div className="flex items-center gap-3 sm:gap-4">
           <NavLink href="/">home</NavLink>
+          <NavLink href="/projects">projects</NavLink>
           <NavLink href="/about">about</NavLink>
           <NavLink href="/blog">blog</NavLink>
         </div>
