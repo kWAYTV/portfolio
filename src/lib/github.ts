@@ -21,6 +21,7 @@ export type GitHubRepo = {
 };
 
 const GITHUB_USERNAME = "kWAYTV";
+const EXTRA_REPOS = [{ owner: "vercord", repo: "core" }] as const;
 
 const octokit = new Octokit({
   auth: process.env.GITHUB_TOKEN,
@@ -30,11 +31,18 @@ export async function getGitHubRepos(): Promise<GitHubRepo[]> {
   "use cache";
   cacheLife("hours");
 
-  const repos = await octokit.paginate(octokit.repos.listForUser, {
-    username: GITHUB_USERNAME,
-    per_page: 100,
-    sort: "updated",
-  });
+  const [userRepos, ...extraRepos] = await Promise.all([
+    octokit.paginate(octokit.repos.listForUser, {
+      username: GITHUB_USERNAME,
+      per_page: 100,
+      sort: "updated",
+    }),
+    ...EXTRA_REPOS.map(({ owner, repo }) =>
+      octokit.repos.get({ owner, repo }).then((res) => res.data)
+    ),
+  ]);
+
+  const repos = [...userRepos, ...extraRepos];
 
   return repos
     .filter((repo) => !(repo.fork || repo.archived))
