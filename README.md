@@ -4,11 +4,11 @@ Personal portfolio site built with Next.js 16, React 19, and Tailwind CSS v4.
 
 ## Stack
 
-- **Runtime**: Bun
-- **Framework**: Next.js 16 (App Router)
-- **Styling**: Tailwind CSS v4, shadcn/ui
-- **Animations**: Motion
-- **Linting**: Biome + Ultracite
+- **Runtime**: [Bun](https://bun.com/)
+- **Framework**: [Next.js 16](https://nextjs.org/) (App Router)
+- **Styling**: [Tailwind CSS v4](https://tailwindcss.com/), [shadcn/ui](https://ui.shadcn.com/)
+- **Animations**: [Motion](https://motion.dev/)
+- **Linting**: [Biome](https://biomejs.dev/) + [Ultracite](https://www.ultracite.ai/)
 
 ## Development
 
