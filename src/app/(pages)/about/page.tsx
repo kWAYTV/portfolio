@@ -15,6 +15,12 @@ import {
 
 const experience = [
   {
+    id: "freelancing-1",
+    period: "2024 - Present",
+    role: "Freelance Developer",
+    company: "Freelance",
+  },
+  {
     id: "tokyo-school",
     period: "2024 - Present",
     role: "PCAP Python, Computer Programming",
@@ -31,12 +37,6 @@ const experience = [
     period: "2018 - 2019",
     role: "Automotive Mechanic",
     company: "Insergal",
-  },
-  {
-    id: "epapu",
-    period: "2014 - 2019",
-    role: "High School Certificate",
-    company: "EPAPU Ourense",
   },
 ];
 
