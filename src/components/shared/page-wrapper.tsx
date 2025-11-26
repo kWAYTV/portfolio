@@ -3,6 +3,7 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { ThemeToggle } from "@/components/theming/toggle";
+import { navItems } from "@/consts/nav-items";
 
 type PageWrapperProps = {
   children: React.ReactNode;
@@ -34,13 +35,14 @@ function NavLink({
 
 export function PageWrapper({ children }: PageWrapperProps) {
   return (
-    <main className="relative flex min-h-svh items-center justify-center px-4 sm:px-6">
-      <nav className="absolute top-4 right-4 left-4 flex items-center justify-between sm:top-6 sm:right-6 sm:left-6">
+    <main className="flex min-h-svh flex-col items-center justify-center gap-8 px-4 py-8 sm:px-6 sm:py-12">
+      <nav className="flex w-full items-center justify-between">
         <div className="flex items-center gap-3 sm:gap-4">
-          <NavLink href="/">home</NavLink>
-          <NavLink href="/projects">projects</NavLink>
-          <NavLink href="/about">about</NavLink>
-          <NavLink href="/blog">blog</NavLink>
+          {navItems.map((item) => (
+            <NavLink href={item.href} key={item.href}>
+              {item.label}
+            </NavLink>
+          ))}
         </div>
         <ThemeToggle />
       </nav>
