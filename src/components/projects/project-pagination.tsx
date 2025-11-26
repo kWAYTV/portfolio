@@ -20,7 +20,7 @@ export function ProjectPagination({
   return (
     <div className="flex items-center justify-center gap-4 pt-2">
       <button
-        className="inline-flex h-7 items-center gap-1 px-2 text-muted-foreground/60 text-xs transition-colors hover:text-foreground disabled:pointer-events-none disabled:opacity-30"
+        className="inline-flex h-7 items-center gap-1 px-2 text-muted-foreground/70 text-xs transition-colors hover:text-foreground disabled:pointer-events-none disabled:opacity-40"
         disabled={currentPage <= 1}
         onClick={() => onPageChange(currentPage - 1)}
         type="button"
@@ -28,11 +28,11 @@ export function ProjectPagination({
         <ChevronLeft className="size-3" />
         prev
       </button>
-      <span className="text-muted-foreground/40 text-xs tabular-nums">
+      <span className="text-muted-foreground/60 text-xs tabular-nums">
         {currentPage} / {totalPages}
       </span>
       <button
-        className="inline-flex h-7 items-center gap-1 px-2 text-muted-foreground/60 text-xs transition-colors hover:text-foreground disabled:pointer-events-none disabled:opacity-30"
+        className="inline-flex h-7 items-center gap-1 px-2 text-muted-foreground/70 text-xs transition-colors hover:text-foreground disabled:pointer-events-none disabled:opacity-40"
         disabled={currentPage >= totalPages}
         onClick={() => onPageChange(currentPage + 1)}
         type="button"

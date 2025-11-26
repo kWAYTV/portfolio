@@ -79,7 +79,7 @@ export function ProjectList({ repos }: ProjectListProps) {
         sort={sort}
       />
 
-      <p className="text-[11px] text-muted-foreground/40">
+      <p className="text-[11px] text-muted-foreground/60">
         {filteredAndSorted.length} project
         {filteredAndSorted.length !== 1 && "s"}
         {search && ` matching "${search}"`}
@@ -87,7 +87,7 @@ export function ProjectList({ repos }: ProjectListProps) {
 
       <div className="min-h-52">
         {paginatedRepos.length === 0 ? (
-          <p className="py-12 text-center text-muted-foreground/40 text-xs sm:text-sm">
+          <p className="py-12 text-center text-muted-foreground/60 text-xs sm:text-sm">
             No projects found
           </p>
         ) : (

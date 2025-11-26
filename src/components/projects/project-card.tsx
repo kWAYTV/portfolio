@@ -46,7 +46,7 @@ export function ProjectCard({ repo }: ProjectCardProps) {
       <div className="flex min-w-0 flex-1 items-center gap-2.5">
         <Tooltip>
           <TooltipTrigger asChild>
-            <span className="truncate text-muted-foreground/70 text-xs transition-colors duration-200 group-hover:text-foreground sm:text-sm">
+            <span className="truncate text-foreground/80 text-xs transition-colors duration-200 group-hover:text-foreground sm:text-sm">
               {repo.name}
             </span>
           </TooltipTrigger>
@@ -60,10 +60,10 @@ export function ProjectCard({ repo }: ProjectCardProps) {
         </Tooltip>
       </div>
 
-      <div className="flex shrink-0 items-center text-muted-foreground/50 text-xs transition-colors duration-200 group-hover:text-muted-foreground/70">
+      <div className="flex shrink-0 items-center text-muted-foreground/70 text-xs transition-colors duration-200 group-hover:text-muted-foreground">
         <span className="w-20 text-right">
           <Badge
-            className="gap-1.5 border-transparent bg-muted/50 px-1.5 py-0 text-[10px] text-muted-foreground/70"
+            className="gap-1.5 border-transparent bg-muted/40 px-1.5 py-0 text-[10px] text-muted-foreground"
             variant="outline"
           >
             <span
