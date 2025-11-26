@@ -32,7 +32,7 @@ export default function About() {
           applications. Currently actively seeking new opportunities.
         </p>
 
-        <Timeline activeIndex={1}>
+        <Timeline activeIndex={1} variant="alternate">
           {timelineItems.map((item) => (
             <TimelineItem key={item.id}>
               <TimelineDot />
