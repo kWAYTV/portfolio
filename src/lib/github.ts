@@ -48,7 +48,9 @@ export async function getGitHubRepos(): Promise<GitHubRepo[]> {
     .filter((repo) => !(repo.fork || repo.archived))
     .map((repo) => ({
       id: repo.id,
-      name: repo.name,
+      name: repo.full_name.startsWith(`${GITHUB_USERNAME}/`)
+        ? repo.name
+        : repo.full_name,
       full_name: repo.full_name,
       description: repo.description ?? null,
       html_url: repo.html_url,
