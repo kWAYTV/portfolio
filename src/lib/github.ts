@@ -63,5 +63,9 @@ export async function getGitHubRepos(): Promise<GitHubRepo[]> {
       created_at: repo.created_at ?? "",
       fork: repo.fork ?? false,
       archived: repo.archived ?? false,
-    }));
+    }))
+    .sort(
+      (a, b) =>
+        new Date(b.pushed_at).getTime() - new Date(a.pushed_at).getTime()
+    );
 }

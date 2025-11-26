@@ -47,7 +47,7 @@ export function ProjectList({ repos }: ProjectListProps) {
       );
     });
 
-    return filtered.sort((a, b) => {
+    return [...filtered].sort((a, b) => {
       switch (sort) {
         case "stars":
           return b.stargazers_count - a.stargazers_count;
