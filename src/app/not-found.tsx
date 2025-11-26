@@ -1,5 +1,5 @@
 import Link from "next/link";
-import ThemeToggle from "@/components/theming/toggle";
+import { ThemeToggle } from "@/components/theming/toggle";
 import { Separator } from "@/components/ui/separator";
 
 export default function NotFound() {
