@@ -21,10 +21,10 @@ export const timelineItems = [
     description: "Automotive Mechanic, Mechanics and Repairers, General",
   },
   {
-    id: "epapu-ourense",
+    id: "epapu-ourense-sauces",
     dateTime: "2014-09",
     date: "September 2014 - July 2019",
-    title: "EPAPU Ourense",
+    title: "Los Sauces Pontevedra/EPAPU Ourense",
     description:
       "Educación Secundaria Obligatoria (ESO), High School Certificate of Competence Program",
   },

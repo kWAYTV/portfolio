@@ -36,14 +36,12 @@ function NavLink({
 export function PageWrapper({ children }: PageWrapperProps) {
   return (
     <main className="flex min-h-svh flex-col items-center justify-center gap-8 px-4 py-8 sm:px-6 sm:py-12">
-      <nav className="flex w-full items-center justify-between">
-        <div className="flex items-center gap-3 sm:gap-4">
-          {navItems.map((item) => (
-            <NavLink href={item.href} key={item.href}>
-              {item.label}
-            </NavLink>
-          ))}
-        </div>
+      <nav className="flex items-center gap-3 sm:gap-4">
+        {navItems.map((item) => (
+          <NavLink href={item.href} key={item.href}>
+            {item.label}
+          </NavLink>
+        ))}
         <ThemeToggle />
       </nav>
       {children}

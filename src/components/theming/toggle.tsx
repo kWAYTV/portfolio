@@ -1,6 +1,5 @@
 "use client";
 
-import { Moon, Sun } from "lucide-react";
 import { useCallback, useEffect, useRef, useState } from "react";
 import { flushSync } from "react-dom";
 
@@ -75,13 +74,12 @@ export const ThemeToggle = ({
 
   return (
     <button
-      className={cn(className)}
+      className={cn("hover:underline", className)}
       onClick={toggleTheme}
       ref={buttonRef}
       {...props}
     >
-      {isDark ? <Sun /> : <Moon />}
-      <span className="sr-only">Toggle theme</span>
+      {isDark ? "light" : "dark"}
     </button>
   );
 };
