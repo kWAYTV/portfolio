@@ -75,7 +75,7 @@ export const ThemeToggle = ({
   return (
     <button
       className={cn(
-        "text-xs transition-colors hover:underline sm:text-sm",
+        "text-muted-foreground/50 text-xs transition-colors duration-200 hover:text-foreground sm:text-sm",
         className
       )}
       onClick={toggleTheme}

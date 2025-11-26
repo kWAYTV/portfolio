@@ -1,70 +1,56 @@
 import Link from "next/link";
 import { PageContent } from "@/components/shared/page-content";
 import { PageWrapper } from "@/components/shared/page-wrapper";
-import { Separator } from "@/components/ui/separator";
+
+const socialLinks = [
+  { href: "https://github.com/kWAYTV", label: "github" },
+  { href: "https://twitter.com/ogeperc", label: "twitter" },
+  { href: "https://linkedin.com/in/mvnieto", label: "linkedin" },
+  {
+    href: "https://gitroll.io/profile/uezq54oxIk4VFZkLigfxGmGgm57z1",
+    label: "resume",
+  },
+];
 
 export default function Home() {
   return (
     <PageWrapper>
       <PageContent>
-        <div className="space-y-1">
+        <header className="space-y-1.5">
           <h1 className="font-medium text-base tracking-tight sm:text-lg">
             Martin Vila
           </h1>
-          <p className="text-muted-foreground text-xs sm:text-sm">
+          <p className="text-muted-foreground/60 text-xs sm:text-sm">
             developer · gamer · self-taught
           </p>
-        </div>
-
-        <Separator />
+        </header>
 
         <p className="text-muted-foreground/80 text-xs leading-relaxed sm:text-sm">
           Building minimal, thoughtful software. Currently exploring the
           intersection of design and engineering.
         </p>
 
-        <div className="flex items-center gap-3 text-muted-foreground text-xs sm:gap-4 sm:text-sm">
-          <Link
-            className="transition-colors hover:text-foreground"
-            href="https://github.com/kWAYTV"
-            target="_blank"
-          >
-            gitHub
-          </Link>
+        <nav className="flex flex-wrap items-center gap-x-4 gap-y-1 text-xs sm:text-sm">
+          {socialLinks.map((link) => (
+            <Link
+              className="group relative text-muted-foreground/70 transition-colors duration-200 hover:text-foreground"
+              href={link.href}
+              key={link.label}
+              rel="noopener noreferrer"
+              target="_blank"
+            >
+              {link.label}
+              <span className="-bottom-px absolute inset-x-0 h-px origin-left scale-x-0 bg-foreground/30 transition-transform duration-200 ease-out group-hover:scale-x-100" />
+            </Link>
+          ))}
+        </nav>
 
-          <Link
-            className="transition-colors hover:text-foreground"
-            href="https://twitter.com/ogeperc"
-            target="_blank"
-          >
-            twitter
-          </Link>
-
-          <Link
-            className="transition-colors hover:text-foreground"
-            href="https://gitroll.io/profile/uezq54oxIk4VFZkLigfxGmGgm57z1"
-            target="_blank"
-          >
-            resume
-          </Link>
-
-          <Link
-            className="transition-colors hover:text-foreground"
-            href="https://linkedin.com/in/mvnieto"
-            target="_blank"
-          >
-            linkedin
-          </Link>
-        </div>
-
-        <Separator />
-
-        <p className="text-muted-foreground/60 text-xs sm:text-sm">
-          <span className="text-[10px] italic">
+        <footer className="pt-2">
+          <p className="font-serif text-[11px] text-muted-foreground/40 italic leading-relaxed">
             I forgot your voice, I forgot your body, I forgot your essence, I
             forgot, I&apos;m sorry
-          </span>
-        </p>
+          </p>
+        </footer>
       </PageContent>
     </PageWrapper>
   );

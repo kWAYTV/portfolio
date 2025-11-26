@@ -38,7 +38,7 @@ export function ProjectCard({ repo }: ProjectCardProps) {
 
   return (
     <Link
-      className="group flex items-center justify-between gap-3 py-2.5 transition-colors"
+      className="group -mx-2 flex items-center justify-between gap-3 rounded-md px-2 py-2.5 transition-all duration-200 hover:bg-muted/30"
       href={repo.html_url}
       rel="noopener noreferrer"
       target="_blank"
@@ -47,7 +47,7 @@ export function ProjectCard({ repo }: ProjectCardProps) {
         {repo.description ? (
           <Tooltip>
             <TooltipTrigger asChild>
-              <span className="truncate text-muted-foreground text-xs transition-colors group-hover:text-foreground sm:text-sm">
+              <span className="truncate text-muted-foreground/70 text-xs transition-colors duration-200 group-hover:text-foreground sm:text-sm">
                 {repo.name}
               </span>
             </TooltipTrigger>
@@ -56,17 +56,17 @@ export function ProjectCard({ repo }: ProjectCardProps) {
             </TooltipContent>
           </Tooltip>
         ) : (
-          <span className="truncate text-muted-foreground text-xs transition-colors group-hover:text-foreground sm:text-sm">
+          <span className="truncate text-muted-foreground/70 text-xs transition-colors duration-200 group-hover:text-foreground sm:text-sm">
             {repo.name}
           </span>
         )}
       </div>
 
-      <div className="flex shrink-0 items-center text-muted-foreground/60 text-xs">
+      <div className="flex shrink-0 items-center text-muted-foreground/50 text-xs transition-colors duration-200 group-hover:text-muted-foreground/70">
         <span className="w-20 text-right">
           {languageColor && repo.language && (
             <Badge
-              className="gap-1.5 border-border/50 px-1.5 py-0 text-[10px] text-muted-foreground"
+              className="gap-1.5 border-transparent bg-muted/50 px-1.5 py-0 text-[10px] text-muted-foreground/70"
               variant="outline"
             >
               <span className={cn("size-1.5 rounded-full", languageColor)} />
@@ -74,7 +74,7 @@ export function ProjectCard({ repo }: ProjectCardProps) {
             </Badge>
           )}
         </span>
-        <span className="w-10 text-right">
+        <span className="w-10 text-right tabular-nums">
           {repo.stargazers_count > 0 && (
             <Tooltip>
               <TooltipTrigger asChild>
@@ -90,7 +90,7 @@ export function ProjectCard({ repo }: ProjectCardProps) {
             </Tooltip>
           )}
         </span>
-        <span className="w-10 text-right">
+        <span className="w-10 text-right tabular-nums">
           {repo.forks_count > 0 && (
             <Tooltip>
               <TooltipTrigger asChild>

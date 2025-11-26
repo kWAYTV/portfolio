@@ -1,5 +1,6 @@
 import "server-only";
 
+import { Octokit } from "@octokit/rest";
 import { cacheLife } from "next/cache";
 
 export type GitHubRepo = {
@@ -21,50 +22,36 @@ export type GitHubRepo = {
 
 const GITHUB_USERNAME = "kWAYTV";
 
-const headers = {
-  Accept: "application/vnd.github.v3+json",
-  ...(process.env.GITHUB_TOKEN && {
-    Authorization: `Bearer ${process.env.GITHUB_TOKEN}`,
-  }),
-};
-
-async function fetchAllPages(): Promise<GitHubRepo[]> {
-  const allRepos: GitHubRepo[] = [];
-  let page = 1;
-
-  while (true) {
-    const response = await fetch(
-      `https://api.github.com/users/${GITHUB_USERNAME}/repos?per_page=100&sort=updated&page=${page}`,
-      { headers }
-    );
-
-    if (!response.ok) {
-      throw new Error(`GitHub API error: ${response.status}`);
-    }
-
-    const repos: GitHubRepo[] = await response.json();
-
-    if (repos.length === 0) {
-      break;
-    }
-
-    allRepos.push(...repos);
-
-    if (repos.length < 100) {
-      break;
-    }
-
-    page += 1;
-  }
-
-  return allRepos;
-}
+const octokit = new Octokit({
+  auth: process.env.GITHUB_TOKEN,
+});
 
 export async function getGitHubRepos(): Promise<GitHubRepo[]> {
   "use cache";
   cacheLife("hours");
 
-  const repos = await fetchAllPages();
+  const repos = await octokit.paginate(octokit.repos.listForUser, {
+    username: GITHUB_USERNAME,
+    per_page: 100,
+    sort: "updated",
+  });
 
-  return repos.filter((repo) => !(repo.fork || repo.archived));
+  return repos
+    .filter((repo) => !(repo.fork || repo.archived))
+    .map((repo) => ({
+      id: repo.id,
+      name: repo.name,
+      full_name: repo.full_name,
+      description: repo.description ?? null,
+      html_url: repo.html_url,
+      homepage: repo.homepage ?? null,
+      stargazers_count: repo.stargazers_count ?? 0,
+      forks_count: repo.forks_count ?? 0,
+      language: repo.language ?? null,
+      topics: repo.topics ?? [],
+      pushed_at: repo.pushed_at ?? "",
+      created_at: repo.created_at ?? "",
+      fork: repo.fork ?? false,
+      archived: repo.archived ?? false,
+    }));
 }
