@@ -19,6 +19,7 @@
     "hooks": "@/hooks"
   },
   "registries": {
-    "@basecn": "https://basecn.dev/r/{name}.json"
+    "@basecn": "https://basecn.dev/r/{name}.json",
+    "@magicui": "https://magicui.design/r/{name}.json"
   }
 }
