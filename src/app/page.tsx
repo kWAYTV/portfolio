@@ -1,8 +1,8 @@
 import Link from "next/link";
-import { MorphingLink } from "@/components/shared/morphing-link";
 import { PageContent } from "@/components/shared/page-content";
 import { PageWrapper } from "@/components/shared/page-wrapper";
 import { BlurFade } from "@/components/ui/blur-fade";
+import { MorphingLink } from "@/components/ui/morphing-link";
 
 const socialLinks = [
   { href: "https://github.com/kWAYTV", text: "github", icon: "github" },
