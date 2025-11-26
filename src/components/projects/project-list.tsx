@@ -1,25 +1,40 @@
 "use client";
 
-import { useMemo, useState } from "react";
+import {
+  parseAsInteger,
+  parseAsString,
+  parseAsStringLiteral,
+  useQueryStates,
+} from "nuqs";
+import { useMemo } from "react";
 import { ProjectCard } from "@/components/projects/project-card";
-import type { SortOption } from "@/components/projects/project-filters";
-import { ProjectFilters } from "@/components/projects/project-filters";
+import {
+  ProjectFilters,
+  type SortOption,
+  sortOptions,
+} from "@/components/projects/project-filters";
 import { ProjectPagination } from "@/components/projects/project-pagination";
 import type { GitHubRepo } from "@/lib/github";
 
 const ITEMS_PER_PAGE = 5;
+
+const projectSearchParams = {
+  q: parseAsString.withDefault(""),
+  sort: parseAsStringLiteral(sortOptions).withDefault("updated"),
+  page: parseAsInteger.withDefault(1),
+};
 
 type ProjectListProps = {
   repos: GitHubRepo[];
 };
 
 export function ProjectList({ repos }: ProjectListProps) {
-  const [search, setSearch] = useState("");
-  const [sort, setSort] = useState<SortOption>("stars");
-  const [page, setPage] = useState(1);
+  const [{ q, sort, page }, setParams] = useQueryStates(projectSearchParams, {
+    shallow: false,
+  });
 
   const filteredAndSorted = useMemo(() => {
-    const query = search.toLowerCase().trim();
+    const query = q.toLowerCase().trim();
 
     const filtered = repos.filter((repo) => {
       if (!query) {
@@ -50,7 +65,7 @@ export function ProjectList({ repos }: ProjectListProps) {
           return 0;
       }
     });
-  }, [repos, search, sort]);
+  }, [repos, q, sort]);
 
   const totalPages = Math.ceil(filteredAndSorted.length / ITEMS_PER_PAGE);
   const currentPage = Math.min(Math.max(1, page), totalPages || 1);
@@ -61,13 +76,15 @@ export function ProjectList({ repos }: ProjectListProps) {
   );
 
   const handleSearchChange = (value: string) => {
-    setSearch(value);
-    setPage(1);
+    setParams({ q: value || null, page: 1 });
   };
 
   const handleSortChange = (value: SortOption) => {
-    setSort(value);
-    setPage(1);
+    setParams({ sort: value, page: 1 });
+  };
+
+  const handlePageChange = (newPage: number) => {
+    setParams({ page: newPage });
   };
 
   return (
@@ -75,14 +92,14 @@ export function ProjectList({ repos }: ProjectListProps) {
       <ProjectFilters
         onSearchChange={handleSearchChange}
         onSortChange={handleSortChange}
-        search={search}
+        search={q}
         sort={sort}
       />
 
       <p className="text-[11px] text-muted-foreground/60">
         {filteredAndSorted.length} project
         {filteredAndSorted.length !== 1 && "s"}
-        {search && ` matching "${search}"`}
+        {q && ` matching "${q}"`}
       </p>
 
       <div className="min-h-52">
@@ -101,7 +118,7 @@ export function ProjectList({ repos }: ProjectListProps) {
 
       <ProjectPagination
         currentPage={currentPage}
-        onPageChange={setPage}
+        onPageChange={handlePageChange}
         totalPages={totalPages}
       />
     </div>

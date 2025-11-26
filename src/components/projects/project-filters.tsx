@@ -22,7 +22,7 @@ const sortLabels: Record<SortOption, string> = {
 
 type ProjectFiltersProps = {
   search: string;
-  sort: string;
+  sort: SortOption;
   onSearchChange: (value: string) => void;
   onSortChange: (value: SortOption) => void;
 };
