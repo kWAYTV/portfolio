@@ -1,17 +1,23 @@
 import Link from "next/link";
+import { MorphingLink } from "@/components/shared/morphing-link";
 import { PageContent } from "@/components/shared/page-content";
 import { PageWrapper } from "@/components/shared/page-wrapper";
 import { BlurFade } from "@/components/ui/blur-fade";
 
 const socialLinks = [
-  { href: "https://github.com/kWAYTV", label: "github" },
-  { href: "https://twitter.com/ogeperc", label: "twitter" },
-  { href: "https://linkedin.com/in/mvnieto", label: "linkedin" },
+  { href: "https://github.com/kWAYTV", text: "github", icon: "github" },
+  { href: "https://twitter.com/ogeperc", text: "twitter", icon: "twitter" },
+  {
+    href: "https://linkedin.com/in/mvnieto",
+    text: "linkedin",
+    icon: "linkedin",
+  },
   {
     href: "https://gitroll.io/profile/uezq54oxIk4VFZkLigfxGmGgm57z1",
-    label: "resume",
+    text: "resume",
+    icon: "fileText",
   },
-];
+] as const;
 
 export default function Home() {
   return (
@@ -38,16 +44,12 @@ export default function Home() {
         <BlurFade delay={0.2}>
           <nav className="flex flex-wrap items-center gap-x-4 gap-y-1 text-xs sm:text-sm">
             {socialLinks.map((link) => (
-              <Link
-                className="group relative text-muted-foreground/70 transition-colors duration-200 hover:text-foreground"
+              <MorphingLink
                 href={link.href}
-                key={link.label}
-                rel="noopener noreferrer"
-                target="_blank"
-              >
-                {link.label}
-                <span className="-bottom-px absolute inset-x-0 h-px origin-left scale-x-0 bg-foreground/30 transition-transform duration-200 ease-out group-hover:scale-x-100" />
-              </Link>
+                icon={link.icon}
+                key={link.text}
+                text={link.text}
+              />
             ))}
           </nav>
         </BlurFade>
