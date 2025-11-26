@@ -1,15 +1,12 @@
 import Link from "next/link";
-import { ThemeToggle } from "@/components/theming/toggle";
+import { PageContent } from "@/components/shared/page-content";
+import { PageWrapper } from "@/components/shared/page-wrapper";
 import { Separator } from "@/components/ui/separator";
 
 export default function NotFound() {
   return (
-    <main className="relative flex min-h-svh items-center justify-center px-4 sm:px-6">
-      <div className="absolute top-4 right-4 sm:top-6 sm:right-6">
-        <ThemeToggle />
-      </div>
-
-      <div className="w-full max-w-sm space-y-5 sm:max-w-md sm:space-y-6">
+    <PageWrapper>
+      <PageContent>
         <div className="space-y-1">
           <h1 className="font-medium text-base tracking-tight sm:text-lg">
             404
@@ -30,7 +27,7 @@ export default function NotFound() {
             Home
           </Link>
         </div>
-      </div>
-    </main>
+      </PageContent>
+    </PageWrapper>
   );
 }
