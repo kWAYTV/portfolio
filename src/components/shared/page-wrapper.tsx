@@ -1,5 +1,6 @@
 "use client";
 
+import { AnimatePresence } from "motion/react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { ThemeToggle } from "@/components/theming/toggle";
@@ -34,6 +35,8 @@ function NavLink({
 }
 
 export function PageWrapper({ children }: PageWrapperProps) {
+  const pathname = usePathname();
+
   return (
     <main className="relative flex min-h-svh flex-col items-center justify-center px-4 py-8 sm:px-6 sm:py-12">
       <nav className="-translate-x-1/2 absolute top-4 left-1/2 flex items-center gap-3 sm:top-6 sm:gap-4">
@@ -44,7 +47,9 @@ export function PageWrapper({ children }: PageWrapperProps) {
         ))}
         <ThemeToggle />
       </nav>
-      {children}
+      <AnimatePresence initial={false} mode="wait">
+        <div key={pathname}>{children}</div>
+      </AnimatePresence>
     </main>
   );
 }
