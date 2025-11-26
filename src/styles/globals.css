@@ -73,7 +73,6 @@
   --radius: 0.5rem;
   --background: oklch(0.99 0 0);
   --foreground: oklch(0 0 0);
-  --light-rays-color: rgba(0, 0, 0, 0.12);
   --card: oklch(1 0 0);
   --card-foreground: oklch(0 0 0);
   --popover: oklch(0.99 0 0);
@@ -134,7 +133,6 @@
 .dark {
   --background: oklch(0 0 0);
   --foreground: oklch(1 0 0);
-  --light-rays-color: rgba(255, 255, 255, 0.08);
   --card: oklch(0.14 0 0);
   --card-foreground: oklch(1 0 0);
   --popover: oklch(0.18 0 0);
