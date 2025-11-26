@@ -47,7 +47,7 @@ export function ProjectFilters({
       </div>
       <Select onValueChange={(v) => onSortChange(v as SortOption)} value={sort}>
         <SelectTrigger
-          className="h-8 w-24 border-transparent bg-muted/25 text-xs transition-colors duration-200 hover:bg-muted/40 sm:w-28 sm:text-sm"
+          className="h-8 w-20 border-transparent bg-muted/25 text-xs transition-colors duration-200 hover:bg-muted/40 sm:w-28 sm:text-sm"
           size="sm"
         >
           <SelectValue />

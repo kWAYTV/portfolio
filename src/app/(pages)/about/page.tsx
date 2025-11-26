@@ -11,7 +11,33 @@ import {
   TimelineTime,
   TimelineTitle,
 } from "@/components/ui/timeline";
-import { timelineItems } from "@/consts/timeline-items";
+
+const experience = [
+  {
+    id: "tokyo-school",
+    period: "2024 - Present",
+    role: "PCAP Python, Computer Programming",
+    company: "Tokyo School",
+  },
+  {
+    id: "insergal-sales",
+    period: "2018 - 2019",
+    role: "Sales Assistant, Marketing",
+    company: "Insergal",
+  },
+  {
+    id: "insergal-mechanic",
+    period: "2018 - 2019",
+    role: "Automotive Mechanic",
+    company: "Insergal",
+  },
+  {
+    id: "epapu",
+    period: "2014 - 2019",
+    role: "High School Certificate",
+    company: "EPAPU Ourense",
+  },
+];
 
 export default function About() {
   return (
@@ -31,20 +57,27 @@ export default function About() {
           applications. Currently actively seeking new opportunities.
         </p>
 
-        <section className="pt-1">
-          <Timeline activeIndex={1} variant="alternate">
-            {timelineItems.map((item) => (
+        <section className="space-y-3">
+          <h2 className="font-medium text-xs tracking-tight sm:text-sm">
+            Experience
+          </h2>
+          <Timeline activeIndex={0}>
+            {experience.map((item) => (
               <TimelineItem key={item.id}>
                 <TimelineDot />
                 <TimelineConnector />
                 <TimelineContent>
                   <TimelineHeader>
-                    <TimelineTime dateTime={item.dateTime}>
-                      {item.date}
+                    <TimelineTime className="text-[10px] sm:text-xs">
+                      {item.period}
                     </TimelineTime>
-                    <TimelineTitle>{item.title}</TimelineTitle>
+                    <TimelineTitle className="font-medium text-xs sm:text-sm">
+                      {item.company}
+                    </TimelineTitle>
                   </TimelineHeader>
-                  <TimelineDescription>{item.description}</TimelineDescription>
+                  <TimelineDescription className="text-[11px] sm:text-xs">
+                    {item.role}
+                  </TimelineDescription>
                 </TimelineContent>
               </TimelineItem>
             ))}
