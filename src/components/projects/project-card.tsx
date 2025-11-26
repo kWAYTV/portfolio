@@ -1,5 +1,6 @@
 import { GitFork, Star } from "lucide-react";
 import Link from "next/link";
+import { Badge } from "@/components/ui/badge";
 import {
   Tooltip,
   TooltipContent,
@@ -37,55 +38,73 @@ export function ProjectCard({ repo }: ProjectCardProps) {
 
   return (
     <Link
-      className="group flex items-center justify-between gap-3 py-2 transition-colors"
+      className="group flex items-center justify-between gap-3 py-2.5 transition-colors"
       href={repo.html_url}
       rel="noopener noreferrer"
       target="_blank"
     >
-      <div className="flex min-w-0 flex-1 items-center gap-2">
-        {languageColor && repo.language && (
+      <div className="flex min-w-0 flex-1 items-center gap-2.5">
+        {repo.description ? (
           <Tooltip>
             <TooltipTrigger asChild>
-              <span
-                className={cn("size-2 shrink-0 rounded-full", languageColor)}
-              />
+              <span className="truncate text-muted-foreground text-xs transition-colors group-hover:text-foreground sm:text-sm">
+                {repo.name}
+              </span>
             </TooltipTrigger>
-            <TooltipContent side="top">{repo.language}</TooltipContent>
+            <TooltipContent className="max-w-64" side="bottom">
+              {repo.description}
+            </TooltipContent>
           </Tooltip>
+        ) : (
+          <span className="truncate text-muted-foreground text-xs transition-colors group-hover:text-foreground sm:text-sm">
+            {repo.name}
+          </span>
         )}
-        <span className="truncate text-muted-foreground text-xs transition-colors group-hover:text-foreground sm:text-sm">
-          {repo.name}
-        </span>
       </div>
 
-      <div className="flex shrink-0 items-center gap-2 text-muted-foreground/60 text-xs">
-        {repo.stargazers_count > 0 && (
-          <Tooltip>
-            <TooltipTrigger asChild>
-              <span className="flex items-center gap-0.5">
-                <Star className="size-3" />
-                {repo.stargazers_count}
-              </span>
-            </TooltipTrigger>
-            <TooltipContent side="top">
-              {repo.stargazers_count} star
-              {repo.stargazers_count !== 1 && "s"}
-            </TooltipContent>
-          </Tooltip>
-        )}
-        {repo.forks_count > 0 && (
-          <Tooltip>
-            <TooltipTrigger asChild>
-              <span className="flex items-center gap-0.5">
-                <GitFork className="size-3" />
-                {repo.forks_count}
-              </span>
-            </TooltipTrigger>
-            <TooltipContent side="top">
-              {repo.forks_count} fork{repo.forks_count !== 1 && "s"}
-            </TooltipContent>
-          </Tooltip>
-        )}
+      <div className="flex shrink-0 items-center text-muted-foreground/60 text-xs">
+        <span className="w-20 text-right">
+          {languageColor && repo.language && (
+            <Badge
+              className="gap-1.5 border-border/50 px-1.5 py-0 text-[10px] text-muted-foreground"
+              variant="outline"
+            >
+              <span className={cn("size-1.5 rounded-full", languageColor)} />
+              {repo.language}
+            </Badge>
+          )}
+        </span>
+        <span className="w-10 text-right">
+          {repo.stargazers_count > 0 && (
+            <Tooltip>
+              <TooltipTrigger asChild>
+                <span className="inline-flex items-center justify-end gap-1">
+                  <Star className="size-3" />
+                  {repo.stargazers_count}
+                </span>
+              </TooltipTrigger>
+              <TooltipContent side="top">
+                {repo.stargazers_count} star
+                {repo.stargazers_count !== 1 && "s"}
+              </TooltipContent>
+            </Tooltip>
+          )}
+        </span>
+        <span className="w-10 text-right">
+          {repo.forks_count > 0 && (
+            <Tooltip>
+              <TooltipTrigger asChild>
+                <span className="inline-flex items-center justify-end gap-1">
+                  <GitFork className="size-3" />
+                  {repo.forks_count}
+                </span>
+              </TooltipTrigger>
+              <TooltipContent side="top">
+                {repo.forks_count} fork{repo.forks_count !== 1 && "s"}
+              </TooltipContent>
+            </Tooltip>
+          )}
+        </span>
       </div>
     </Link>
   );
