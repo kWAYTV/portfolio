@@ -15,7 +15,7 @@ export default function Home() {
             Martin Vila
           </h1>
           <p className="text-muted-foreground text-xs sm:text-sm">
-            Developer · Gamer · Designer
+            Developer · Gamer · Skater
           </p>
         </div>
 
