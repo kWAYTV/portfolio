@@ -74,7 +74,10 @@ export const ThemeToggle = ({
 
   return (
     <button
-      className={cn("hover:underline", className)}
+      className={cn(
+        "text-xs transition-colors hover:underline sm:text-sm",
+        className
+      )}
       onClick={toggleTheme}
       ref={buttonRef}
       {...props}
