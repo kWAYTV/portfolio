@@ -34,12 +34,21 @@ export default function Home() {
           >
             GitHub
           </Link>
+
           <Link
             className="transition-colors hover:text-foreground"
             href="https://twitter.com/ogeperc"
             target="_blank"
           >
             Twitter
+          </Link>
+
+          <Link
+            className="transition-colors hover:text-foreground"
+            href="https://gitroll.io/profile/uezq54oxIk4VFZkLigfxGmGgm57z1"
+            target="_blank"
+          >
+            Resume
           </Link>
         </div>
       </div>
