@@ -15,7 +15,7 @@ export default function Home() {
             Martin Vila
           </h1>
           <p className="text-muted-foreground text-xs sm:text-sm">
-            Developer · Gamer · Rider
+            Developer · Gamer · Self-taught
           </p>
         </div>
 
@@ -51,6 +51,15 @@ export default function Home() {
             Resume
           </Link>
         </div>
+
+        <Separator />
+
+        <p className="text-muted-foreground/60 text-xs sm:text-sm">
+          <span className="text-[10px] italic">
+            I forgot your voice, I forgot your body, I forgot your essence, I
+            forgot, I&apos;m sorry
+          </span>
+        </p>
       </div>
     </main>
   );
