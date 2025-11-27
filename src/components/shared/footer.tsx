@@ -1,7 +1,7 @@
 export function Footer() {
   return (
     <footer className="-translate-x-1/2 absolute bottom-5 left-1/2 flex items-center gap-2 text-[10px] text-muted-foreground/40 sm:bottom-8 sm:text-xs">
-      <span>© perc.dev 2025</span>
+      <span>© perc.dev {new Date().getFullYear()}</span>
       <span>·</span>
       <a
         className="transition-colors hover:text-muted-foreground/60"
