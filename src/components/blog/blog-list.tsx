@@ -5,11 +5,9 @@ import { BlurFade } from "@/components/ui/blur-fade";
 
 type Post = {
   url: string;
-  data: {
-    title: string;
-    description?: string;
-    date?: string;
-  };
+  title: string;
+  description?: string;
+  date?: string;
 };
 
 type BlogListProps = {
@@ -30,9 +28,9 @@ export function BlogList({ posts }: BlogListProps) {
       {posts.map((post, i) => (
         <BlurFade delay={0.1 + i * 0.05} key={post.url}>
           <BlogCard
-            date={post.data.date ?? ""}
-            description={post.data.description}
-            title={post.data.title}
+            date={post.date ?? ""}
+            description={post.description}
+            title={post.title}
             url={post.url}
           />
         </BlurFade>
