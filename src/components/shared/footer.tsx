@@ -15,6 +15,13 @@ export function Footer() {
       <span>·</span>
       <a
         className="transition-colors hover:text-muted-foreground/60"
+        href="/rss.xml"
+      >
+        rss
+      </a>
+      <span>·</span>
+      <a
+        className="transition-colors hover:text-muted-foreground/60"
         href="https://github.com/kWAYTV/portfolio"
         rel="noopener noreferrer"
         target="_blank"

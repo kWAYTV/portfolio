@@ -18,6 +18,13 @@ const geistMono = Geist_Mono({
 export const metadata: Metadata = {
   title: "Martin Vila",
   description: "welcome to my personal space.",
+  alternates: {
+    types: {
+      "application/rss+xml": [
+        { title: "perc.dev blog", url: "https://perc.dev/rss.xml" },
+      ],
+    },
+  },
 };
 
 export default function RootLayout({
