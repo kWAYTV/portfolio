@@ -13,7 +13,7 @@ export default function Blog() {
 
   return (
     <PageWrapper>
-      <PageContent>
+      <PageContent className="max-w-xl sm:max-w-2xl">
         <BlurFade delay={0}>
           <header className="space-y-1.5">
             <h1 className="font-medium text-base tracking-tight sm:text-lg">
@@ -25,44 +25,44 @@ export default function Blog() {
           </header>
         </BlurFade>
 
-        <BlurFade delay={0.1}>
-          {posts.length === 0 ? (
+        {posts.length === 0 ? (
+          <BlurFade delay={0.1}>
             <p className="text-muted-foreground/60 text-xs sm:text-sm">
               No posts yet.
             </p>
-          ) : (
-            <div className="space-y-4">
-              {posts.map((post) => (
+          </BlurFade>
+        ) : (
+          <div className="grid gap-2.5 sm:grid-cols-2">
+            {posts.map((post, i) => (
+              <BlurFade delay={0.1 + i * 0.05} key={post.url}>
                 <Link
-                  className="group -mx-2 block rounded-md px-2 py-2.5 transition-all duration-200 hover:bg-muted/30"
+                  className="group block rounded-md border border-transparent p-3 transition-all duration-200 hover:border-border/50 hover:bg-muted/20"
                   href={post.url}
-                  key={post.url}
                 >
-                  <div className="flex items-baseline justify-between gap-4">
-                    <h2 className="font-medium text-foreground/80 text-xs transition-colors duration-200 group-hover:text-foreground sm:text-sm">
+                  <div className="flex items-start justify-between gap-3">
+                    <h2 className="font-medium text-foreground/80 text-xs leading-snug transition-colors duration-200 group-hover:text-foreground sm:text-sm">
                       {post.data.title}
                     </h2>
-                    <time className="shrink-0 text-[10px] text-muted-foreground/50 tabular-nums sm:text-xs">
+                    <time className="shrink-0 text-[9px] text-muted-foreground/40 tabular-nums sm:text-[10px]">
                       {new Date(post.data.date ?? "").toLocaleDateString(
                         "en-US",
                         {
                           month: "short",
                           day: "numeric",
-                          year: "numeric",
                         }
                       )}
                     </time>
                   </div>
                   {post.data.description && (
-                    <p className="mt-1 text-[11px] text-muted-foreground/60 sm:text-xs">
+                    <p className="mt-1 line-clamp-1 text-[10px] text-muted-foreground/50 sm:text-[11px]">
                       {post.data.description}
                     </p>
                   )}
                 </Link>
-              ))}
-            </div>
-          )}
-        </BlurFade>
+              </BlurFade>
+            ))}
+          </div>
+        )}
       </PageContent>
     </PageWrapper>
   );
