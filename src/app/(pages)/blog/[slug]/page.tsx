@@ -13,6 +13,12 @@ type Props = {
 
 export default async function BlogPost({ params }: Props) {
   const { slug } = await params;
+
+  // Handle placeholder for empty blog (required by Cache Components)
+  if (slug === "__placeholder__") {
+    notFound();
+  }
+
   const post = blogSource.getPage([slug]);
 
   if (!post) {
@@ -63,7 +69,14 @@ export default async function BlogPost({ params }: Props) {
 }
 
 export async function generateStaticParams() {
-  return blogSource.getPages().map((page) => ({
+  const pages = blogSource.getPages();
+
+  // Cache Components requires at least one param for build validation
+  if (pages.length === 0) {
+    return [{ slug: "__placeholder__" }];
+  }
+
+  return pages.map((page) => ({
     slug: page.slugs[0],
   }));
 }
