@@ -24,11 +24,11 @@ export function BlogList({ posts }: BlogListProps) {
   }
 
   return (
-    <div className="space-y-0.5">
+    <div className="space-y-1">
       {posts.map((post, i) => (
         <BlurFade delay={0.1 + i * 0.05} key={post.url}>
           <BlogCard
-            date={post.date ?? ""}
+            date={post.date}
             description={post.description}
             title={post.title}
             url={post.url}
