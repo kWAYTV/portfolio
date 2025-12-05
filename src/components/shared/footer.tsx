@@ -10,7 +10,7 @@ export function Footer() {
   }, []);
 
   return (
-    <footer className="-translate-x-1/2 absolute bottom-4 left-1/2 flex flex-wrap items-center justify-center gap-2 px-2 text-[10px] text-muted-foreground/40 sm:bottom-8 sm:text-xs sm:px-0">
+    <footer className="-translate-x-1/2 absolute bottom-4 left-1/2 flex flex-wrap items-center justify-center gap-2 px-2 text-[10px] text-muted-foreground/40 sm:bottom-8 sm:px-0 sm:text-xs">
       <span>© perc.dev {year ?? "2025"}</span>
       <span>·</span>
       <a

@@ -26,7 +26,7 @@ export function BlogCard({ title, description, date, url }: BlogCardProps) {
           {title}
         </h2>
         {description && (
-          <p className="text-[11px] leading-relaxed text-muted-foreground/70 sm:text-xs">
+          <p className="text-[11px] text-muted-foreground/70 leading-relaxed sm:text-xs">
             {description}
           </p>
         )}
