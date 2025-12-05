@@ -60,19 +60,19 @@ export function ProjectCard({ repo }: ProjectCardProps) {
         </Tooltip>
       </div>
 
-      <div className="flex shrink-0 items-center gap-2 text-[10px] text-muted-foreground/70 tabular-nums transition-colors duration-200 group-hover:text-muted-foreground sm:gap-3 sm:text-xs">
+      <div className="flex shrink-0 items-center gap-1.5 text-[10px] text-muted-foreground/70 tabular-nums transition-colors duration-200 group-hover:text-muted-foreground sm:gap-3 sm:text-xs">
         {repo.language && (
           <Badge
-            className="hidden gap-1.5 border-transparent bg-muted/40 px-1.5 py-0 text-[10px] text-muted-foreground sm:inline-flex"
+            className="inline-flex gap-1.5 border-transparent bg-muted/40 px-1.5 py-0 text-[10px] text-muted-foreground"
             variant="outline"
           >
             <span
               className={cn(
-                "size-1.5 rounded-full",
+                "size-1.5 shrink-0 rounded-full",
                 languageColor || "bg-muted-foreground/30"
               )}
             />
-            {repo.language}
+            <span className="whitespace-nowrap">{repo.language}</span>
           </Badge>
         )}
         <span className="inline-flex items-center gap-0.5">
