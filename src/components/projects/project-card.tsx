@@ -38,7 +38,7 @@ export function ProjectCard({ repo }: ProjectCardProps) {
 
   return (
     <Link
-      className="group -mx-2 flex items-center justify-between gap-3 rounded-md px-2 py-2.5 transition-all duration-200 hover:bg-muted/30"
+      className="group -mx-2 flex flex-col gap-2 rounded-md px-2 py-2.5 transition-all duration-200 hover:bg-muted/30 sm:flex-row sm:items-center sm:justify-between sm:gap-3"
       href={repo.html_url}
       rel="noopener noreferrer"
       target="_blank"
@@ -60,7 +60,7 @@ export function ProjectCard({ repo }: ProjectCardProps) {
         </Tooltip>
       </div>
 
-      <div className="flex shrink-0 items-center gap-1.5 text-[10px] text-muted-foreground/70 tabular-nums transition-colors duration-200 group-hover:text-muted-foreground sm:gap-3 sm:text-xs">
+      <div className="flex shrink-0 flex-wrap items-center gap-1.5 text-[10px] text-muted-foreground/70 tabular-nums transition-colors duration-200 group-hover:text-muted-foreground sm:gap-3 sm:text-xs">
         {repo.language && (
           <Badge
             className="inline-flex gap-1.5 border-transparent bg-muted/40 px-1.5 py-0 text-[10px] text-muted-foreground"

@@ -56,11 +56,11 @@ export default function Home() {
 
         <BlurFade delay={0.3}>
           <footer className="pt-2">
-            <p className="font-serif text-[11px] text-muted-foreground/40 italic leading-relaxed">
+            <p className="font-serif text-[11px] text-muted-foreground/40 italic leading-relaxed break-words">
               I forgot your voice, I forgot your body, I forgot your essence, I
               forgot,{" "}
               <Link
-                className="transition-colors hover:text-muted-foreground/60"
+                className="transition-colors hover:text-muted-foreground/60 break-keep"
                 href="https://youtu.be/qEN6Vdw21rY?si=srNzXFklhDAPxGiF&t=134"
                 rel="noopener noreferrer"
                 target="_blank"

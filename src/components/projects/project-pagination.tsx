@@ -18,7 +18,7 @@ export function ProjectPagination({
   }
 
   return (
-    <div className="flex items-center justify-center gap-4 pt-2">
+    <div className="flex items-center justify-center gap-3 pt-2 sm:gap-4">
       <button
         className="inline-flex h-7 items-center gap-1 px-2 text-muted-foreground/70 text-xs transition-colors hover:text-foreground disabled:pointer-events-none disabled:opacity-40"
         disabled={currentPage <= 1}

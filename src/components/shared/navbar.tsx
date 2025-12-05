@@ -9,10 +9,10 @@ export function Navbar() {
   const pathname = usePathname();
 
   return (
-    <nav className="-translate-x-1/2 absolute top-5 left-1/2 flex items-center gap-4 sm:top-8 sm:gap-5">
+    <nav className="-translate-x-1/2 absolute top-4 left-1/2 flex items-center gap-2.5 px-2 sm:top-8 sm:gap-5 sm:px-0">
       {navItems.map((item) => (
         <Link
-          className={`text-xs sm:text-sm ${
+          className={`whitespace-nowrap text-xs sm:text-sm ${
             pathname === item.href
               ? "text-foreground"
               : "text-muted-foreground/60 hover:text-foreground"

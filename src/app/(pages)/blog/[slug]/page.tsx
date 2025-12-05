@@ -59,7 +59,7 @@ export default async function BlogPost({ params }: Props) {
         </BlurFade>
 
         <BlurFade delay={0.2}>
-          <article className="prose prose-neutral prose-sm dark:prose-invert max-w-none prose-headings:font-medium prose-a:text-foreground prose-code:text-xs prose-p:text-muted-foreground/80 prose-headings:tracking-tight prose-a:underline-offset-4">
+          <article className="prose prose-neutral prose-sm dark:prose-invert max-w-none prose-headings:font-medium prose-a:text-foreground prose-code:text-xs prose-p:text-muted-foreground/80 prose-headings:tracking-tight prose-a:underline-offset-4 prose-pre:overflow-x-auto prose-img:max-w-full prose-img:rounded-md prose-table:overflow-x-auto prose-table:block prose-table:w-full">
             <MDX components={getMDXComponents()} />
           </article>
         </BlurFade>
