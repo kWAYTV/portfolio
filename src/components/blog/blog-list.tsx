@@ -24,7 +24,7 @@ export function BlogList({ posts }: BlogListProps) {
   }
 
   return (
-    <div className="space-y-1">
+    <div className="space-y-0.5">
       {posts.map((post, i) => (
         <BlurFade delay={0.1 + i * 0.05} key={post.url}>
           <BlogCard
