@@ -34,11 +34,11 @@ export function ProjectFilters({
   onSortChange,
 }: ProjectFiltersProps) {
   return (
-    <div className="flex items-center gap-2">
+    <div className="flex flex-col gap-2 sm:flex-row sm:items-center">
       <div className="relative min-w-0 flex-1">
         <Search className="-translate-y-1/2 absolute top-1/2 left-2.5 size-3 text-muted-foreground/60" />
         <Input
-          className="h-8 border-transparent bg-muted/25 pl-8 text-xs transition-colors duration-200 placeholder:text-muted-foreground/50 focus:border-border focus:bg-transparent sm:text-sm"
+          className="h-8 w-full border-transparent bg-muted/25 pl-8 text-xs transition-colors duration-200 placeholder:text-muted-foreground/50 focus:border-border focus:bg-transparent sm:text-sm"
           onChange={(e) => onSearchChange(e.target.value)}
           placeholder="Search..."
           type="search"
@@ -47,7 +47,7 @@ export function ProjectFilters({
       </div>
       <Select onValueChange={(v) => onSortChange(v as SortOption)} value={sort}>
         <SelectTrigger
-          className="h-8 w-28 shrink-0 border-transparent bg-muted/25 text-xs transition-colors duration-200 hover:bg-muted/40 sm:w-32 sm:text-sm"
+          className="h-8 w-full border-transparent bg-muted/25 text-xs transition-colors duration-200 hover:bg-muted/40 sm:w-32 sm:text-sm"
           size="sm"
         >
           <SelectValue />
