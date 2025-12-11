@@ -213,10 +213,6 @@
   scrollbar-color: var(--scrollbar-thumb) transparent;
 }
 
-.dark * {
-  scrollbar-color: var(--scrollbar-thumb) transparent;
-}
-
 /* WebKit browsers (Chrome, Safari, Edge) */
 *::-webkit-scrollbar {
   width: 6px;
@@ -236,14 +232,6 @@
 }
 
 *::-webkit-scrollbar-thumb:hover {
-  background-color: var(--scrollbar-thumb-hover);
-}
-
-.dark *::-webkit-scrollbar-thumb {
-  background-color: var(--scrollbar-thumb);
-}
-
-.dark *::-webkit-scrollbar-thumb:hover {
   background-color: var(--scrollbar-thumb-hover);
 }
 
