@@ -54,11 +54,11 @@ export function MorphingLink({
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}
       rel="noopener noreferrer"
-      target="_blank"
       style={{
         width: dimensions.width || "auto",
         height: dimensions.height || "auto",
       }}
+      target="_blank"
     >
       {/* Hidden text for measurement */}
       <span className="invisible absolute whitespace-nowrap" ref={textRef}>
