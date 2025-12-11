@@ -53,6 +53,8 @@ export function MorphingLink({
       href={href}
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}
+      rel="noopener noreferrer"
+      target="_blank"
       style={{
         width: dimensions.width || "auto",
         height: dimensions.height || "auto",
