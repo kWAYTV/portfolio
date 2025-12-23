@@ -21,6 +21,18 @@ export function Footer() {
       >
         source
       </a>
+      <span>·</span>
+      <span>
+        sponsored by{" "}
+        <a
+          className="transition-colors hover:text-muted-foreground/60"
+          href="https://vercord.lol/"
+          rel="noopener noreferrer"
+          target="_blank"
+        >
+          vercord.lol
+        </a>
+      </span>
     </footer>
   );
 }
