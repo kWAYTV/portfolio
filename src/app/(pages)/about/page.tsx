@@ -15,16 +15,16 @@ import {
 
 const experience = [
   {
-    id: "tokyo-school",
-    period: "2024 - Present",
-    role: "PCAP Python, Computer Programming",
-    company: "Tokyo School",
-  },
-  {
     id: "freelancing-1",
     period: "2019 - Present",
     role: "Freelance Developer / Open Source Contributor",
     company: "Freelance",
+  },
+  {
+    id: "tokyo-school",
+    period: "2024 - Present",
+    role: "PCAP Python, Computer Programming",
+    company: "Tokyo School",
   },
   {
     id: "insergal-sales",
