@@ -26,11 +26,11 @@ export function Footer() {
         sponsored by{" "}
         <a
           className="transition-colors hover:text-muted-foreground/60"
-          href="https://vercord.lol/"
+          href="https://versend.io/"
           rel="noopener noreferrer"
           target="_blank"
         >
-          vercord.lol
+          versend.io
         </a>
       </span>
     </footer>
