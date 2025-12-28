@@ -2,6 +2,10 @@ import Script from "next/script";
 import { env } from "@/env";
 
 export function UmamiScript() {
+  if (!(env.NEXT_PUBLIC_UMAMI_URL && env.NEXT_PUBLIC_UMAMI_WEBSITE_ID)) {
+    return null;
+  }
+
   return (
     <Script
       async

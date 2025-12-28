@@ -4,11 +4,11 @@ import { z } from "zod";
 
 export const env = createEnv({
   server: {
-    GITHUB_TOKEN: z.string().min(1),
+    GITHUB_TOKEN: z.string().min(1).optional(),
   },
   client: {
-    NEXT_PUBLIC_UMAMI_URL: z.string().url(),
-    NEXT_PUBLIC_UMAMI_WEBSITE_ID: z.string().min(1),
+    NEXT_PUBLIC_UMAMI_URL: z.string().url().optional(),
+    NEXT_PUBLIC_UMAMI_WEBSITE_ID: z.string().min(1).optional(),
   },
   runtimeEnv: {
     GITHUB_TOKEN: process.env.GITHUB_TOKEN,
