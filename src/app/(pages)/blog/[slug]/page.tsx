@@ -3,7 +3,7 @@ import { notFound } from "next/navigation";
 import { BlogArticle } from "@/components/blog/blog-article";
 import { BlogBackLink } from "@/components/blog/blog-back-link";
 import { BlogPostHeader } from "@/components/blog/blog-post-header";
-import { getMDXComponents } from "@/components/mdx/mdx-components";
+import { getMDXComponents } from "@/components/blog/mdx-components";
 import { PageContent } from "@/components/shared/page-content";
 import { PageWrapper } from "@/components/shared/page-wrapper";
 import { BlurFade } from "@/components/ui/blur-fade";
