@@ -1,3 +1,5 @@
+"use client";
+
 import { GitFork, Star } from "lucide-react";
 import Link from "next/link";
 import { Badge } from "@/components/ui/badge";
@@ -6,6 +8,7 @@ import {
   TooltipContent,
   TooltipTrigger,
 } from "@/components/ui/tooltip";
+import { analytics } from "@/lib/analytics";
 import type { GitHubRepo } from "@/lib/github";
 import { cn } from "@/lib/utils";
 
@@ -40,6 +43,7 @@ export function ProjectCard({ repo }: ProjectCardProps) {
     <Link
       className="group -mx-2 flex flex-col gap-2 rounded-md px-2 py-2.5 transition-all duration-200 hover:bg-muted/30 sm:flex-row sm:items-center sm:justify-between sm:gap-3"
       href={repo.html_url}
+      onClick={() => analytics.projectClick(repo.name)}
       rel="noopener noreferrer"
       target="_blank"
     >

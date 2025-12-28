@@ -1,3 +1,4 @@
+import { UmamiScript } from "@/components/analytics/umami-script";
 import { ThemeProvider } from "@/components/theming/provider";
 import { Toaster } from "@/components/ui/sonner";
 import "@/styles/globals.css";
@@ -27,6 +28,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" suppressHydrationWarning>
+      <UmamiScript />
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >

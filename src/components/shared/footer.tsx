@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import { analytics } from "@/lib/analytics";
 
 export function Footer() {
   const [year, setYear] = useState<number | null>(null);
@@ -16,6 +17,9 @@ export function Footer() {
       <a
         className="transition-colors hover:text-muted-foreground/60"
         href="https://github.com/kWAYTV/portfolio"
+        onClick={() =>
+          analytics.externalLink("https://github.com/kWAYTV/portfolio")
+        }
         rel="noopener noreferrer"
         target="_blank"
       >
@@ -27,6 +31,7 @@ export function Footer() {
         <a
           className="transition-colors hover:text-muted-foreground/60"
           href="https://versend.io/"
+          onClick={() => analytics.externalLink("https://versend.io/")}
           rel="noopener noreferrer"
           target="_blank"
         >

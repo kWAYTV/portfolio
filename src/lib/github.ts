@@ -2,6 +2,7 @@ import "server-only";
 
 import { Octokit } from "@octokit/rest";
 import { cacheLife } from "next/cache";
+import { env } from "@/env";
 
 export type GitHubRepo = {
   id: number;
@@ -24,7 +25,7 @@ const GITHUB_USERNAME = "kWAYTV";
 const EXTRA_REPOS = [{ owner: "vercord", repo: "core" }] as const;
 
 const octokit = new Octokit({
-  auth: process.env.GITHUB_TOKEN,
+  auth: env.GITHUB_TOKEN,
 });
 
 export async function getGitHubRepos(): Promise<GitHubRepo[]> {

@@ -2,6 +2,7 @@
 
 import { FileText, Github, Linkedin, Twitter } from "lucide-react";
 import { useEffect, useRef, useState } from "react";
+import { analytics } from "@/lib/analytics";
 import { cn } from "@/lib/utils";
 
 const icons = {
@@ -51,6 +52,7 @@ export function MorphingLink({
         className
       )}
       href={href}
+      onClick={() => analytics.socialClick(text)}
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}
       rel="noopener noreferrer"

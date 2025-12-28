@@ -2,7 +2,7 @@
 
 import { useCallback, useEffect, useRef, useState } from "react";
 import { flushSync } from "react-dom";
-
+import { analytics } from "@/lib/analytics";
 import { cn } from "@/lib/utils";
 
 interface AnimatedThemeTogglerProps
@@ -39,14 +39,17 @@ export const ThemeToggle = ({
       return;
     }
 
+    const newTheme = !isDark;
+
     await document.startViewTransition(() => {
       flushSync(() => {
-        const newTheme = !isDark;
         setIsDark(newTheme);
         document.documentElement.classList.toggle("dark");
         localStorage.setItem("theme", newTheme ? "dark" : "light");
       });
     }).ready;
+
+    analytics.themeToggle(newTheme ? "dark" : "light");
 
     const { top, left, width, height } =
       buttonRef.current.getBoundingClientRect();

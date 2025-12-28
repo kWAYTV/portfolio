@@ -1,4 +1,7 @@
+"use client";
+
 import Link from "next/link";
+import { analytics } from "@/lib/analytics";
 
 export function HeroQuote() {
   return (
@@ -9,6 +12,7 @@ export function HeroQuote() {
         <Link
           className="break-keep transition-colors hover:text-muted-foreground/60"
           href="https://youtu.be/qEN6Vdw21rY?si=srNzXFklhDAPxGiF&t=134"
+          onClick={() => analytics.externalLink("https://youtu.be/qEN6Vdw21rY")}
           rel="noopener noreferrer"
           target="_blank"
         >
