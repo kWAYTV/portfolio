@@ -1,15 +1,8 @@
 import { ExternalLink, GitFork, Star } from "lucide-react";
 import Link from "next/link";
+import { languageColors } from "@/consts/language-colors";
 import type { GitHubRepo } from "@/lib/github";
 import { cn } from "@/lib/utils";
-
-const languageColors: Record<string, string> = {
-  TypeScript: "bg-blue-500",
-  JavaScript: "bg-yellow-400",
-  Python: "bg-green-500",
-  Rust: "bg-orange-500",
-  Go: "bg-cyan-400",
-};
 
 type FeaturedProjectsProps = {
   repos: GitHubRepo[];
@@ -63,7 +56,7 @@ export function FeaturedProjects({ repos }: FeaturedProjectsProps) {
                   <span
                     className={cn(
                       "size-2 rounded-full",
-                      languageColors[repo.language] || "bg-muted-foreground/50"
+                      languageColors[repo.language] ?? "bg-muted-foreground/50"
                     )}
                   />
                   <span className="hidden sm:inline">{repo.language}</span>

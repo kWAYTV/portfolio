@@ -7,7 +7,7 @@ import { getMDXComponents } from "@/components/blog/mdx-components";
 import { PageContent } from "@/components/shared/page-content";
 import { PageWrapper } from "@/components/shared/page-wrapper";
 import { BlurFade } from "@/components/ui/blur-fade";
-import { blogSource } from "@/lib/source";
+import { blogSource, getCachedBlogPage } from "@/lib/source";
 
 type Props = {
   params: Promise<{ slug: string }>;
@@ -22,7 +22,7 @@ export default async function BlogPost({ params }: Props) {
     notFound();
   }
 
-  const post = blogSource.getPage([slug]);
+  const post = getCachedBlogPage(slug);
 
   if (!post) {
     notFound();
@@ -65,7 +65,7 @@ export async function generateStaticParams() {
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { slug } = await params;
-  const post = blogSource.getPage([slug]);
+  const post = getCachedBlogPage(slug);
 
   if (!post) {
     return {};
