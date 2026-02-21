@@ -6,7 +6,6 @@ import { BlogPostHeader } from "@/components/blog/blog-post-header";
 import { getMDXComponents } from "@/components/blog/mdx-components";
 import { PageContent } from "@/components/shared/page-content";
 import { PageWrapper } from "@/components/shared/page-wrapper";
-import { BlurFade } from "@/components/ui/blur-fade";
 import { blogSource, getCachedBlogPage } from "@/lib/source";
 
 type Props = {
@@ -31,21 +30,13 @@ export default async function BlogPost({ params }: Props) {
   return (
     <PageWrapper>
       <PageContent className="max-w-lg sm:max-w-xl">
-        <BlurFade delay={0} noBlur>
-          <BlogBackLink />
-        </BlurFade>
-
-        <BlurFade delay={0.05} noBlur>
-          <BlogPostHeader
-            author={post.data.author}
-            date={post.data.date ?? ""}
-            title={post.data.title}
-          />
-        </BlurFade>
-
-        <BlurFade delay={0.15}>
-          <BlogArticle components={getMDXComponents()} MDX={post.data.body} />
-        </BlurFade>
+        <BlogBackLink />
+        <BlogPostHeader
+          author={post.data.author}
+          date={post.data.date ?? ""}
+          title={post.data.title}
+        />
+        <BlogArticle components={getMDXComponents()} MDX={post.data.body} />
       </PageContent>
     </PageWrapper>
   );

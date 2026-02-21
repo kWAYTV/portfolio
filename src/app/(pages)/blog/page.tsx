@@ -2,7 +2,6 @@ import { BlogHeader } from "@/components/blog/blog-header";
 import { BlogList } from "@/components/blog/blog-list";
 import { PageContent } from "@/components/shared/page-content";
 import { PageWrapper } from "@/components/shared/page-wrapper";
-import { BlurFade } from "@/components/ui/blur-fade";
 import { blogSource } from "@/lib/source";
 
 export default function Blog() {
@@ -23,13 +22,8 @@ export default function Blog() {
   return (
     <PageWrapper>
       <PageContent>
-        <BlurFade delay={0} noBlur>
-          <BlogHeader />
-        </BlurFade>
-
-        <BlurFade delay={0.1}>
-          <BlogList posts={posts} />
-        </BlurFade>
+        <BlogHeader />
+        <BlogList posts={posts} />
       </PageContent>
     </PageWrapper>
   );

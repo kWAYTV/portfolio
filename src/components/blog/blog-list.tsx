@@ -1,7 +1,6 @@
 "use client";
 
 import { BlogCard } from "@/components/blog/blog-card";
-import { BlurFade } from "@/components/ui/blur-fade";
 
 type Post = {
   url: string;
@@ -25,15 +24,14 @@ export function BlogList({ posts }: BlogListProps) {
 
   return (
     <div className="space-y-1">
-      {posts.map((post, i) => (
-        <BlurFade delay={0.1 + i * 0.05} key={post.url}>
-          <BlogCard
-            date={post.date}
-            description={post.description}
-            title={post.title}
-            url={post.url}
-          />
-        </BlurFade>
+      {posts.map((post) => (
+        <BlogCard
+          date={post.date}
+          description={post.description}
+          key={post.url}
+          title={post.title}
+          url={post.url}
+        />
       ))}
     </div>
   );
