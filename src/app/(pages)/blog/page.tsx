@@ -23,7 +23,7 @@ export default function Blog() {
   return (
     <PageWrapper>
       <PageContent>
-        <BlurFade delay={0}>
+        <BlurFade delay={0} noBlur>
           <BlogHeader />
         </BlurFade>
 

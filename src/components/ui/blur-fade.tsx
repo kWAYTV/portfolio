@@ -6,6 +6,7 @@ import {
   motion,
   type UseInViewOptions,
   useInView,
+  useReducedMotion,
   type Variants,
 } from "motion/react";
 import { useRef } from "react";
@@ -25,6 +26,8 @@ interface BlurFadeProps extends MotionProps {
   direction?: "up" | "down" | "left" | "right";
   inView?: boolean;
   inViewMargin?: MarginType;
+  /** Set to true for LCP-critical content to avoid filter cost and improve paint */
+  noBlur?: boolean;
   blur?: string;
 }
 
@@ -38,18 +41,25 @@ export function BlurFade({
   direction = "down",
   inView = false,
   inViewMargin = "-50px",
+  noBlur = false,
   blur = "6px",
   ...props
 }: BlurFadeProps) {
   const ref = useRef(null);
+  const reducedMotion = useReducedMotion();
   const inViewResult = useInView(ref, { once: true, margin: inViewMargin });
   const isInView = !inView || inViewResult;
+
+  const effectiveBlur = noBlur || reducedMotion ? "0px" : blur;
+  const effectiveDuration = reducedMotion ? 0 : duration;
+  const effectiveDelay = reducedMotion ? 0 : 0.04 + delay;
+
   const defaultVariants: Variants = {
     hidden: {
       [direction === "left" || direction === "right" ? "x" : "y"]:
         direction === "right" || direction === "down" ? -offset : offset,
       opacity: 0,
-      filter: `blur(${blur})`,
+      filter: `blur(${effectiveBlur})`,
     },
     visible: {
       [direction === "left" || direction === "right" ? "x" : "y"]: 0,
@@ -58,17 +68,18 @@ export function BlurFade({
     },
   };
   const combinedVariants = variant || defaultVariants;
+
   return (
     <AnimatePresence>
       <motion.div
-        animate={isInView ? "visible" : "hidden"}
+        animate={isInView || reducedMotion ? "visible" : "hidden"}
         className={className}
         exit="hidden"
-        initial="hidden"
+        initial={reducedMotion ? "visible" : "hidden"}
         ref={ref}
         transition={{
-          delay: 0.04 + delay,
-          duration,
+          delay: effectiveDelay,
+          duration: effectiveDuration,
           ease: "easeOut",
         }}
         variants={combinedVariants}

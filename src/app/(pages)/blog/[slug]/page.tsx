@@ -31,11 +31,11 @@ export default async function BlogPost({ params }: Props) {
   return (
     <PageWrapper>
       <PageContent className="max-w-lg sm:max-w-xl">
-        <BlurFade delay={0}>
+        <BlurFade delay={0} noBlur>
           <BlogBackLink />
         </BlurFade>
 
-        <BlurFade delay={0.1}>
+        <BlurFade delay={0.05} noBlur>
           <BlogPostHeader
             author={post.data.author}
             date={post.data.date ?? ""}
@@ -43,7 +43,7 @@ export default async function BlogPost({ params }: Props) {
           />
         </BlurFade>
 
-        <BlurFade delay={0.2}>
+        <BlurFade delay={0.15}>
           <BlogArticle components={getMDXComponents()} MDX={post.data.body} />
         </BlurFade>
       </PageContent>
@@ -71,8 +71,11 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
     return {};
   }
 
+  const title = `${post.data.title} | Martin Vila`;
+  const description = post.data.description ?? undefined;
   return {
-    title: `${post.data.title} | Martin Vila`,
-    description: post.data.description,
+    title,
+    description,
+    openGraph: { title, description, type: "article" },
   };
 }

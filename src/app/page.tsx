@@ -14,33 +14,33 @@ export default function Home() {
   return (
     <PageWrapper>
       <PageContent>
-        <BlurFade delay={0}>
+        <BlurFade delay={0} noBlur>
           <HeroHeader />
         </BlurFade>
 
-        <BlurFade delay={0.1}>
+        <BlurFade delay={0.05} noBlur>
           <HeroBio />
         </BlurFade>
 
-        <BlurFade delay={0.15}>
+        <BlurFade delay={0.1}>
           <Separator className="bg-border/50" />
         </BlurFade>
 
-        <BlurFade delay={0.2}>
+        <BlurFade delay={0.15}>
           <SocialNav />
         </BlurFade>
 
-        <BlurFade delay={0.25}>
+        <BlurFade delay={0.2}>
           <Separator className="bg-border/50" />
         </BlurFade>
 
-        <BlurFade delay={0.3}>
+        <BlurFade delay={0.25}>
           <Suspense fallback={<FeaturedProjectsSkeleton />}>
             <FeaturedProjectsLoader />
           </Suspense>
         </BlurFade>
 
-        <BlurFade delay={0.4}>
+        <BlurFade delay={0.3}>
           <HeroQuote />
         </BlurFade>
       </PageContent>

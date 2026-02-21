@@ -10,7 +10,7 @@ export default function Projects() {
   return (
     <PageWrapper>
       <PageContent>
-        <BlurFade delay={0}>
+        <BlurFade delay={0} noBlur>
           <ProjectsHeader />
         </BlurFade>
 

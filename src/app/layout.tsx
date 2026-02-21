@@ -19,6 +19,11 @@ const geistMono = Geist_Mono({
 export const metadata: Metadata = {
   title: "Martin Vila",
   description: "welcome to my personal space.",
+  openGraph: {
+    title: "Martin Vila",
+    description: "welcome to my personal space.",
+    type: "website",
+  },
 };
 
 export default function RootLayout({

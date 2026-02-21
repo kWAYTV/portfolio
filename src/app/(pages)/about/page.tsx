@@ -9,7 +9,7 @@ export default function About() {
   return (
     <PageWrapper>
       <PageContent>
-        <BlurFade delay={0}>
+        <BlurFade delay={0} noBlur>
           <AboutHeader />
         </BlurFade>
 
