@@ -18,6 +18,8 @@ type Status = "completed" | "active" | "pending";
 
 interface DivProps extends React.ComponentProps<"div"> {
   asChild?: boolean;
+  children?: React.ReactNode;
+  className?: string;
 }
 
 type ItemElement = React.ComponentRef<typeof TimelineItem>;
@@ -716,9 +718,10 @@ function TimelineDescription(props: DivProps) {
   );
 }
 
-interface TimelineTimeProps extends React.ComponentProps<"time"> {
+type TimelineTimeProps = React.ComponentProps<"time"> & {
   asChild?: boolean;
-}
+  children?: React.ReactNode;
+};
 
 function TimelineTime(props: TimelineTimeProps) {
   const { asChild, className, ...timeProps } = props;

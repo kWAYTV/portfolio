@@ -39,13 +39,18 @@ export function ProjectFilters({
         <Search className="absolute top-1/2 left-2.5 size-3 -translate-y-1/2 text-muted-foreground/60" />
         <Input
           className="h-8 w-full border-transparent bg-muted/25 pl-8 text-xs transition-colors duration-200 placeholder:text-muted-foreground/50 focus:border-border focus:bg-transparent sm:text-sm"
-          onChange={(e) => onSearchChange(e.target.value)}
+          onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
+            onSearchChange(e.target.value)
+          }
           placeholder="Search..."
           type="search"
           value={search}
         />
       </div>
-      <Select onValueChange={(v) => onSortChange(v as SortOption)} value={sort}>
+      <Select
+        onValueChange={(v: string) => onSortChange(v as SortOption)}
+        value={sort}
+      >
         <SelectTrigger
           className="h-8 w-full border-transparent bg-muted/25 text-xs transition-colors duration-200 hover:bg-muted/40 sm:w-32 sm:text-sm"
           size="sm"
