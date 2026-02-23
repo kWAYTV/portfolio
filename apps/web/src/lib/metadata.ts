@@ -29,6 +29,7 @@ export function createMetadata(override: MetadataOverride = {}): Metadata {
       url: baseUrl.origin,
       title,
       description,
+      images: [{ url: "/opengraph-image", width: 1200, height: 630 }],
       ...override.openGraph,
     },
     twitter: {
