@@ -5,13 +5,14 @@
   "type": "module",
   "exports": {
     ".": "./src/index.ts",
-    "./config": "./src/config.ts"
+    "./config": "./src/config.ts",
+    "./routing": "./src/routing.ts"
+  },
+  "dependencies": {
+    "next-intl": "^4.8.3"
   },
   "devDependencies": {
     "@portfolio/typescript-config": "workspace:*",
     "typescript": "catalog:"
-  },
-  "dependencies": {
-    "next-intl": "^4.8.3"
   }
 }

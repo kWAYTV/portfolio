@@ -1,7 +1,7 @@
 import { Separator } from "@portfolio/ui";
-import Link from "next/link";
 import { PageContent } from "@/components/shared/page-content";
 import { PageWrapper } from "@/components/shared/page-wrapper";
+import { Link } from "@/i18n/navigation";
 
 export default function NotFound() {
   return (
@@ -17,7 +17,7 @@ export default function NotFound() {
         </div>
         <Separator />
         <p className="text-muted-foreground/80 text-xs leading-relaxed sm:text-sm">
-          The page you're looking for doesn't exist or has been moved.
+          The page you&apos;re looking for doesn&apos;t exist or has been moved.
         </p>
         <div className="flex items-center gap-3 text-muted-foreground text-xs sm:gap-4 sm:text-sm">
           <Link className="transition-colors hover:text-foreground" href="/">

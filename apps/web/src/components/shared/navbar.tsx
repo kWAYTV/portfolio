@@ -1,9 +1,8 @@
 "use client";
 
-import Link from "next/link";
-import { usePathname } from "next/navigation";
 import { ThemeToggle } from "@/components/theming/toggle";
 import { navItems } from "@/consts/nav-items";
+import { Link, usePathname } from "@/i18n/navigation";
 
 export function Navbar() {
   const pathname = usePathname();

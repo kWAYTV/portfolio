@@ -1,3 +1,4 @@
+import { setRequestLocale } from "next-intl/server";
 import { Suspense } from "react";
 import { ProjectListLoader } from "@/components/projects/project-list-loader";
 import { ProjectListSkeleton } from "@/components/projects/project-list-skeleton";
@@ -11,7 +12,14 @@ export const metadata = createMetadata({
   description: "Open source work",
 });
 
-export default function Projects() {
+interface Props {
+  params: Promise<{ locale: string }>;
+}
+
+export default async function Projects({ params }: Props) {
+  const { locale } = await params;
+  setRequestLocale(locale);
+
   return (
     <PageWrapper>
       <PageContent>

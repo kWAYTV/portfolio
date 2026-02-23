@@ -1,4 +1,5 @@
 import { Separator } from "@portfolio/ui";
+import { getTranslations, setRequestLocale } from "next-intl/server";
 import { Suspense } from "react";
 import { FeaturedProjectsLoader } from "@/components/home/featured-projects-loader";
 import { FeaturedProjectsSkeleton } from "@/components/home/featured-projects-skeleton";
@@ -15,10 +16,20 @@ export const metadata = createMetadata({
   description: "welcome to my personal space.",
 });
 
-export default function Home() {
+interface Props {
+  params: Promise<{ locale: string }>;
+}
+
+export default async function Home({ params }: Props) {
+  const { locale } = await params;
+  setRequestLocale(locale);
+
+  const t = await getTranslations("common");
+
   return (
     <PageWrapper>
       <PageContent>
+        <p className="text-muted-foreground text-sm">{t("welcome")}</p>
         <HeroHeader />
         <HeroBio />
         <Separator className="bg-border/50" />

@@ -1,3 +1,4 @@
+import { setRequestLocale } from "next-intl/server";
 import { AboutBio } from "@/components/about/about-bio";
 import { AboutHeader } from "@/components/about/about-header";
 import { ExperienceTimeline } from "@/components/about/experience-timeline";
@@ -10,7 +11,14 @@ export const metadata = createMetadata({
   description: "A bit about me",
 });
 
-export default function About() {
+interface Props {
+  params: Promise<{ locale: string }>;
+}
+
+export default async function About({ params }: Props) {
+  const { locale } = await params;
+  setRequestLocale(locale);
+
   return (
     <PageWrapper>
       <PageContent>

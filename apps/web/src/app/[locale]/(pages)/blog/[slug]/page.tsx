@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
+import { setRequestLocale } from "next-intl/server";
 import { BlogArticle } from "@/components/blog/blog-article";
 import { BlogBackLink } from "@/components/blog/blog-back-link";
 import { BlogPostHeader } from "@/components/blog/blog-post-header";
@@ -10,19 +11,18 @@ import { createMetadata } from "@/lib/metadata";
 import { blogSource, getCachedBlogPage } from "@/lib/source";
 
 interface Props {
-  params: Promise<{ slug: string }>;
+  params: Promise<{ locale: string; slug: string }>;
 }
 
 export default async function BlogPost({ params }: Props) {
-  const { slug } = await params;
+  const { locale, slug } = await params;
+  setRequestLocale(locale);
 
-  // Workaround for Cache Components: generateStaticParams must return at least
-  // one param for build validation, so we return a placeholder when no posts exist
   if (slug === "__placeholder__") {
     notFound();
   }
 
-  const post = getCachedBlogPage(slug);
+  const post = getCachedBlogPage(slug, locale);
 
   if (!post) {
     notFound();
@@ -43,21 +43,17 @@ export default async function BlogPost({ params }: Props) {
   );
 }
 
-export async function generateStaticParams() {
-  const pages = blogSource.getPages();
-
-  if (pages.length === 0) {
-    return [{ slug: "__placeholder__" }];
-  }
-
-  return pages.map((page) => ({
-    slug: page.slugs[0],
+export function generateStaticParams() {
+  const params = blogSource.generateParams("slug", "locale");
+  return params.map((p) => ({
+    locale: p.locale,
+    slug: Array.isArray(p.slug) ? p.slug[0] : p.slug,
   }));
 }
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
-  const { slug } = await params;
-  const post = getCachedBlogPage(slug);
+  const { slug, locale } = await params;
+  const post = getCachedBlogPage(slug, locale);
 
   if (!post) {
     return {};

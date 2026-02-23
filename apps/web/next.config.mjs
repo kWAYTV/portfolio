@@ -1,13 +1,15 @@
 import "@portfolio/env";
 import { createMDX } from "fumadocs-mdx/next";
+import createNextIntlPlugin from "next-intl/plugin";
 
 /** @type {import('next').NextConfig} */
 const config = {
   reactStrictMode: true,
-  cacheComponents: true,
+  cacheComponents: false,
   devIndicators: false,
 };
 
+const withNextIntl = createNextIntlPlugin("./src/i18n/request.ts");
 const withMDX = createMDX({ configPath: "source.config.ts" });
 
-export default withMDX(config);
+export default withNextIntl(withMDX(config));

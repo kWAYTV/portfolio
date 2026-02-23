@@ -8,8 +8,8 @@ import {
   HoverCardTrigger,
 } from "@portfolio/ui";
 import { ExternalLink, GitFork, Star } from "lucide-react";
-import Link from "next/link";
 import { languageColors } from "@/consts/language-colors";
+import { Link } from "@/i18n/navigation";
 
 interface FeaturedProjectsProps {
   repos: GitHubRepo[];
