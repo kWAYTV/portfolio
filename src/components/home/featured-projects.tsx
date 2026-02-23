@@ -1,5 +1,12 @@
+"use client";
+
 import { ExternalLink, GitFork, Star } from "lucide-react";
 import Link from "next/link";
+import {
+  HoverCard,
+  HoverCardContent,
+  HoverCardTrigger,
+} from "@/components/ui/hover-card";
 import { languageColors } from "@/consts/language-colors";
 import type { GitHubRepo } from "@/lib/github";
 import { cn } from "@/lib/utils";
@@ -27,53 +34,72 @@ export function FeaturedProjects({ repos }: FeaturedProjectsProps) {
         </Link>
       </div>
 
-      <div className="space-y-2">
+      <ul className="space-y-0.5">
         {repos.map((repo) => (
-          <a
-            className="group flex items-center justify-between gap-3 rounded-md border border-transparent bg-muted/20 px-3 py-2.5 transition-all duration-200 hover:border-border/50 hover:bg-muted/40"
-            href={repo.html_url}
-            key={repo.id}
-            rel="noopener noreferrer"
-            target="_blank"
-          >
-            <div className="min-w-0 flex-1">
-              <div className="flex items-center gap-2">
-                <span className="truncate font-medium text-foreground/90 text-xs transition-colors group-hover:text-foreground sm:text-sm">
-                  {repo.name}
-                </span>
-                <ExternalLink className="size-3 shrink-0 text-muted-foreground/40 transition-colors group-hover:text-muted-foreground" />
-              </div>
-              {repo.description && (
-                <p className="mt-1 line-clamp-1 text-[11px] text-muted-foreground/60 sm:text-xs">
-                  {repo.description}
-                </p>
-              )}
-            </div>
-
-            <div className="flex shrink-0 items-center gap-2 text-[10px] text-muted-foreground/50 sm:gap-3 sm:text-xs">
-              {repo.language && (
-                <span className="flex items-center gap-1">
-                  <span
-                    className={cn(
-                      "size-2 rounded-full",
-                      languageColors[repo.language] ?? "bg-muted-foreground/50"
+          <li key={repo.id}>
+            <HoverCard closeDelay={100} openDelay={150}>
+              <HoverCardTrigger asChild>
+                <a
+                  className="group flex items-center justify-between gap-3 py-1.5 text-muted-foreground/70 transition-colors hover:text-foreground"
+                  href={repo.html_url}
+                  rel="noopener noreferrer"
+                  target="_blank"
+                >
+                  <span className="truncate font-medium text-foreground/80 text-xs transition-colors group-hover:text-foreground group-hover:underline sm:text-sm">
+                    {repo.name}
+                  </span>
+                  <ExternalLink className="size-3 shrink-0 opacity-0 transition-opacity group-hover:opacity-60" />
+                </a>
+              </HoverCardTrigger>
+              <HoverCardContent align="start" className="w-80" side="top">
+                <div className="space-y-2.5">
+                  <div className="flex items-start justify-between gap-2">
+                    <h4 className="font-medium text-foreground text-sm leading-tight">
+                      {repo.name}
+                    </h4>
+                    <a
+                      aria-label={`Open ${repo.name} on GitHub`}
+                      className="text-muted-foreground/60 transition-colors hover:text-foreground"
+                      href={repo.html_url}
+                      rel="noopener noreferrer"
+                      target="_blank"
+                    >
+                      <ExternalLink className="size-3.5" />
+                    </a>
+                  </div>
+                  {repo.description && (
+                    <p className="text-muted-foreground text-xs leading-relaxed">
+                      {repo.description}
+                    </p>
+                  )}
+                  <div className="flex flex-wrap items-center gap-x-3 gap-y-1 text-[11px] text-muted-foreground/70">
+                    {repo.language && (
+                      <span className="flex items-center gap-1.5">
+                        <span
+                          className={cn(
+                            "size-2 rounded-full",
+                            languageColors[repo.language] ??
+                              "bg-muted-foreground/50"
+                          )}
+                        />
+                        {repo.language}
+                      </span>
                     )}
-                  />
-                  <span className="hidden sm:inline">{repo.language}</span>
-                </span>
-              )}
-              <span className="flex items-center gap-0.5">
-                <Star className="size-3" />
-                {repo.stargazers_count}
-              </span>
-              <span className="flex items-center gap-0.5">
-                <GitFork className="size-3" />
-                {repo.forks_count}
-              </span>
-            </div>
-          </a>
+                    <span className="inline-flex items-center gap-0.5">
+                      <Star className="size-3" />
+                      {repo.stargazers_count}
+                    </span>
+                    <span className="inline-flex items-center gap-0.5">
+                      <GitFork className="size-3" />
+                      {repo.forks_count}
+                    </span>
+                  </div>
+                </div>
+              </HoverCardContent>
+            </HoverCard>
+          </li>
         ))}
-      </div>
+      </ul>
     </section>
   );
 }
