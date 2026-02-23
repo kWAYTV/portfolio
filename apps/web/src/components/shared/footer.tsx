@@ -8,7 +8,7 @@ export function Footer() {
   const t = useTranslations("footer");
 
   return (
-    <footer className="absolute bottom-4 left-1/2 flex -translate-x-1/2 flex-wrap items-center justify-center gap-x-3 gap-y-1 px-2 text-muted-foreground/50 text-xs sm:bottom-8 sm:gap-x-4 sm:px-0">
+    <footer className="absolute bottom-4 left-1/2 flex w-full max-w-[calc(100vw-2rem)] -translate-x-1/2 flex-wrap items-center justify-center gap-x-2 gap-y-1 px-2 text-muted-foreground/50 text-xs sm:bottom-8 sm:max-w-none sm:gap-x-4 sm:px-0">
       <Link
         className="transition-colors hover:text-muted-foreground"
         href="/rss"

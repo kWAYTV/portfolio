@@ -25,12 +25,12 @@ export function FeaturedProjects({ repos }: FeaturedProjectsProps) {
 
   return (
     <section className="space-y-3">
-      <div className="flex items-center justify-between">
-        <h2 className="font-medium text-xs tracking-tight sm:text-sm">
+      <div className="flex min-w-0 items-center justify-between gap-2">
+        <h2 className="min-w-0 truncate font-medium text-xs tracking-tight sm:text-sm">
           {t("featured")}
         </h2>
         <Link
-          className="text-[10px] text-muted-foreground/50 transition-colors hover:text-muted-foreground sm:text-xs"
+          className="shrink-0 whitespace-nowrap text-[10px] text-muted-foreground/50 transition-colors hover:text-muted-foreground sm:text-xs"
           href="/projects"
         >
           {t("viewAll")}
@@ -43,7 +43,7 @@ export function FeaturedProjects({ repos }: FeaturedProjectsProps) {
             <HoverCard closeDelay={100} openDelay={150}>
               <HoverCardTrigger asChild>
                 <a
-                  className="group -mx-2 flex flex-col gap-2 rounded-md px-2 py-3 transition-colors duration-200 hover:bg-muted/30 sm:flex-row sm:items-start sm:justify-between sm:gap-4"
+                  className="group -mx-2 flex min-w-0 flex-col gap-2 rounded-md px-2 py-3 transition-colors duration-200 hover:bg-muted/30 sm:flex-row sm:items-start sm:justify-between sm:gap-4"
                   href={repo.html_url}
                   rel="noopener noreferrer"
                   target="_blank"

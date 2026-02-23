@@ -11,7 +11,7 @@ export function Navbar() {
   const pathname = usePathname();
 
   return (
-    <nav className="absolute top-4 left-1/2 flex -translate-x-1/2 items-center gap-2.5 px-2 sm:top-8 sm:gap-5 sm:px-0">
+    <nav className="absolute top-4 left-1/2 flex w-full max-w-[calc(100vw-2rem)] -translate-x-1/2 flex-wrap items-center justify-center gap-x-2 gap-y-1.5 px-2 sm:top-8 sm:max-w-none sm:flex-nowrap sm:gap-x-5 sm:gap-y-0 sm:px-0">
       {navItems.map((item) => (
         <Link
           className={`whitespace-nowrap text-xs sm:text-sm ${
