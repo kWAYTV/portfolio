@@ -1,10 +1,7 @@
-import { type ClassValue, clsx } from "clsx";
-import { twMerge } from "tailwind-merge";
 import { env } from "@/env";
 
-export function cn(...inputs: ClassValue[]) {
-  return twMerge(clsx(inputs));
-}
+// biome-ignore lint/performance/noBarrelFile: Re-export cn for @/lib/utils consumers
+export { cn } from "@portfolio/ui";
 
 export function getBaseUrl() {
   if (typeof window !== "undefined") {
