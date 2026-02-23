@@ -4,12 +4,13 @@ import { Link, usePathname } from "@i18n/routing";
 import {
   Button,
   Sheet,
+  SheetClose,
   SheetContent,
   SheetHeader,
   SheetTitle,
   SheetTrigger,
 } from "@portfolio/ui";
-import { MenuIcon } from "lucide-react";
+import { MenuIcon, XIcon } from "lucide-react";
 import { useTranslations } from "next-intl";
 import { useState } from "react";
 import { LanguageSelector } from "@/components/shared/language-selector";
@@ -31,26 +32,46 @@ export function Navbar() {
   return (
     <>
       {/* Mobile: hamburger + Sheet */}
-      <div className="absolute top-4 left-1/2 flex w-full max-w-[calc(100vw-2rem)] -translate-x-1/2 items-center justify-center px-2 sm:hidden">
+      <div className="absolute top-3 left-4 sm:hidden">
         <Sheet onOpenChange={setOpen} open={open}>
           <SheetTrigger asChild>
             <Button
-              aria-label="Open menu"
+              aria-expanded={open}
+              aria-label={t("menu")}
               className="text-muted-foreground"
               size="icon-sm"
               variant="ghost"
             >
-              <MenuIcon className="size-5" />
+              <MenuIcon aria-hidden className="size-5" />
             </Button>
           </SheetTrigger>
-          <SheetContent className="w-64" side="right">
-            <SheetHeader>
-              <SheetTitle>Menu</SheetTitle>
+          <SheetContent
+            className="flex w-[280px] flex-col gap-0 border-r p-0 sm:max-w-[280px]"
+            showCloseButton={false}
+            side="left"
+          >
+            <SheetHeader className="flex flex-row items-center justify-between gap-4 border-b px-4 py-3">
+              <SheetTitle className="font-medium text-sm">
+                {t("menu")}
+              </SheetTitle>
+              <SheetClose asChild>
+                <Button
+                  aria-label="Close menu"
+                  className="size-8 shrink-0 text-muted-foreground"
+                  size="icon-sm"
+                  variant="ghost"
+                >
+                  <XIcon className="size-4" />
+                </Button>
+              </SheetClose>
             </SheetHeader>
-            <div className="flex flex-col gap-4 px-4 pb-4">
+            <nav
+              aria-label="Main navigation"
+              className="flex flex-col px-2 py-2"
+            >
               {navItems.map((item) => (
                 <Link
-                  className={linkClass(pathname === item.href)}
+                  className={`rounded-sm px-2 py-2 text-sm ${linkClass(pathname === item.href)}`}
                   href={item.href}
                   key={item.href}
                   onClick={() => setOpen(false)}
@@ -58,11 +79,10 @@ export function Navbar() {
                   {t(item.label)}
                 </Link>
               ))}
-              <span className="h-px bg-border" />
-              <div className="flex items-center gap-4">
-                <LanguageSelector />
-                <ThemeToggle />
-              </div>
+            </nav>
+            <div className="mt-auto flex items-center justify-between gap-4 border-t px-4 py-3">
+              <LanguageSelector />
+              <ThemeToggle />
             </div>
           </SheetContent>
         </Sheet>
