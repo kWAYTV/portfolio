@@ -1,5 +1,6 @@
 "use client";
 
+import type { GitHubRepo } from "@portfolio/github";
 import {
   parseAsInteger,
   parseAsString,
@@ -14,7 +15,6 @@ import {
   sortOptions,
 } from "@/components/projects/project-filters";
 import { Pagination } from "@/components/shared/pagination";
-import type { GitHubRepo } from "@/lib/github";
 
 const ITEMS_PER_PAGE = 5;
 

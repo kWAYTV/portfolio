@@ -1,11 +1,15 @@
 "use client";
 
-import { HoverCard, HoverCardContent, HoverCardTrigger } from "@portfolio/ui";
+import type { GitHubRepo } from "@portfolio/github";
+import {
+  cn,
+  HoverCard,
+  HoverCardContent,
+  HoverCardTrigger,
+} from "@portfolio/ui";
 import { ExternalLink, GitFork, Star } from "lucide-react";
 import Link from "next/link";
 import { languageColors } from "@/consts/language-colors";
-import type { GitHubRepo } from "@/lib/github";
-import { cn } from "@/lib/utils";
 
 interface FeaturedProjectsProps {
   repos: GitHubRepo[];

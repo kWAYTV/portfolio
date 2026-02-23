@@ -1,8 +1,8 @@
 "use client";
 
+import { cn } from "@portfolio/ui";
 import type { HTMLAttributes } from "react";
 import { forwardRef } from "react";
-import { cn } from "@/lib/utils";
 
 export const PageContent = forwardRef<
   HTMLDivElement,

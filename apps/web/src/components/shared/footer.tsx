@@ -1,7 +1,7 @@
 "use client";
 
+import { analytics } from "@portfolio/analytics";
 import Link from "next/link";
-import { analytics } from "@/lib/analytics";
 
 export function Footer() {
   return (

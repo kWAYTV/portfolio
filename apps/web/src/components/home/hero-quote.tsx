@@ -1,8 +1,8 @@
 "use client";
 
+import { analytics } from "@portfolio/analytics";
 import Link from "next/link";
 import { Spoiler } from "spoiled";
-import { analytics } from "@/lib/analytics";
 
 export function HeroQuote() {
   return (

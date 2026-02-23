@@ -1,5 +1,5 @@
+import type { GitHubRepo } from "@portfolio/github";
 import { FEATURED_COUNT, featuredRepoNames } from "@/consts/featured-repos";
-import type { GitHubRepo } from "@/lib/github";
 
 export function getFeaturedRepos(repos: GitHubRepo[]): GitHubRepo[] {
   const featured: GitHubRepo[] = [];

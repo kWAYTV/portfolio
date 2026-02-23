@@ -1,9 +1,9 @@
 "use client";
 
+import { analytics } from "@portfolio/analytics";
+import { cn } from "@portfolio/ui";
 import { FileText, Github, Linkedin, Twitter } from "lucide-react";
 import { socialLinks } from "@/consts/social-links";
-import { analytics } from "@/lib/analytics";
-import { cn } from "@/lib/utils";
 
 const icons = {
   github: Github,

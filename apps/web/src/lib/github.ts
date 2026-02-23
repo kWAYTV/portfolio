@@ -5,8 +5,6 @@ import { env } from "@portfolio/env";
 import { getGitHubRepos as getRepos } from "@portfolio/github";
 import { cacheLife } from "next/cache";
 
-export type { GitHubRepo } from "@portfolio/github";
-
 export async function getGitHubRepos(): Promise<
   Awaited<ReturnType<typeof getRepos>>
 > {
