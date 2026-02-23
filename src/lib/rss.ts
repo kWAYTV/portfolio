@@ -3,7 +3,8 @@ import { cacheLife } from "next/cache";
 import { baseUrl, siteName } from "@/lib/metadata";
 import { blogSource } from "@/lib/source";
 
-export function getRSS(): string {
+// biome-ignore lint/suspicious/useAwait: <use cache components need to be async>
+export async function getRSS(): Promise<string> {
   "use cache";
   cacheLife("days"); // Revalidate daily; new posts appear in feed within 24h
 
