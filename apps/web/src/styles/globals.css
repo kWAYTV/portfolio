@@ -1,5 +1,5 @@
 /** biome-ignore-all lint/correctness/noUnknownTypeSelector: <shadcn> */
-@import "tailwindcss";
+@import "tailwindcss" source("../../../../");
 @import "tw-animate-css";
 @import "fumadocs-ui/css/neutral.css";
 @import "fumadocs-ui/css/preset.css";
