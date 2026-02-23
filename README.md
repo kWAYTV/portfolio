@@ -5,10 +5,13 @@ Personal portfolio site built with Next.js 16, React 19, and Tailwind CSS v4.
 ## Stack
 
 - **Runtime**: [Bun](https://bun.sh/)
-- **Framework**: [Next.js 16](https://nextjs.org/) (App Router, Cache Components)
-- **Styling**: [Tailwind CSS v4](https://tailwindcss.com/), [shadcn/ui](https://ui.shadcn.com/)
+- **Monorepo**: [Turborepo](https://turbo.build/)
+- **Framework**: [Next.js 16](https://nextjs.org/) (App Router, Turbopack, Cache Components)
+- **UI**: [shadcn/ui](https://ui.shadcn.com/) (Radix primitives, Tailwind)
+- **Styling**: [Tailwind CSS v4](https://tailwindcss.com/), [tw-animate-css](https://github.com/antfu/tw-animate-css)
 - **Blog**: [Fumadocs](https://fumadocs.vercel.app/) (MDX)
-- **Animations**: [Motion](https://motion.dev/)
+- **Theming**: [next-themes](https://github.com/pacocoursey/next-themes)
+- **URL state**: [nuqs](https://nuqs.47ng.com/)
 - **Analytics**: [Umami](https://umami.is/) (optional)
 - **Linting**: [Biome](https://biomejs.dev/) + [Ultracite](https://ultracite.ai/)
 
@@ -22,18 +25,22 @@ bun dev
 ## Scripts
 
 | Command | Description |
-|---------|-------------|
-| `bun dev` | Start dev server |
+|--------|-------------|
+| `bun dev` | Start dev (turbo) |
+| `bun run dev:web` | Start web app only |
 | `bun build` | Production build |
-| `bun start` | Start production server |
 | `bun run lint` | Lint and fix |
 | `bun run format` | Format code |
+| `bun run check-types` | Type check all packages |
 
 ## Environment
 
-All environment variables are optional:
+Copy `apps/web/.env.example` to `apps/web/.env.local`. All variables are optional:
 
 ```env
+# Disable Turborepo telemetry
+TURBO_TELEMETRY_DISABLED=1
+
 # GitHub API token (increases rate limits for projects page)
 GITHUB_TOKEN=
 
