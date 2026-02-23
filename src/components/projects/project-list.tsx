@@ -13,7 +13,7 @@ import {
   type SortOption,
   sortOptions,
 } from "@/components/projects/project-filters";
-import { ProjectPagination } from "@/components/projects/project-pagination";
+import { Pagination } from "@/components/shared/pagination";
 import type { GitHubRepo } from "@/lib/github";
 
 const ITEMS_PER_PAGE = 5;
@@ -102,7 +102,7 @@ export function ProjectList({ repos }: ProjectListProps) {
         {q && ` matching "${q}"`}
       </p>
 
-      <div className="min-h-52">
+      <div className="h-[22rem]">
         {paginatedRepos.length === 0 ? (
           <p className="py-12 text-center text-muted-foreground/60 text-xs sm:text-sm">
             No projects found
@@ -116,7 +116,7 @@ export function ProjectList({ repos }: ProjectListProps) {
         )}
       </div>
 
-      <ProjectPagination
+      <Pagination
         currentPage={currentPage}
         onPageChange={handlePageChange}
         totalPages={totalPages}

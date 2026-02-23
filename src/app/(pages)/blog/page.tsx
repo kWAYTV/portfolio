@@ -1,9 +1,10 @@
+import { Suspense } from "react";
 import { BlogHeader } from "@/components/blog/blog-header";
-import { BlogList } from "@/components/blog/blog-list";
+import { BlogListLoader } from "@/components/blog/blog-list-loader";
+import { BlogListSkeleton } from "@/components/blog/blog-list-skeleton";
 import { PageContent } from "@/components/shared/page-content";
 import { PageWrapper } from "@/components/shared/page-wrapper";
 import { createMetadata } from "@/lib/metadata";
-import { blogSource } from "@/lib/source";
 
 export const metadata = createMetadata({
   title: "Blog | Martin Vila",
@@ -12,25 +13,13 @@ export const metadata = createMetadata({
 });
 
 export default function Blog() {
-  const posts = blogSource
-    .getPages()
-    .sort((a, b) => {
-      const dateA = new Date(a.data.date ?? 0).getTime();
-      const dateB = new Date(b.data.date ?? 0).getTime();
-      return dateB - dateA;
-    })
-    .map((post) => ({
-      url: post.url,
-      title: post.data.title,
-      description: post.data.description,
-      date: post.data.date,
-    }));
-
   return (
     <PageWrapper>
       <PageContent>
         <BlogHeader />
-        <BlogList posts={posts} />
+        <Suspense fallback={<BlogListSkeleton />}>
+          <BlogListLoader />
+        </Suspense>
       </PageContent>
     </PageWrapper>
   );

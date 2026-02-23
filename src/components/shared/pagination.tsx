@@ -2,17 +2,17 @@
 
 import { ChevronLeft, ChevronRight } from "lucide-react";
 
-type ProjectPaginationProps = {
+type PaginationProps = {
   currentPage: number;
   totalPages: number;
   onPageChange: (page: number) => void;
 };
 
-export function ProjectPagination({
+export function Pagination({
   currentPage,
   totalPages,
   onPageChange,
-}: ProjectPaginationProps) {
+}: PaginationProps) {
   if (totalPages <= 1) {
     return null;
   }
