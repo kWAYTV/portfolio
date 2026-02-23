@@ -1,0 +1,17 @@
+{
+  "name": "@portfolio/i18n",
+  "version": "0.0.0",
+  "private": true,
+  "type": "module",
+  "exports": {
+    ".": "./src/index.ts",
+    "./config": "./src/config.ts"
+  },
+  "devDependencies": {
+    "@portfolio/typescript-config": "workspace:*",
+    "typescript": "catalog:"
+  },
+  "dependencies": {
+    "next-intl": "^4.8.3"
+  }
+}
