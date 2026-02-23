@@ -21,6 +21,7 @@
         "@base-ui-components/react": "^1.0.0-rc.0",
         "@octokit/rest": "^22.0.1",
         "@portfolio/env": "workspace:*",
+        "@portfolio/github": "workspace:*",
         "@portfolio/ui": "workspace:*",
         "@radix-ui/react-avatar": "^1.1.11",
         "@radix-ui/react-hover-card": "^1.1.15",
@@ -71,6 +72,17 @@
         "@t3-oss/env-core": "^0.13.10",
         "@t3-oss/env-nextjs": "^0.13.10",
         "zod": "catalog:",
+      },
+      "devDependencies": {
+        "@portfolio/typescript-config": "workspace:*",
+        "typescript": "catalog:",
+      },
+    },
+    "packages/github": {
+      "name": "@portfolio/github",
+      "version": "0.0.0",
+      "dependencies": {
+        "@octokit/rest": "^22.0.1",
       },
       "devDependencies": {
         "@portfolio/typescript-config": "workspace:*",
@@ -307,6 +319,8 @@
     "@portfolio/config": ["@portfolio/config@workspace:packages/config"],
 
     "@portfolio/env": ["@portfolio/env@workspace:packages/env"],
+
+    "@portfolio/github": ["@portfolio/github@workspace:packages/github"],
 
     "@portfolio/typescript-config": ["@portfolio/typescript-config@workspace:packages/typescript-config"],
 

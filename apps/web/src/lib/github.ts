@@ -1,25 +1,11 @@
 import "server-only";
 
-import { Octokit } from "@octokit/rest";
+import type { GitHubRepo } from "@portfolio/github";
+import { getGitHubRepos as getRepos, Octokit } from "@portfolio/github";
 import { cacheLife } from "next/cache";
 import { env } from "@/env";
 
-export interface GitHubRepo {
-  archived: boolean;
-  created_at: string;
-  description: string | null;
-  fork: boolean;
-  forks_count: number;
-  full_name: string;
-  homepage: string | null;
-  html_url: string;
-  id: number;
-  language: string | null;
-  name: string;
-  pushed_at: string;
-  stargazers_count: number;
-  topics: string[];
-}
+export type { GitHubRepo } from "@portfolio/github";
 
 const GITHUB_USERNAME = "kWAYTV";
 const EXTRA_REPOS = [{ owner: "vercord", repo: "core" }] as const;
@@ -32,41 +18,5 @@ export async function getGitHubRepos(): Promise<GitHubRepo[]> {
   "use cache";
   cacheLife("hours");
 
-  const [userRepos, ...extraRepos] = await Promise.all([
-    octokit.paginate(octokit.repos.listForUser, {
-      username: GITHUB_USERNAME,
-      per_page: 100,
-      sort: "updated",
-    }),
-    ...EXTRA_REPOS.map(({ owner, repo }) =>
-      octokit.repos.get({ owner, repo }).then((res) => res.data)
-    ),
-  ]);
-
-  const repos = [...userRepos, ...extraRepos];
-
-  return repos
-    .filter((repo) => !(repo.fork || repo.archived))
-    .map((repo) => ({
-      id: repo.id,
-      name: repo.full_name.startsWith(`${GITHUB_USERNAME}/`)
-        ? repo.name
-        : repo.full_name,
-      full_name: repo.full_name,
-      description: repo.description ?? null,
-      html_url: repo.html_url,
-      homepage: repo.homepage ?? null,
-      stargazers_count: repo.stargazers_count ?? 0,
-      forks_count: repo.forks_count ?? 0,
-      language: repo.language ?? null,
-      topics: repo.topics ?? [],
-      pushed_at: repo.pushed_at ?? "",
-      created_at: repo.created_at ?? "",
-      fork: repo.fork ?? false,
-      archived: repo.archived ?? false,
-    }))
-    .sort(
-      (a, b) =>
-        new Date(b.pushed_at).getTime() - new Date(a.pushed_at).getTime()
-    );
+  return await getRepos(octokit, GITHUB_USERNAME, [...EXTRA_REPOS]);
 }

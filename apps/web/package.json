@@ -20,6 +20,7 @@
     "@radix-ui/react-switch": "^1.2.6",
     "@radix-ui/react-tooltip": "^1.2.8",
     "@portfolio/env": "workspace:*",
+    "@portfolio/github": "workspace:*",
     "@portfolio/ui": "workspace:*",
     "@types/mdx": "^2.0.13",
     "class-variance-authority": "^0.7.1",

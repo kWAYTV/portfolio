@@ -1,0 +1,16 @@
+{
+  "name": "@portfolio/github",
+  "version": "0.0.0",
+  "private": true,
+  "type": "module",
+  "exports": {
+    ".": "./src/index.ts"
+  },
+  "dependencies": {
+    "@octokit/rest": "^22.0.1"
+  },
+  "devDependencies": {
+    "@portfolio/typescript-config": "workspace:*",
+    "typescript": "catalog:"
+  }
+}
