@@ -19,6 +19,8 @@
     "build": "turbo build",
     "dev:web": "turbo -F web dev",
     "check-types": "turbo run check-types",
+    "format": "turbo run format",
+    "lint": "turbo run lint",
     "check": "ultracite check",
     "fix": "ultracite fix"
   },
