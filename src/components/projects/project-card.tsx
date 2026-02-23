@@ -25,16 +25,23 @@ export function ProjectCard({ repo }: ProjectCardProps) {
     <HoverCard closeDelay={100} openDelay={150}>
       <HoverCardTrigger asChild>
         <Link
-          className="group -mx-2 flex items-center justify-between gap-3 px-2 py-2 transition-colors hover:bg-muted/20"
+          className="group -mx-2 flex flex-col gap-2 rounded-md px-2 py-3 transition-colors duration-200 hover:bg-muted/30 sm:flex-row sm:items-start sm:justify-between sm:gap-4"
           href={repo.html_url}
           onClick={() => analytics.projectClick(repo.name)}
           rel="noopener noreferrer"
           target="_blank"
         >
-          <span className="truncate font-medium text-foreground/80 text-xs transition-colors group-hover:text-foreground sm:text-sm">
-            {repo.name}
-          </span>
-          <div className="flex shrink-0 items-center gap-2 text-[10px] text-muted-foreground/60 tabular-nums transition-colors group-hover:text-muted-foreground sm:gap-3 sm:text-xs">
+          <div className="min-w-0 flex-1 space-y-1.5">
+            <span className="truncate font-medium text-foreground/80 text-xs leading-relaxed transition-colors duration-200 group-hover:text-foreground sm:text-sm">
+              {repo.name}
+            </span>
+            {repo.description && (
+              <p className="line-clamp-1 text-[11px] text-muted-foreground/70 leading-relaxed sm:text-xs">
+                {repo.description}
+              </p>
+            )}
+          </div>
+          <div className="flex shrink-0 items-center gap-2 text-[10px] text-muted-foreground/60 tabular-nums transition-colors duration-200 group-hover:text-muted-foreground/80 sm:gap-3 sm:text-xs">
             {repo.language && (
               <span className="flex items-center gap-1">
                 <span

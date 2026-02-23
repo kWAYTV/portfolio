@@ -108,7 +108,7 @@ export function ProjectList({ repos }: ProjectListProps) {
             No projects found
           </p>
         ) : (
-          <div className="space-y-0.5">
+          <div className="space-y-1">
             {paginatedRepos.map((repo) => (
               <ProjectCard key={repo.id} repo={repo} />
             ))}
