@@ -1,22 +1,22 @@
 import "server-only";
 
-import type { GitHubRepo } from "@portfolio/github";
-import { getGitHubRepos as getRepos, Octokit } from "@portfolio/github";
+import { Octokit } from "@octokit/rest";
+import { env } from "@portfolio/env";
+import { getGitHubRepos as getRepos } from "@portfolio/github";
 import { cacheLife } from "next/cache";
-import { env } from "@/env";
 
 export type { GitHubRepo } from "@portfolio/github";
 
-const GITHUB_USERNAME = "kWAYTV";
-const EXTRA_REPOS = [{ owner: "vercord", repo: "core" }] as const;
-
-const octokit = new Octokit({
-  auth: env.GITHUB_TOKEN,
-});
-
-export async function getGitHubRepos(): Promise<GitHubRepo[]> {
+export async function getGitHubRepos(): Promise<
+  Awaited<ReturnType<typeof getRepos>>
+> {
   "use cache";
   cacheLife("hours");
 
-  return await getRepos(octokit, GITHUB_USERNAME, [...EXTRA_REPOS]);
+  const octokit = new Octokit({ auth: env.GITHUB_TOKEN });
+  return await getRepos({
+    octokit,
+    username: "kWAYTV",
+    extraRepos: [{ owner: "vercord", repo: "core" }],
+  });
 }

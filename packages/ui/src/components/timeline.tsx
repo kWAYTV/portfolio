@@ -7,8 +7,9 @@
 import { Slot } from "@radix-ui/react-slot";
 import { cva } from "class-variance-authority";
 import * as React from "react";
-import { useComposedRefs } from "@/lib/compose-refs";
-import { cn } from "@/lib/utils";
+
+import { useComposedRefs } from "../compose-refs";
+import { cn } from "../utils";
 
 type Direction = "ltr" | "rtl";
 type Orientation = "vertical" | "horizontal";

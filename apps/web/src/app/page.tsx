@@ -1,3 +1,4 @@
+import { Separator } from "@portfolio/ui";
 import { Suspense } from "react";
 import { FeaturedProjectsLoader } from "@/components/home/featured-projects-loader";
 import { FeaturedProjectsSkeleton } from "@/components/home/featured-projects-skeleton";
@@ -7,7 +8,6 @@ import { HeroQuote } from "@/components/home/hero-quote";
 import { SocialNav } from "@/components/home/social-nav";
 import { PageContent } from "@/components/shared/page-content";
 import { PageWrapper } from "@/components/shared/page-wrapper";
-import { Separator } from "@/components/ui/separator";
 import { createMetadata } from "@/lib/metadata";
 
 export const metadata = createMetadata({

@@ -1,6 +1,6 @@
+import { Toaster } from "@portfolio/ui";
 import { UmamiScript } from "@/components/analytics/umami-script";
 import { ThemeProvider } from "@/components/theming/provider";
-import { Toaster } from "@/components/ui/sonner";
 import "@/styles/globals.css";
 import { RootProvider } from "fumadocs-ui/provider/next";
 import { Geist, Geist_Mono } from "next/font/google";

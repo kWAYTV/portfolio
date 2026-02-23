@@ -1,7 +1,6 @@
 import type { Octokit } from "@octokit/rest";
 
-// biome-ignore lint/performance/noBarrelFile: Re-export Octokit for app convenience
-export { Octokit } from "@octokit/rest";
+export type { Octokit } from "@octokit/rest";
 
 export interface GitHubRepo {
   archived: boolean;
@@ -20,16 +19,17 @@ export interface GitHubRepo {
   topics: string[];
 }
 
-export interface ExtraRepo {
-  owner: string;
-  repo: string;
+export interface GetGitHubReposOptions {
+  extraRepos?: ReadonlyArray<{ owner: string; repo: string }>;
+  octokit: Octokit;
+  username: string;
 }
 
-export async function getGitHubRepos(
-  octokit: Octokit,
-  username: string,
-  extraRepos: ExtraRepo[] = []
-): Promise<GitHubRepo[]> {
+export async function getGitHubRepos({
+  octokit,
+  username,
+  extraRepos = [],
+}: GetGitHubReposOptions): Promise<GitHubRepo[]> {
   const [userRepos, ...extraReposData] = await Promise.all([
     octokit.paginate(octokit.repos.listForUser, {
       username,

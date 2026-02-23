@@ -8,7 +8,7 @@ import {
   TimelineItem,
   TimelineTime,
   TimelineTitle,
-} from "@/components/ui/timeline";
+} from "@portfolio/ui";
 import { experience } from "@/consts/experience";
 
 export function ExperienceTimeline() {

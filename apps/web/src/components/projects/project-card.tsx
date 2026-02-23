@@ -1,12 +1,8 @@
 "use client";
 
+import { HoverCard, HoverCardContent, HoverCardTrigger } from "@portfolio/ui";
 import { ExternalLink, GitFork, Star } from "lucide-react";
 import Link from "next/link";
-import {
-  HoverCard,
-  HoverCardContent,
-  HoverCardTrigger,
-} from "@/components/ui/hover-card";
 import { languageColors } from "@/consts/language-colors";
 import { analytics } from "@/lib/analytics";
 import type { GitHubRepo } from "@/lib/github";

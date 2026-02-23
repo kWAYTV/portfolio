@@ -1,7 +1,7 @@
+import { Separator } from "@portfolio/ui";
 import Link from "next/link";
 import { PageContent } from "@/components/shared/page-content";
 import { PageWrapper } from "@/components/shared/page-wrapper";
-import { Separator } from "@/components/ui/separator";
 
 export default function NotFound() {
   return (

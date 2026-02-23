@@ -1,4 +1,4 @@
-import { Skeleton } from "@/components/ui/skeleton";
+import { Skeleton } from "@portfolio/ui";
 
 export function FeaturedProjectsSkeleton() {
   return (

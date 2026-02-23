@@ -1,4 +1,4 @@
-import { env } from "@/env";
+import { env } from "@portfolio/env";
 
 // biome-ignore lint/performance/noBarrelFile: Re-export cn for @/lib/utils consumers
 export { cn } from "@portfolio/ui";

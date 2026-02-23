@@ -1,0 +1,23 @@
+{
+  "$schema": "https://ui.shadcn.com/schema.json",
+  "style": "new-york",
+  "rsc": true,
+  "tsx": true,
+  "tailwind": {
+    "config": "",
+    "css": "",
+    "baseColor": "neutral",
+    "cssVariables": true,
+    "prefix": ""
+  },
+  "iconLibrary": "lucide",
+  "aliases": {
+    "utils": "./src/utils",
+    "ui": "./src/components"
+  },
+  "registries": {
+    "@basecn": "https://basecn.dev/r/{name}.json",
+    "@magicui": "https://magicui.design/r/{name}.json",
+    "@diceui": "https://diceui.com/r/{name}.json"
+  }
+}

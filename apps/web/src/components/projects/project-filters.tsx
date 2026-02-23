@@ -1,14 +1,14 @@
 "use client";
 
-import { Search } from "lucide-react";
-import { Input } from "@/components/ui/input";
 import {
+  Input,
   Select,
   SelectContent,
   SelectItem,
   SelectTrigger,
   SelectValue,
-} from "@/components/ui/select";
+} from "@portfolio/ui";
+import { Search } from "lucide-react";
 
 export const sortOptions = ["stars", "updated", "name", "created"] as const;
 export type SortOption = (typeof sortOptions)[number];

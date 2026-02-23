@@ -1,4 +1,4 @@
-import "@portfolio/env/web";
+import "@portfolio/env";
 import { createMDX } from "fumadocs-mdx/next";
 
 /** @type {import('next').NextConfig} */
