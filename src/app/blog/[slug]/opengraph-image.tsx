@@ -1,7 +1,7 @@
 import { notFound } from "next/navigation";
 import { ImageResponse } from "next/og";
+import { OgImageContent, ogImageSize } from "@/components/shared/og-image";
 import { siteName } from "@/lib/metadata";
-import { OgImageContent, ogImageSize } from "@/lib/og-image";
 import { getCachedBlogPage } from "@/lib/source";
 
 type Props = { params: Promise<{ slug: string }> };

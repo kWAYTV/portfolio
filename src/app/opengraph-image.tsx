@@ -1,6 +1,6 @@
 import { ImageResponse } from "next/og";
+import { OgImageContent, ogImageSize } from "@/components/shared/og-image";
 import { siteDescription, siteName } from "@/lib/metadata";
-import { OgImageContent, ogImageSize } from "@/lib/og-image";
 
 export const alt = siteName;
 export const size = ogImageSize;
