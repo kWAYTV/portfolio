@@ -47,6 +47,9 @@ coverage
 # Fumadocs
 .source
 
+# TypeScript
+next-env.d.ts
+
 # Misc
 *.tgz
 .cache
