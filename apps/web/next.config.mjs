@@ -9,7 +9,7 @@ const config = {
   devIndicators: false,
 };
 
-const withNextIntl = createNextIntlPlugin("./src/i18n/request.ts");
+const withNextIntl = createNextIntlPlugin("./modules/i18n/request.ts");
 const withMDX = createMDX({ configPath: "source.config.ts" });
 
 export default withNextIntl(withMDX(config));

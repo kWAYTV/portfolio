@@ -1,8 +1,8 @@
+import { Link } from "@i18n/routing";
 import { Separator } from "@portfolio/ui";
 import { getTranslations } from "next-intl/server";
 import { PageContent } from "@/components/shared/page-content";
 import { PageWrapper } from "@/components/shared/page-wrapper";
-import { Link } from "@/i18n/navigation";
 
 export default async function NotFound() {
   const t = await getTranslations("notFound");

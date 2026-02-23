@@ -1,18 +1,15 @@
 {
-  "name": "@portfolio/i18n",
-  "version": "0.0.0",
-  "private": true,
-  "type": "module",
-  "exports": {
-    ".": "./src/index.ts",
-    "./config": "./src/config.ts",
-    "./routing": "./src/routing.ts"
-  },
-  "dependencies": {
-    "next-intl": "^4.8.3"
-  },
-  "devDependencies": {
-    "@portfolio/typescript-config": "workspace:*",
-    "typescript": "catalog:"
-  }
+	"name": "@portfolio/i18n",
+	"version": "0.0.0",
+	"private": true,
+	"type": "module",
+	"exports": {
+		".": "./src/index.ts",
+		"./config": "./src/config.ts"
+	},
+	"dependencies": {},
+	"devDependencies": {
+		"@portfolio/typescript-config": "workspace:*",
+		"typescript": "catalog:"
+	}
 }

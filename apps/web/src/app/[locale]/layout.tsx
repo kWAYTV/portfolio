@@ -2,13 +2,13 @@ import { Toaster } from "@portfolio/ui";
 import { UmamiScript } from "@/components/analytics/umami-script";
 import { ThemeProvider } from "@/components/theming/provider";
 import "@/styles/globals.css";
+import { routing } from "@i18n/routing";
 import { defineI18nUI } from "fumadocs-ui/i18n";
 import { RootProvider } from "fumadocs-ui/provider/next";
 import { notFound } from "next/navigation";
 import { hasLocale, NextIntlClientProvider } from "next-intl";
 import { getMessages, setRequestLocale } from "next-intl/server";
 import { NuqsAdapter } from "nuqs/adapters/next/app";
-import { routing } from "@/i18n/routing";
 import { fumadocsI18n } from "@/lib/i18n";
 import { baseUrl, createMetadata, siteName } from "@/lib/metadata";
 

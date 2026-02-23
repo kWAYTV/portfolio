@@ -1,4 +1,4 @@
-import { defaultLocale } from "@portfolio/i18n";
+import { defaultLocale } from "@portfolio/i18n/config";
 import { Geist, Geist_Mono } from "next/font/google";
 
 const geistSans = Geist({

@@ -1,14 +1,17 @@
-export const locales = ["en", "es"] as const;
-export type Locale = (typeof locales)[number];
-
-export const defaultLocale: Locale = "en";
-
-export const localeNames: Record<Locale, string> = {
-  en: "English",
-  es: "Español",
+export const config = {
+	locales: {
+		en: { label: "English", currency: "USD" },
+		es: { label: "Español", currency: "USD" },
+	} as const,
+	defaultLocale: "en" as const,
+	defaultCurrency: "USD" as const,
+	localeCookieName: "NEXT_LOCALE",
 };
 
-export const localeDir: Record<Locale, "ltr" | "rtl"> = {
-  en: "ltr",
-  es: "ltr",
-};
+export type Locale = keyof typeof config.locales;
+
+export const locales = Object.keys(config.locales) as Locale[];
+export const defaultLocale = config.defaultLocale;
+export const localeNames = Object.fromEntries(
+	Object.entries(config.locales).map(([k, v]) => [k, v.label]),
+) as Record<Locale, string>;

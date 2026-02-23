@@ -103,9 +103,6 @@
     "packages/i18n": {
       "name": "@portfolio/i18n",
       "version": "0.0.0",
-      "dependencies": {
-        "next-intl": "^4.8.3",
-      },
       "devDependencies": {
         "@portfolio/typescript-config": "workspace:*",
         "typescript": "catalog:",

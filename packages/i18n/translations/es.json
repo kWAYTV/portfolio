@@ -1,0 +1,87 @@
+{
+	"common": {
+		"welcome": "Bienvenido",
+		"siteDescription": "Bienvenido a mi espacio personal."
+	},
+	"nav": {
+		"home": "inicio",
+		"about": "sobre mí",
+		"projects": "proyectos",
+		"blog": "blog"
+	},
+	"footer": {
+		"rss": "rss",
+		"byVersend": "por versend.io"
+	},
+	"hero": {
+		"tagline": "desarrollador · gamer · autodidacta",
+		"bio": "Construyendo software minimalista y reflexivo. Explorando la intersección entre diseño e ingeniería."
+	},
+	"about": {
+		"title": "Sobre mí",
+		"subtitle": "Un poco sobre mí",
+		"bio": "Soy ingeniero de software con pasión por construir aplicaciones backend y web. Actualmente buscando nuevas oportunidades.",
+		"experience": "Experiencia"
+	},
+	"experience": {
+		"freelancing": {
+			"period": "2019 - Presente",
+			"role": "Desarrollador Freelance / Contribuidor Open Source",
+			"company": "Freelance"
+		},
+		"tokyoSchool": {
+			"period": "2024 - Presente",
+			"role": "PCAP Python, Programación Informática",
+			"company": "Tokyo School"
+		},
+		"insergalSales": {
+			"period": "2018 - 2019",
+			"role": "Asistente de Ventas, Marketing",
+			"company": "Insergal"
+		},
+		"insergalMechanic": {
+			"period": "2018 - 2019",
+			"role": "Mecánico Automotriz",
+			"company": "Insergal"
+		}
+	},
+	"projects": {
+		"title": "Proyectos",
+		"subtitle": "Trabajo open source",
+		"featured": "Destacados",
+		"viewAll": "Ver todo →",
+		"searchPlaceholder": "Buscar...",
+		"noProjects": "No se encontraron proyectos",
+		"projectCount": "{count} proyecto",
+		"projectCount_other": "{count} proyectos",
+		"matching": "que coinciden con \"{query}\"",
+		"sort": {
+			"stars": "Estrellas",
+			"updated": "Actualizado",
+			"created": "Creado",
+			"name": "Nombre"
+		}
+	},
+	"blog": {
+		"title": "Blog",
+		"subtitle": "Notas breves del trabajo actual. Más entradas aparecerán aquí conforme se publiquen—ordenadas cronológicamente, sin complicaciones.",
+		"backToBlog": "← Volver al blog",
+		"noPosts": "Aún no hay entradas.",
+		"postCount": "{count} entradas",
+		"postCount_one": "{count} entrada",
+		"postCount_other": "{count} entradas",
+		"prev": "ant.",
+		"next": "sig.",
+		"soon": "Pronto"
+	},
+	"notFound": {
+		"title": "404",
+		"subtitle": "Página no encontrada",
+		"description": "La página que buscas no existe o ha sido movida.",
+		"home": "Inicio"
+	},
+	"theme": {
+		"dark": "oscuro",
+		"light": "claro"
+	}
+}

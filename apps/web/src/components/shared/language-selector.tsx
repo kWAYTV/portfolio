@@ -1,19 +1,20 @@
 "use client";
 
-import type { Locale } from "@portfolio/i18n/config";
+import { updateLocale } from "@i18n/lib/update-locale";
+import { routing, usePathname, useRouter } from "@i18n/routing";
+import { type Locale, localeNames } from "@portfolio/i18n/config";
 import { useLocale } from "next-intl";
-import { usePathname, useRouter } from "@/i18n/navigation";
-import { routing } from "@/i18n/routing";
 
 export function LanguageSelector() {
   const locale = useLocale() as Locale;
   const router = useRouter();
   const pathname = usePathname();
 
-  const handleChange = (newLocale: Locale) => {
+  const handleChange = async (newLocale: Locale) => {
     if (newLocale === locale) {
       return;
     }
+    await updateLocale(newLocale);
     router.replace(pathname, { locale: newLocale });
   };
 
@@ -29,7 +30,7 @@ export function LanguageSelector() {
             onClick={() => handleChange(loc as Locale)}
             type="button"
           >
-            {loc}
+            {localeNames[loc as Locale]}
           </button>
         </span>
       ))}

@@ -1,8 +1,8 @@
 "use client";
 
+import { Link } from "@i18n/routing";
 import { analytics } from "@portfolio/analytics";
 import { useTranslations } from "next-intl";
-import { Link } from "@/i18n/navigation";
 
 export function Footer() {
   const t = useTranslations("footer");

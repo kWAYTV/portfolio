@@ -1,5 +1,6 @@
 "use client";
 
+import { Link } from "@i18n/routing";
 import type { GitHubRepo } from "@portfolio/github";
 import {
   cn,
@@ -10,7 +11,6 @@ import {
 import { ExternalLink, GitFork, Star } from "lucide-react";
 import { useTranslations } from "next-intl";
 import { languageColors } from "@/consts/language-colors";
-import { Link } from "@/i18n/navigation";
 
 interface FeaturedProjectsProps {
   repos: GitHubRepo[];
