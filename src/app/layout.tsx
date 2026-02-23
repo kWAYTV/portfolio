@@ -18,9 +18,8 @@ const geistMono = Geist_Mono({
 
 export const metadata = {
   ...createMetadata({
-    title: "Martin Vila",
+    title: siteName,
     description: "welcome to my personal space.",
-    openGraph: { type: "website" },
   }),
   alternates: {
     types: {

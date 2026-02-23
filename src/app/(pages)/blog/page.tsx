@@ -9,8 +9,6 @@ export const metadata = createMetadata({
   title: "Blog | Martin Vila",
   description:
     "Quiet notes from current work. More entries will fall in here as they are published—kept chronologically, nothing fancy.",
-  imagePath: "/blog/opengraph-image",
-  openGraph: { type: "website" },
 });
 
 export default function Blog() {

@@ -13,8 +13,6 @@ import { createMetadata } from "@/lib/metadata";
 export const metadata = createMetadata({
   title: "Martin Vila",
   description: "welcome to my personal space.",
-  imagePath: "/opengraph-image",
-  openGraph: { type: "website" },
 });
 
 export default function Home() {

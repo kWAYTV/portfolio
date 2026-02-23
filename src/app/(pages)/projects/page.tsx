@@ -9,8 +9,6 @@ import { createMetadata } from "@/lib/metadata";
 export const metadata = createMetadata({
   title: "Projects | Martin Vila",
   description: "Open source work",
-  imagePath: "/projects/opengraph-image",
-  openGraph: { type: "website" },
 });
 
 export default function Projects() {

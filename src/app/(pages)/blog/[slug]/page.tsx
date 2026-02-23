@@ -66,7 +66,6 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   return createMetadata({
     title: `${post.data.title} | Martin Vila`,
     description: post.data.description ?? undefined,
-    imagePath: `/blog/${slug}/opengraph-image`,
     openGraph: { type: "article" },
   });
 }
