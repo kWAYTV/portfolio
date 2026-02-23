@@ -1,8 +1,11 @@
-export function HeroBio() {
+import { getTranslations } from "next-intl/server";
+
+export async function HeroBio() {
+  const t = await getTranslations("hero");
+
   return (
     <p className="text-muted-foreground/80 text-xs leading-relaxed sm:text-sm">
-      Building minimal, thoughtful software. Currently exploring the
-      intersection of design and engineering.
+      {t("bio")}
     </p>
   );
 }

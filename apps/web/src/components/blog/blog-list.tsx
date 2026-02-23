@@ -1,5 +1,6 @@
 "use client";
 
+import { useTranslations } from "next-intl";
 import { parseAsInteger, useQueryState } from "nuqs";
 import { useMemo } from "react";
 import { BlogCard } from "@/components/blog/blog-card";
@@ -15,10 +16,12 @@ interface Post {
 }
 
 interface BlogListProps {
+  locale: string;
   posts: Post[];
 }
 
-export function BlogList({ posts }: BlogListProps) {
+export function BlogList({ locale, posts }: BlogListProps) {
+  const t = useTranslations("blog");
   const [page, setPage] = useQueryState("page", parseAsInteger.withDefault(1));
 
   const totalPages = Math.ceil(posts.length / POSTS_PER_PAGE);
@@ -36,7 +39,7 @@ export function BlogList({ posts }: BlogListProps) {
   if (posts.length === 0) {
     return (
       <p className="text-muted-foreground/60 text-xs sm:text-sm">
-        No posts yet.
+        {t("noPosts")}
       </p>
     );
   }
@@ -44,7 +47,7 @@ export function BlogList({ posts }: BlogListProps) {
   return (
     <div className="space-y-3">
       <p className="text-[11px] text-muted-foreground/60">
-        {posts.length} post{posts.length !== 1 && "s"}
+        {t("postCount", { count: posts.length })}
       </p>
 
       <div className="h-[16rem] space-y-1">
@@ -53,6 +56,7 @@ export function BlogList({ posts }: BlogListProps) {
             date={post.date}
             description={post.description}
             key={post.url}
+            locale={locale}
             title={post.title}
             url={post.url}
           />

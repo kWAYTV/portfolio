@@ -1,4 +1,4 @@
-import { setRequestLocale } from "next-intl/server";
+import { getTranslations, setRequestLocale } from "next-intl/server";
 import { Suspense } from "react";
 import { ProjectListLoader } from "@/components/projects/project-list-loader";
 import { ProjectListSkeleton } from "@/components/projects/project-list-skeleton";
@@ -7,10 +7,18 @@ import { PageContent } from "@/components/shared/page-content";
 import { PageWrapper } from "@/components/shared/page-wrapper";
 import { createMetadata } from "@/lib/metadata";
 
-export const metadata = createMetadata({
-  title: "Projects | Martin Vila",
-  description: "Open source work",
-});
+export async function generateMetadata({
+  params,
+}: {
+  params: Promise<{ locale: string }>;
+}) {
+  const { locale } = await params;
+  const t = await getTranslations({ locale, namespace: "projects" });
+  return createMetadata({
+    title: `${t("title")} | Martin Vila`,
+    description: t("subtitle"),
+  });
+}
 
 interface Props {
   params: Promise<{ locale: string }>;

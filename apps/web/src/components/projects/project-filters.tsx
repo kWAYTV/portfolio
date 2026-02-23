@@ -9,16 +9,10 @@ import {
   SelectValue,
 } from "@portfolio/ui";
 import { Search } from "lucide-react";
+import { useTranslations } from "next-intl";
 
 export const sortOptions = ["stars", "updated", "name", "created"] as const;
 export type SortOption = (typeof sortOptions)[number];
-
-const sortLabels: Record<SortOption, string> = {
-  stars: "Stars",
-  updated: "Updated",
-  created: "Created",
-  name: "Name",
-};
 
 interface ProjectFiltersProps {
   onSearchChange: (value: string) => void;
@@ -33,6 +27,7 @@ export function ProjectFilters({
   onSearchChange,
   onSortChange,
 }: ProjectFiltersProps) {
+  const t = useTranslations("projects");
   return (
     <div className="flex flex-col gap-2 sm:flex-row sm:items-center">
       <div className="relative min-w-0 flex-1">
@@ -42,7 +37,7 @@ export function ProjectFilters({
           onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
             onSearchChange(e.target.value)
           }
-          placeholder="Search..."
+          placeholder={t("searchPlaceholder")}
           type="search"
           value={search}
         />
@@ -60,7 +55,7 @@ export function ProjectFilters({
         <SelectContent>
           {sortOptions.map((option) => (
             <SelectItem key={option} value={option}>
-              {sortLabels[option]}
+              {t(`sort.${option}`)}
             </SelectItem>
           ))}
         </SelectContent>

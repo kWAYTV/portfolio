@@ -1,20 +1,31 @@
+"use client";
+
+import { useTranslations } from "next-intl";
 import { Link } from "@/i18n/navigation";
 
 interface BlogCardProps {
   date?: string;
   description?: string;
+  locale: string;
   title: string;
   url: string;
 }
 
-export function BlogCard({ title, description, date, url }: BlogCardProps) {
+export function BlogCard({
+  title,
+  description,
+  date,
+  locale,
+  url,
+}: BlogCardProps) {
+  const t = useTranslations("blog");
   const formattedDate = date
-    ? new Date(date).toLocaleDateString("en-US", {
+    ? new Date(date).toLocaleDateString(locale, {
         month: "short",
         day: "numeric",
         year: "numeric",
       })
-    : "Soon";
+    : t("soon");
 
   return (
     <Link

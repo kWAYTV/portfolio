@@ -8,6 +8,7 @@ import {
   HoverCardTrigger,
 } from "@portfolio/ui";
 import { ExternalLink, GitFork, Star } from "lucide-react";
+import { useTranslations } from "next-intl";
 import { languageColors } from "@/consts/language-colors";
 import { Link } from "@/i18n/navigation";
 
@@ -16,6 +17,8 @@ interface FeaturedProjectsProps {
 }
 
 export function FeaturedProjects({ repos }: FeaturedProjectsProps) {
+  const t = useTranslations("projects");
+
   if (repos.length === 0) {
     return null;
   }
@@ -24,13 +27,13 @@ export function FeaturedProjects({ repos }: FeaturedProjectsProps) {
     <section className="space-y-3">
       <div className="flex items-center justify-between">
         <h2 className="font-medium text-xs tracking-tight sm:text-sm">
-          Featured
+          {t("featured")}
         </h2>
         <Link
           className="text-[10px] text-muted-foreground/50 transition-colors hover:text-muted-foreground sm:text-xs"
           href="/projects"
         >
-          View all →
+          {t("viewAll")}
         </Link>
       </div>
 

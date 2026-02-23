@@ -9,34 +9,48 @@ import {
   TimelineTime,
   TimelineTitle,
 } from "@portfolio/ui";
+import { getTranslations } from "next-intl/server";
 import { experience } from "@/consts/experience";
 
-export function ExperienceTimeline() {
+const experienceKeys = {
+  "freelancing-1": "freelancing",
+  "tokyo-school": "tokyoSchool",
+  "insergal-sales": "insergalSales",
+  "insergal-mechanic": "insergalMechanic",
+} as const;
+
+export async function ExperienceTimeline() {
+  const t = await getTranslations("about");
+  const tExp = await getTranslations("experience");
+
   return (
     <section className="space-y-3">
       <h2 className="font-medium text-xs tracking-tight sm:text-sm">
-        Experience
+        {t("experience")}
       </h2>
       <Timeline activeIndex={0}>
-        {experience.map((item) => (
-          <TimelineItem key={item.id}>
-            <TimelineDot />
-            <TimelineConnector />
-            <TimelineContent>
-              <TimelineHeader>
-                <TimelineTime className="text-[10px] sm:text-xs">
-                  {item.period}
-                </TimelineTime>
-                <TimelineTitle className="font-medium text-xs sm:text-sm">
-                  {item.company}
-                </TimelineTitle>
-              </TimelineHeader>
-              <TimelineDescription className="text-[11px] sm:text-xs">
-                {item.role}
-              </TimelineDescription>
-            </TimelineContent>
-          </TimelineItem>
-        ))}
+        {experience.map((item) => {
+          const key = experienceKeys[item.id];
+          return (
+            <TimelineItem key={item.id}>
+              <TimelineDot />
+              <TimelineConnector />
+              <TimelineContent>
+                <TimelineHeader>
+                  <TimelineTime className="text-[10px] sm:text-xs">
+                    {tExp(`${key}.period`)}
+                  </TimelineTime>
+                  <TimelineTitle className="font-medium text-xs sm:text-sm">
+                    {tExp(`${key}.company`)}
+                  </TimelineTitle>
+                </TimelineHeader>
+                <TimelineDescription className="text-[11px] sm:text-xs">
+                  {tExp(`${key}.role`)}
+                </TimelineDescription>
+              </TimelineContent>
+            </TimelineItem>
+          );
+        })}
       </Timeline>
     </section>
   );

@@ -19,19 +19,29 @@ const { provider } = defineI18nUI(fumadocsI18n, {
   },
 });
 
-export const metadata = {
-  ...createMetadata({
-    title: siteName,
-    description: "welcome to my personal space.",
-  }),
-  alternates: {
-    types: {
-      "application/rss+xml": [
-        { title: `Blog | ${siteName}`, url: `${baseUrl.origin}/rss` },
-      ],
+export async function generateMetadata({
+  params,
+}: {
+  params: Promise<{ locale: string }>;
+}) {
+  const { locale } = await params;
+  const { getTranslations } = await import("next-intl/server");
+  const t = await getTranslations({ locale, namespace: "common" });
+
+  return {
+    ...createMetadata({
+      title: siteName,
+      description: t("siteDescription"),
+    }),
+    alternates: {
+      types: {
+        "application/rss+xml": [
+          { title: `Blog | ${siteName}`, url: `${baseUrl.origin}/rss` },
+        ],
+      },
     },
-  },
-};
+  };
+}
 
 export function generateStaticParams() {
   return routing.locales.map((locale) => ({ locale }));

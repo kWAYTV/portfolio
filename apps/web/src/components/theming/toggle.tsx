@@ -2,6 +2,7 @@
 
 import { analytics } from "@portfolio/analytics";
 import { cn } from "@portfolio/ui";
+import { useTranslations } from "next-intl";
 import { useCallback, useEffect, useRef, useState } from "react";
 import { flushSync } from "react-dom";
 
@@ -15,6 +16,7 @@ export const ThemeToggle = ({
   duration = 400,
   ...props
 }: AnimatedThemeTogglerProps) => {
+  const t = useTranslations("theme");
   const [isDark, setIsDark] = useState(false);
   const buttonRef = useRef<HTMLButtonElement>(null);
 
@@ -85,7 +87,7 @@ export const ThemeToggle = ({
       ref={buttonRef}
       {...props}
     >
-      {isDark ? "light" : "dark"}
+      {isDark ? t("light") : t("dark")}
     </button>
   );
 };

@@ -1,6 +1,7 @@
 "use client";
 
 import { ChevronLeft, ChevronRight } from "lucide-react";
+import { useTranslations } from "next-intl";
 
 interface PaginationProps {
   currentPage: number;
@@ -13,6 +14,8 @@ export function Pagination({
   totalPages,
   onPageChange,
 }: PaginationProps) {
+  const t = useTranslations("blog");
+
   if (totalPages <= 1) {
     return null;
   }
@@ -26,7 +29,7 @@ export function Pagination({
         type="button"
       >
         <ChevronLeft className="size-3" />
-        prev
+        {t("prev")}
       </button>
       <span className="text-muted-foreground/60 text-xs tabular-nums">
         {currentPage} / {totalPages}
@@ -37,7 +40,7 @@ export function Pagination({
         onClick={() => onPageChange(currentPage + 1)}
         type="button"
       >
-        next
+        {t("next")}
         <ChevronRight className="size-3" />
       </button>
     </div>

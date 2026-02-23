@@ -1,6 +1,7 @@
 "use client";
 
 import type { GitHubRepo } from "@portfolio/github";
+import { useTranslations } from "next-intl";
 import {
   parseAsInteger,
   parseAsString,
@@ -29,6 +30,7 @@ interface ProjectListProps {
 }
 
 export function ProjectList({ repos }: ProjectListProps) {
+  const t = useTranslations("projects");
   const [{ q, sort, page }, setParams] = useQueryStates(projectSearchParams, {
     shallow: false,
   });
@@ -97,15 +99,14 @@ export function ProjectList({ repos }: ProjectListProps) {
       />
 
       <p className="text-[11px] text-muted-foreground/60">
-        {filteredAndSorted.length} project
-        {filteredAndSorted.length !== 1 && "s"}
-        {q && ` matching "${q}"`}
+        {t("projectCount", { count: filteredAndSorted.length })}
+        {q && ` ${t("matching", { query: q })}`}
       </p>
 
-      <div className="h-[22rem]">
+      <div className="h-[22rem] overflow-y-auto">
         {paginatedRepos.length === 0 ? (
           <p className="py-12 text-center text-muted-foreground/60 text-xs sm:text-sm">
-            No projects found
+            {t("noProjects")}
           </p>
         ) : (
           <div className="space-y-1">

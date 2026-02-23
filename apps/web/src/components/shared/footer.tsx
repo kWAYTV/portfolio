@@ -1,16 +1,19 @@
 "use client";
 
 import { analytics } from "@portfolio/analytics";
+import { useTranslations } from "next-intl";
 import { Link } from "@/i18n/navigation";
 
 export function Footer() {
+  const t = useTranslations("footer");
+
   return (
     <footer className="absolute bottom-4 left-1/2 flex -translate-x-1/2 flex-wrap items-center justify-center gap-x-3 gap-y-1 px-2 text-muted-foreground/50 text-xs sm:bottom-8 sm:gap-x-4 sm:px-0">
       <Link
         className="transition-colors hover:text-muted-foreground"
         href="/rss"
       >
-        rss
+        {t("rss")}
       </Link>
 
       <span>·</span>
@@ -24,7 +27,7 @@ export function Footer() {
         rel="noopener noreferrer"
         target="_blank"
       >
-        by versend.io
+        {t("byVersend")}
       </a>
     </footer>
   );

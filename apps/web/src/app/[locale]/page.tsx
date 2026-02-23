@@ -11,10 +11,18 @@ import { PageContent } from "@/components/shared/page-content";
 import { PageWrapper } from "@/components/shared/page-wrapper";
 import { createMetadata } from "@/lib/metadata";
 
-export const metadata = createMetadata({
-  title: "Martin Vila",
-  description: "welcome to my personal space.",
-});
+export async function generateMetadata({
+  params,
+}: {
+  params: Promise<{ locale: string }>;
+}) {
+  const { locale } = await params;
+  const t = await getTranslations({ locale, namespace: "common" });
+  return createMetadata({
+    title: "Martin Vila",
+    description: t("siteDescription"),
+  });
+}
 
 interface Props {
   params: Promise<{ locale: string }>;
