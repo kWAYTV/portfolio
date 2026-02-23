@@ -2,6 +2,23 @@
 export { Badge, badgeVariants } from "./components/badge";
 export { Button, buttonVariants } from "./components/button";
 export {
+  DropdownMenu,
+  DropdownMenuCheckboxItem,
+  DropdownMenuContent,
+  DropdownMenuGroup,
+  DropdownMenuItem,
+  DropdownMenuLabel,
+  DropdownMenuPortal,
+  DropdownMenuRadioGroup,
+  DropdownMenuRadioItem,
+  DropdownMenuSeparator,
+  DropdownMenuShortcut,
+  DropdownMenuSub,
+  DropdownMenuSubContent,
+  DropdownMenuSubTrigger,
+  DropdownMenuTrigger,
+} from "./components/dropdown-menu";
+export {
   HoverCard,
   HoverCardContent,
   HoverCardTrigger,

@@ -7,7 +7,8 @@
 		"home": "home",
 		"about": "about",
 		"projects": "projects",
-		"blog": "blog"
+		"blog": "blog",
+		"language": "language"
 	},
 	"footer": {
 		"rss": "rss",

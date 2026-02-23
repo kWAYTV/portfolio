@@ -2,38 +2,62 @@
 
 import { updateLocale } from "@i18n/lib/update-locale";
 import { routing, usePathname, useRouter } from "@i18n/routing";
-import { type Locale, localeNames } from "@portfolio/i18n/config";
-import { useLocale } from "next-intl";
+import {
+  type Locale,
+  localeNames,
+  localeToFlagEmoji,
+} from "@portfolio/i18n/config";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuRadioGroup,
+  DropdownMenuRadioItem,
+  DropdownMenuTrigger,
+} from "@portfolio/ui";
+import { useLocale, useTranslations } from "next-intl";
 
 export function LanguageSelector() {
   const locale = useLocale() as Locale;
+  const t = useTranslations("nav");
   const router = useRouter();
   const pathname = usePathname();
 
-  const handleChange = async (newLocale: Locale) => {
-    if (newLocale === locale) {
+  const handleChange = async (newLocale: string) => {
+    const loc = newLocale as Locale;
+    if (loc === locale) {
       return;
     }
-    await updateLocale(newLocale);
-    router.replace(pathname, { locale: newLocale });
+    await updateLocale(loc);
+    router.replace(pathname, { locale: loc });
   };
 
   return (
-    <div className="flex items-center gap-1.5 text-muted-foreground/50 text-xs sm:text-sm">
-      {routing.locales.map((loc, i) => (
-        <span className="flex items-center gap-1.5" key={loc}>
-          {i > 0 && <span className="text-muted-foreground/30">/</span>}
-          <button
-            className={`transition-colors hover:text-foreground ${
-              loc === locale ? "text-foreground" : ""
-            }`}
-            onClick={() => handleChange(loc as Locale)}
-            type="button"
-          >
-            {localeNames[loc as Locale]}
-          </button>
-        </span>
-      ))}
-    </div>
+    <DropdownMenu>
+      <DropdownMenuTrigger asChild>
+        <button
+          aria-label="Select language"
+          className="whitespace-nowrap text-muted-foreground/60 text-xs hover:text-foreground sm:text-sm"
+          type="button"
+        >
+          {t("language")}
+        </button>
+      </DropdownMenuTrigger>
+      <DropdownMenuContent align="end" className="min-w-[10rem]" sideOffset={4}>
+        <DropdownMenuRadioGroup onValueChange={handleChange} value={locale}>
+          {routing.locales.map((loc) => (
+            <DropdownMenuRadioItem
+              className="cursor-pointer"
+              key={loc}
+              value={loc}
+            >
+              <span aria-hidden className="mr-2">
+                {localeToFlagEmoji(loc as Locale)}
+              </span>
+              {localeNames[loc as Locale]}
+            </DropdownMenuRadioItem>
+          ))}
+        </DropdownMenuRadioGroup>
+      </DropdownMenuContent>
+    </DropdownMenu>
   );
 }
