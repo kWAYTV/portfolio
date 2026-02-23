@@ -1,5 +1,10 @@
 import { defaultLocale } from "@portfolio/i18n/config";
 import { Geist, Geist_Mono } from "next/font/google";
+import { baseUrl } from "@/lib/metadata";
+
+export const metadata = {
+  metadataBase: baseUrl,
+};
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
