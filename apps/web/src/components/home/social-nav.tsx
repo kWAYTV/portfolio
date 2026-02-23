@@ -14,7 +14,7 @@ const icons = {
 
 export function SocialNav() {
   return (
-    <nav className="flex min-w-0 flex-wrap items-center gap-2 sm:gap-4">
+    <nav className="grid min-w-0 grid-cols-2 gap-x-4 gap-y-2 sm:grid-cols-4 sm:gap-4">
       {socialLinks.map((link) => {
         const Icon = icons[link.icon as keyof typeof icons];
         return (

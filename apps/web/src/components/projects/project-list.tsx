@@ -103,17 +103,15 @@ export function ProjectList({ repos }: ProjectListProps) {
         {q && ` ${t("matching", { query: q })}`}
       </p>
 
-      <div className="h-[22rem] overflow-y-auto">
+      <div className="space-y-1">
         {paginatedRepos.length === 0 ? (
           <p className="py-12 text-center text-muted-foreground/60 text-xs sm:text-sm">
             {t("noProjects")}
           </p>
         ) : (
-          <div className="space-y-1">
-            {paginatedRepos.map((repo) => (
-              <ProjectCard key={repo.id} repo={repo} />
-            ))}
-          </div>
+          paginatedRepos.map((repo) => (
+            <ProjectCard key={repo.id} repo={repo} />
+          ))
         )}
       </div>
 

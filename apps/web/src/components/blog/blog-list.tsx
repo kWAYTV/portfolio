@@ -50,7 +50,7 @@ export function BlogList({ locale, posts }: BlogListProps) {
         {t("postCount", { count: posts.length })}
       </p>
 
-      <div className="h-[16rem] space-y-1">
+      <div className="space-y-1">
         {paginatedPosts.map((post) => (
           <BlogCard
             date={post.date}

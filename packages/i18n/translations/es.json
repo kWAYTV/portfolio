@@ -53,7 +53,8 @@
 		"viewAll": "Ver todo →",
 		"searchPlaceholder": "Buscar...",
 		"noProjects": "No se encontraron proyectos",
-		"projectCount": "{count} proyecto",
+		"projectCount": "{count} proyectos",
+		"projectCount_one": "{count} proyecto",
 		"projectCount_other": "{count} proyectos",
 		"matching": "que coinciden con \"{query}\"",
 		"sort": {
@@ -65,12 +66,12 @@
 	},
 	"blog": {
 		"title": "Blog",
-		"subtitle": "Notas breves del trabajo actual. Más entradas aparecerán aquí conforme se publiquen—ordenadas cronológicamente, sin complicaciones.",
+		"subtitle": "Notas breves del trabajo actual. Más posts aparecerán aquí conforme se publiquen—ordenadas cronológicamente, sin complicaciones.",
 		"backToBlog": "← Volver al blog",
-		"noPosts": "Aún no hay entradas.",
-		"postCount": "{count} entradas",
-		"postCount_one": "{count} entrada",
-		"postCount_other": "{count} entradas",
+		"noPosts": "Aún no hay posts.",
+		"postCount": "{count} posts",
+		"postCount_one": "{count} post",
+		"postCount_other": "{count} posts",
 		"prev": "ant.",
 		"next": "sig.",
 		"soon": "Pronto"

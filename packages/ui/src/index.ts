@@ -37,6 +37,16 @@ export {
   SelectValue,
 } from "./components/select";
 export { Separator } from "./components/separator";
+export {
+  Sheet,
+  SheetClose,
+  SheetContent,
+  SheetDescription,
+  SheetFooter,
+  SheetHeader,
+  SheetTitle,
+  SheetTrigger,
+} from "./components/sheet";
 export { Skeleton } from "./components/skeleton";
 export { Toaster } from "./components/sonner";
 export {
