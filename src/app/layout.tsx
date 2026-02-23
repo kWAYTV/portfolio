@@ -3,9 +3,9 @@ import { ThemeProvider } from "@/components/theming/provider";
 import { Toaster } from "@/components/ui/sonner";
 import "@/styles/globals.css";
 import { RootProvider } from "fumadocs-ui/provider/next";
-import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import { NuqsAdapter } from "nuqs/adapters/next/app";
+import { createMetadata } from "@/lib/metadata";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -16,15 +16,11 @@ const geistMono = Geist_Mono({
   subsets: ["latin"],
 });
 
-export const metadata: Metadata = {
+export const metadata = createMetadata({
   title: "Martin Vila",
   description: "welcome to my personal space.",
-  openGraph: {
-    title: "Martin Vila",
-    description: "welcome to my personal space.",
-    type: "website",
-  },
-};
+  openGraph: { type: "website" },
+});
 
 export default function RootLayout({
   children,

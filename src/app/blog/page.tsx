@@ -2,7 +2,16 @@ import { BlogHeader } from "@/components/blog/blog-header";
 import { BlogList } from "@/components/blog/blog-list";
 import { PageContent } from "@/components/shared/page-content";
 import { PageWrapper } from "@/components/shared/page-wrapper";
+import { createMetadata } from "@/lib/metadata";
 import { blogSource } from "@/lib/source";
+
+export const metadata = createMetadata({
+  title: "Blog | Martin Vila",
+  description:
+    "Quiet notes from current work. More entries will fall in here as they are published—kept chronologically, nothing fancy.",
+  imagePath: "/blog/opengraph-image",
+  openGraph: { type: "website" },
+});
 
 export default function Blog() {
   const posts = blogSource

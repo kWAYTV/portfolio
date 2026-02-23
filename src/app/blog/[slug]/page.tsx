@@ -6,6 +6,7 @@ import { BlogPostHeader } from "@/components/blog/blog-post-header";
 import { getMDXComponents } from "@/components/blog/mdx-components";
 import { PageContent } from "@/components/shared/page-content";
 import { PageWrapper } from "@/components/shared/page-wrapper";
+import { createMetadata } from "@/lib/metadata";
 import { blogSource, getCachedBlogPage } from "@/lib/source";
 
 type Props = {
@@ -62,11 +63,10 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
     return {};
   }
 
-  const title = `${post.data.title} | Martin Vila`;
-  const description = post.data.description ?? undefined;
-  return {
-    title,
-    description,
-    openGraph: { title, description, type: "article" },
-  };
+  return createMetadata({
+    title: `${post.data.title} | Martin Vila`,
+    description: post.data.description ?? undefined,
+    imagePath: `/blog/${slug}/opengraph-image`,
+    openGraph: { type: "article" },
+  });
 }

@@ -8,6 +8,14 @@ import { SocialNav } from "@/components/home/social-nav";
 import { PageContent } from "@/components/shared/page-content";
 import { PageWrapper } from "@/components/shared/page-wrapper";
 import { Separator } from "@/components/ui/separator";
+import { createMetadata } from "@/lib/metadata";
+
+export const metadata = createMetadata({
+  title: "Martin Vila",
+  description: "welcome to my personal space.",
+  imagePath: "/opengraph-image",
+  openGraph: { type: "website" },
+});
 
 export default function Home() {
   return (
