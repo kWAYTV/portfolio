@@ -54,8 +54,7 @@
 		"viewAll": "View all →",
 		"searchPlaceholder": "Search...",
 		"noProjects": "No projects found",
-		"projectCount": "{count} project",
-		"projectCount_other": "{count} projects",
+		"projectCount": "{count, plural, one {# project} other {# projects}}",
 		"matching": "matching \"{query}\"",
 		"sort": {
 			"stars": "Stars",
@@ -69,9 +68,7 @@
 		"subtitle": "Quiet notes from current work. More entries will fall in here as they are published—kept chronologically, nothing fancy.",
 		"backToBlog": "← Back to blog",
 		"noPosts": "No posts yet.",
-		"postCount": "{count} posts",
-		"postCount_one": "{count} post",
-		"postCount_other": "{count} posts",
+		"postCount": "{count, plural, one {# post} other {# posts}}",
 		"prev": "prev",
 		"next": "next",
 		"soon": "Soon"

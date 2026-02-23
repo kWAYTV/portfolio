@@ -54,9 +54,7 @@
 		"viewAll": "Ver todo →",
 		"searchPlaceholder": "Buscar...",
 		"noProjects": "No se encontraron proyectos",
-		"projectCount": "{count} proyectos",
-		"projectCount_one": "{count} proyecto",
-		"projectCount_other": "{count} proyectos",
+		"projectCount": "{count, plural, one {# proyecto} other {# proyectos}}",
 		"matching": "que coinciden con \"{query}\"",
 		"sort": {
 			"stars": "Estrellas",
@@ -70,9 +68,7 @@
 		"subtitle": "Notas breves del trabajo actual. Más posts aparecerán aquí conforme se publiquen—ordenadas cronológicamente, sin complicaciones.",
 		"backToBlog": "← Volver al blog",
 		"noPosts": "Aún no hay posts.",
-		"postCount": "{count} posts",
-		"postCount_one": "{count} post",
-		"postCount_other": "{count} posts",
+		"postCount": "{count, plural, one {# publicación} other {# publicaciones}}",
 		"prev": "ant.",
 		"next": "sig.",
 		"soon": "Pronto"
