@@ -1,5 +1,5 @@
 import { Link } from "@i18n/routing";
-import { Separator } from "@portfolio/ui";
+import { Button, Separator } from "@portfolio/ui";
 import { getTranslations } from "next-intl/server";
 import { PageContent } from "@/components/shared/page-content";
 import { PageWrapper } from "@/components/shared/page-wrapper";
@@ -18,14 +18,14 @@ export default async function NotFound() {
             {t("subtitle")}
           </p>
         </div>
-        <Separator />
+        <Separator className="bg-border/50" />
         <p className="text-muted-foreground/80 text-xs leading-relaxed sm:text-sm">
           {t("description")}
         </p>
-        <div className="flex items-center gap-3 text-muted-foreground text-xs sm:gap-4 sm:text-sm">
-          <Link className="transition-colors hover:text-foreground" href="/">
-            {t("home")}
-          </Link>
+        <div className="flex flex-wrap items-center gap-3 pt-1 text-xs sm:gap-4 sm:text-sm">
+          <Button asChild size="sm">
+            <Link href="/">{t("home")}</Link>
+          </Button>
         </div>
       </PageContent>
     </PageWrapper>
