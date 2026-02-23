@@ -77,6 +77,12 @@
 		"next": "sig.",
 		"soon": "Pronto"
 	},
+	"error": {
+		"title": "Algo salió mal",
+		"description": "Ocurrió un error inesperado. Por favor, inténtalo de nuevo.",
+		"retry": "Reintentar",
+		"home": "Inicio"
+	},
 	"notFound": {
 		"title": "404",
 		"subtitle": "Página no encontrada",
