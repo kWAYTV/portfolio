@@ -2,11 +2,11 @@
 
 import { ChevronLeft, ChevronRight } from "lucide-react";
 
-type PaginationProps = {
+interface PaginationProps {
   currentPage: number;
-  totalPages: number;
   onPageChange: (page: number) => void;
-};
+  totalPages: number;
+}
 
 export function Pagination({
   currentPage,

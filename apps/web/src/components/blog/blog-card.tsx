@@ -1,11 +1,11 @@
 import Link from "next/link";
 
-type BlogCardProps = {
-  title: string;
-  description?: string;
+interface BlogCardProps {
   date?: string;
+  description?: string;
+  title: string;
   url: string;
-};
+}
 
 export function BlogCard({ title, description, date, url }: BlogCardProps) {
   const formattedDate = date

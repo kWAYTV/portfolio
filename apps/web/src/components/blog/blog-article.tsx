@@ -1,10 +1,10 @@
 import type { MDXComponents } from "mdx/types";
 import type { ComponentType } from "react";
 
-type BlogArticleProps = {
-  MDX: ComponentType<{ components?: MDXComponents }>;
+interface BlogArticleProps {
   components: MDXComponents;
-};
+  MDX: ComponentType<{ components?: MDXComponents }>;
+}
 
 export function BlogArticle({ MDX, components }: BlogArticleProps) {
   return (

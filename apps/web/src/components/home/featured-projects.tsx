@@ -11,9 +11,9 @@ import { languageColors } from "@/consts/language-colors";
 import type { GitHubRepo } from "@/lib/github";
 import { cn } from "@/lib/utils";
 
-type FeaturedProjectsProps = {
+interface FeaturedProjectsProps {
   repos: GitHubRepo[];
-};
+}
 
 export function FeaturedProjects({ repos }: FeaturedProjectsProps) {
   if (repos.length === 0) {

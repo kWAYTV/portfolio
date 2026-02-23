@@ -9,9 +9,9 @@ import { PageWrapper } from "@/components/shared/page-wrapper";
 import { createMetadata } from "@/lib/metadata";
 import { blogSource, getCachedBlogPage } from "@/lib/source";
 
-type Props = {
+interface Props {
   params: Promise<{ slug: string }>;
-};
+}
 
 export default async function BlogPost({ params }: Props) {
   const { slug } = await params;

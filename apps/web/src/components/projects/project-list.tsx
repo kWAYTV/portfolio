@@ -24,9 +24,9 @@ const projectSearchParams = {
   page: parseAsInteger.withDefault(1),
 };
 
-type ProjectListProps = {
+interface ProjectListProps {
   repos: GitHubRepo[];
-};
+}
 
 export function ProjectList({ repos }: ProjectListProps) {
   const [{ q, sort, page }, setParams] = useQueryStates(projectSearchParams, {

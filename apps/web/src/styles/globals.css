@@ -201,16 +201,17 @@
     @apply border-border outline-ring/50;
   }
   body {
-    @apply bg-background text-foreground;
     letter-spacing: var(--tracking-normal);
+    @apply bg-background text-foreground;
   }
 }
 
 /* Minimal scrollbar styles */
 * {
   /* Firefox */
-  scrollbar-width: thin;
   scrollbar-color: var(--scrollbar-thumb) transparent;
+  /* Firefox */
+  scrollbar-width: thin;
 }
 
 /* WebKit browsers (Chrome, Safari, Edge) */
@@ -225,9 +226,9 @@
 
 *::-webkit-scrollbar-thumb {
   background-color: var(--scrollbar-thumb);
-  border-radius: 3px;
-  border: 1px solid transparent;
   background-clip: padding-box;
+  border: 1px solid transparent;
+  border-radius: 3px;
   transition: background-color 0.2s ease;
 }
 
@@ -237,6 +238,6 @@
 
 ::view-transition-old(root),
 ::view-transition-new(root) {
-  animation: none;
   mix-blend-mode: normal;
+  animation: none;
 }

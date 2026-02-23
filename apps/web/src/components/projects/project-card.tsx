@@ -12,9 +12,9 @@ import { analytics } from "@/lib/analytics";
 import type { GitHubRepo } from "@/lib/github";
 import { cn } from "@/lib/utils";
 
-type ProjectCardProps = {
+interface ProjectCardProps {
   repo: GitHubRepo;
-};
+}
 
 export function ProjectCard({ repo }: ProjectCardProps) {
   const languageColor = repo.language

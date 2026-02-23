@@ -1,8 +1,8 @@
-type BlogPostHeaderProps = {
-  title: string;
+interface BlogPostHeaderProps {
   author: string;
   date: string;
-};
+  title: string;
+}
 
 export function BlogPostHeader({ title, author, date }: BlogPostHeaderProps) {
   const formattedDate = new Date(date).toLocaleDateString("en-US", {

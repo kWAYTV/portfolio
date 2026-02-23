@@ -4,22 +4,22 @@ import { Octokit } from "@octokit/rest";
 import { cacheLife } from "next/cache";
 import { env } from "@/env";
 
-export type GitHubRepo = {
-  id: number;
-  name: string;
-  full_name: string;
-  description: string | null;
-  html_url: string;
-  homepage: string | null;
-  stargazers_count: number;
-  forks_count: number;
-  language: string | null;
-  topics: string[];
-  pushed_at: string;
-  created_at: string;
-  fork: boolean;
+export interface GitHubRepo {
   archived: boolean;
-};
+  created_at: string;
+  description: string | null;
+  fork: boolean;
+  forks_count: number;
+  full_name: string;
+  homepage: string | null;
+  html_url: string;
+  id: number;
+  language: string | null;
+  name: string;
+  pushed_at: string;
+  stargazers_count: number;
+  topics: string[];
+}
 
 const GITHUB_USERNAME = "kWAYTV";
 const EXTRA_REPOS = [{ owner: "vercord", repo: "core" }] as const;

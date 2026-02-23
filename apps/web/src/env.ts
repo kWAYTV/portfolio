@@ -1,3 +1,2 @@
-import { createWebEnv } from "@portfolio/env/apps/web";
-
-export const env = createWebEnv(process.env);
+// biome-ignore lint/performance/noBarrelFile: Thin re-export for @/env path alias
+export { env } from "@portfolio/env/web";

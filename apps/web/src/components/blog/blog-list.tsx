@@ -7,16 +7,16 @@ import { Pagination } from "@/components/shared/pagination";
 
 const POSTS_PER_PAGE = 3;
 
-type Post = {
-  url: string;
-  title: string;
-  description?: string;
+interface Post {
   date?: string;
-};
+  description?: string;
+  title: string;
+  url: string;
+}
 
-type BlogListProps = {
+interface BlogListProps {
   posts: Post[];
-};
+}
 
 export function BlogList({ posts }: BlogListProps) {
   const [page, setPage] = useQueryState("page", parseAsInteger.withDefault(1));

@@ -1,17 +1,21 @@
 {
-  "$schema": "https://turborepo.dev/schema.json",
+  "$schema": "https://turbo.build/schema.json",
   "ui": "tui",
   "tasks": {
     "build": {
       "dependsOn": ["^build"],
+      "inputs": ["$TURBO_DEFAULT$", ".env*"],
       "outputs": [".next/**", "!.next/cache/**"]
     },
-    "dev": {
-      "persistent": true,
-      "cache": false
+    "lint": {
+      "dependsOn": ["^lint"]
     },
-    "lint": {},
-    "format": {},
-    "check-types": {}
+    "check-types": {
+      "dependsOn": ["^check-types"]
+    },
+    "dev": {
+      "cache": false,
+      "persistent": true
+    }
   }
 }

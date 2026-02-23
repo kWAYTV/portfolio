@@ -36,7 +36,6 @@ export const analytics = {
 
 // Type declaration for umami on window
 declare global {
-  // biome-ignore lint/style/useConsistentTypeDefinitions: Declaration merging requires interface
   interface Window {
     umami?: {
       track: (event: string, data?: EventData) => void;

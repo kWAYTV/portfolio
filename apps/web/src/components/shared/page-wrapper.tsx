@@ -1,9 +1,9 @@
 import { Footer } from "@/components/shared/footer";
 import { Navbar } from "@/components/shared/navbar";
 
-type PageWrapperProps = {
+interface PageWrapperProps {
   children: React.ReactNode;
-};
+}
 
 export function PageWrapper({ children }: PageWrapperProps) {
   return (

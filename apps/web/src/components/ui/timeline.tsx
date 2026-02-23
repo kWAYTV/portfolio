@@ -99,7 +99,8 @@ interface StoreState {
 }
 
 interface Store {
-  subscribe: (callback: () => void) => () => void;
+  getItemIndex: (id: string) => number;
+  getNextItemStatus: (id: string, activeIndex?: number) => Status | undefined;
   getState: () => StoreState;
   notify: () => void;
   onItemRegister: (
@@ -107,8 +108,7 @@ interface Store {
     ref: React.RefObject<ItemElement | null>
   ) => void;
   onItemUnregister: (id: string) => void;
-  getNextItemStatus: (id: string, activeIndex?: number) => Status | undefined;
-  getItemIndex: (id: string) => number;
+  subscribe: (callback: () => void) => () => void;
 }
 
 const StoreContext = React.createContext<Store | null>(null);
@@ -122,10 +122,10 @@ function useStoreContext(consumerName: string) {
 }
 
 interface TimelineContextValue {
+  activeIndex?: number;
   dir: Direction;
   orientation: Orientation;
   variant: Variant;
-  activeIndex?: number;
 }
 
 const TimelineContext = React.createContext<TimelineContextValue | null>(null);
@@ -181,10 +181,10 @@ const timelineVariants = cva(
 );
 
 interface TimelineRootProps extends DivProps {
+  activeIndex?: number;
   dir?: Direction;
   orientation?: Orientation;
   variant?: Variant;
-  activeIndex?: number;
 }
 
 function TimelineRoot(props: TimelineRootProps) {
@@ -281,8 +281,8 @@ function TimelineRoot(props: TimelineRootProps) {
 
 interface TimelineItemContextValue {
   id: string;
-  status: Status;
   isAlternateRight: boolean;
+  status: Status;
 }
 
 const TimelineItemContext =
@@ -503,14 +503,14 @@ const timelineDotVariants = cva(
         orientation: "vertical",
         isAlternateRight: false,
         class:
-          "-right-[calc(var(--timeline-dot-size)/2-var(--timeline-connector-thickness)/2)] absolute bg-background",
+          "absolute -right-[calc(var(--timeline-dot-size)/2-var(--timeline-connector-thickness)/2)] bg-background",
       },
       {
         variant: "alternate",
         orientation: "vertical",
         isAlternateRight: true,
         class:
-          "-left-[calc(var(--timeline-dot-size)/2-var(--timeline-connector-thickness)/2)] absolute bg-background",
+          "absolute -left-[calc(var(--timeline-dot-size)/2-var(--timeline-connector-thickness)/2)] bg-background",
       },
       {
         variant: "alternate",
@@ -601,14 +601,14 @@ const timelineConnectorVariants = cva("absolute z-0", {
       variant: "alternate",
       isAlternateRight: false,
       class:
-        "-right-[calc(var(--timeline-connector-thickness)/2)] top-2 h-full w-[var(--timeline-connector-thickness)]",
+        "top-2 -right-[calc(var(--timeline-connector-thickness)/2)] h-full w-[var(--timeline-connector-thickness)]",
     },
     {
       orientation: "vertical",
       variant: "alternate",
       isAlternateRight: true,
       class:
-        "-left-[calc(var(--timeline-connector-thickness)/2)] top-2 h-full w-[var(--timeline-connector-thickness)]",
+        "top-2 -left-[calc(var(--timeline-connector-thickness)/2)] h-full w-[var(--timeline-connector-thickness)]",
     },
     {
       orientation: "horizontal",

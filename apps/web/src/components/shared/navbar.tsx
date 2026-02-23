@@ -9,7 +9,7 @@ export function Navbar() {
   const pathname = usePathname();
 
   return (
-    <nav className="-translate-x-1/2 absolute top-4 left-1/2 flex items-center gap-2.5 px-2 sm:top-8 sm:gap-5 sm:px-0">
+    <nav className="absolute top-4 left-1/2 flex -translate-x-1/2 items-center gap-2.5 px-2 sm:top-8 sm:gap-5 sm:px-0">
       {navItems.map((item) => (
         <Link
           className={`whitespace-nowrap text-xs sm:text-sm ${
