@@ -34,21 +34,28 @@ export function FeaturedProjects({ repos }: FeaturedProjectsProps) {
         </Link>
       </div>
 
-      <ul className="space-y-0.5">
+      <ul className="space-y-2 sm:space-y-1.5">
         {repos.map((repo) => (
           <li key={repo.id}>
             <HoverCard closeDelay={100} openDelay={150}>
               <HoverCardTrigger asChild>
                 <a
-                  className="group flex items-center justify-between gap-3 py-1.5 text-muted-foreground/70 transition-colors hover:text-foreground"
+                  className="group flex items-start justify-between gap-3 py-1.5 text-muted-foreground/70 transition-colors hover:text-foreground sm:items-center"
                   href={repo.html_url}
                   rel="noopener noreferrer"
                   target="_blank"
                 >
-                  <span className="truncate font-medium text-foreground/80 text-xs transition-colors group-hover:text-foreground group-hover:underline sm:text-sm">
-                    {repo.name}
-                  </span>
-                  <ExternalLink className="size-3 shrink-0 opacity-0 transition-opacity group-hover:opacity-60" />
+                  <div className="min-w-0 flex-1">
+                    <span className="truncate font-medium text-foreground/80 text-xs transition-colors group-hover:text-foreground group-hover:underline sm:text-sm">
+                      {repo.name}
+                    </span>
+                    {repo.description && (
+                      <p className="mt-0.5 line-clamp-1 text-[11px] text-muted-foreground/60 sm:text-xs">
+                        {repo.description}
+                      </p>
+                    )}
+                  </div>
+                  <ExternalLink className="size-3 shrink-0 text-muted-foreground/50 transition-colors group-hover:text-muted-foreground" />
                 </a>
               </HoverCardTrigger>
               <HoverCardContent align="start" className="w-80" side="top">
