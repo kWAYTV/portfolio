@@ -5,15 +5,16 @@
   "tsx": true,
   "tailwind": {
     "config": "",
-    "css": "",
+    "css": "src/styles/globals.css",
     "baseColor": "neutral",
     "cssVariables": true,
     "prefix": ""
   },
   "iconLibrary": "lucide",
   "aliases": {
-    "utils": "./src/utils",
-    "ui": "./src/components"
+    "utils": "@/utils",
+    "components": "@/components",
+    "ui": "@/components"
   },
   "registries": {
     "@basecn": "https://basecn.dev/r/{name}.json",

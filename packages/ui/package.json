@@ -7,6 +7,11 @@
     ".": "./src/index.ts",
     "./components.json": "./components.json"
   },
+  "scripts": {
+    "clean": "git clean -xdf .cache .turbo dist node_modules",
+    "type-check": "tsc --noEmit",
+    "shadcn-ui": "bun dlx shadcn@latest"
+  },
   "dependencies": {
     "@radix-ui/react-hover-card": "^1.1.15",
     "@radix-ui/react-select": "^2.2.6",
@@ -17,6 +22,7 @@
     "clsx": "^2.1.1",
     "lucide-react": "^0.554.0",
     "next-themes": "^0.4.6",
+    "radix-ui": "^1.4.3",
     "sonner": "^2.0.7",
     "tailwind-merge": "^3.5.0"
   },
