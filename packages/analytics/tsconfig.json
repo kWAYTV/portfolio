@@ -1,0 +1,8 @@
+{
+  "extends": "@portfolio/typescript-config/base.json",
+  "compilerOptions": {
+    "outDir": "dist",
+    "lib": ["dom", "dom.iterable", "ESNext"]
+  },
+  "include": ["src"]
+}
