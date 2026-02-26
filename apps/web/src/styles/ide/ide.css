@@ -33,6 +33,7 @@
   align-items: center;
   justify-content: flex-start;
   min-height: 100%;
+  padding-bottom: 2rem; /* space between content and status bar */
 }
 
 /* Syntax highlighting: oklch to match shadcn, derived from theme where possible */
