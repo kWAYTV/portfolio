@@ -97,11 +97,13 @@ export function IdeLayout({ children }: IdeLayoutProps) {
     }
     if (group.tabs.includes(navItem.href)) {
       const idx = group.tabs.indexOf(navItem.href);
-      setEditorGroups((prev) => {
-        const next = [...prev];
-        next[activeGroupIndex] = { ...group, activeIndex: idx };
-        return next;
-      });
+      if (idx !== group.activeIndex) {
+        setEditorGroups((prev) => {
+          const next = [...prev];
+          next[activeGroupIndex] = { ...group, activeIndex: idx };
+          return next;
+        });
+      }
       openedFromSidebarRef.current = null;
       return;
     }

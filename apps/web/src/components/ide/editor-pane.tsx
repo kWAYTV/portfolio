@@ -1,7 +1,7 @@
 "use client";
 
 import { useLocale } from "next-intl";
-import { useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import { Breadcrumbs } from "./breadcrumbs";
 import { EditorContentContextMenu } from "./editor-content-context-menu";
 import { EditorTabs } from "./editor-tabs";
@@ -56,10 +56,12 @@ export function EditorPane({
   const mainRef = mainRefProp ?? localMainRef;
 
   const activeHref = group.tabs[group.activeIndex] ?? group.tabs[0];
-  const baseUrl =
-    typeof window !== "undefined"
-      ? `${window.location.origin}/${locale}${activeHref === "/" ? "" : activeHref}`
-      : "";
+  const [iframeSrc, setIframeSrc] = useState("");
+  useEffect(() => {
+    setIframeSrc(
+      `${window.location.origin}/${locale}${activeHref === "/" ? "" : activeHref}`
+    );
+  }, [locale, activeHref]);
 
   const handleTabClick = (href?: string) => {
     onFocusGroup(groupIndex, href);
@@ -121,7 +123,7 @@ export function EditorPane({
         ) : (
           <iframe
             className="min-h-0 flex-1 w-full border-0"
-            src={baseUrl}
+            src={iframeSrc}
             title={activeHref}
           />
         )}
