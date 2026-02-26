@@ -129,7 +129,8 @@
 		"splitLeft": "Dividir a la izquierda",
 		"openToRight": "Abrir a la derecha",
 		"openToLeft": "Abrir a la izquierda",
-		"closeGroup": "Cerrar grupo de editor"
+		"closeGroup": "Cerrar grupo de editor",
+		"dragToResize": "Arrastrar para redimensionar"
 	},
 	"terminal": {
 		"welcome": "Bienvenido al terminal del portafolio. Escribe 'help' para ver los comandos disponibles.",
@@ -144,6 +145,6 @@
 		"helpWhoami": "  whoami        Usuario actual",
 		"helpDate": "  date          Fecha y hora actual",
 		"helpHelp": "  help, ?       Mostrar esta ayuda",
-		"helpEasterEggs": "Easter eggs: pnpm run dev, git status"
+		"helpEasterEggs": "Huevos de Pascua: pnpm run dev, git status"
 	}
 }

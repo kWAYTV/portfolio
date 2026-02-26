@@ -2,6 +2,7 @@
 
 import React from "react";
 import { GripVertical } from "lucide-react";
+import { useTranslations } from "next-intl";
 import { useCallback, useRef } from "react";
 import { EditorPane } from "./editor-pane";
 import type { EditorGroup } from "./split-editor-types";
@@ -50,6 +51,7 @@ export function SplitEditorView({
   viewMode,
   onViewModeChange,
 }: SplitEditorViewProps) {
+  const t = useTranslations("ide");
   const containerRef = useRef<HTMLDivElement>(null);
 
   const handlePointerDown = useCallback(
@@ -123,7 +125,7 @@ export function SplitEditorView({
               className="flex w-2 shrink-0 cursor-col-resize items-center justify-center border-border border-x bg-muted/30 transition-colors hover:bg-muted/60"
               onPointerDown={handlePointerDown}
               role="separator"
-              title="Drag to resize"
+              title={t("dragToResize")}
             >
               <GripVertical className="size-4 text-muted-foreground" />
             </div>

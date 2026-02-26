@@ -129,7 +129,8 @@
 		"splitLeft": "Split Left",
 		"openToRight": "Open to the Right",
 		"openToLeft": "Open to the Left",
-		"closeGroup": "Close Editor Group"
+		"closeGroup": "Close Editor Group",
+		"dragToResize": "Drag to resize"
 	},
 	"terminal": {
 		"welcome": "Welcome to the portfolio terminal. Type 'help' for available commands.",
