@@ -1,0 +1,130 @@
+"use client";
+
+import { Link } from "@i18n/routing";
+import {
+  Sheet,
+  SheetContent,
+  SheetHeader,
+  SheetTitle,
+  SheetTrigger,
+} from "@portfolio/ui";
+import {
+  BookOpen,
+  Code2,
+  FolderGit2,
+  GitBranch,
+  Menu,
+  Terminal,
+  User,
+} from "lucide-react";
+import { useTranslations } from "next-intl";
+import { useState } from "react";
+import { navItems } from "@/consts/nav-items";
+import { LanguageSelector } from "@/components/shared/language-selector";
+import { ThemeToggle } from "@/components/theming/toggle";
+
+const navIcons: Record<string, typeof Code2> = {
+  home: Code2,
+  about: User,
+  projects: FolderGit2,
+  blog: BookOpen,
+};
+
+const PORTFOLIO_REPO_URL = "https://github.com/kWAYTV/portfolio";
+
+interface MobileMenuProps {
+  onToggleTerminal: () => void;
+  pathname: string;
+  terminalOpen: boolean;
+}
+
+export function MobileMenu({
+  pathname,
+  terminalOpen,
+  onToggleTerminal,
+}: MobileMenuProps) {
+  const t = useTranslations("nav");
+  const [open, setOpen] = useState(false);
+
+  const isActive = (href: string) => {
+    if (href === "/") return pathname === "/";
+    return pathname.startsWith(href);
+  };
+
+  return (
+    <Sheet open={open} onOpenChange={setOpen}>
+      <SheetTrigger asChild>
+        <button
+          className="flex size-10 shrink-0 items-center justify-center text-muted-foreground transition-colors hover:text-foreground md:hidden"
+          type="button"
+          aria-label="Open menu"
+        >
+          <Menu className="size-5" />
+        </button>
+      </SheetTrigger>
+      <SheetContent
+        className="flex w-72 flex-col gap-0 p-0 md:hidden"
+        side="left"
+        showCloseButton={true}
+      >
+        <SheetHeader className="border-border border-b px-4 py-3">
+          <SheetTitle className="font-medium text-sm">Menu</SheetTitle>
+        </SheetHeader>
+        <nav className="flex flex-1 flex-col gap-0 overflow-y-auto py-2">
+          {navItems.map((item) => {
+            const Icon = navIcons[item.label];
+            const active = isActive(item.href);
+            return (
+              <Link
+                className={`flex items-center gap-3 px-4 py-3 text-sm transition-colors ${
+                  active
+                    ? "bg-muted/80 text-primary"
+                    : "text-foreground hover:bg-muted/50"
+                }`}
+                href={item.href}
+                key={item.href}
+                onClick={() => setOpen(false)}
+              >
+                <Icon className="size-4 shrink-0" />
+                <span className="capitalize">{t(item.label)}</span>
+              </Link>
+            );
+          })}
+        </nav>
+        <div className="flex flex-col gap-0 border-border border-t py-2">
+          <a
+            className="flex items-center gap-3 px-4 py-3 text-sm text-foreground transition-colors hover:bg-muted/50"
+            href={PORTFOLIO_REPO_URL}
+            onClick={() => setOpen(false)}
+            rel="noopener noreferrer"
+            target="_blank"
+          >
+            <GitBranch className="size-4 shrink-0" />
+            Repository
+          </a>
+          <button
+            className={`flex w-full items-center gap-3 px-4 py-3 text-left text-sm transition-colors hover:bg-muted/50 ${
+              terminalOpen ? "bg-muted/60 text-foreground" : "text-foreground"
+            }`}
+            onClick={() => {
+              onToggleTerminal();
+              setOpen(false);
+            }}
+            type="button"
+          >
+            <Terminal className="size-4 shrink-0" />
+            Terminal
+          </button>
+          <div className="flex items-center justify-between gap-2 px-4 py-3">
+            <span className="text-muted-foreground text-sm">Language</span>
+            <LanguageSelector />
+          </div>
+          <div className="flex items-center justify-between gap-2 px-4 py-3">
+            <span className="text-muted-foreground text-sm">Theme</span>
+            <ThemeToggle />
+          </div>
+        </div>
+      </SheetContent>
+    </Sheet>
+  );
+}

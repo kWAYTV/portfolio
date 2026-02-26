@@ -115,7 +115,22 @@
 		"showTerminal": "Mostrar terminal",
 		"openPreviewWindow": "Abrir vista previa en nueva ventana",
 		"lightTheme": "Tema claro",
-		"darkTheme": "Tema oscuro"
+		"darkTheme": "Tema oscuro",
+		"close": "Cerrar",
+		"closeOthers": "Cerrar otros",
+		"closeAll": "Cerrar todo",
+		"closeToRight": "Cerrar a la derecha",
+		"copyPath": "Copiar ruta",
+		"open": "Abrir",
+		"openInNewWindow": "Abrir en nueva ventana",
+		"expandAll": "Expandir todo",
+		"collapseAll": "Colapsar todo",
+		"splitRight": "Dividir a la derecha",
+		"splitLeft": "Dividir a la izquierda",
+		"openToRight": "Abrir a la derecha",
+		"openToLeft": "Abrir a la izquierda",
+		"closeGroup": "Cerrar grupo de editor",
+		"dragToResize": "Arrastrar para redimensionar"
 	},
 	"terminal": {
 		"welcome": "Bienvenido al terminal del portafolio. Escribe 'help' para ver los comandos disponibles.",
@@ -130,6 +145,6 @@
 		"helpWhoami": "  whoami        Usuario actual",
 		"helpDate": "  date          Fecha y hora actual",
 		"helpHelp": "  help, ?       Mostrar esta ayuda",
-		"helpEasterEggs": "Easter eggs: pnpm run dev, git status"
+		"helpEasterEggs": "Huevos de Pascua: pnpm run dev, git status"
 	}
 }

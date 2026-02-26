@@ -5,38 +5,47 @@ import { Link } from "@i18n/routing";
 import { useTranslations } from "next-intl";
 import {
   cn,
+  ContextMenu,
+  ContextMenuContent,
+  ContextMenuItem,
+  ContextMenuSeparator,
+  ContextMenuTrigger,
   Empty,
   EmptyDescription,
   EmptyHeader,
   EmptyMedia,
   EmptyTitle,
 } from "@portfolio/ui";
-import { Code2, X } from "lucide-react";
+import { Code2, PanelRight, X } from "lucide-react";
 import { navItems } from "@/consts/nav-items";
 import { FileIcon } from "./file-icon";
 
 interface TabItemProps {
   active: boolean;
+  dragOverIndex: number | null;
   fileName: string;
   fileType: string;
+  groupIndex: number;
   href: string;
   index: number;
   onClose: () => void;
   onDragEnd: () => void;
   onDragOver: (index: number) => void;
-  dragOverIndex: number | null;
+  onTabClick?: (href: string) => void;
 }
 
 function TabItem({
   active,
+  dragOverIndex,
   fileName,
   fileType,
+  groupIndex,
   href,
   index,
   onClose,
   onDragEnd,
   onDragOver,
-  dragOverIndex,
+  onTabClick,
 }: TabItemProps) {
   const isDropTarget = dragOverIndex === index;
 
@@ -65,13 +74,17 @@ function TabItem({
         onDragStart={(e) => {
           e.dataTransfer.effectAllowed = "move";
           e.dataTransfer.setData("text/plain", href);
-          e.dataTransfer.setData("application/json", JSON.stringify({ href, index }));
+          e.dataTransfer.setData(
+            "application/json",
+            JSON.stringify({ href, index, groupIndex })
+          );
         }}
       >
         <Link
           className="flex min-w-0 flex-1 items-center gap-2 truncate"
           draggable={false}
           href={href}
+          onClick={() => onTabClick?.(href)}
         >
           <FileIcon className="size-4 shrink-0" type={fileType} />
           <span className="truncate">{fileName}</span>
@@ -96,18 +109,43 @@ function TabItem({
 }
 
 interface EditorTabsProps {
+  activeGroupIndex?: number;
+  groupIndex?: number;
+  onCloseAll: () => void;
+  onCloseGroup?: (groupIndex: number) => void;
+  onCloseOtherTabs: (href: string) => void;
   onCloseTab: (href: string) => void;
+  onCloseTabsToRight: (href: string) => void;
   onReorder: (newOrder: string[]) => void;
+  onDropFromOtherGroup?: (href: string, sourceGroupIndex: number) => void;
+  onSplitLeft?: (href: string) => void;
+  onSplitRight?: (href: string) => void;
+  onTabClick?: (href: string) => void;
   openTabs: string[];
   pathname: string;
+  showSplitButtons?: boolean;
+  totalGroups?: number;
 }
 
 export function EditorTabs({
   pathname,
   openTabs,
   onCloseTab,
+  onCloseOtherTabs,
+  onCloseTabsToRight,
+  onCloseAll,
   onReorder,
+  onCloseGroup,
+  onDropFromOtherGroup,
+  onSplitLeft,
+  onSplitRight,
+  onTabClick,
+  showSplitButtons,
+  totalGroups = 1,
+  groupIndex = 0,
+  activeGroupIndex = 0,
 }: EditorTabsProps) {
+  const t = useTranslations("ide");
   const isActive = (href: string) => {
     if (href === "/") {
       return pathname === "/";
@@ -134,10 +172,20 @@ export function EditorTabs({
     (e: React.DragEvent, dropIndex: number) => {
       e.preventDefault();
       let dragIndex: number;
+      let sourceGroupIndex: number;
       try {
         const data = JSON.parse(e.dataTransfer.getData("application/json"));
         dragIndex = data.index;
+        sourceGroupIndex = data.groupIndex ?? 0;
       } catch {
+        return;
+      }
+      if (sourceGroupIndex !== groupIndex && onDropFromOtherGroup) {
+        const href = openTabs[dragIndex] ?? e.dataTransfer.getData("text/plain");
+        if (href) {
+          onDropFromOtherGroup(href, sourceGroupIndex);
+        }
+        setDragOverIndex(null);
         return;
       }
       if (dragIndex === dropIndex) return;
@@ -148,10 +196,8 @@ export function EditorTabs({
       onReorder(next);
       setDragOverIndex(null);
     },
-    [openTabs, onReorder]
+    [openTabs, onReorder, groupIndex, onDropFromOtherGroup]
   );
-
-  const t = useTranslations("ide");
 
   if (orderedItems.length === 0) {
     return (
@@ -173,31 +219,122 @@ export function EditorTabs({
   }
 
   return (
-    <div className="flex h-[35px] shrink-0 items-stretch overflow-x-auto border-b border-border bg-muted/80">
+    <div className="relative flex h-[35px] shrink-0 items-stretch overflow-x-auto border-b border-border bg-muted/80">
+      {/* Drop zone before first tab - absolute so it doesn't create a gap */}
+      <div
+        className={cn(
+          "absolute left-0 top-0 z-10 h-full w-2 transition-colors",
+          dragOverIndex === -1 && "bg-primary/20"
+        )}
+        onDragOver={(e) => {
+          e.preventDefault();
+          e.dataTransfer.dropEffect = "move";
+          setDragOverIndex(-1);
+        }}
+        onDragLeave={() => setDragOverIndex(null)}
+        onDrop={(e) => handleDrop(e, 0)}
+      />
       {orderedItems.map((item, index) => (
-        <div
-          key={item.href}
-          className="flex h-full"
-          onDragOver={(e) => {
-            e.preventDefault();
-            e.dataTransfer.dropEffect = "move";
-            setDragOverIndex(index);
-          }}
-          onDrop={(e) => handleDrop(e, index)}
-        >
-          <TabItem
-            active={isActive(item.href)}
-            dragOverIndex={dragOverIndex}
-            fileName={item.fileName}
-            fileType={item.fileType}
-            href={item.href}
-            index={index}
-            onClose={() => onCloseTab(item.href)}
-            onDragEnd={handleDragEnd}
-            onDragOver={handleDragOver}
-          />
-        </div>
+        <ContextMenu key={item.href}>
+          <ContextMenuTrigger asChild>
+            <div
+              className="flex h-full"
+              onDragOver={(e) => {
+                e.preventDefault();
+                e.dataTransfer.dropEffect = "move";
+                setDragOverIndex(index);
+              }}
+              onDrop={(e) => handleDrop(e, index)}
+            >
+              <TabItem
+                active={isActive(item.href)}
+                dragOverIndex={dragOverIndex}
+                fileName={item.fileName}
+                fileType={item.fileType}
+                groupIndex={groupIndex}
+                href={item.href}
+                index={index}
+                onClose={() => onCloseTab(item.href)}
+                onDragEnd={handleDragEnd}
+                onDragOver={handleDragOver}
+                onTabClick={onTabClick}
+              />
+            </div>
+          </ContextMenuTrigger>
+          <ContextMenuContent className="ide-dropdown w-44 rounded-sm border border-border bg-popover p-0.5 shadow-lg">
+            <ContextMenuItem onClick={() => onCloseTab(item.href)}>
+              {t("close")}
+            </ContextMenuItem>
+            {showSplitButtons && totalGroups !== undefined && (
+              <>
+                <ContextMenuSeparator />
+                {((groupIndex ?? 0) < totalGroups - 1 || totalGroups === 1) && (
+                  <ContextMenuItem onClick={() => onSplitRight?.(item.href)}>
+                    {totalGroups === 1 ? t("openToRight") : t("splitRight")}
+                  </ContextMenuItem>
+                )}
+                {((groupIndex ?? 0) > 0 || totalGroups === 1) && (
+                  <ContextMenuItem onClick={() => onSplitLeft?.(item.href)}>
+                    {totalGroups === 1 ? t("openToLeft") : t("splitLeft")}
+                  </ContextMenuItem>
+                )}
+              </>
+            )}
+            {orderedItems.length > 1 && (
+              <>
+                <ContextMenuSeparator />
+                <ContextMenuItem
+                  onClick={() => onCloseOtherTabs(item.href)}
+                >
+                  {t("closeOthers")}
+                </ContextMenuItem>
+                <ContextMenuItem
+                  disabled={index >= orderedItems.length - 1}
+                  onClick={() => onCloseTabsToRight(item.href)}
+                >
+                  {t("closeToRight")}
+                </ContextMenuItem>
+              </>
+            )}
+            <ContextMenuSeparator />
+            {onCloseGroup && totalGroups !== undefined && totalGroups > 1 && (
+              <ContextMenuItem onClick={() => onCloseGroup(groupIndex)}>
+                {t("closeGroup")}
+              </ContextMenuItem>
+            )}
+            <ContextMenuItem onClick={onCloseAll}>
+              {t("closeAll")}
+            </ContextMenuItem>
+          </ContextMenuContent>
+        </ContextMenu>
       ))}
+      {/* Drop zone after last tab - allows moving to end */}
+      <div
+        className={cn(
+          "min-w-[12px] shrink-0 flex-1 transition-colors",
+          dragOverIndex === orderedItems.length && "bg-primary/20"
+        )}
+        onDragOver={(e) => {
+          e.preventDefault();
+          e.dataTransfer.dropEffect = "move";
+          setDragOverIndex(orderedItems.length);
+        }}
+        onDragLeave={() => setDragOverIndex(null)}
+        onDrop={(e) => handleDrop(e, orderedItems.length)}
+      />
+      {showSplitButtons && totalGroups !== undefined && totalGroups < 2 && (
+        <button
+          className="flex shrink-0 items-center justify-center px-2 text-muted-foreground transition-colors hover:bg-muted/60 hover:text-foreground"
+          onClick={() => {
+            const activeItem = orderedItems.find((i) => isActive(i.href)) ?? orderedItems[0];
+            if (activeItem) onSplitRight?.(activeItem.href);
+          }}
+          title={t("openToRight")}
+          type="button"
+        >
+          <PanelRight className="size-4" />
+        </button>
+      )}
     </div>
   );
 }

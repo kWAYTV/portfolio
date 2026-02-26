@@ -1,7 +1,14 @@
 "use client";
 
 import { Link } from "@i18n/routing";
-import { cn } from "@portfolio/ui";
+import {
+  cn,
+  ContextMenu,
+  ContextMenuContent,
+  ContextMenuItem,
+  ContextMenuSeparator,
+  ContextMenuTrigger,
+} from "@portfolio/ui";
 import { useTranslations } from "next-intl";
 import { ChevronDown, ChevronRight, Folder, FolderOpen } from "lucide-react";
 import { useState } from "react";
@@ -78,6 +85,39 @@ export function Sidebar({ onOpenTab, pathname }: SidebarProps) {
     });
   };
 
+  function getFolderNames(folder: FolderItem): string[] {
+    return [
+      folder.name,
+      ...folder.children.flatMap((c) =>
+        c.type === "folder" ? getFolderNames(c as FolderItem) : []
+      ),
+    ];
+  }
+
+  const expandAll = (folder: FolderItem) => {
+    setExpanded((prev) => new Set([...prev, ...getFolderNames(folder)]));
+  };
+
+  const collapseAll = (name: string) => {
+    setExpanded((prev) => {
+      const next = new Set(prev);
+      next.delete(name);
+      return next;
+    });
+  };
+
+  const copyPath = (path: string) => {
+    navigator.clipboard.writeText(path);
+  };
+
+  const openInNewWindow = (href: string) => {
+    const url =
+      typeof window !== "undefined"
+        ? `${window.location.origin}${href}`
+        : href;
+    window.open(url, "_blank", "noopener,noreferrer");
+  };
+
   const isFileActive = (href?: string) => {
     if (!href) {
       return false;
@@ -100,23 +140,41 @@ export function Sidebar({ onOpenTab, pathname }: SidebarProps) {
       const FolderIcon = isOpen ? FolderOpen : Folder;
 
       return (
-        <div key={key}>
-          <button
-            className="flex w-full items-center gap-1 py-[3px] text-[13px] text-sidebar-foreground transition-colors hover:bg-sidebar-accent/50"
-            onClick={() => toggle(item.name)}
-            style={{ paddingLeft: `${depth * 12 + 4}px` }}
-            type="button"
-          >
-            <Chevron className="size-4 shrink-0 opacity-70" />
-            <FolderIcon className="size-4 shrink-0 text-muted-foreground" />
-            <span className="ml-1 truncate">{item.name}</span>
-          </button>
-          {isOpen && (
-            <div>
-              {item.children.map((child) => renderItem(child, depth + 1, key))}
-            </div>
-          )}
-        </div>
+        <ContextMenu key={key}>
+          <div>
+            <ContextMenuTrigger asChild>
+              <button
+                className="flex w-full items-center gap-1 py-[3px] text-[13px] text-sidebar-foreground transition-colors hover:bg-sidebar-accent/50"
+                onClick={() => toggle(item.name)}
+                style={{ paddingLeft: `${depth * 12 + 4}px` }}
+                type="button"
+              >
+                <Chevron className="size-4 shrink-0 opacity-70" />
+                <FolderIcon className="size-4 shrink-0 text-muted-foreground" />
+                <span className="ml-1 truncate">{item.name}</span>
+              </button>
+            </ContextMenuTrigger>
+            {isOpen && (
+              <div>
+                {item.children.map((child) =>
+                  renderItem(child, depth + 1, key)
+                )}
+              </div>
+            )}
+          </div>
+          <ContextMenuContent className="ide-dropdown w-44 rounded-sm border border-border bg-popover p-0.5 shadow-lg">
+            <ContextMenuItem onClick={() => expandAll(item)}>
+              {t("expandAll")}
+            </ContextMenuItem>
+            <ContextMenuItem onClick={() => collapseAll(item.name)}>
+              {t("collapseAll")}
+            </ContextMenuItem>
+            <ContextMenuSeparator />
+            <ContextMenuItem onClick={() => copyPath(key)}>
+              {t("copyPath")}
+            </ContextMenuItem>
+          </ContextMenuContent>
+        </ContextMenu>
       );
     }
 
@@ -141,17 +199,45 @@ export function Sidebar({ onOpenTab, pathname }: SidebarProps) {
 
     if (item.href) {
       return (
-        <Link
-          href={item.href}
-          key={key}
-          onClick={() => onOpenTab?.(item.href!)}
-        >
-          {content}
-        </Link>
+        <ContextMenu key={key}>
+          <ContextMenuTrigger asChild>
+            <Link
+              href={item.href}
+              onClick={() => onOpenTab?.(item.href!)}
+            >
+              {content}
+            </Link>
+          </ContextMenuTrigger>
+          <ContextMenuContent className="ide-dropdown w-44 rounded-sm border border-border bg-popover p-0.5 shadow-lg">
+            <ContextMenuItem onClick={() => onOpenTab?.(item.href!)}>
+              {t("open")}
+            </ContextMenuItem>
+            <ContextMenuItem
+              onClick={() => openInNewWindow(item.href!)}
+            >
+              {t("openInNewWindow")}
+            </ContextMenuItem>
+            <ContextMenuSeparator />
+            <ContextMenuItem onClick={() => copyPath(key)}>
+              {t("copyPath")}
+            </ContextMenuItem>
+          </ContextMenuContent>
+        </ContextMenu>
       );
     }
 
-    return <div key={key}>{content}</div>;
+    return (
+      <ContextMenu key={key}>
+        <ContextMenuTrigger asChild>
+          <div>{content}</div>
+        </ContextMenuTrigger>
+        <ContextMenuContent className="ide-dropdown w-44 rounded-sm border border-border bg-popover p-0.5 shadow-lg">
+          <ContextMenuItem onClick={() => copyPath(key)}>
+            {t("copyPath")}
+          </ContextMenuItem>
+        </ContextMenuContent>
+      </ContextMenu>
+    );
   };
 
   return (

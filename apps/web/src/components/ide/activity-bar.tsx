@@ -1,7 +1,6 @@
 "use client";
 
 import { Link } from "@i18n/routing";
-import { flushSync } from "react-dom";
 import {
   cn,
   DropdownMenu,
@@ -29,8 +28,10 @@ import {
 } from "lucide-react";
 import { useTheme } from "next-themes";
 import { useTranslations } from "next-intl";
+import { useRef } from "react";
 
 import { navItems } from "@/consts/nav-items";
+import { useThemeTransition } from "@/components/theming/use-theme-transition";
 
 const PORTFOLIO_REPO_URL = "https://github.com/kWAYTV/portfolio";
 
@@ -58,9 +59,19 @@ export function ActivityBar({
   onToggleSidebar,
   onToggleTerminal,
 }: ActivityBarProps) {
-  const { resolvedTheme, setTheme } = useTheme();
+  const { resolvedTheme } = useTheme();
+  const setThemeWithTransition = useThemeTransition();
+  const settingsTriggerRef = useRef<HTMLButtonElement>(null);
   const t = useTranslations("ide");
   const isDark = resolvedTheme === "dark";
+
+  const handleThemeChange = (theme: "light" | "dark") => {
+    const rect = settingsTriggerRef.current?.getBoundingClientRect();
+    const origin = rect
+      ? { x: rect.left + rect.width / 2, y: rect.top + rect.height / 2 }
+      : undefined;
+    void setThemeWithTransition(theme, origin);
+  };
   const isActive = (href: string) => {
     if (href === "/") {
       return pathname === "/";
@@ -146,6 +157,7 @@ export function ActivityBar({
             <TooltipTrigger asChild>
               <DropdownMenuTrigger asChild>
                 <button
+                  ref={settingsTriggerRef}
                   className="flex size-10 cursor-pointer items-center justify-center text-sidebar-foreground/60 transition-colors hover:text-sidebar-primary"
                   type="button"
                 >
@@ -162,32 +174,14 @@ export function ActivityBar({
           >
             <DropdownMenuCheckboxItem
               checked={!isDark}
-              onCheckedChange={() => {
-                const newTheme = "light";
-                if (document.startViewTransition) {
-                  document.startViewTransition(() => {
-                    flushSync(() => setTheme(newTheme));
-                  });
-                } else {
-                  setTheme(newTheme);
-                }
-              }}
+              onCheckedChange={() => handleThemeChange("light")}
             >
               <Sun className="size-3.5" />
               {t("lightTheme")}
             </DropdownMenuCheckboxItem>
             <DropdownMenuCheckboxItem
               checked={isDark}
-              onCheckedChange={() => {
-                const newTheme = "dark";
-                if (document.startViewTransition) {
-                  document.startViewTransition(() => {
-                    flushSync(() => setTheme(newTheme));
-                  });
-                } else {
-                  setTheme(newTheme);
-                }
-              }}
+              onCheckedChange={() => handleThemeChange("dark")}
             >
               <Moon className="size-3.5" />
               {t("darkTheme")}
