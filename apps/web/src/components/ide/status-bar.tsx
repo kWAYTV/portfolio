@@ -6,6 +6,7 @@ import { CheckCircle2, GitBranch, Play, Rss, Terminal } from "lucide-react";
 import { useTranslations } from "next-intl";
 import { memo } from "react";
 import { LanguageSelector } from "@/components/shared/language-selector";
+import { ThemeSelector } from "@/components/shared/theme-selector";
 import { ThemeToggle } from "@/components/theming/toggle";
 import { navItems } from "@/consts/nav-items";
 
@@ -94,6 +95,7 @@ export const StatusBar = memo(function StatusBar({
           <span className="hidden sm:inline">RSS</span>
         </Link>
         <LanguageSelector />
+        <ThemeSelector />
         <ThemeToggle />
       </div>
     </div>
