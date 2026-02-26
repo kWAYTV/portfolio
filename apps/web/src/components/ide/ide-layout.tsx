@@ -88,49 +88,53 @@ function Breadcrumbs({
           );
         })}
       </div>
-      <div className="flex shrink-0 select-none items-center gap-3">
+      <div
+        className="flex shrink-0 select-none items-center"
+        role="group"
+        aria-label="Editor actions"
+      >
         {onCopy && (
-          <button
-            className="cursor-pointer rounded-md px-2 py-1.5 text-muted-foreground transition-colors hover:bg-muted/60 hover:text-foreground"
-            onClick={onCopy}
-            title="Copy content"
-            type="button"
-          >
-            <Copy className="size-4" />
-          </button>
+          <>
+            <button
+              className="flex cursor-pointer items-center justify-center rounded p-1.5 text-muted-foreground transition-colors hover:bg-muted/50 hover:text-foreground"
+              onClick={onCopy}
+              title="Copy content"
+              type="button"
+            >
+              <Copy className="size-3.5" aria-hidden />
+            </button>
+            <span
+              className="mx-0.5 h-3 w-px bg-border"
+              aria-hidden
+            />
+          </>
         )}
-        <div
-          className="flex shrink-0 rounded-md border border-border bg-muted/30 p-0.5"
-          role="group"
-          aria-label="View mode"
-        >
+        <div className="flex items-center rounded-sm" role="group" aria-label="View mode">
           <button
             className={cn(
-              "flex cursor-pointer touch-manipulation items-center gap-1.5 rounded px-2 py-1.5 text-[11px] font-medium transition-colors sm:px-3 sm:py-1",
+              "flex cursor-pointer items-center justify-center rounded p-1.5 transition-colors",
               viewMode === "preview"
-                ? "bg-background text-foreground shadow-sm"
-                : "text-muted-foreground hover:text-foreground"
+                ? "bg-muted/80 text-foreground"
+                : "text-muted-foreground hover:bg-muted/40 hover:text-foreground"
             )}
             onClick={() => onViewModeChange("preview")}
             title="Preview"
             type="button"
           >
-            <Eye className="size-3.5 shrink-0" aria-hidden />
-            <span className="hidden sm:inline">Preview</span>
+            <Eye className="size-3.5" aria-hidden />
           </button>
           <button
             className={cn(
-              "flex cursor-pointer touch-manipulation items-center gap-1.5 rounded px-2 py-1.5 text-[11px] font-medium transition-colors sm:px-3 sm:py-1",
+              "flex cursor-pointer items-center justify-center rounded p-1.5 transition-colors",
               viewMode === "code"
-                ? "bg-background text-foreground shadow-sm"
-                : "text-muted-foreground hover:text-foreground"
+                ? "bg-muted/80 text-foreground"
+                : "text-muted-foreground hover:bg-muted/40 hover:text-foreground"
             )}
             onClick={() => onViewModeChange("code")}
             title="Source"
             type="button"
           >
-            <Code className="size-3.5 shrink-0" aria-hidden />
-            <span className="hidden sm:inline">Code</span>
+            <Code className="size-3.5" aria-hidden />
           </button>
         </div>
       </div>
