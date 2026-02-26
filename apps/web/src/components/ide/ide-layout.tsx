@@ -8,6 +8,7 @@ import { navItems } from "@/consts/nav-items";
 import { ActivityBar } from "./activity-bar";
 import { Breadcrumbs } from "./breadcrumbs";
 import { CommandPalette } from "./command-palette";
+import { EditorContentContextMenu } from "./editor-content-context-menu";
 import { EditorPane } from "./editor-pane";
 import { EditorTabs } from "./editor-tabs";
 import { MobileMenu } from "./mobile-menu";
@@ -539,13 +540,19 @@ export function IdeLayout({ children }: IdeLayoutProps) {
                         pathname={pathname}
                         viewMode={viewMode}
                       />
-                      <main
-                        ref={mainRef}
-                        className="min-h-0 flex-1 overflow-y-auto"
-                        data-ide-main
+                      <EditorContentContextMenu
+                        onCopy={copyContent}
+                        onViewModeChange={setViewMode}
+                        viewMode={viewMode}
                       >
-                        {children}
-                      </main>
+                        <main
+                          ref={mainRef}
+                          className="min-h-0 flex-1 overflow-y-auto"
+                          data-ide-main
+                        >
+                          {children}
+                        </main>
+                      </EditorContentContextMenu>
                     </div>
                   </>
                 )

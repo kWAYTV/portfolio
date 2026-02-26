@@ -3,6 +3,7 @@
 import { useLocale } from "next-intl";
 import { useRef } from "react";
 import { Breadcrumbs } from "./breadcrumbs";
+import { EditorContentContextMenu } from "./editor-content-context-menu";
 import { EditorTabs } from "./editor-tabs";
 import type { EditorGroup } from "./split-editor-types";
 import type { ViewMode } from "./view-mode";
@@ -103,13 +104,19 @@ export function EditorPane({
               pathname={activeHref}
               viewMode={viewMode}
             />
-            <main
-              ref={mainRef}
-              className="min-h-0 flex-1 overflow-y-auto"
-              data-ide-main
+            <EditorContentContextMenu
+              onCopy={onCopy}
+              onViewModeChange={onViewModeChange}
+              viewMode={viewMode}
             >
-              {children}
-            </main>
+              <main
+                ref={mainRef}
+                className="min-h-0 flex-1 overflow-y-auto"
+                data-ide-main
+              >
+                {children}
+              </main>
+            </EditorContentContextMenu>
           </>
         ) : (
           <iframe
