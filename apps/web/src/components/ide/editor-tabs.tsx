@@ -174,6 +174,20 @@ export function EditorTabs({
 
   return (
     <div className="flex h-[35px] shrink-0 items-stretch overflow-x-auto border-b border-border bg-muted/80">
+      {/* Drop zone before first tab - allows moving to start */}
+      <div
+        className={cn(
+          "min-w-[12px] shrink-0 transition-colors",
+          dragOverIndex === -1 && "bg-primary/20"
+        )}
+        onDragOver={(e) => {
+          e.preventDefault();
+          e.dataTransfer.dropEffect = "move";
+          setDragOverIndex(-1);
+        }}
+        onDragLeave={() => setDragOverIndex(null)}
+        onDrop={(e) => handleDrop(e, 0)}
+      />
       {orderedItems.map((item, index) => (
         <div
           key={item.href}
@@ -198,6 +212,20 @@ export function EditorTabs({
           />
         </div>
       ))}
+      {/* Drop zone after last tab - allows moving to end */}
+      <div
+        className={cn(
+          "min-w-[12px] shrink-0 flex-1 transition-colors",
+          dragOverIndex === orderedItems.length && "bg-primary/20"
+        )}
+        onDragOver={(e) => {
+          e.preventDefault();
+          e.dataTransfer.dropEffect = "move";
+          setDragOverIndex(orderedItems.length);
+        }}
+        onDragLeave={() => setDragOverIndex(null)}
+        onDrop={(e) => handleDrop(e, orderedItems.length)}
+      />
     </div>
   );
 }
