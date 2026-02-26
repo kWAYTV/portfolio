@@ -19,7 +19,9 @@ interface StatusBarProps {
 
 export function StatusBar({ pathname }: StatusBarProps) {
   const navItem = navItems.find((item) => {
-    if (item.href === "/") return pathname === "/";
+    if (item.href === "/") {
+      return pathname === "/";
+    }
     return pathname.startsWith(item.href);
   });
 
@@ -28,24 +30,20 @@ export function StatusBar({ pathname }: StatusBarProps) {
     : "Plain Text";
 
   return (
-    <div className="flex h-6 shrink-0 items-center justify-between border-t border-[var(--ide-border)] bg-[var(--ide-statusbar)] px-2 text-[11px] text-[var(--ide-statusbar-fg)]">
+    <div className="flex h-6 shrink-0 items-center justify-between border-[var(--ide-border)] border-t bg-[var(--ide-statusbar)] px-2 text-[11px] text-[var(--ide-statusbar-fg)]">
       <div className="flex items-center gap-3">
         <span className="flex items-center gap-1">
           <GitBranch className="size-3.5" />
           main
         </span>
         <span className="hidden items-center gap-1 sm:flex">
-          <CheckCircle2 className="size-3" />
-          0
+          <CheckCircle2 className="size-3" />0
         </span>
       </div>
-      <div className="flex items-center gap-3 [&_button]:!text-[length:11px] [&_button]:!text-[var(--ide-statusbar-fg)] [&_button:hover]:!opacity-80">
+      <div className="[&_button]:!text-[length:11px] [&_button]:!text-[var(--ide-statusbar-fg)] [&_button:hover]:!opacity-80 flex items-center gap-3">
         <span className="hidden tabular-nums sm:inline">Ln 1, Col 1</span>
         <span className="hidden sm:inline">{fileType}</span>
-        <Link
-          className="transition-opacity hover:opacity-80"
-          href="/rss"
-        >
+        <Link className="transition-opacity hover:opacity-80" href="/rss">
           RSS
         </Link>
         <LanguageSelector />

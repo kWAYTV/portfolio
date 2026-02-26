@@ -21,12 +21,14 @@ export function MobileNav({ pathname }: MobileNavProps) {
   const t = useTranslations("nav");
 
   const isActive = (href: string) => {
-    if (href === "/") return pathname === "/";
+    if (href === "/") {
+      return pathname === "/";
+    }
     return pathname.startsWith(href);
   };
 
   return (
-    <nav className="flex h-14 shrink-0 items-center justify-around border-t border-[var(--ide-border)] bg-[var(--ide-titlebar)]">
+    <nav className="flex h-14 shrink-0 items-center justify-around border-[var(--ide-border)] border-t bg-[var(--ide-titlebar)]">
       {navItems.map((item) => {
         const Icon = navIcons[item.label];
         const active = isActive(item.href);

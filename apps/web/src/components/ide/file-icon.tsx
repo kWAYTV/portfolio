@@ -1,10 +1,7 @@
 import { cn } from "@portfolio/ui";
 import { File, FileCode2, FileJson2, FileText } from "lucide-react";
 
-const fileTypeConfig: Record<
-  string,
-  { Icon: typeof File; color: string }
-> = {
+const fileTypeConfig: Record<string, { Icon: typeof File; color: string }> = {
   tsx: { Icon: FileCode2, color: "text-blue-500" },
   ts: { Icon: FileCode2, color: "text-blue-400" },
   md: { Icon: FileText, color: "text-sky-400" },

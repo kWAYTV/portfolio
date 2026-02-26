@@ -1,12 +1,7 @@
 "use client";
 
 import { Link } from "@i18n/routing";
-import {
-  cn,
-  Tooltip,
-  TooltipContent,
-  TooltipTrigger,
-} from "@portfolio/ui";
+import { cn, Tooltip, TooltipContent, TooltipTrigger } from "@portfolio/ui";
 import {
   BookOpen,
   Code2,
@@ -36,12 +31,14 @@ export function ActivityBar({
   onToggleSidebar,
 }: ActivityBarProps) {
   const isActive = (href: string) => {
-    if (href === "/") return pathname === "/";
+    if (href === "/") {
+      return pathname === "/";
+    }
     return pathname.startsWith(href);
   };
 
   return (
-    <div className="flex w-12 shrink-0 flex-col items-center border-r border-[var(--ide-border)] bg-[var(--ide-activity-bar)] py-1">
+    <div className="flex w-12 shrink-0 flex-col items-center border-[var(--ide-border)] border-r bg-[var(--ide-activity-bar)] py-1">
       <Tooltip>
         <TooltipTrigger asChild>
           <button
@@ -74,7 +71,7 @@ export function ActivityBar({
                 href={item.href}
               >
                 {active && (
-                  <span className="absolute left-0 top-1/2 h-6 w-0.5 -translate-y-1/2 rounded-r-full bg-[var(--ide-activity-bar-badge)]" />
+                  <span className="absolute top-1/2 left-0 h-6 w-0.5 -translate-y-1/2 rounded-r-full bg-[var(--ide-activity-bar-badge)]" />
                 )}
                 <Icon className="size-5" />
               </Link>

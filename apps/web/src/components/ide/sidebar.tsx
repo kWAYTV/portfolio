@@ -2,12 +2,7 @@
 
 import { Link } from "@i18n/routing";
 import { cn } from "@portfolio/ui";
-import {
-  ChevronDown,
-  ChevronRight,
-  Folder,
-  FolderOpen,
-} from "lucide-react";
+import { ChevronDown, ChevronRight, Folder, FolderOpen } from "lucide-react";
 import { useState } from "react";
 import { FileIcon } from "./file-icon";
 
@@ -71,15 +66,22 @@ export function Sidebar({ pathname }: SidebarProps) {
   const toggle = (name: string) => {
     setExpanded((prev) => {
       const next = new Set(prev);
-      if (next.has(name)) next.delete(name);
-      else next.add(name);
+      if (next.has(name)) {
+        next.delete(name);
+      } else {
+        next.add(name);
+      }
       return next;
     });
   };
 
   const isFileActive = (href?: string) => {
-    if (!href) return false;
-    if (href === "/") return pathname === "/";
+    if (!href) {
+      return false;
+    }
+    if (href === "/") {
+      return pathname === "/";
+    }
     return pathname === href || pathname.startsWith(`${href}/`);
   };
 
@@ -108,9 +110,7 @@ export function Sidebar({ pathname }: SidebarProps) {
           </button>
           {isOpen && (
             <div>
-              {item.children.map((child) =>
-                renderItem(child, depth + 1, key)
-              )}
+              {item.children.map((child) => renderItem(child, depth + 1, key))}
             </div>
           )}
         </div>
@@ -148,9 +148,9 @@ export function Sidebar({ pathname }: SidebarProps) {
   };
 
   return (
-    <div className="flex w-56 shrink-0 flex-col overflow-hidden border-r border-[var(--ide-border)] bg-[var(--ide-sidebar)]">
+    <div className="flex w-56 shrink-0 flex-col overflow-hidden border-[var(--ide-border)] border-r bg-[var(--ide-sidebar)]">
       <div className="px-4 py-2">
-        <span className="text-[11px] font-medium uppercase tracking-wider text-[var(--ide-sidebar-header-fg)]">
+        <span className="font-medium text-[11px] text-[var(--ide-sidebar-header-fg)] uppercase tracking-wider">
           Explorer
         </span>
       </div>
@@ -166,15 +166,13 @@ export function Sidebar({ pathname }: SidebarProps) {
             ) : (
               <ChevronRight className="size-4 shrink-0 opacity-70" />
             )}
-            <span className="text-[11px] font-semibold uppercase tracking-wide">
+            <span className="font-semibold text-[11px] uppercase tracking-wide">
               portfolio
             </span>
           </button>
           {expanded.has("portfolio") && (
             <div>
-              {explorerTree.map((item) =>
-                renderItem(item, 1, "portfolio")
-              )}
+              {explorerTree.map((item) => renderItem(item, 1, "portfolio"))}
             </div>
           )}
         </div>

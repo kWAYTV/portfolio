@@ -12,7 +12,9 @@ interface EditorTabsProps {
 
 export function EditorTabs({ pathname }: EditorTabsProps) {
   const isActive = (href: string) => {
-    if (href === "/") return pathname === "/";
+    if (href === "/") {
+      return pathname === "/";
+    }
     return pathname.startsWith(href);
   };
 
@@ -23,7 +25,7 @@ export function EditorTabs({ pathname }: EditorTabsProps) {
         return (
           <Link
             className={cn(
-              "group relative flex items-center gap-2 border-r border-[var(--ide-border)] px-3 text-xs whitespace-nowrap transition-colors",
+              "group relative flex items-center gap-2 whitespace-nowrap border-[var(--ide-border)] border-r px-3 text-xs transition-colors",
               active
                 ? "bg-[var(--ide-tab-active)] text-[var(--ide-tab-active-fg)]"
                 : "bg-[var(--ide-tab)] text-[var(--ide-tab-fg)] hover:bg-[var(--ide-tab-active)]/50"

@@ -16,7 +16,9 @@ function Breadcrumbs({ pathname }: { pathname: string }) {
   const parts = ["portfolio", "src"];
 
   const navItem = navItems.find((item) => {
-    if (item.href === "/") return pathname === "/";
+    if (item.href === "/") {
+      return pathname === "/";
+    }
     return pathname.startsWith(item.href);
   });
 
@@ -33,17 +35,20 @@ function Breadcrumbs({ pathname }: { pathname: string }) {
   }
 
   return (
-    <div className="flex shrink-0 items-center gap-1 border-b border-[var(--ide-border)] bg-[var(--ide-editor)] px-4 py-1 text-[11px] text-[var(--ide-breadcrumb-fg)]">
-      {parts.map((part, i) => (
-        <span className="flex items-center gap-1" key={`${part}-${i}`}>
-          {i > 0 && <ChevronRight className="size-3 opacity-50" />}
-          <span
-            className={i === parts.length - 1 ? "text-foreground/80" : ""}
-          >
-            {part}
+    <div className="flex shrink-0 items-center gap-1 border-[var(--ide-border)] border-b bg-[var(--ide-editor)] px-4 py-1 text-[11px] text-[var(--ide-breadcrumb-fg)]">
+      {parts.map((part, i) => {
+        const key = parts.slice(0, i + 1).join("/");
+        return (
+          <span className="flex items-center gap-1" key={key}>
+            {i > 0 && <ChevronRight className="size-3 opacity-50" />}
+            <span
+              className={i === parts.length - 1 ? "text-foreground/80" : ""}
+            >
+              {part}
+            </span>
           </span>
-        </span>
-      ))}
+        );
+      })}
     </div>
   );
 }
