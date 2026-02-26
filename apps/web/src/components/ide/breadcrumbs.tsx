@@ -72,7 +72,7 @@ export const Breadcrumbs = memo(function Breadcrumbs({
               "flex cursor-pointer items-center justify-center rounded px-2 py-1.5 transition-colors",
               viewMode === "preview"
                 ? "bg-muted/80 text-foreground"
-                : "text-muted-foreground hover:bg-muted/40 hover:text-foreground"
+                : "text-muted-foreground hover:text-foreground hover:underline"
             )}
             onClick={() => onViewModeChange("preview")}
             title={t("preview")}
@@ -85,7 +85,7 @@ export const Breadcrumbs = memo(function Breadcrumbs({
               "flex cursor-pointer items-center justify-center rounded px-2 py-1.5 transition-colors",
               viewMode === "code"
                 ? "bg-muted/80 text-foreground"
-                : "text-muted-foreground hover:bg-muted/40 hover:text-foreground"
+                : "text-muted-foreground hover:text-foreground hover:underline"
             )}
             onClick={() => onViewModeChange("code")}
             title={t("source")}
