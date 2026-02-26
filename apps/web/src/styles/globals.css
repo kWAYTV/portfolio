@@ -245,10 +245,11 @@ html.dark .shiki span {
   background-color: var(--shiki-dark-bg) !important;
 }
 
-.code-view pre {
+.code-view pre,
+.code-view .shiki {
   padding: 0;
   margin: 0;
-  background: transparent !important;
+  background-color: transparent !important;
 }
 
 .code-view code {
