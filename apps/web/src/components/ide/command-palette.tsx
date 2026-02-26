@@ -17,11 +17,17 @@ import {
   PanelBottomClose,
   PanelLeftClose,
   PanelLeftOpen,
+  Palette,
   Play,
 } from "lucide-react";
 import { useTranslations } from "next-intl";
 import { useCallback, useEffect } from "react";
 
+import {
+  THEME_PRESETS,
+  type ThemePreset,
+  useThemePreset,
+} from "@/components/theming/theme-preset-context";
 import { navItems } from "@/consts/nav-items";
 
 interface CommandPaletteProps {
@@ -42,6 +48,7 @@ export function CommandPalette({
   terminalOpen,
 }: CommandPaletteProps) {
   const router = useRouter();
+  const { setPreset } = useThemePreset();
   const t = useTranslations("ide");
   const tNav = useTranslations("nav");
 
@@ -114,6 +121,17 @@ export function CommandPalette({
             <Play className="size-4" />
             <span>{t("openPreviewWindow")}</span>
           </CommandItem>
+        </CommandGroup>
+        <CommandGroup heading={t("themePreset")}>
+          {THEME_PRESETS.map((p) => (
+            <CommandItem
+              key={p}
+              onSelect={() => runCommand(() => setPreset(p as ThemePreset))}
+            >
+              <Palette className="size-4" />
+              <span>{t(`themePreset_${p}`)}</span>
+            </CommandItem>
+          ))}
         </CommandGroup>
       </CommandList>
     </CommandDialog>

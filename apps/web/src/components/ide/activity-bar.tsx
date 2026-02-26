@@ -29,6 +29,7 @@ import {
   Languages,
   Moon,
   PanelLeft,
+  Palette,
   Settings,
   Sun,
   Terminal,
@@ -37,6 +38,11 @@ import {
 import { useLocale, useTranslations } from "next-intl";
 import { useTheme } from "next-themes";
 import { memo, useRef, useState } from "react";
+import {
+  THEME_PRESETS,
+  type ThemePreset,
+  useThemePreset,
+} from "@/components/theming/theme-preset-context";
 import { useThemeTransition } from "@/components/theming/use-theme-transition";
 import { navItems } from "@/consts/nav-items";
 
@@ -67,6 +73,7 @@ export const ActivityBar = memo(function ActivityBar({
   onToggleTerminal,
 }: ActivityBarProps) {
   const { resolvedTheme } = useTheme();
+  const { preset, setPreset } = useThemePreset();
   const setThemeWithTransition = useThemeTransition();
   const settingsTriggerRef = useRef<HTMLButtonElement>(null);
   const t = useTranslations("ide");
@@ -104,7 +111,7 @@ export const ActivityBar = memo(function ActivityBar({
   };
 
   return (
-    <div className="flex h-full w-12 shrink-0 select-none flex-col items-center border-border border-r bg-sidebar py-1">
+    <div className="flex h-full w-12 shrink-0 select-none flex-col items-center border-border border-r bg-sidebar py-1 shadow-[var(--shadow-elevation-sm)]">
       <Tooltip>
         <TooltipTrigger asChild>
           <button
@@ -209,6 +216,32 @@ export const ActivityBar = memo(function ActivityBar({
                 </>
               )}
             </DropdownMenuItem>
+            <DropdownMenuSeparator className="my-0.5" />
+            <DropdownMenuSub>
+              <DropdownMenuSubTrigger className="pl-8">
+                <Palette className="size-3.5" />
+                {t("themePreset")}
+              </DropdownMenuSubTrigger>
+              <DropdownMenuSubContent
+                className="ide-dropdown w-44 rounded-sm border border-border bg-popover p-0.5 shadow-lg"
+                sideOffset={4}
+              >
+                <DropdownMenuRadioGroup
+                  onValueChange={(v) => setPreset(v as ThemePreset)}
+                  value={preset}
+                >
+                  {THEME_PRESETS.map((p) => (
+                    <DropdownMenuRadioItem
+                      className="cursor-pointer"
+                      key={p}
+                      value={p}
+                    >
+                      {t(`themePreset_${p}`)}
+                    </DropdownMenuRadioItem>
+                  ))}
+                </DropdownMenuRadioGroup>
+              </DropdownMenuSubContent>
+            </DropdownMenuSub>
             <DropdownMenuSeparator className="my-0.5" />
             <DropdownMenuSub>
               <DropdownMenuSubTrigger className="pl-8" disabled={localePending}>
