@@ -32,28 +32,41 @@ function TabItem({
   index,
   onClose,
 }: TabItemProps) {
-  const { ref } = useSortable({ id: href, index });
+  const { ref, isDragging } = useSortable({ id: href, index });
 
   return (
     <div
       className={cn(
-        "group relative flex select-none items-center whitespace-nowrap border-[var(--ide-border)] border-r text-xs transition-colors",
+        "group relative flex items-center whitespace-nowrap border-[var(--ide-border)] border-r text-xs transition-colors",
         active
           ? "bg-[var(--ide-tab-active)] text-[var(--ide-tab-active-fg)]"
-          : "bg-[var(--ide-tab)] text-[var(--ide-tab-fg)] hover:bg-[var(--ide-tab-active)]/50"
+          : "bg-[var(--ide-tab)] text-[var(--ide-tab-fg)] hover:bg-[var(--ide-tab-active)]/50",
+        isDragging && "z-10 opacity-80 shadow-lg"
       )}
       ref={ref}
     >
-      {active && (
+      {active && !isDragging && (
         <span className="absolute inset-x-0 top-0 h-[2px] bg-[var(--ide-tab-active-top)]" />
       )}
-      <Link className="flex items-center gap-2 py-1 pr-1 pl-3" href={href}>
+      <Link
+        className="flex items-center gap-2 py-1 pr-0 pl-3"
+        draggable={false}
+        href={href}
+        onClick={(e) => {
+          if (isDragging) {
+            e.preventDefault();
+          }
+        }}
+      >
         <FileIcon className="size-3.5" type={fileType} />
         <span>{fileName}</span>
       </Link>
       <button
-        className="mr-2 rounded-sm p-0.5 opacity-0 transition-opacity hover:bg-foreground/10 group-hover:opacity-60"
-        onClick={onClose}
+        className="mr-1.5 ml-1 rounded-sm p-0.5 opacity-40 transition-opacity hover:bg-foreground/10 hover:opacity-100"
+        onClick={(e) => {
+          e.stopPropagation();
+          onClose();
+        }}
         type="button"
       >
         <X className="size-3" />
@@ -82,10 +95,10 @@ export function EditorTabs({
     return pathname.startsWith(href);
   };
 
-  const visibleItems = navItems.filter((item) => openTabs.includes(item.href));
-  const orderedItems = [...visibleItems].sort(
-    (a, b) => openTabs.indexOf(a.href) - openTabs.indexOf(b.href)
-  );
+  const orderedItems = openTabs.flatMap((href) => {
+    const item = navItems.find((n) => n.href === href);
+    return item ? [item] : [];
+  });
 
   if (orderedItems.length === 0) {
     return (
@@ -113,25 +126,26 @@ export function EditorTabs({
           return;
         }
         const { source } = event.operation;
-        if (
-          source &&
-          "index" in source &&
-          "initialIndex" in source &&
-          source.index !== source.initialIndex
-        ) {
-          const newOrder = [...openTabs];
-          const oldIdx = source.initialIndex as number;
-          const newIdx = source.index as number;
-          const [moved] = newOrder.splice(oldIdx, 0);
-          if (moved) {
-            newOrder.splice(oldIdx, 1);
-          }
-          const item = openTabs[oldIdx];
-          if (item) {
-            const filtered = openTabs.filter((_, i) => i !== oldIdx);
-            filtered.splice(newIdx, 0, item);
-            onReorder(filtered);
-          }
+        if (!source) {
+          return;
+        }
+
+        const sortable = source as {
+          index?: number;
+          initialIndex?: number;
+        };
+        const from = sortable.initialIndex;
+        const to = sortable.index;
+
+        if (from == null || to == null || from === to) {
+          return;
+        }
+
+        const next = [...openTabs];
+        const [item] = next.splice(from, 1);
+        if (item) {
+          next.splice(to, 0, item);
+          onReorder(next);
         }
       }}
     >
