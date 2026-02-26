@@ -64,8 +64,7 @@ function getTabCompletions(input: string, cwd: string): string[] {
   if (cmd === "cd") {
     return MOCK_DIRS.filter(
       (d) =>
-        d.toLowerCase().startsWith(prefix) ||
-        d.startsWith(lastPart)
+        d.toLowerCase().startsWith(prefix) || d.startsWith(lastPart)
     );
   }
 

@@ -66,10 +66,10 @@ export function TerminalPanel({ onClose, isOpen }: TerminalPanelProps) {
     >
       <div
         className={cn(
-          "flex min-h-[6px] items-center justify-center border-border border-b py-0.5 transition-colors",
+          "flex min-h-[6px] items-center justify-center py-0.5 transition-colors",
           isHoveringResize || isDragging
-            ? "cursor-ns-resize bg-muted/60"
-            : "cursor-default bg-transparent",
+            ? "cursor-ns-resize border-border border-b bg-muted/60"
+            : "cursor-default border-transparent bg-transparent",
           isDragging && "bg-muted/80"
         )}
         onMouseDown={handleMouseDown}
