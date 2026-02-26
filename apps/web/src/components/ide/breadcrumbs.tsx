@@ -1,7 +1,7 @@
 "use client";
 
 import { cn } from "@portfolio/ui";
-import { ChevronRight, Code, Copy, Eye } from "lucide-react";
+import { ChevronRight, Copy } from "lucide-react";
 import { useTranslations } from "next-intl";
 import { memo } from "react";
 import { navItems } from "@/consts/nav-items";
@@ -69,7 +69,7 @@ export const Breadcrumbs = memo(function Breadcrumbs({
         >
           <button
             className={cn(
-              "flex cursor-pointer items-center justify-center rounded p-1.5 transition-colors",
+              "flex cursor-pointer items-center justify-center rounded px-2 py-1.5 transition-colors",
               viewMode === "preview"
                 ? "bg-muted/80 text-foreground"
                 : "text-muted-foreground hover:bg-muted/40 hover:text-foreground"
@@ -78,11 +78,11 @@ export const Breadcrumbs = memo(function Breadcrumbs({
             title={t("preview")}
             type="button"
           >
-            <Eye aria-hidden className="size-3.5" />
+            {t("preview")}
           </button>
           <button
             className={cn(
-              "flex cursor-pointer items-center justify-center rounded p-1.5 transition-colors",
+              "flex cursor-pointer items-center justify-center rounded px-2 py-1.5 transition-colors",
               viewMode === "code"
                 ? "bg-muted/80 text-foreground"
                 : "text-muted-foreground hover:bg-muted/40 hover:text-foreground"
@@ -91,7 +91,7 @@ export const Breadcrumbs = memo(function Breadcrumbs({
             title={t("source")}
             type="button"
           >
-            <Code aria-hidden className="size-3.5" />
+            {t("source")}
           </button>
         </div>
       </div>
