@@ -5,19 +5,49 @@ import { cn } from "@portfolio/ui";
 import { Moon, Sun } from "lucide-react";
 import { useTheme } from "next-themes";
 import { useTranslations } from "next-intl";
+import { useCallback, useEffect, useRef, useState } from "react";
+import { useThemeTransition } from "./use-theme-transition";
 
-interface ThemeToggleProps extends React.ComponentPropsWithoutRef<"button"> {}
+interface ThemeToggleProps extends React.ComponentPropsWithoutRef<"button"> {
+  duration?: number;
+}
 
-export const ThemeToggle = ({ className, ...props }: ThemeToggleProps) => {
+export const ThemeToggle = ({
+  className,
+  duration = 400,
+  ...props
+}: ThemeToggleProps) => {
   const t = useTranslations("theme");
-  const { resolvedTheme, setTheme } = useTheme();
-  const isDark = resolvedTheme === "dark";
+  const { resolvedTheme } = useTheme();
+  const setThemeWithTransition = useThemeTransition(duration);
+  const [isDark, setIsDark] = useState(resolvedTheme === "dark");
+  const buttonRef = useRef<HTMLButtonElement>(null);
 
-  const handleClick = () => {
+  useEffect(() => {
+    setIsDark(resolvedTheme === "dark");
+  }, [resolvedTheme]);
+
+  useEffect(() => {
+    const updateTheme = () => {
+      setIsDark(document.documentElement.classList.contains("dark"));
+    };
+    const observer = new MutationObserver(updateTheme);
+    observer.observe(document.documentElement, {
+      attributes: true,
+      attributeFilter: ["class"],
+    });
+    return () => observer.disconnect();
+  }, []);
+
+  const handleClick = useCallback(async () => {
     const newTheme = isDark ? "light" : "dark";
-    setTheme(newTheme);
+    const rect = buttonRef.current?.getBoundingClientRect();
+    const origin = rect
+      ? { x: rect.left + rect.width / 2, y: rect.top + rect.height / 2 }
+      : undefined;
+    await setThemeWithTransition(newTheme, origin);
     analytics.themeToggle(newTheme);
-  };
+  }, [isDark, setThemeWithTransition]);
 
   return (
     <button
@@ -26,6 +56,7 @@ export const ThemeToggle = ({ className, ...props }: ThemeToggleProps) => {
         className
       )}
       onClick={handleClick}
+      ref={buttonRef}
       type="button"
       {...props}
     >
