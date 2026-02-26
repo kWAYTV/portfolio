@@ -362,6 +362,7 @@ export function IdeLayout({ children }: IdeLayoutProps) {
                     <main
                       ref={mainRef}
                       className="min-h-0 flex-1 overflow-y-auto"
+                      data-ide-main
                     >
                       {children}
                     </main>

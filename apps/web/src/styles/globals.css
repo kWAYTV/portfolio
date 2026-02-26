@@ -210,6 +210,11 @@
   }
 }
 
+/* IDE: content fills pane, no max-width gap on right */
+[data-ide-main] [class*="max-w-"] {
+  max-width: none;
+}
+
 /* Minimal scrollbar styles */
 * {
   /* Firefox */
