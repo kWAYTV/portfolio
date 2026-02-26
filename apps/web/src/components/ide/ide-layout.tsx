@@ -120,6 +120,7 @@ export function IdeLayout({ children }: IdeLayoutProps) {
       closingRef.current = false;
       return;
     }
+    if (openTabs.length === 0) return;
     const navItem = matchNavItem(pathname);
     if (navItem && !openTabs.includes(navItem.href)) {
       setOpenTabs((prev) => [...prev, navItem.href]);

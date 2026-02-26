@@ -78,7 +78,7 @@ function TabItem({
       </div>
       <button
         className={cn(
-          "flex shrink-0 rounded p-0.5 pr-2 transition-colors hover:bg-foreground/10",
+          "flex size-5 shrink-0 items-center justify-center rounded transition-colors hover:bg-foreground/10",
           "opacity-0 group-hover:opacity-100",
           active && "opacity-70"
         )}
