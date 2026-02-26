@@ -1,7 +1,8 @@
 {
 	"common": {
 		"welcome": "Bienvenido",
-		"siteDescription": "Bienvenido a mi espacio personal."
+		"siteDescription": "Bienvenido a mi espacio personal.",
+		"siteTitle": "Martin Vila — Portafolio"
 	},
 	"nav": {
 		"home": "inicio",
@@ -88,5 +89,47 @@
 	"theme": {
 		"dark": "oscuro",
 		"light": "claro"
+	},
+	"ide": {
+		"explorer": "Explorador",
+		"openRepo": "Abrir repositorio del portafolio",
+		"terminal": "Terminal",
+		"settings": "Configuración",
+		"copyContent": "Copiar contenido",
+		"preview": "Vista previa",
+		"source": "Código",
+		"noOpenEditors": "Sin editores abiertos",
+		"openFileFromSidebar": "Abre un archivo desde la barra lateral para editar",
+		"commandPalette": "Paleta de comandos",
+		"commandPaletteShortcut": "⌘K",
+		"openPreview": "Abrir vista previa en nueva ventana",
+		"resizeTerminal": "Redimensionar terminal",
+		"closePanel": "Cerrar panel",
+		"commandPlaceholder": "Escribe un comando o busca...",
+		"noResults": "No se encontraron resultados.",
+		"navigation": "Navegación",
+		"view": "Vista",
+		"hideSidebar": "Ocultar barra lateral",
+		"showSidebar": "Mostrar barra lateral",
+		"hideTerminal": "Ocultar terminal",
+		"showTerminal": "Mostrar terminal",
+		"openPreviewWindow": "Abrir vista previa en nueva ventana",
+		"lightTheme": "Tema claro",
+		"darkTheme": "Tema oscuro"
+	},
+	"terminal": {
+		"welcome": "Bienvenido al terminal del portafolio. Escribe 'help' para ver los comandos disponibles.",
+		"helpIntro": "Comandos disponibles:",
+		"helpLs": "  ls, ls -la    Listar archivos",
+		"helpPwd": "  pwd           Mostrar directorio actual",
+		"helpCd": "  cd <dir>      Cambiar directorio",
+		"helpCat": "  cat <archivo> Mostrar contenido (package.json, tsconfig.json, README.md,",
+		"helpCat2": "               .env, about.md, src/welcome.tsx, src/projects.ts, etc.)",
+		"helpEcho": "  echo <texto>  Repetir texto",
+		"helpClear": "  clear         Limpiar terminal",
+		"helpWhoami": "  whoami        Usuario actual",
+		"helpDate": "  date          Fecha y hora actual",
+		"helpHelp": "  help, ?       Mostrar esta ayuda",
+		"helpEasterEggs": "Easter eggs: pnpm run dev, git status"
 	}
 }

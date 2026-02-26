@@ -1,5 +1,6 @@
 "use client";
 
+import { useTranslations } from "next-intl";
 import {
   useCallback,
   useEffect,
@@ -25,8 +26,138 @@ const MOCK_FILES = [
   "packages",
 ];
 
+const MOCK_DIRS = ["src", "apps", "packages", ".", "..", "~"];
+const COMMANDS = [
+  "clear",
+  "pwd",
+  "ls",
+  "cd",
+  "cat",
+  "echo",
+  "whoami",
+  "date",
+  "help",
+  "?",
+  "npm",
+  "pnpm",
+  "git",
+];
+
+function getTabCompletions(input: string, cwd: string): string[] {
+  const trimmed = input.trimEnd();
+  const parts = trimmed.split(/\s+/);
+  const lastPart = parts[parts.length - 1] ?? "";
+  const prefix = lastPart.toLowerCase();
+
+  if (parts.length <= 1) {
+    return COMMANDS.filter((c) => c.startsWith(prefix) || c.startsWith(lastPart));
+  }
+
+  const cmd = parts[0]?.toLowerCase();
+  if (cmd === "cat") {
+    const keys = Object.keys(FILE_CONTENTS);
+    return keys.filter(
+      (k) =>
+        k.toLowerCase().startsWith(prefix) ||
+        k.replace(/^src\//, "").toLowerCase().startsWith(prefix)
+    );
+  }
+  if (cmd === "cd") {
+    return MOCK_DIRS.filter(
+      (d) =>
+        d.toLowerCase().startsWith(prefix) || d.startsWith(lastPart)
+    );
+  }
+
+  return [];
+}
+
+function applyTabCompletion(input: string, completions: string[]): string {
+  if (completions.length === 0) return input;
+  const trimmed = input.trimEnd();
+  const parts = trimmed.split(/\s+/);
+  const lastPart = parts[parts.length - 1] ?? "";
+  const prefix = lastPart.toLowerCase();
+
+  const matches = completions.filter(
+    (c) => c.toLowerCase().startsWith(prefix) || c.startsWith(lastPart)
+  );
+  if (matches.length === 0) return input;
+
+  if (matches.length === 1) {
+    const before = parts.slice(0, -1).join(" ");
+    const suffix = ["cd", "cat"].includes(parts[0]?.toLowerCase() ?? "")
+      ? " "
+      : "";
+    return before ? `${before} ${matches[0]}${suffix}` : `${matches[0]}${suffix}`;
+  }
+
+  let commonPrefix = matches[0] ?? "";
+  for (const s of matches.slice(1)) {
+    let i = 0;
+    const a = commonPrefix.toLowerCase();
+    const b = s.toLowerCase();
+    while (i < a.length && i < b.length && a[i] === b[i]) i++;
+    commonPrefix = commonPrefix.slice(0, i);
+  }
+  const before = parts.slice(0, -1).join(" ");
+  return before ? `${before} ${commonPrefix}` : commonPrefix;
+}
+
+function getGhostSuggestion(input: string, cwd: string): string | null {
+  const completions = getTabCompletions(input, cwd);
+  if (completions.length === 0) return null;
+
+  const fullCompletion = applyTabCompletion(input, completions);
+  const trimmed = input.trimEnd();
+  if (fullCompletion === trimmed) return null;
+
+  const parts = trimmed.split(/\s+/);
+  const lastPart = parts[parts.length - 1] ?? "";
+  const prefix = lastPart.toLowerCase();
+
+  const matches = completions.filter(
+    (c) => c.toLowerCase().startsWith(prefix) || c.startsWith(lastPart)
+  );
+  if (matches.length === 0) return null;
+
+  if (matches.length === 1) {
+    const completed = matches[0];
+    const suffix = ["cd", "cat"].includes(parts[0]?.toLowerCase() ?? "")
+      ? " "
+      : "";
+    return completed.slice(lastPart.length) + suffix;
+  }
+
+  let commonPrefix = matches[0] ?? "";
+  for (const s of matches.slice(1)) {
+    let i = 0;
+    const a = commonPrefix.toLowerCase();
+    const b = s.toLowerCase();
+    while (i < a.length && i < b.length && a[i] === b[i]) i++;
+    commonPrefix = commonPrefix.slice(0, i);
+  }
+  const added = commonPrefix.slice(lastPart.length);
+  return added || null;
+}
+
 // File contents from explorer - paths resolve: about.md -> src/about.md
+// Directories (src, apps, packages) cannot be used with cat
 const FILE_CONTENTS: Record<string, string[]> = {
+  "tsconfig.json": [
+    "{",
+    '  "compilerOptions": {',
+    '    "target": "ES2022",',
+    '    "module": "ESNext",',
+    '    "moduleResolution": "bundler",',
+    '    "strict": true',
+    "  }",
+    "}",
+  ],
+  ".env": [
+    "# Local env vars",
+    "NODE_ENV=development",
+  ],
   "package.json": [
     "{",
     '  "name": "portfolio",',
@@ -178,9 +309,25 @@ function resolveFilePath(_cwd: string, fileArg: string): string | null {
   return null;
 }
 
+type TerminalTranslations = {
+  helpIntro: string;
+  helpLs: string;
+  helpPwd: string;
+  helpCd: string;
+  helpCat: string;
+  helpCat2: string;
+  helpEcho: string;
+  helpClear: string;
+  helpWhoami: string;
+  helpDate: string;
+  helpHelp: string;
+  helpEasterEggs: string;
+};
+
 function executeCommand(
   cmd: string,
-  cwd: string
+  cwd: string,
+  tHelp?: TerminalTranslations
 ): { lines: OutputLine[]; newCwd?: string } {
   const trimmed = cmd.trim();
   const parts = trimmed.split(/\s+/);
@@ -240,6 +387,10 @@ function executeCommand(
     case "cat": {
       const file = args[0];
       if (!file) return { lines: [err("cat: missing file operand")] };
+      const dirs = ["src", "apps", "packages"];
+      if (dirs.includes(file)) {
+        return { lines: [err(`cat: ${file}: Is a directory`)] };
+      }
       const resolved = resolveFilePath(cwd, file);
       if (resolved && FILE_CONTENTS[resolved]) {
         return {
@@ -272,17 +423,18 @@ function executeCommand(
       };
     }
 
-  if (command === "npm" && args[0] === "run" && args[1] === "dev") {
+  if (
+    (command === "pnpm" || command === "npm") &&
+    args[0] === "run" &&
+    args[1] === "dev"
+  ) {
     return {
       lines: [
         "> portfolio@0.0.0 dev",
-        "> turbo dev",
+        "> next dev",
         "",
-        "• Packages in scope: web",
-        "• Running dev in 1 packages",
-        "• Remote caching disabled",
-        "",
-        "web:ready - started server on 0.0.0.0:3000",
+        "  ▲ Next.js 16.x",
+        "  - Local:        http://localhost:3000",
         "",
         "✓ Ready in 1.2s",
       ].map(out),
@@ -301,20 +453,35 @@ function executeCommand(
   }
 
   if (command === "help" || command === "?") {
+    const h = tHelp ?? {
+      helpIntro: "Available commands:",
+      helpLs: "  ls, ls -la    List files",
+      helpPwd: "  pwd           Print working directory",
+      helpCd: "  cd <dir>      Change directory",
+      helpCat: "  cat <file>   Display file (package.json, tsconfig.json, README.md,",
+      helpCat2: "               .env, about.md, src/welcome.tsx, src/projects.ts, etc.)",
+      helpEcho: "  echo <text>   Echo text",
+      helpClear: "  clear         Clear terminal",
+      helpWhoami: "  whoami        Current user",
+      helpDate: "  date          Current date/time",
+      helpHelp: "  help, ?       Show this help",
+      helpEasterEggs: "Easter eggs: pnpm run dev, git status",
+    };
     return {
       lines: [
-        "Available commands:",
-        "  ls, ls -la    List files",
-        "  pwd           Print working directory",
-        "  cd <dir>      Change directory",
-        "  cat <file>   Display file contents",
-        "  echo <text>   Echo text",
-        "  clear         Clear terminal",
-        "  whoami        Current user",
-        "  date          Current date/time",
-        "  help, ?       Show this help",
+        h.helpIntro,
+        h.helpLs,
+        h.helpPwd,
+        h.helpCd,
+        h.helpCat,
+        h.helpCat2,
+        h.helpEcho,
+        h.helpClear,
+        h.helpWhoami,
+        h.helpDate,
+        h.helpHelp,
         "",
-        "Easter eggs: npm run dev, git status",
+        h.helpEasterEggs,
       ].map(out),
     };
   }
@@ -340,10 +507,11 @@ function Prompt({ path }: { path: string }) {
 }
 
 export function MockTerminal() {
+  const t = useTranslations("terminal");
   const [lines, setLines] = useState<TerminalLine[]>(() => [
     {
       type: "output",
-      content: "Welcome to the portfolio terminal. Type 'help' for available commands.",
+      content: t("welcome"),
     },
     { type: "input", content: "" },
   ]);
@@ -377,7 +545,21 @@ export function MockTerminal() {
 
     const cmd = inputValue.trim();
     const fullLine = `${prompt} ${inputValue}`;
-    const { lines: outputLines, newCwd } = executeCommand(inputValue, cwd);
+    const tHelp = {
+      helpIntro: t("helpIntro"),
+      helpLs: t("helpLs"),
+      helpPwd: t("helpPwd"),
+      helpCd: t("helpCd"),
+      helpCat: t("helpCat"),
+      helpCat2: t("helpCat2"),
+      helpEcho: t("helpEcho"),
+      helpClear: t("helpClear"),
+      helpWhoami: t("helpWhoami"),
+      helpDate: t("helpDate"),
+      helpHelp: t("helpHelp"),
+      helpEasterEggs: t("helpEasterEggs"),
+    };
+    const { lines: outputLines, newCwd } = executeCommand(inputValue, cwd, tHelp);
 
     if (cmd.toLowerCase() !== "clear") {
       setHistory((prev) => {
@@ -392,7 +574,7 @@ export function MockTerminal() {
       setLines([
         {
           type: "output",
-          content: "Welcome to the portfolio terminal. Type 'help' for available commands.",
+          content: t("welcome"),
         },
         { type: "input", content: "" },
       ]);
@@ -416,7 +598,7 @@ export function MockTerminal() {
 
     if (newCwd) setCwd(newCwd);
     setInputValue("");
-  }, [inputValue, cwd, prompt]);
+  }, [inputValue, cwd, prompt, t]);
 
   const handleKeyDown = useCallback(
     (e: KeyboardEvent<HTMLInputElement>) => {
@@ -446,13 +628,21 @@ export function MockTerminal() {
         }
         return;
       }
+      if (e.key === "Tab") {
+        e.preventDefault();
+        const completions = getTabCompletions(inputValue, cwd);
+        if (completions.length > 0) {
+          setInputValue(applyTabCompletion(inputValue, completions));
+        }
+        return;
+      }
       if (e.key === "c" && e.ctrlKey) {
         e.preventDefault();
         setLines((prev) => [...prev.slice(0, -1), { type: "input", content: "" }]);
         setInputValue("");
       }
     },
-    [execute, history, historyIndex]
+    [execute, history, historyIndex, inputValue, cwd]
   );
 
   const handleTerminalClick = useCallback(() => {
@@ -474,20 +664,43 @@ export function MockTerminal() {
         {lines.map((line, i) => (
           <div key={i} className="whitespace-pre-wrap break-all">
             {line.type === "input" && line.content === "" ? (
-              <span className="flex items-center gap-1">
+              <span className="flex min-w-0 flex-1 items-center gap-1">
                 <Prompt path={pathDisplay} />
-                <input
-                  ref={i === lines.length - 1 ? inputRef : undefined}
-                  className="terminal-input min-w-[1ch] flex-1 bg-transparent outline-none"
-                  value={inputValue}
-                  onChange={(e) => setInputValue(e.target.value)}
-                  onKeyDown={handleKeyDown}
-                  spellCheck={false}
-                  autoComplete="off"
-                  autoCapitalize="off"
-                  autoCorrect="off"
-                  aria-label="Terminal input"
-                />
+                <span className="relative flex min-w-0 flex-1">
+                  <input
+                    ref={i === lines.length - 1 ? inputRef : undefined}
+                    className="terminal-input min-w-[1ch] flex-1 bg-transparent outline-none"
+                    value={inputValue}
+                    onChange={(e) => setInputValue(e.target.value)}
+                    onKeyDown={handleKeyDown}
+                    spellCheck={false}
+                    autoComplete="off"
+                    autoCapitalize="off"
+                    autoCorrect="off"
+                    aria-label="Terminal input"
+                  />
+                  {(() => {
+                    const ghost = getGhostSuggestion(inputValue, cwd);
+                    if (!ghost) return null;
+                    return (
+                      <span
+                        className="pointer-events-none absolute inset-0 flex items-center overflow-hidden pl-[2px]"
+                        aria-hidden
+                        style={{ font: "inherit" }}
+                      >
+                        <span className="invisible shrink-0 overflow-hidden whitespace-pre">
+                          {inputValue}
+                        </span>
+                        <span
+                          className="shrink-0 whitespace-pre opacity-50"
+                          style={{ color: "var(--terminal-output)" }}
+                        >
+                          {ghost}
+                        </span>
+                      </span>
+                    );
+                  })()}
+                </span>
               </span>
             ) : line.type === "input" ? (
               <span className="terminal-history-line">

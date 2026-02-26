@@ -6,7 +6,8 @@ import {
   TooltipContent,
   TooltipTrigger,
 } from "@portfolio/ui";
-import { GripHorizontal, PanelBottomClose, Terminal } from "lucide-react";
+import { GripHorizontal, PanelBottomClose, Play, Terminal } from "lucide-react";
+import { useTranslations } from "next-intl";
 import { useCallback, useEffect, useRef, useState } from "react";
 import { MockTerminal } from "./mock-terminal";
 
@@ -20,8 +21,10 @@ interface TerminalPanelProps {
 }
 
 export function TerminalPanel({ onClose, isOpen }: TerminalPanelProps) {
+  const t = useTranslations("ide");
   const [height, setHeight] = useState(DEFAULT_HEIGHT);
   const [isDragging, setIsDragging] = useState(false);
+  const [isHoveringResize, setIsHoveringResize] = useState(false);
   const panelRef = useRef<HTMLDivElement>(null);
 
   const handleMouseDown = useCallback((e: React.MouseEvent) => {
@@ -65,34 +68,65 @@ export function TerminalPanel({ onClose, isOpen }: TerminalPanelProps) {
     >
       <div
         className={cn(
-          "flex cursor-ns-resize items-center justify-center border-border border-b bg-muted/40 py-0.5 transition-colors hover:bg-muted/60",
+          "flex min-h-[6px] items-center justify-center py-0.5 transition-colors",
+          isHoveringResize || isDragging
+            ? "cursor-ns-resize border-border border-b bg-muted/60"
+            : "cursor-default border-transparent bg-transparent",
           isDragging && "bg-muted/80"
         )}
         onMouseDown={handleMouseDown}
+        onMouseEnter={() => setIsHoveringResize(true)}
+        onMouseLeave={() => setIsHoveringResize(false)}
         role="separator"
-        aria-label="Resize terminal"
+        aria-label={t("resizeTerminal")}
       >
-        <GripHorizontal className="size-3.5 text-muted-foreground" />
+        <GripHorizontal
+          className={cn(
+            "size-3.5 text-muted-foreground transition-opacity",
+            isHoveringResize || isDragging ? "opacity-100" : "opacity-0"
+          )}
+        />
       </div>
       <div className="flex h-9 shrink-0 items-center justify-between border-border border-b bg-muted/60 px-2">
         <div className="flex items-center gap-2">
           <Terminal className="size-4 text-muted-foreground" />
           <span className="text-[11px] font-medium text-foreground">
-            Terminal
+            {t("terminal")}
           </span>
         </div>
-        <Tooltip>
-          <TooltipTrigger asChild>
-            <button
-              className="flex size-6 cursor-pointer items-center justify-center rounded text-muted-foreground transition-colors hover:bg-muted hover:text-foreground"
-              onClick={onClose}
-              type="button"
-            >
-              <PanelBottomClose className="size-4" />
-            </button>
-          </TooltipTrigger>
-          <TooltipContent side="top">Close panel</TooltipContent>
-        </Tooltip>
+        <div className="flex items-center gap-0.5">
+          <Tooltip>
+            <TooltipTrigger asChild>
+              <button
+                className="flex size-6 cursor-pointer items-center justify-center rounded text-muted-foreground transition-colors hover:bg-muted hover:text-foreground"
+                onClick={() => {
+                  const w = window.open(
+                    typeof window !== "undefined" ? window.location.href : "/",
+                    "_blank",
+                    "noopener,noreferrer,width=1200,height=800"
+                  );
+                  w?.focus();
+                }}
+                type="button"
+              >
+                <Play className="size-4" />
+              </button>
+            </TooltipTrigger>
+            <TooltipContent side="top">{t("openPreview")}</TooltipContent>
+          </Tooltip>
+          <Tooltip>
+            <TooltipTrigger asChild>
+              <button
+                className="flex size-6 cursor-pointer items-center justify-center rounded text-muted-foreground transition-colors hover:bg-muted hover:text-foreground"
+                onClick={onClose}
+                type="button"
+              >
+                <PanelBottomClose className="size-4" />
+              </button>
+            </TooltipTrigger>
+            <TooltipContent side="top">{t("closePanel")}</TooltipContent>
+          </Tooltip>
+        </div>
       </div>
       <div className="terminal-viewport min-h-0 flex-1 overflow-hidden bg-background">
         <MockTerminal />

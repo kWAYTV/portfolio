@@ -2,11 +2,13 @@
 
 import { usePathname, useRouter } from "@i18n/routing";
 import { cn, TooltipProvider } from "@portfolio/ui";
-import { ChevronRight, Copy, Code2, Eye } from "lucide-react";
+import { ChevronRight, Code, Copy, Eye } from "lucide-react";
 import { useCallback, useEffect, useRef, useState } from "react";
 
 import { navItems } from "@/consts/nav-items";
+import { useTranslations } from "next-intl";
 import { ActivityBar } from "./activity-bar";
+import { CommandPalette } from "./command-palette";
 import { EditorTabs } from "./editor-tabs";
 import { MobileNav } from "./mobile-nav";
 import { Sidebar } from "./sidebar";
@@ -52,6 +54,7 @@ function Breadcrumbs({
   pathname: string;
   viewMode: ViewMode;
 }) {
+  const t = useTranslations("ide");
   const parts = ["portfolio", "src"];
   const navItem = matchNavItem(pathname);
 
@@ -68,7 +71,7 @@ function Breadcrumbs({
   }
 
   return (
-    <div className="flex shrink-0 items-center justify-between gap-2 border-border border-b bg-background px-3 py-1.5 text-[11px] text-muted-foreground sm:px-4 sm:py-1">
+      <div className="flex shrink-0 items-center justify-between gap-2 overflow-hidden border-border border-b bg-background px-2 py-1.5 text-[11px] text-muted-foreground sm:px-4 sm:py-1">
       <div className="flex min-w-0 flex-1 items-center gap-1 overflow-hidden">
         {parts.map((part, i) => {
           const key = parts.slice(0, i + 1).join("/");
@@ -87,43 +90,55 @@ function Breadcrumbs({
           );
         })}
       </div>
-      <div className="flex shrink-0 select-none items-center gap-0.5">
+      <div
+        className="flex shrink-0 select-none items-center"
+        role="group"
+        aria-label="Editor actions"
+      >
         {onCopy && (
+          <>
+            <button
+              className="flex cursor-pointer items-center justify-center rounded p-1.5 text-muted-foreground transition-colors hover:bg-muted/50 hover:text-foreground"
+              onClick={onCopy}
+              title={t("copyContent")}
+              type="button"
+            >
+              <Copy className="size-3.5" aria-hidden />
+            </button>
+            <span
+              className="mx-0.5 h-3 w-px bg-border"
+              aria-hidden
+            />
+          </>
+        )}
+        <div className="flex items-center rounded-sm" role="group" aria-label="View mode">
           <button
-            className="rounded p-2 transition-colors touch-manipulation sm:p-1 text-muted-foreground hover:text-foreground"
-            onClick={onCopy}
-            title="Copy content"
+            className={cn(
+              "flex cursor-pointer items-center justify-center rounded p-1.5 transition-colors",
+              viewMode === "preview"
+                ? "bg-muted/80 text-foreground"
+                : "text-muted-foreground hover:bg-muted/40 hover:text-foreground"
+            )}
+            onClick={() => onViewModeChange("preview")}
+            title={t("preview")}
             type="button"
           >
-            <Copy className="size-3.5" />
+            <Eye className="size-3.5" aria-hidden />
           </button>
-        )}
-        <button
-          className={cn(
-            "rounded p-2 cursor-pointer transition-colors touch-manipulation sm:p-1",
-            viewMode === "preview"
-              ? "bg-muted text-foreground"
-              : "text-muted-foreground hover:text-foreground"
-          )}
-          onClick={() => onViewModeChange("preview")}
-          title="Preview"
-          type="button"
-        >
-          <Eye className="size-3.5" />
-        </button>
-        <button
-          className={cn(
-            "rounded p-2 cursor-pointer transition-colors touch-manipulation sm:p-1",
-            viewMode === "code"
-              ? "bg-muted text-foreground"
-              : "text-muted-foreground hover:text-foreground"
-          )}
-          onClick={() => onViewModeChange("code")}
-          title="Source"
-          type="button"
-        >
-          <Code2 className="size-3.5" />
-        </button>
+          <button
+            className={cn(
+              "flex cursor-pointer items-center justify-center rounded p-1.5 transition-colors",
+              viewMode === "code"
+                ? "bg-muted/80 text-foreground"
+                : "text-muted-foreground hover:bg-muted/40 hover:text-foreground"
+            )}
+            onClick={() => onViewModeChange("code")}
+            title={t("source")}
+            type="button"
+          >
+            <Code className="size-3.5" aria-hidden />
+          </button>
+        </div>
       </div>
     </div>
   );
@@ -138,6 +153,7 @@ export function IdeLayout({ children }: IdeLayoutProps) {
   const router = useRouter();
   const [sidebarOpen, setSidebarOpen] = useState(true);
   const [terminalOpen, setTerminalOpen] = useState(false);
+  const [commandOpen, setCommandOpen] = useState(false);
   const [isFullscreen, setIsFullscreen] = useState(false);
   const [pageTitle, setPageTitle] = useState("");
   const [viewMode, setViewMode] = useState<ViewMode>("preview");
@@ -156,9 +172,16 @@ export function IdeLayout({ children }: IdeLayoutProps) {
       closingRef.current = false;
       return;
     }
-    if (openTabs.length === 0) return;
     const navItem = matchNavItem(pathname);
-    if (!navItem || openTabs.includes(navItem.href)) {
+    if (!navItem) {
+      openedFromSidebarRef.current = null;
+      return;
+    }
+    if (openTabs.length === 0) {
+      setOpenTabs([navItem.href]);
+      return;
+    }
+    if (openTabs.includes(navItem.href)) {
       openedFromSidebarRef.current = null;
       return;
     }
@@ -259,33 +282,50 @@ export function IdeLayout({ children }: IdeLayoutProps) {
           selection.addRange(range);
         }
       }
+      if ((e.ctrlKey || e.metaKey) && e.key === "b") {
+        e.preventDefault();
+        toggleSidebar();
+      }
+      if ((e.ctrlKey || e.metaKey) && e.key === "j") {
+        e.preventDefault();
+        setTerminalOpen((p) => !p);
+      }
     };
     document.addEventListener("keydown", onKeyDown);
     return () => document.removeEventListener("keydown", onKeyDown);
-  }, []);
+  }, [toggleSidebar]);
 
   const hasOpenTabs = openTabs.length > 0;
 
   return (
     <ViewModeProvider value={{ viewMode, setViewMode }}>
       <TooltipProvider delayDuration={300}>
+        <CommandPalette
+          onOpenChange={setCommandOpen}
+          onToggleSidebar={toggleSidebar}
+          onToggleTerminal={() => setTerminalOpen((p) => !p)}
+          open={commandOpen}
+          sidebarOpen={sidebarOpen}
+          terminalOpen={terminalOpen}
+        />
         <div className="flex h-dvh flex-col overflow-hidden bg-background">
           <TitleBar
             maximized={isFullscreen}
             onClose={closeAllTabs}
             onMaximize={toggleFullscreen}
-            onMinimize={toggleSidebar}
+            onMinimize={isFullscreen ? toggleFullscreen : toggleSidebar}
           />
 
           <div className="flex min-h-0 flex-1">
             <div className="hidden md:block">
               <ActivityBar
-                  onToggleSidebar={toggleSidebar}
-                  onToggleTerminal={() => setTerminalOpen((p) => !p)}
-                  pathname={pathname}
-                  sidebarOpen={sidebarOpen}
-                  terminalOpen={terminalOpen}
-                />
+                onOpenCommand={() => setCommandOpen(true)}
+                onToggleSidebar={toggleSidebar}
+                onToggleTerminal={() => setTerminalOpen((p) => !p)}
+                pathname={pathname}
+                sidebarOpen={sidebarOpen}
+                terminalOpen={terminalOpen}
+              />
             </div>
 
             {sidebarOpen && (
@@ -345,6 +385,7 @@ export function IdeLayout({ children }: IdeLayoutProps) {
           </div>
 
           <StatusBar
+            onOpenCommand={() => setCommandOpen(true)}
             onToggleTerminal={() => setTerminalOpen((p) => !p)}
             pathname={pathname}
             terminalOpen={terminalOpen}

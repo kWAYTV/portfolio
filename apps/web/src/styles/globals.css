@@ -200,6 +200,10 @@
   * {
     @apply border-border outline-ring/50;
   }
+  html {
+    /* Prevent layout shift when Radix dropdowns/dialogs apply overflow:hidden to body */
+    scrollbar-gutter: stable;
+  }
   body {
     letter-spacing: var(--tracking-normal);
     @apply bg-background text-foreground;
