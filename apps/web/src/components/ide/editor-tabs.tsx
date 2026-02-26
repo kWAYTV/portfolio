@@ -52,7 +52,7 @@ function TabItem({
   return (
     <div
       className={cn(
-        "group relative flex h-full min-w-0 max-w-[180px] select-none items-center border-r border-border/60 text-[13px] transition-colors",
+        "group relative flex h-full min-w-0 max-w-[180px] select-none items-center border-r border-border/60 pr-1 text-[13px] transition-colors",
         active
           ? "bg-background text-foreground"
           : "bg-muted/40 text-muted-foreground hover:bg-muted/70",
@@ -92,9 +92,12 @@ function TabItem({
       </div>
       <button
         className={cn(
-          "flex size-5 shrink-0 items-center justify-center rounded transition-colors hover:bg-foreground/10",
+          "flex size-5 shrink-0 items-center justify-center rounded-sm transition-colors",
           "opacity-0 group-hover:opacity-100",
-          active && "opacity-70"
+          active && "opacity-100",
+          active
+            ? "hover:bg-foreground/5 text-foreground"
+            : "hover:bg-foreground/5 text-muted-foreground"
         )}
         onClick={(e) => {
           e.stopPropagation();
