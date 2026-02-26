@@ -1,14 +1,21 @@
 "use client";
 
 import { Link } from "@i18n/routing";
-import { cn } from "@portfolio/ui";
-import { X } from "lucide-react";
+import {
+  cn,
+  Empty,
+  EmptyDescription,
+  EmptyHeader,
+  EmptyMedia,
+  EmptyTitle,
+} from "@portfolio/ui";
+import { Code2, X } from "lucide-react";
 import { navItems } from "@/consts/nav-items";
 import { FileIcon } from "./file-icon";
 
 interface EditorTabsProps {
   onCloseTab: (href: string) => void;
-  openTabs: Set<string>;
+  openTabs: string[];
   pathname: string;
 }
 
@@ -24,7 +31,26 @@ export function EditorTabs({
     return pathname.startsWith(href);
   };
 
-  const visibleItems = navItems.filter((item) => openTabs.has(item.href));
+  const visibleItems = navItems.filter((item) => openTabs.includes(item.href));
+
+  if (visibleItems.length === 0) {
+    return (
+      <div className="flex flex-1 flex-col">
+        <div className="h-[35px] shrink-0 bg-[var(--ide-tab-bar)]" />
+        <Empty className="flex-1 border-0">
+          <EmptyHeader>
+            <EmptyMedia variant="icon">
+              <Code2 />
+            </EmptyMedia>
+            <EmptyTitle className="text-sm">No open editors</EmptyTitle>
+            <EmptyDescription className="text-xs">
+              Open a file from the sidebar to start editing
+            </EmptyDescription>
+          </EmptyHeader>
+        </Empty>
+      </div>
+    );
+  }
 
   return (
     <div className="flex h-[35px] shrink-0 items-stretch overflow-x-auto bg-[var(--ide-tab-bar)]">

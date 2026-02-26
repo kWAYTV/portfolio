@@ -3,7 +3,7 @@
 import { usePathname, useRouter } from "@i18n/routing";
 import { TooltipProvider } from "@portfolio/ui";
 import { ChevronRight } from "lucide-react";
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import { navItems } from "@/consts/nav-items";
 import { ActivityBar } from "./activity-bar";
 import { EditorTabs } from "./editor-tabs";
@@ -65,14 +65,19 @@ export function IdeLayout({ children }: IdeLayoutProps) {
   const pathname = usePathname();
   const router = useRouter();
   const [sidebarOpen, setSidebarOpen] = useState(true);
-  const [openTabs, setOpenTabs] = useState<Set<string>>(
-    () => new Set(navItems.map((item) => item.href))
+  const [openTabs, setOpenTabs] = useState<string[]>(() =>
+    navItems.map((item) => item.href)
   );
+  const closingRef = useRef(false);
 
   useEffect(() => {
+    if (closingRef.current) {
+      closingRef.current = false;
+      return;
+    }
     const navItem = matchNavItem(pathname);
-    if (navItem && !openTabs.has(navItem.href)) {
-      setOpenTabs((prev) => new Set([...prev, navItem.href]));
+    if (navItem && !openTabs.includes(navItem.href)) {
+      setOpenTabs((prev) => [...prev, navItem.href]);
     }
   }, [pathname, openTabs]);
 
@@ -82,29 +87,27 @@ export function IdeLayout({ children }: IdeLayoutProps) {
 
   const closeTab = useCallback(
     (href: string) => {
-      if (openTabs.size <= 1) {
+      const idx = openTabs.indexOf(href);
+      if (idx === -1) {
         return;
       }
+
+      const next = openTabs.filter((h) => h !== href);
+      setOpenTabs(next);
 
       const isActive =
         href === "/" ? pathname === "/" : pathname.startsWith(href);
 
-      const next = new Set(openTabs);
-      next.delete(href);
-      setOpenTabs(next);
-
-      if (isActive) {
-        const remaining = navItems
-          .filter((item) => next.has(item.href))
-          .map((item) => item.href);
-        const target = remaining.at(-1);
-        if (target) {
-          router.push(target);
-        }
+      if (isActive && next.length > 0) {
+        closingRef.current = true;
+        const target = next[Math.min(idx, next.length - 1)];
+        router.push(target);
       }
     },
     [pathname, openTabs, router]
   );
+
+  const hasOpenTabs = openTabs.length > 0;
 
   return (
     <TooltipProvider delayDuration={300}>
@@ -130,19 +133,28 @@ export function IdeLayout({ children }: IdeLayoutProps) {
 
           {/* Editor panel */}
           <div className="flex min-w-0 flex-1 flex-col">
-            {/* Tab bar - desktop only */}
-            <div className="hidden md:block">
-              <EditorTabs
-                onCloseTab={closeTab}
-                openTabs={openTabs}
-                pathname={pathname}
-              />
-            </div>
-
-            <Breadcrumbs pathname={pathname} />
-
-            {/* Editor content */}
-            <main className="flex-1 overflow-y-auto">{children}</main>
+            {/* Tab bar + empty state - desktop only */}
+            {hasOpenTabs ? (
+              <>
+                <div className="hidden md:block">
+                  <EditorTabs
+                    onCloseTab={closeTab}
+                    openTabs={openTabs}
+                    pathname={pathname}
+                  />
+                </div>
+                <Breadcrumbs pathname={pathname} />
+                <main className="flex-1 overflow-y-auto">{children}</main>
+              </>
+            ) : (
+              <div className="hidden flex-1 md:flex">
+                <EditorTabs
+                  onCloseTab={closeTab}
+                  openTabs={openTabs}
+                  pathname={pathname}
+                />
+              </div>
+            )}
           </div>
         </div>
 
