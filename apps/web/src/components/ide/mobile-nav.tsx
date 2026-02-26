@@ -35,7 +35,7 @@ export function MobileNav({ pathname }: MobileNavProps) {
         return (
           <Link
             className={cn(
-              "flex flex-col items-center gap-1 px-4 py-1.5 text-[10px] transition-colors",
+              "flex min-h-[44px] min-w-[44px] flex-col items-center justify-center gap-0.5 px-3 py-2 text-[10px] transition-colors touch-manipulation",
               active ? "text-primary" : "text-muted-foreground"
             )}
             href={item.href}

@@ -10,7 +10,7 @@ export const PageContent = forwardRef<
 >(({ children, className, ...props }, ref) => (
   <div
     className={cn(
-      "mx-auto w-full min-w-0 max-w-2xl space-y-5 px-6 py-8 sm:space-y-6",
+      "mx-auto w-full min-w-0 max-w-2xl space-y-5 px-4 py-6 sm:px-6 sm:py-8 sm:space-y-6",
       className
     )}
     ref={ref}
