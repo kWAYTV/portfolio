@@ -27,7 +27,11 @@ export function TitleBar({
         <div className="group/dots hidden items-center gap-[7px] md:flex">
         <button
           className="dot-close relative flex size-3 cursor-pointer items-center justify-center rounded-full bg-[#ff5f57] transition-transform hover:scale-110"
-          onClick={onClose}
+          onClick={(e) => {
+            e.preventDefault();
+            e.stopPropagation();
+            onClose();
+          }}
           type="button"
         >
           <X className="size-[8px] stroke-[2.5] text-[#4d0000] opacity-0 transition-opacity group-hover/dots:opacity-100" />

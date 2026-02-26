@@ -80,7 +80,9 @@ export function IdeLayout({ children }: IdeLayoutProps) {
 
   useEffect(() => {
     if (closingRef.current) {
-      closingRef.current = false;
+      setTimeout(() => {
+        closingRef.current = false;
+      }, 0);
       return;
     }
     const navItem = matchNavItem(pathname);
@@ -471,7 +473,7 @@ export function IdeLayout({ children }: IdeLayoutProps) {
               />
             }
             maximized={isFullscreen}
-            onClose={closeAllTabs}
+            onClose={() => closeAllTabs()}
             onMaximize={toggleFullscreen}
             onMinimize={isFullscreen ? toggleFullscreen : toggleSidebar}
           />
