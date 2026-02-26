@@ -88,22 +88,26 @@ function Breadcrumbs({
         })}
       </div>
       <div className="flex shrink-0 select-none items-center gap-0.5">
+        <div className="flex shrink-0 items-center gap-px rounded-md border border-transparent bg-transparent">
         {onCopy && (
-          <button
-            className="rounded p-2 transition-colors touch-manipulation sm:p-1 text-muted-foreground hover:text-foreground"
-            onClick={onCopy}
-            title="Copy content"
-            type="button"
-          >
-            <Copy className="size-3.5" />
-          </button>
+          <>
+            <button
+              className="cursor-pointer rounded p-1.5 text-muted-foreground transition-colors hover:bg-muted/60 hover:text-foreground"
+              onClick={onCopy}
+              title="Copy content"
+              type="button"
+            >
+              <Copy className="size-3.5" />
+            </button>
+            <span className="h-3 w-px shrink-0 bg-border" aria-hidden />
+          </>
         )}
         <button
           className={cn(
-            "rounded p-2 cursor-pointer transition-colors touch-manipulation sm:p-1",
+            "cursor-pointer rounded p-1.5 transition-colors",
             viewMode === "preview"
               ? "bg-muted text-foreground"
-              : "text-muted-foreground hover:text-foreground"
+              : "text-muted-foreground hover:text-foreground hover:bg-muted/60"
           )}
           onClick={() => onViewModeChange("preview")}
           title="Preview"
@@ -113,10 +117,10 @@ function Breadcrumbs({
         </button>
         <button
           className={cn(
-            "rounded p-2 cursor-pointer transition-colors touch-manipulation sm:p-1",
+            "cursor-pointer rounded p-1.5 transition-colors",
             viewMode === "code"
               ? "bg-muted text-foreground"
-              : "text-muted-foreground hover:text-foreground"
+              : "text-muted-foreground hover:text-foreground hover:bg-muted/60"
           )}
           onClick={() => onViewModeChange("code")}
           title="Source"
@@ -124,6 +128,7 @@ function Breadcrumbs({
         >
           <Code2 className="size-3.5" />
         </button>
+      </div>
       </div>
     </div>
   );
