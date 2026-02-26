@@ -284,6 +284,17 @@
   background-color: var(--scrollbar-thumb-hover);
 }
 
+/* macOS traffic-light dot glow */
+.dot-close:hover {
+  box-shadow: 0 0 6px 1px rgba(255, 95, 87, 0.5);
+}
+.dot-minimize:hover {
+  box-shadow: 0 0 6px 1px rgba(254, 188, 46, 0.45);
+}
+.dot-maximize:hover {
+  box-shadow: 0 0 6px 1px rgba(40, 200, 64, 0.45);
+}
+
 ::view-transition-old(root),
 ::view-transition-new(root) {
   mix-blend-mode: normal;
