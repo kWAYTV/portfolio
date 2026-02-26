@@ -104,7 +104,7 @@ export const ActivityBar = memo(function ActivityBar({
   };
 
   return (
-    <div className="flex h-full w-12 shrink-0 select-none flex-col items-center border-border border-r bg-sidebar py-1">
+    <div className="flex h-full w-12 shrink-0 select-none flex-col items-center border-border border-r bg-sidebar py-1 shadow-[var(--shadow-elevation-sm)]">
       <Tooltip>
         <TooltipTrigger asChild>
           <button

@@ -65,7 +65,7 @@ export function TerminalPanel({ onClose, isOpen }: TerminalPanelProps) {
 
   return (
     <div
-      className="flex shrink-0 select-none flex-col bg-background"
+      className="flex shrink-0 select-none flex-col bg-background shadow-[var(--shadow-elevation-md)]"
       ref={panelRef}
       style={{ height: `${height}px`, minHeight: MIN_HEIGHT }}
     >
@@ -90,7 +90,7 @@ export function TerminalPanel({ onClose, isOpen }: TerminalPanelProps) {
           )}
         />
       </div>
-      <div className="flex h-8 shrink-0 items-center justify-between border-border border-b bg-background px-2">
+      <div className="flex h-8 shrink-0 items-center justify-between border-border border-b bg-muted/50 px-2 shadow-[var(--shadow-elevation-sm)]">
         <div className="flex items-center gap-2">
           <Terminal className="size-4 text-muted-foreground" />
           <span className="font-medium text-[11px] text-foreground">
@@ -131,7 +131,7 @@ export function TerminalPanel({ onClose, isOpen }: TerminalPanelProps) {
           </Tooltip>
         </div>
       </div>
-      <div className="terminal-viewport min-h-0 flex-1 overflow-hidden bg-background">
+      <div className="terminal-viewport min-h-0 flex-1 overflow-hidden bg-muted/30 shadow-[var(--shadow-inset-recess)]">
         <MockTerminal />
       </div>
     </div>
