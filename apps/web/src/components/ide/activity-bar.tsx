@@ -55,8 +55,6 @@ export function ActivityBar({
         <TooltipContent side="right">Explorer</TooltipContent>
       </Tooltip>
 
-      <div className="my-1 h-px w-6 bg-[var(--ide-activity-bar-fg)]/20" />
-
       {navItems.map((item) => {
         const Icon = navIcons[item.label];
         const active = isActive(item.href);
