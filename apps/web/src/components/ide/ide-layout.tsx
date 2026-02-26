@@ -2,7 +2,7 @@
 
 import { usePathname, useRouter } from "@i18n/routing";
 import { cn, TooltipProvider } from "@portfolio/ui";
-import { ChevronRight, Copy, Code2, Eye } from "lucide-react";
+import { ChevronRight, Code, Copy, Eye } from "lucide-react";
 import { useCallback, useEffect, useRef, useState } from "react";
 
 import { navItems } from "@/consts/nav-items";
@@ -106,7 +106,7 @@ function Breadcrumbs({
         >
           <button
             className={cn(
-              "cursor-pointer touch-manipulation rounded px-2 py-1.5 text-[11px] font-medium transition-colors sm:px-3 sm:py-1",
+              "flex cursor-pointer touch-manipulation items-center gap-1.5 rounded px-2 py-1.5 text-[11px] font-medium transition-colors sm:px-3 sm:py-1",
               viewMode === "preview"
                 ? "bg-background text-foreground shadow-sm"
                 : "text-muted-foreground hover:text-foreground"
@@ -115,14 +115,12 @@ function Breadcrumbs({
             title="Preview"
             type="button"
           >
-            <span className="flex items-center gap-1.5">
-              <Eye className="size-3.5 shrink-0" />
-              <span className="hidden sm:inline">Preview</span>
-            </span>
+            <Eye className="size-3.5 shrink-0" aria-hidden />
+            <span className="hidden sm:inline">Preview</span>
           </button>
           <button
             className={cn(
-              "cursor-pointer touch-manipulation rounded px-2 py-1.5 text-[11px] font-medium transition-colors sm:px-3 sm:py-1",
+              "flex cursor-pointer touch-manipulation items-center gap-1.5 rounded px-2 py-1.5 text-[11px] font-medium transition-colors sm:px-3 sm:py-1",
               viewMode === "code"
                 ? "bg-background text-foreground shadow-sm"
                 : "text-muted-foreground hover:text-foreground"
@@ -131,10 +129,8 @@ function Breadcrumbs({
             title="Source"
             type="button"
           >
-            <span className="flex items-center gap-1.5">
-              <Code2 className="size-3.5 shrink-0" />
-              <span className="hidden sm:inline">Code</span>
-            </span>
+            <Code className="size-3.5 shrink-0" aria-hidden />
+            <span className="hidden sm:inline">Code</span>
           </button>
         </div>
       </div>
