@@ -52,7 +52,11 @@ export function LanguageSelector() {
           {locale.toUpperCase()}
         </button>
       </DropdownMenuTrigger>
-      <DropdownMenuContent align="end" className="min-w-[10rem]" sideOffset={4}>
+      <DropdownMenuContent
+        align="end"
+        className="ide-dropdown min-w-[8rem] rounded-sm border border-border bg-popover p-0.5 shadow-lg"
+        sideOffset={4}
+      >
         <DropdownMenuRadioGroup onValueChange={handleChange} value={locale}>
           {routing.locales.map((loc) => (
             <DropdownMenuRadioItem

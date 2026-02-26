@@ -3,8 +3,9 @@
 import { analytics } from "@portfolio/analytics";
 import { cn } from "@portfolio/ui";
 import { Moon, Sun } from "lucide-react";
+import { useTheme } from "next-themes";
 import { useTranslations } from "next-intl";
-import { useCallback, useEffect, useRef, useState } from "react";
+import { useCallback, useRef } from "react";
 import { flushSync } from "react-dom";
 
 interface AnimatedThemeTogglerProps
@@ -18,65 +19,51 @@ export const ThemeToggle = ({
   ...props
 }: AnimatedThemeTogglerProps) => {
   const t = useTranslations("theme");
-  const [isDark, setIsDark] = useState(false);
+  const { resolvedTheme, setTheme } = useTheme();
   const buttonRef = useRef<HTMLButtonElement>(null);
-
-  useEffect(() => {
-    const updateTheme = () => {
-      setIsDark(document.documentElement.classList.contains("dark"));
-    };
-
-    updateTheme();
-
-    const observer = new MutationObserver(updateTheme);
-    observer.observe(document.documentElement, {
-      attributes: true,
-      attributeFilter: ["class"],
-    });
-
-    return () => observer.disconnect();
-  }, []);
+  const isDark = resolvedTheme === "dark";
 
   const toggleTheme = useCallback(async () => {
-    if (!buttonRef.current) {
-      return;
+    if (!buttonRef.current) return;
+
+    const newTheme = isDark ? "light" : "dark";
+
+    const svt = (document as unknown as { startViewTransition?: (cb: () => void) => { ready: Promise<void> } }).startViewTransition;
+    const transition =
+      typeof svt === "function"
+        ? svt(() => {
+            flushSync(() => setTheme(newTheme));
+          })
+        : { ready: Promise.resolve() };
+
+    await transition.ready;
+
+    analytics.themeToggle(newTheme);
+
+    if (typeof svt === "function" && buttonRef.current) {
+      const { top, left } = buttonRef.current.getBoundingClientRect();
+      const x = left + 12;
+      const y = top + 12;
+      const maxRadius = Math.hypot(
+        Math.max(left, window.innerWidth - left),
+        Math.max(top, window.innerHeight - top)
+      );
+
+      document.documentElement.animate(
+        {
+          clipPath: [
+            `circle(0px at ${x}px ${y}px)`,
+            `circle(${maxRadius}px at ${x}px ${y}px)`,
+          ],
+        },
+        {
+          duration,
+          easing: "ease-in-out",
+          pseudoElement: "::view-transition-new(root)",
+        }
+      );
     }
-
-    const newTheme = !isDark;
-
-    await document.startViewTransition(() => {
-      flushSync(() => {
-        setIsDark(newTheme);
-        document.documentElement.classList.toggle("dark");
-        localStorage.setItem("theme", newTheme ? "dark" : "light");
-      });
-    }).ready;
-
-    analytics.themeToggle(newTheme ? "dark" : "light");
-
-    const { top, left, width, height } =
-      buttonRef.current.getBoundingClientRect();
-    const x = left + width / 2;
-    const y = top + height / 2;
-    const maxRadius = Math.hypot(
-      Math.max(left, window.innerWidth - left),
-      Math.max(top, window.innerHeight - top)
-    );
-
-    document.documentElement.animate(
-      {
-        clipPath: [
-          `circle(0px at ${x}px ${y}px)`,
-          `circle(${maxRadius}px at ${x}px ${y}px)`,
-        ],
-      },
-      {
-        duration,
-        easing: "ease-in-out",
-        pseudoElement: "::view-transition-new(root)",
-      }
-    );
-  }, [isDark, duration]);
+  }, [isDark, setTheme, duration]);
 
   return (
     <button

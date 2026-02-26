@@ -1,11 +1,14 @@
 "use client";
 
 import { Link } from "@i18n/routing";
+import { flushSync } from "react-dom";
 import {
   cn,
   DropdownMenu,
+  DropdownMenuCheckboxItem,
   DropdownMenuContent,
   DropdownMenuItem,
+  DropdownMenuSeparator,
   DropdownMenuShortcut,
   DropdownMenuTrigger,
   Tooltip,
@@ -152,11 +155,44 @@ export function ActivityBar({
             </TooltipTrigger>
             <TooltipContent side="right">{t("settings")}</TooltipContent>
           </Tooltip>
-          <DropdownMenuContent align="start" side="right" className="w-52">
-            <DropdownMenuItem onClick={() => setTheme(isDark ? "light" : "dark")}>
-              {isDark ? <Sun className="size-4" /> : <Moon className="size-4" />}
-              <span>{isDark ? t("lightTheme") : t("darkTheme")}</span>
-            </DropdownMenuItem>
+          <DropdownMenuContent
+            align="start"
+            side="right"
+            className="ide-dropdown w-44 rounded-sm border border-border bg-popover p-0.5 shadow-lg"
+          >
+            <DropdownMenuCheckboxItem
+              checked={!isDark}
+              onCheckedChange={() => {
+                const newTheme = "light";
+                if (document.startViewTransition) {
+                  document.startViewTransition(() => {
+                    flushSync(() => setTheme(newTheme));
+                  });
+                } else {
+                  setTheme(newTheme);
+                }
+              }}
+            >
+              <Sun className="size-3.5" />
+              {t("lightTheme")}
+            </DropdownMenuCheckboxItem>
+            <DropdownMenuCheckboxItem
+              checked={isDark}
+              onCheckedChange={() => {
+                const newTheme = "dark";
+                if (document.startViewTransition) {
+                  document.startViewTransition(() => {
+                    flushSync(() => setTheme(newTheme));
+                  });
+                } else {
+                  setTheme(newTheme);
+                }
+              }}
+            >
+              <Moon className="size-3.5" />
+              {t("darkTheme")}
+            </DropdownMenuCheckboxItem>
+            <DropdownMenuSeparator className="my-0.5" />
             <DropdownMenuItem onClick={onOpenCommand}>
               <span>{t("commandPalette")}</span>
               <DropdownMenuShortcut>{t("commandPaletteShortcut")}</DropdownMenuShortcut>
