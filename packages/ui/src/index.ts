@@ -2,6 +2,17 @@
 export { Badge, badgeVariants } from "./components/badge";
 export { Button, buttonVariants } from "./components/button";
 export {
+  Command,
+  CommandDialog,
+  CommandEmpty,
+  CommandGroup,
+  CommandInput,
+  CommandItem,
+  CommandList,
+  CommandSeparator,
+  CommandShortcut,
+} from "./components/command";
+export {
   Empty,
   EmptyContent,
   EmptyDescription,
