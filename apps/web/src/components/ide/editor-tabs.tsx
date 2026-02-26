@@ -63,10 +63,10 @@ function TabItem({
       </Link>
       <button
         className={cn(
-          "mr-1.5 ml-1 rounded-sm p-0.5 transition-opacity hover:bg-foreground/10",
+          "mr-1.5 ml-1 rounded-sm p-0.5 transition-opacity hover:bg-foreground/10 hover:opacity-100",
           active
-            ? "opacity-60 hover:opacity-100"
-            : "pointer-events-none opacity-0"
+            ? "opacity-60"
+            : "pointer-events-none opacity-0 group-hover:opacity-60 group-hover:pointer-events-auto"
         )}
         onClick={(e) => {
           e.stopPropagation();
