@@ -6,7 +6,6 @@ import { BlogBackLink } from "@/components/blog/blog-back-link";
 import { BlogPostHeader } from "@/components/blog/blog-post-header";
 import { getMDXComponents } from "@/components/blog/mdx-components";
 import { PageContent } from "@/components/shared/page-content";
-import { PageWrapper } from "@/components/shared/page-wrapper";
 import { createMetadata } from "@/lib/metadata";
 import { blogSource, getCachedBlogPage } from "@/lib/source";
 
@@ -29,17 +28,15 @@ export default async function BlogPost({ params }: Props) {
   }
 
   return (
-    <PageWrapper>
-      <PageContent className="max-w-lg sm:max-w-xl">
-        <BlogBackLink />
-        <BlogPostHeader
-          author={post.data.author}
-          date={post.data.date ?? ""}
-          title={post.data.title}
-        />
-        <BlogArticle components={getMDXComponents()} MDX={post.data.body} />
-      </PageContent>
-    </PageWrapper>
+    <PageContent className="max-w-lg sm:max-w-xl">
+      <BlogBackLink />
+      <BlogPostHeader
+        author={post.data.author}
+        date={post.data.date ?? ""}
+        title={post.data.title}
+      />
+      <BlogArticle components={getMDXComponents()} MDX={post.data.body} />
+    </PageContent>
   );
 }
 

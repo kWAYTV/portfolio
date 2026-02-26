@@ -3,7 +3,6 @@ import { AboutBio } from "@/components/about/about-bio";
 import { AboutHeader } from "@/components/about/about-header";
 import { ExperienceTimeline } from "@/components/about/experience-timeline";
 import { PageContent } from "@/components/shared/page-content";
-import { PageWrapper } from "@/components/shared/page-wrapper";
 import { createMetadata } from "@/lib/metadata";
 
 export async function generateMetadata({
@@ -28,12 +27,10 @@ export default async function About({ params }: Props) {
   setRequestLocale(locale);
 
   return (
-    <PageWrapper>
-      <PageContent>
-        <AboutHeader />
-        <AboutBio />
-        <ExperienceTimeline />
-      </PageContent>
-    </PageWrapper>
+    <PageContent>
+      <AboutHeader />
+      <AboutBio />
+      <ExperienceTimeline />
+    </PageContent>
   );
 }

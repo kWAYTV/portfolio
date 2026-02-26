@@ -4,7 +4,6 @@ import { ProjectListLoader } from "@/components/projects/project-list-loader";
 import { ProjectListSkeleton } from "@/components/projects/project-list-skeleton";
 import { ProjectsHeader } from "@/components/projects/projects-header";
 import { PageContent } from "@/components/shared/page-content";
-import { PageWrapper } from "@/components/shared/page-wrapper";
 import { createMetadata } from "@/lib/metadata";
 
 export async function generateMetadata({
@@ -29,13 +28,11 @@ export default async function Projects({ params }: Props) {
   setRequestLocale(locale);
 
   return (
-    <PageWrapper>
-      <PageContent>
-        <ProjectsHeader />
-        <Suspense fallback={<ProjectListSkeleton />}>
-          <ProjectListLoader />
-        </Suspense>
-      </PageContent>
-    </PageWrapper>
+    <PageContent>
+      <ProjectsHeader />
+      <Suspense fallback={<ProjectListSkeleton />}>
+        <ProjectListLoader />
+      </Suspense>
+    </PageContent>
   );
 }
