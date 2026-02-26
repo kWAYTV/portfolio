@@ -50,6 +50,9 @@ coverage
 # TypeScript
 next-env.d.ts
 
+# Demo recordings
+demo-recordings
+
 # Misc
 *.tgz
 .cache
