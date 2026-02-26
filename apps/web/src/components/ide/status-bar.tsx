@@ -2,7 +2,7 @@
 
 import { Link } from "@i18n/routing";
 import { cn } from "@portfolio/ui";
-import { CheckCircle2, GitBranch, Terminal } from "lucide-react";
+import { CheckCircle2, GitBranch, Rss, Terminal } from "lucide-react";
 import { LanguageSelector } from "@/components/shared/language-selector";
 import { ThemeToggle } from "@/components/theming/toggle";
 import { navItems } from "@/consts/nav-items";
@@ -61,8 +61,12 @@ export function StatusBar({
         </button>
         <span className="hidden tabular-nums sm:inline">Ln 1, Col 1</span>
         <span className="hidden sm:inline">{fileType}</span>
-        <Link className="transition-colors hover:text-foreground" href="/rss">
-          RSS
+        <Link
+          className="flex cursor-pointer items-center gap-1 transition-colors hover:text-foreground"
+          href="/rss"
+        >
+          <Rss className="size-3.5 shrink-0" />
+          <span className="hidden sm:inline">RSS</span>
         </Link>
         <LanguageSelector />
         <ThemeToggle />
