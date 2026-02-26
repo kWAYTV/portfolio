@@ -103,6 +103,43 @@ function applyTabCompletion(input: string, completions: string[]): string {
   return before ? `${before} ${commonPrefix}` : commonPrefix;
 }
 
+function getGhostSuggestion(input: string, cwd: string): string | null {
+  const completions = getTabCompletions(input, cwd);
+  if (completions.length === 0) return null;
+
+  const fullCompletion = applyTabCompletion(input, completions);
+  const trimmed = input.trimEnd();
+  if (fullCompletion === trimmed) return null;
+
+  const parts = trimmed.split(/\s+/);
+  const lastPart = parts[parts.length - 1] ?? "";
+  const prefix = lastPart.toLowerCase();
+
+  const matches = completions.filter(
+    (c) => c.toLowerCase().startsWith(prefix) || c.startsWith(lastPart)
+  );
+  if (matches.length === 0) return null;
+
+  if (matches.length === 1) {
+    const completed = matches[0];
+    const suffix = ["cd", "cat"].includes(parts[0]?.toLowerCase() ?? "")
+      ? " "
+      : "";
+    return completed.slice(lastPart.length) + suffix;
+  }
+
+  let commonPrefix = matches[0] ?? "";
+  for (const s of matches.slice(1)) {
+    let i = 0;
+    const a = commonPrefix.toLowerCase();
+    const b = s.toLowerCase();
+    while (i < a.length && i < b.length && a[i] === b[i]) i++;
+    commonPrefix = commonPrefix.slice(0, i);
+  }
+  const added = commonPrefix.slice(lastPart.length);
+  return added || null;
+}
+
 // File contents from explorer - paths resolve: about.md -> src/about.md
 // Directories (src, apps, packages) cannot be used with cat
 const FILE_CONTENTS: Record<string, string[]> = {
@@ -581,20 +618,43 @@ export function MockTerminal() {
         {lines.map((line, i) => (
           <div key={i} className="whitespace-pre-wrap break-all">
             {line.type === "input" && line.content === "" ? (
-              <span className="flex items-center gap-1">
+              <span className="flex min-w-0 flex-1 items-center gap-1">
                 <Prompt path={pathDisplay} />
-                <input
-                  ref={i === lines.length - 1 ? inputRef : undefined}
-                  className="terminal-input min-w-[1ch] flex-1 bg-transparent outline-none"
-                  value={inputValue}
-                  onChange={(e) => setInputValue(e.target.value)}
-                  onKeyDown={handleKeyDown}
-                  spellCheck={false}
-                  autoComplete="off"
-                  autoCapitalize="off"
-                  autoCorrect="off"
-                  aria-label="Terminal input"
-                />
+                <span className="relative flex min-w-0 flex-1">
+                  <input
+                    ref={i === lines.length - 1 ? inputRef : undefined}
+                    className="terminal-input min-w-[1ch] flex-1 bg-transparent outline-none"
+                    value={inputValue}
+                    onChange={(e) => setInputValue(e.target.value)}
+                    onKeyDown={handleKeyDown}
+                    spellCheck={false}
+                    autoComplete="off"
+                    autoCapitalize="off"
+                    autoCorrect="off"
+                    aria-label="Terminal input"
+                  />
+                  {(() => {
+                    const ghost = getGhostSuggestion(inputValue, cwd);
+                    if (!ghost) return null;
+                    return (
+                      <span
+                        className="pointer-events-none absolute inset-0 flex items-center overflow-hidden pl-[2px]"
+                        aria-hidden
+                        style={{ font: "inherit" }}
+                      >
+                        <span className="invisible shrink-0 overflow-hidden whitespace-pre">
+                          {inputValue}
+                        </span>
+                        <span
+                          className="shrink-0 whitespace-pre opacity-50"
+                          style={{ color: "var(--terminal-output)" }}
+                        >
+                          {ghost}
+                        </span>
+                      </span>
+                    );
+                  })()}
+                </span>
               </span>
             ) : line.type === "input" ? (
               <span className="terminal-history-line">
