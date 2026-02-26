@@ -1,8 +1,18 @@
 "use client";
 
-import { cn, Tooltip, TooltipContent, TooltipTrigger } from "@portfolio/ui";
-import { PanelBottomClose, Terminal } from "lucide-react";
+import {
+  cn,
+  Tooltip,
+  TooltipContent,
+  TooltipTrigger,
+} from "@portfolio/ui";
+import { GripHorizontal, PanelBottomClose, Terminal } from "lucide-react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import { MockTerminal } from "./mock-terminal";
+
+const MIN_HEIGHT = 120;
+const MAX_HEIGHT = 600;
+const DEFAULT_HEIGHT = 200;
 
 interface TerminalPanelProps {
   onClose: () => void;
@@ -10,19 +20,71 @@ interface TerminalPanelProps {
 }
 
 export function TerminalPanel({ onClose, isOpen }: TerminalPanelProps) {
+  const [height, setHeight] = useState(DEFAULT_HEIGHT);
+  const [isDragging, setIsDragging] = useState(false);
+  const panelRef = useRef<HTMLDivElement>(null);
+
+  const handleMouseDown = useCallback((e: React.MouseEvent) => {
+    e.preventDefault();
+    setIsDragging(true);
+  }, []);
+
+  useEffect(() => {
+    if (!isDragging) return;
+
+    const handleMouseMove = (e: MouseEvent) => {
+      const panel = panelRef.current;
+      if (!panel) return;
+      const rect = panel.getBoundingClientRect();
+      const newHeight = rect.bottom - e.clientY;
+      setHeight(Math.min(MAX_HEIGHT, Math.max(MIN_HEIGHT, newHeight)));
+    };
+
+    const handleMouseUp = () => setIsDragging(false);
+
+    document.addEventListener("mousemove", handleMouseMove);
+    document.addEventListener("mouseup", handleMouseUp);
+    document.body.style.cursor = "ns-resize";
+    document.body.style.userSelect = "none";
+
+    return () => {
+      document.removeEventListener("mousemove", handleMouseMove);
+      document.removeEventListener("mouseup", handleMouseUp);
+      document.body.style.cursor = "";
+      document.body.style.userSelect = "";
+    };
+  }, [isDragging]);
+
   if (!isOpen) return null;
 
   return (
-    <div className="flex min-h-[120px] max-h-[40vh] shrink-0 flex-col border-border border-t bg-background">
+    <div
+      ref={panelRef}
+      className="flex shrink-0 select-none flex-col border-border border-t bg-background"
+      style={{ height: `${height}px`, minHeight: MIN_HEIGHT }}
+    >
+      <div
+        className={cn(
+          "flex cursor-ns-resize items-center justify-center border-border border-b bg-muted/40 py-0.5 transition-colors hover:bg-muted/60",
+          isDragging && "bg-muted/80"
+        )}
+        onMouseDown={handleMouseDown}
+        role="separator"
+        aria-label="Resize terminal"
+      >
+        <GripHorizontal className="size-3.5 text-muted-foreground" />
+      </div>
       <div className="flex h-9 shrink-0 items-center justify-between border-border border-b bg-muted/60 px-2">
         <div className="flex items-center gap-2">
           <Terminal className="size-4 text-muted-foreground" />
-          <span className="text-[11px] font-medium text-foreground">Terminal</span>
+          <span className="text-[11px] font-medium text-foreground">
+            Terminal
+          </span>
         </div>
         <Tooltip>
           <TooltipTrigger asChild>
             <button
-              className="flex size-6 items-center justify-center rounded text-muted-foreground transition-colors hover:bg-muted hover:text-foreground"
+              className="flex size-6 cursor-pointer items-center justify-center rounded text-muted-foreground transition-colors hover:bg-muted hover:text-foreground"
               onClick={onClose}
               type="button"
             >

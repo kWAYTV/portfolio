@@ -43,12 +43,12 @@ export function ActivityBar({
   };
 
   return (
-    <div className="flex h-full w-12 shrink-0 flex-col items-center border-border border-r bg-sidebar py-1">
+    <div className="flex h-full w-12 shrink-0 select-none flex-col items-center border-border border-r bg-sidebar py-1">
       <Tooltip>
         <TooltipTrigger asChild>
           <button
             className={cn(
-              "flex size-10 items-center justify-center text-sidebar-foreground/60 transition-colors hover:text-sidebar-primary",
+              "flex size-10 cursor-pointer items-center justify-center text-sidebar-foreground/60 transition-colors hover:text-sidebar-primary",
               sidebarOpen && "text-sidebar-primary"
             )}
             onClick={onToggleSidebar}
@@ -91,7 +91,7 @@ export function ActivityBar({
           <TooltipTrigger asChild>
             <button
               className={cn(
-                "flex size-10 items-center justify-center text-sidebar-foreground/60 transition-colors hover:text-sidebar-primary",
+                "flex size-10 cursor-pointer items-center justify-center text-sidebar-foreground/60 transition-colors hover:text-sidebar-primary",
                 terminalOpen && "text-sidebar-primary"
               )}
               onClick={onToggleTerminal}
@@ -105,7 +105,7 @@ export function ActivityBar({
         <Tooltip>
           <TooltipTrigger asChild>
             <button
-              className="flex size-10 items-center justify-center text-sidebar-foreground/60 transition-colors hover:text-sidebar-primary"
+              className="flex size-10 cursor-pointer items-center justify-center text-sidebar-foreground/60 transition-colors hover:text-sidebar-primary"
               type="button"
             >
               <Settings className="size-5" />

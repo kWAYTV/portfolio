@@ -14,6 +14,7 @@ import {
   DropdownMenuRadioItem,
   DropdownMenuTrigger,
 } from "@portfolio/ui";
+import { Languages } from "lucide-react";
 import { useLocale, useTranslations } from "next-intl";
 import { useState } from "react";
 
@@ -42,13 +43,12 @@ export function LanguageSelector() {
       <DropdownMenuTrigger asChild>
         <button
           aria-label={t("language")}
-          className="whitespace-nowrap text-muted-foreground/50 text-xs transition-colors duration-200 hover:text-foreground sm:text-sm"
+          className="flex cursor-pointer items-center gap-1 whitespace-nowrap text-muted-foreground/50 text-xs transition-colors duration-200 hover:text-foreground sm:text-sm"
           disabled={isPending}
           type="button"
         >
-          <span aria-hidden className="mr-1.5">
-            {localeToFlagEmoji(locale)}
-          </span>
+          <Languages className="size-3.5 shrink-0" />
+          <span aria-hidden>{localeToFlagEmoji(locale)}</span>
           {locale.toUpperCase()}
         </button>
       </DropdownMenuTrigger>
