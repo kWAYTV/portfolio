@@ -61,18 +61,20 @@ export function TerminalPanel({ onClose, isOpen }: TerminalPanelProps) {
     return null;
   }
 
+  const showResizeHandle = isHoveringResize || isDragging;
+
   return (
     <div
-      className="flex shrink-0 select-none flex-col border-border border-t bg-background"
+      className="flex shrink-0 select-none flex-col bg-background"
       ref={panelRef}
       style={{ height: `${height}px`, minHeight: MIN_HEIGHT }}
     >
       <div
         aria-label={t("resizeTerminal")}
         className={cn(
-          "flex min-h-[6px] items-center justify-center py-0.5 transition-colors",
-          isHoveringResize || isDragging
-            ? "cursor-ns-resize border-border border-b bg-muted/60"
+          "flex min-h-[8px] items-center justify-center py-0.5 transition-colors duration-150",
+          showResizeHandle
+            ? "cursor-ns-resize border-border border-y bg-muted/60"
             : "cursor-default border-transparent bg-transparent",
           isDragging && "bg-muted/80"
         )}
@@ -83,8 +85,8 @@ export function TerminalPanel({ onClose, isOpen }: TerminalPanelProps) {
       >
         <GripHorizontal
           className={cn(
-            "size-3.5 text-muted-foreground transition-opacity",
-            isHoveringResize || isDragging ? "opacity-100" : "opacity-0"
+            "size-3.5 text-muted-foreground transition-opacity duration-150",
+            showResizeHandle ? "opacity-100" : "opacity-0"
           )}
         />
       </div>
