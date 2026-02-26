@@ -247,6 +247,11 @@
   --syntax-tag: #dc2626;
   --syntax-attribute: #7c3aed;
   --syntax-punctuation: #71717a;
+  --terminal-user: #16a34a;
+  --terminal-host: #2563eb;
+  --terminal-path: #7c3aed;
+  --terminal-output: var(--muted-foreground);
+  --terminal-error: var(--destructive);
 }
 
 .dark {
@@ -259,6 +264,23 @@
   --syntax-tag: #f87171;
   --syntax-attribute: #a78bfa;
   --syntax-punctuation: #a1a1aa;
+  --terminal-user: #7ee787;
+  --terminal-host: #79c0ff;
+  --terminal-path: #d2a8ff;
+  --terminal-output: #8b949e;
+  --terminal-error: #f85149;
+}
+
+/* Terminal panel - uses theme background, text colors adapt */
+.terminal-viewport .terminal-input {
+  color: var(--foreground);
+  caret-color: var(--foreground);
+}
+.terminal-viewport .terminal-input::placeholder {
+  color: var(--muted-foreground);
+}
+.terminal-root {
+  color: var(--muted-foreground);
 }
 
 /* macOS traffic-light dot glow */
