@@ -1,8 +1,8 @@
 "use client";
 
 import { usePathname, useRouter } from "@i18n/routing";
-import { TooltipProvider } from "@portfolio/ui";
-import { ChevronRight } from "lucide-react";
+import { cn, TooltipProvider } from "@portfolio/ui";
+import { ChevronRight, Code2, Eye } from "lucide-react";
 import { useCallback, useEffect, useRef, useState } from "react";
 
 import { navItems } from "@/consts/nav-items";
@@ -12,6 +12,7 @@ import { MobileNav } from "./mobile-nav";
 import { Sidebar } from "./sidebar";
 import { StatusBar } from "./status-bar";
 import { TitleBar } from "./title-bar";
+import { type ViewMode, ViewModeProvider } from "./view-mode";
 
 function matchNavItem(pathname: string) {
   return navItems.find((item) => {
@@ -22,7 +23,15 @@ function matchNavItem(pathname: string) {
   });
 }
 
-function Breadcrumbs({ pathname }: { pathname: string }) {
+function Breadcrumbs({
+  pathname,
+  viewMode,
+  onViewModeChange,
+}: {
+  onViewModeChange: (mode: ViewMode) => void;
+  pathname: string;
+  viewMode: ViewMode;
+}) {
   const parts = ["portfolio", "src"];
 
   const navItem = matchNavItem(pathname);
@@ -40,20 +49,50 @@ function Breadcrumbs({ pathname }: { pathname: string }) {
   }
 
   return (
-    <div className="flex shrink-0 items-center gap-1 border-border border-b bg-background px-4 py-1 text-[11px] text-muted-foreground">
-      {parts.map((part, i) => {
-        const key = parts.slice(0, i + 1).join("/");
-        return (
-          <span className="flex items-center gap-1" key={key}>
-            {i > 0 && <ChevronRight className="size-3 opacity-50" />}
-            <span
-              className={i === parts.length - 1 ? "text-foreground/80" : ""}
-            >
-              {part}
+    <div className="flex shrink-0 items-center justify-between border-border border-b bg-background px-4 py-1 text-[11px] text-muted-foreground">
+      <div className="flex items-center gap-1">
+        {parts.map((part, i) => {
+          const key = parts.slice(0, i + 1).join("/");
+          return (
+            <span className="flex items-center gap-1" key={key}>
+              {i > 0 && <ChevronRight className="size-3 opacity-50" />}
+              <span
+                className={i === parts.length - 1 ? "text-foreground/80" : ""}
+              >
+                {part}
+              </span>
             </span>
-          </span>
-        );
-      })}
+          );
+        })}
+      </div>
+      <div className="flex items-center gap-0.5">
+        <button
+          className={cn(
+            "rounded p-1 transition-colors",
+            viewMode === "preview"
+              ? "bg-muted text-foreground"
+              : "text-muted-foreground hover:text-foreground"
+          )}
+          onClick={() => onViewModeChange("preview")}
+          title="Preview"
+          type="button"
+        >
+          <Eye className="size-3.5" />
+        </button>
+        <button
+          className={cn(
+            "rounded p-1 transition-colors",
+            viewMode === "code"
+              ? "bg-muted text-foreground"
+              : "text-muted-foreground hover:text-foreground"
+          )}
+          onClick={() => onViewModeChange("code")}
+          title="Source"
+          type="button"
+        >
+          <Code2 className="size-3.5" />
+        </button>
+      </div>
     </div>
   );
 }
@@ -66,6 +105,7 @@ export function IdeLayout({ children }: IdeLayoutProps) {
   const pathname = usePathname();
   const router = useRouter();
   const [sidebarOpen, setSidebarOpen] = useState(true);
+  const [viewMode, setViewMode] = useState<ViewMode>("preview");
   const [openTabs, setOpenTabs] = useState<string[]>(() =>
     navItems.map((item) => item.href)
   );
@@ -117,33 +157,46 @@ export function IdeLayout({ children }: IdeLayoutProps) {
   const hasOpenTabs = openTabs.length > 0;
 
   return (
-    <TooltipProvider delayDuration={300}>
-      <div className="flex h-dvh flex-col overflow-hidden bg-background">
-        <TitleBar />
+    <ViewModeProvider value={{ viewMode, setViewMode }}>
+      <TooltipProvider delayDuration={300}>
+        <div className="flex h-dvh flex-col overflow-hidden bg-background">
+          <TitleBar />
 
-        <div className="flex min-h-0 flex-1">
-          {/* Activity bar - desktop only */}
-          <div className="hidden md:block">
-            <ActivityBar
-              onToggleSidebar={toggleSidebar}
-              pathname={pathname}
-              sidebarOpen={sidebarOpen}
-            />
-          </div>
-
-          {/* Sidebar - desktop only, toggleable */}
-          {sidebarOpen && (
+          <div className="flex min-h-0 flex-1">
             <div className="hidden md:block">
-              <Sidebar pathname={pathname} />
+              <ActivityBar
+                onToggleSidebar={toggleSidebar}
+                pathname={pathname}
+                sidebarOpen={sidebarOpen}
+              />
             </div>
-          )}
 
-          {/* Editor panel */}
-          <div className="flex min-w-0 flex-1 flex-col">
-            {/* Tab bar + empty state - desktop only */}
-            {hasOpenTabs ? (
-              <>
-                <div className="hidden md:block">
+            {sidebarOpen && (
+              <div className="hidden md:block">
+                <Sidebar pathname={pathname} />
+              </div>
+            )}
+
+            <div className="flex min-w-0 flex-1 flex-col">
+              {hasOpenTabs ? (
+                <>
+                  <div className="hidden md:block">
+                    <EditorTabs
+                      onCloseTab={closeTab}
+                      onReorder={reorderTabs}
+                      openTabs={openTabs}
+                      pathname={pathname}
+                    />
+                  </div>
+                  <Breadcrumbs
+                    onViewModeChange={setViewMode}
+                    pathname={pathname}
+                    viewMode={viewMode}
+                  />
+                  <main className="flex-1 overflow-y-auto">{children}</main>
+                </>
+              ) : (
+                <div className="hidden flex-1 md:flex">
                   <EditorTabs
                     onCloseTab={closeTab}
                     onReorder={reorderTabs}
@@ -151,29 +204,17 @@ export function IdeLayout({ children }: IdeLayoutProps) {
                     pathname={pathname}
                   />
                 </div>
-                <Breadcrumbs pathname={pathname} />
-                <main className="flex-1 overflow-y-auto">{children}</main>
-              </>
-            ) : (
-              <div className="hidden flex-1 md:flex">
-                <EditorTabs
-                  onCloseTab={closeTab}
-                  onReorder={reorderTabs}
-                  openTabs={openTabs}
-                  pathname={pathname}
-                />
-              </div>
-            )}
+              )}
+            </div>
+          </div>
+
+          <StatusBar pathname={pathname} />
+
+          <div className="md:hidden">
+            <MobileNav pathname={pathname} />
           </div>
         </div>
-
-        <StatusBar pathname={pathname} />
-
-        {/* Mobile bottom nav */}
-        <div className="md:hidden">
-          <MobileNav pathname={pathname} />
-        </div>
-      </div>
-    </TooltipProvider>
+      </TooltipProvider>
+    </ViewModeProvider>
   );
 }
