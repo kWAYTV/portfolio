@@ -261,6 +261,18 @@
   --syntax-punctuation: #a1a1aa;
 }
 
+/* Terminal panel */
+.terminal-viewport .terminal-input {
+  color: var(--terminal-fg, #c9d1d9);
+  caret-color: var(--terminal-fg, #c9d1d9);
+}
+.terminal-viewport .terminal-input::placeholder {
+  color: #8b949e;
+}
+.terminal-root {
+  color: #8b949e;
+}
+
 /* macOS traffic-light dot glow */
 .dot-close:hover {
   box-shadow: 0 0 6px 1px rgba(255, 95, 87, 0.5);

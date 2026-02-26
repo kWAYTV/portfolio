@@ -32,7 +32,7 @@ export function TerminalPanel({ onClose, isOpen }: TerminalPanelProps) {
           <TooltipContent side="top">Close panel</TooltipContent>
         </Tooltip>
       </div>
-      <div className="min-h-0 flex-1 overflow-hidden">
+      <div className="terminal-viewport min-h-0 flex-1 overflow-hidden bg-[#0d1117]">
         <MockTerminal />
       </div>
     </div>

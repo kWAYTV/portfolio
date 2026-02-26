@@ -1,6 +1,5 @@
 "use client";
 
-import { cn } from "@portfolio/ui";
 import {
   useCallback,
   useEffect,
@@ -12,6 +11,7 @@ import {
 interface TerminalLine {
   type: "input" | "output" | "error";
   content: string;
+  isDir?: boolean;
 }
 
 const MOCK_CWD = "/workspace/portfolio";
@@ -25,7 +25,158 @@ const MOCK_FILES = [
   "packages",
 ];
 
-type OutputLine = { type: "output" | "error"; content: string };
+// File contents from explorer - paths resolve: about.md -> src/about.md
+const FILE_CONTENTS: Record<string, string[]> = {
+  "package.json": [
+    "{",
+    '  "name": "portfolio",',
+    '  "version": "0.0.0",',
+    '  "private": true,',
+    '  "type": "module",',
+    '  "scripts": {',
+    '    "dev": "turbo dev",',
+    '    "build": "turbo build"',
+    "  }",
+    "}",
+  ],
+  "readme.md": [
+    "# Portfolio",
+    "",
+    "A developer portfolio built with Next.js.",
+    "",
+    "## Getting started",
+    "",
+    "```bash",
+    "bun install",
+    "bun run dev",
+    "```",
+  ],
+  "about.md": [
+    "# About",
+    "",
+    "> A bit about me",
+    "",
+    "I'm a software engineer with a passion for building backend",
+    "& web applications. Currently actively seeking new opportunities.",
+    "",
+    "---",
+    "",
+    "## Experience",
+    "",
+    "### Freelance — *2019 - Present*",
+    "Freelance Developer / Open Source Contributor",
+    "",
+    "### Tokyo School — *2024 - Present*",
+    "PCAP Python, Computer Programming",
+    "",
+    "### Insergal — *2018 - 2019*",
+    "Sales Assistant, Marketing",
+    "",
+    "### Insergal — *2018 - 2019*",
+    "Automotive Mechanic",
+  ],
+  "src/about.md": [
+    "# About",
+    "",
+    "> A bit about me",
+    "",
+    "I'm a software engineer with a passion for building backend",
+    "& web applications. Currently actively seeking new opportunities.",
+    "",
+    "---",
+    "",
+    "## Experience",
+    "",
+    "### Freelance — *2019 - Present*",
+    "Freelance Developer / Open Source Contributor",
+    "",
+    "### Tokyo School — *2024 - Present*",
+    "PCAP Python, Computer Programming",
+    "",
+    "### Insergal — *2018 - 2019*",
+    "Sales Assistant, Marketing",
+    "",
+    "### Insergal — *2018 - 2019*",
+    "Automotive Mechanic",
+  ],
+  "src/welcome.tsx": [
+    "import { Separator } from \"@portfolio/ui\";",
+    "import { FeaturedProjects } from \"@/components/home/featured-projects\";",
+    "import { SocialNav } from \"@/components/home/social-nav\";",
+    "import { getGitHubRepos } from \"@/lib/github\";",
+    "",
+    "export const metadata = {",
+    "  title: \"Martin Vila\",",
+    "  description: \"developer · gamer · self-taught\",",
+    "};",
+    "",
+    "const socials = [",
+    "  { name: \"github\", href: \"https://github.com/kWAYTV\", icon: Github },",
+    "  ...",
+    "];",
+    "",
+    "export default async function Home() {",
+    "  const repos = await getGitHubRepos();",
+    "  return (",
+    "    <main className=\"space-y-6\">",
+    "      <h1>Martin Vila</h1>",
+    "      ...",
+    "    </main>",
+    "  );",
+    "}",
+  ],
+  "src/projects.ts": [
+    "import { Octokit } from \"@octokit/rest\";",
+    "",
+    "export async function getRepositories(): Promise<Repository[]> {",
+    "  const { data } = await octokit.repos.listForUser({",
+    "    username: \"kWAYTV\",",
+    "    sort: \"updated\",",
+    "    per_page: 100,",
+    "  });",
+    "  return data.map(({ name, description, ... }) => ({ name, description, ... }));",
+    "}",
+    "",
+    "export const sortOptions = [\"stars\", \"updated\", \"created\", \"name\"] as const;",
+  ],
+  "src/blog/index.mdx": [
+    "---",
+    "title: Blog",
+    "description: Quiet notes from current work",
+    "---",
+    "",
+    "# Blog",
+    "",
+    "Quiet notes from current work. More entries will fall in here",
+    "as they are published — kept chronologically, nothing fancy.",
+    "",
+    "## Latest Posts",
+    "",
+    "- **Shipping the Wrong Thing** — *Feb 23, 2026*",
+    "- **The Side Project Graveyard** — *Dec 22, 2025*",
+    "- **Hello World** — *Nov 29, 2025*",
+  ],
+};
+
+type OutputLine =
+  | { type: "output"; content: string }
+  | { type: "error"; content: string }
+  | { type: "ls-line"; content: string; isDir: boolean };
+
+function resolveFilePath(_cwd: string, fileArg: string): string | null {
+  const normalized = fileArg.replace(/\\/g, "/").toLowerCase();
+  const keys = Object.keys(FILE_CONTENTS);
+  const lowerToKey = Object.fromEntries(keys.map((k) => [k.toLowerCase(), k]));
+
+  for (const candidate of [normalized, `src/${normalized}`]) {
+    const key = lowerToKey[candidate];
+    if (key) return key;
+  }
+  if (normalized === "readme" || normalized === "readme.md") {
+    return lowerToKey["readme.md"] ?? null;
+  }
+  return null;
+}
 
 function executeCommand(
   cmd: string,
@@ -48,19 +199,24 @@ function executeCommand(
     case "ls": {
       const showAll = args.includes("-la") || args.includes("-l") || args.includes("-a");
       if (showAll) {
+        const lsLines: [string, boolean][] = [
+          ["total 42", false],
+          ["drwxr-xr-x  12 user  staff  384 Feb 26 10:00 .", true],
+          ["drwxr-xr-x   3 user  staff   96 Feb 26 09:00 ..", true],
+          ["-rw-r--r--   1 user  staff  512 Feb 26 10:00 package.json", false],
+          ["-rw-r--r--   1 user  staff  256 Feb 26 10:00 tsconfig.json", false],
+          ["-rw-r--r--   1 user  staff 1024 Feb 26 10:00 README.md", false],
+          ["-rw-r--r--   1 user  staff   64 Feb 26 10:00 .env", false],
+          ["drwxr-xr-x   5 user  staff  160 Feb 26 10:00 src", true],
+          ["drwxr-xr-x   6 user  staff  192 Feb 26 10:00 apps", true],
+          ["drwxr-xr-x   7 user  staff  224 Feb 26 10:00 packages", true],
+        ];
         return {
-          lines: [
-            "total 42",
-            "drwxr-xr-x  12 user  staff  384 Feb 26 10:00 .",
-            "drwxr-xr-x   3 user  staff   96 Feb 26 09:00 ..",
-            "-rw-r--r--   1 user  staff  512 Feb 26 10:00 package.json",
-            "-rw-r--r--   1 user  staff  256 Feb 26 10:00 tsconfig.json",
-            "-rw-r--r--   1 user  staff 1024 Feb 26 10:00 README.md",
-            "-rw-r--r--   1 user  staff   64 Feb 26 10:00 .env",
-            "drwxr-xr-x   5 user  staff  160 Feb 26 10:00 src",
-            "drwxr-xr-x   6 user  staff  192 Feb 26 10:00 apps",
-            "drwxr-xr-x   7 user  staff  224 Feb 26 10:00 packages",
-          ].map(out),
+          lines: lsLines.map(([content, isDir]) => ({
+            type: "ls-line" as const,
+            content,
+            isDir,
+          })),
         };
       }
       return { lines: [out(MOCK_FILES.join("  "))] };
@@ -84,36 +240,10 @@ function executeCommand(
     case "cat": {
       const file = args[0];
       if (!file) return { lines: [err("cat: missing file operand")] };
-      if (file === "package.json") {
+      const resolved = resolveFilePath(cwd, file);
+      if (resolved && FILE_CONTENTS[resolved]) {
         return {
-          lines: [
-            '{',
-            '  "name": "portfolio",',
-            '  "version": "0.0.0",',
-            '  "private": true,',
-            '  "type": "module",',
-            '  "scripts": {',
-            '    "dev": "turbo dev",',
-            '    "build": "turbo build"',
-            "  }",
-            "}",
-          ].map(out),
-        };
-      }
-      if (file === "README.md") {
-        return {
-          lines: [
-            "# Portfolio",
-            "",
-            "A developer portfolio built with Next.js.",
-            "",
-            "## Getting started",
-            "",
-            "```bash",
-            "bun install",
-            "bun run dev",
-            "```",
-          ].map(out),
+          lines: FILE_CONTENTS[resolved].map((line) => out(line)),
         };
       }
       return { lines: [err(`cat: ${file}: No such file or directory`)] };
@@ -196,6 +326,19 @@ function executeCommand(
   };
 }
 
+function Prompt({ path }: { path: string }) {
+  return (
+    <span className="terminal-prompt">
+      <span className="text-[#7ee787]">visitor</span>
+      <span className="text-muted-foreground">@</span>
+      <span className="text-[#79c0ff]">portfolio</span>
+      <span className="text-muted-foreground"> </span>
+      <span className="text-[#d2a8ff]">{path}</span>
+      <span className="text-[#7ee787]"> %</span>
+    </span>
+  );
+}
+
 export function MockTerminal() {
   const [lines, setLines] = useState<TerminalLine[]>(() => [
     {
@@ -206,10 +349,13 @@ export function MockTerminal() {
   ]);
   const [cwd, setCwd] = useState(MOCK_CWD);
   const [inputValue, setInputValue] = useState("");
+  const [history, setHistory] = useState<string[]>([]);
+  const [historyIndex, setHistoryIndex] = useState(-1);
   const scrollRef = useRef<HTMLDivElement>(null);
   const inputRef = useRef<HTMLInputElement>(null);
 
-  const prompt = `visitor@portfolio ${cwd.replace("/workspace/portfolio", "~")} %`;
+  const pathDisplay = cwd.replace("/workspace/portfolio", "~");
+  const prompt = `visitor@portfolio ${pathDisplay} %`;
 
   const scrollToBottom = useCallback(() => {
     scrollRef.current?.scrollTo({
@@ -225,10 +371,20 @@ export function MockTerminal() {
   const execute = useCallback(() => {
     if (!inputValue.trim()) return;
 
+    const cmd = inputValue.trim();
     const fullLine = `${prompt} ${inputValue}`;
     const { lines: outputLines, newCwd } = executeCommand(inputValue, cwd);
 
-    if (inputValue.trim().toLowerCase() === "clear") {
+    if (cmd.toLowerCase() !== "clear") {
+      setHistory((prev) => {
+        const next = [...prev];
+        if (next[next.length - 1] !== cmd) next.push(cmd);
+        return next.slice(-50);
+      });
+    }
+    setHistoryIndex(-1);
+
+    if (cmd.toLowerCase() === "clear") {
       setLines([
         {
           type: "output",
@@ -242,10 +398,12 @@ export function MockTerminal() {
         const newLines: TerminalLine[] = [
           ...withoutLastInput,
           { type: "input", content: fullLine },
-          ...outputLines.map((line) => ({
-            type: line.type,
-            content: line.content,
-          })),
+          ...outputLines.map((line) => {
+            if (line.type === "ls-line") {
+              return { type: "output" as const, content: line.content, isDir: line.isDir };
+            }
+            return { type: line.type, content: line.content };
+          }) as (TerminalLine & { isDir?: boolean })[],
           { type: "input", content: "" },
         ];
         return newLines;
@@ -261,6 +419,28 @@ export function MockTerminal() {
       if (e.key === "Enter") {
         e.preventDefault();
         execute();
+        return;
+      }
+      if (e.key === "ArrowUp") {
+        e.preventDefault();
+        if (history.length === 0) return;
+        const nextIndex = historyIndex < 0 ? history.length - 1 : Math.max(0, historyIndex - 1);
+        setHistoryIndex(nextIndex);
+        setInputValue(history[nextIndex] ?? "");
+        return;
+      }
+      if (e.key === "ArrowDown") {
+        e.preventDefault();
+        if (historyIndex < 0) return;
+        const nextIndex = historyIndex + 1;
+        if (nextIndex >= history.length) {
+          setHistoryIndex(-1);
+          setInputValue("");
+        } else {
+          setHistoryIndex(nextIndex);
+          setInputValue(history[nextIndex] ?? "");
+        }
+        return;
       }
       if (e.key === "c" && e.ctrlKey) {
         e.preventDefault();
@@ -268,7 +448,7 @@ export function MockTerminal() {
         setInputValue("");
       }
     },
-    [execute]
+    [execute, history, historyIndex]
   );
 
   const handleTerminalClick = useCallback(() => {
@@ -277,7 +457,7 @@ export function MockTerminal() {
 
   return (
     <div
-      className="flex h-full min-h-0 flex-col font-mono text-[13px]"
+      className="terminal-root flex h-full min-h-0 flex-col font-mono text-[13px]"
       onClick={handleTerminalClick}
       onKeyDown={() => inputRef.current?.focus()}
       role="button"
@@ -288,19 +468,13 @@ export function MockTerminal() {
         className="flex-1 overflow-y-auto overflow-x-hidden p-3"
       >
         {lines.map((line, i) => (
-          <div
-            key={i}
-            className={cn(
-              "whitespace-pre-wrap break-all",
-              line.type === "error" && "text-destructive"
-            )}
-          >
+          <div key={i} className="whitespace-pre-wrap break-all">
             {line.type === "input" && line.content === "" ? (
               <span className="flex items-center gap-1">
-                <span className="text-muted-foreground">{prompt}</span>
+                <Prompt path={pathDisplay} />
                 <input
                   ref={i === lines.length - 1 ? inputRef : undefined}
-                  className="min-w-[1ch] flex-1 bg-transparent outline-none"
+                  className="terminal-input min-w-[1ch] flex-1 bg-transparent outline-none"
                   value={inputValue}
                   onChange={(e) => setInputValue(e.target.value)}
                   onKeyDown={handleKeyDown}
@@ -312,9 +486,19 @@ export function MockTerminal() {
                 />
               </span>
             ) : line.type === "input" ? (
-              <span className="text-foreground">{line.content}</span>
+              <span className="terminal-history-line">
+                <Prompt path={pathDisplay} />
+                <span className="text-[#c9d1d9]">
+                  {" "}
+                  {line.content.includes(" % ") ? line.content.split(" % ")[1] ?? "" : line.content}
+                </span>
+              </span>
+            ) : line.type === "error" ? (
+              <span className="text-[#f85149]">{line.content}</span>
+            ) : "isDir" in line && line.isDir ? (
+              <span className="text-[#79c0ff]">{line.content}</span>
             ) : (
-              <span className="text-muted-foreground">{line.content}</span>
+              <span className="text-[#8b949e]">{line.content}</span>
             )}
           </div>
         ))}
