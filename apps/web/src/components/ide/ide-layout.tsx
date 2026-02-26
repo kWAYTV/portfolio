@@ -385,7 +385,6 @@ export function IdeLayout({ children }: IdeLayoutProps) {
           </div>
 
           <StatusBar
-            onOpenCommand={() => setCommandOpen(true)}
             onToggleTerminal={() => setTerminalOpen((p) => !p)}
             pathname={pathname}
             terminalOpen={terminalOpen}
