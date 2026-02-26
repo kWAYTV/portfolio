@@ -1,6 +1,7 @@
 "use client";
 
 import { useRouter } from "@i18n/routing";
+import { useTranslations } from "next-intl";
 import {
   CommandDialog,
   CommandEmpty,
@@ -41,6 +42,8 @@ export function CommandPalette({
   terminalOpen,
 }: CommandPaletteProps) {
   const router = useRouter();
+  const t = useTranslations("ide");
+  const tNav = useTranslations("nav");
 
   const runCommand = useCallback(
     (fn: () => void) => {
@@ -72,10 +75,10 @@ export function CommandPalette({
 
   return (
     <CommandDialog open={open} onOpenChange={onOpenChange}>
-      <CommandInput placeholder="Type a command or search..." />
+      <CommandInput placeholder={t("commandPlaceholder")} />
       <CommandList>
-        <CommandEmpty>No results found.</CommandEmpty>
-        <CommandGroup heading="Navigation">
+        <CommandEmpty>{t("noResults")}</CommandEmpty>
+        <CommandGroup heading={t("navigation")}>
           {navItems.map((item) => (
             <CommandItem
               key={item.href}
@@ -88,11 +91,11 @@ export function CommandPalette({
               ) : (
                 <FileText className="size-4" />
               )}
-              <span className="capitalize">{item.label}</span>
+              <span className="capitalize">{tNav(item.label)}</span>
             </CommandItem>
           ))}
         </CommandGroup>
-        <CommandGroup heading="View">
+        <CommandGroup heading={t("view")}>
           <CommandItem
             onSelect={() => runCommand(onToggleSidebar)}
           >
@@ -101,19 +104,19 @@ export function CommandPalette({
             ) : (
               <PanelLeftOpen className="size-4" />
             )}
-            <span>{sidebarOpen ? "Hide" : "Show"} sidebar</span>
+            <span>{sidebarOpen ? t("hideSidebar") : t("showSidebar")}</span>
             <CommandShortcut>⌘B</CommandShortcut>
           </CommandItem>
           <CommandItem
             onSelect={() => runCommand(onToggleTerminal)}
           >
             <PanelBottomClose className="size-4" />
-            <span>{terminalOpen ? "Hide" : "Show"} terminal</span>
+            <span>{terminalOpen ? t("hideTerminal") : t("showTerminal")}</span>
             <CommandShortcut>⌘J</CommandShortcut>
           </CommandItem>
           <CommandItem onSelect={() => runCommand(openPreview)}>
             <Play className="size-4" />
-            <span>Open preview in new window</span>
+            <span>{t("openPreviewWindow")}</span>
           </CommandItem>
         </CommandGroup>
       </CommandList>

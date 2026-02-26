@@ -2,6 +2,7 @@
 
 import { Link } from "@i18n/routing";
 import { cn } from "@portfolio/ui";
+import { useTranslations } from "next-intl";
 import {
   CheckCircle2,
   Command,
@@ -41,6 +42,7 @@ export function StatusBar({
     return pathname.startsWith(item.href);
   });
 
+  const t = useTranslations("ide");
   const fileType = navItem
     ? (fileTypeLabels[navItem.fileType] ?? "Plain Text")
     : "Plain Text";
@@ -53,7 +55,7 @@ export function StatusBar({
           href="https://github.com/kWAYTV/portfolio"
           rel="noopener noreferrer"
           target="_blank"
-          title="Open portfolio repo"
+          title={t("openRepo")}
         >
           <GitBranch className="size-3.5 shrink-0" />
           <span className="hidden sm:inline">main</span>
@@ -66,11 +68,11 @@ export function StatusBar({
         <button
           className="flex cursor-pointer items-center gap-1 transition-colors hover:text-foreground"
           onClick={onOpenCommand}
-          title="Command palette (⌘K)"
+          title={`${t("commandPalette")} (${t("commandPaletteShortcut")})`}
           type="button"
         >
           <Command className="size-3.5" />
-          <span className="hidden sm:inline">⌘K</span>
+          <span className="hidden sm:inline">{t("commandPaletteShortcut")}</span>
         </button>
         <button
           className="flex cursor-pointer items-center gap-1 transition-colors hover:text-foreground"
@@ -82,11 +84,11 @@ export function StatusBar({
             );
             w?.focus();
           }}
-          title="Open preview in new window"
+          title={t("openPreview")}
           type="button"
         >
           <Play className="size-3.5" />
-          <span className="hidden sm:inline">Preview</span>
+          <span className="hidden sm:inline">{t("preview")}</span>
         </button>
         <button
           className={cn(
@@ -97,7 +99,7 @@ export function StatusBar({
           type="button"
         >
           <Terminal className="size-3.5" />
-          <span className="hidden sm:inline">Terminal</span>
+          <span className="hidden sm:inline">{t("terminal")}</span>
         </button>
         <span className="hidden tabular-nums sm:inline">Ln 1, Col 1</span>
         <span className="hidden sm:inline">{fileType}</span>

@@ -6,6 +6,7 @@ import { ChevronRight, Code, Copy, Eye } from "lucide-react";
 import { useCallback, useEffect, useRef, useState } from "react";
 
 import { navItems } from "@/consts/nav-items";
+import { useTranslations } from "next-intl";
 import { ActivityBar } from "./activity-bar";
 import { CommandPalette } from "./command-palette";
 import { EditorTabs } from "./editor-tabs";
@@ -53,6 +54,7 @@ function Breadcrumbs({
   pathname: string;
   viewMode: ViewMode;
 }) {
+  const t = useTranslations("ide");
   const parts = ["portfolio", "src"];
   const navItem = matchNavItem(pathname);
 
@@ -98,7 +100,7 @@ function Breadcrumbs({
             <button
               className="flex cursor-pointer items-center justify-center rounded p-1.5 text-muted-foreground transition-colors hover:bg-muted/50 hover:text-foreground"
               onClick={onCopy}
-              title="Copy content"
+              title={t("copyContent")}
               type="button"
             >
               <Copy className="size-3.5" aria-hidden />
@@ -118,7 +120,7 @@ function Breadcrumbs({
                 : "text-muted-foreground hover:bg-muted/40 hover:text-foreground"
             )}
             onClick={() => onViewModeChange("preview")}
-            title="Preview"
+            title={t("preview")}
             type="button"
           >
             <Eye className="size-3.5" aria-hidden />
@@ -131,7 +133,7 @@ function Breadcrumbs({
                 : "text-muted-foreground hover:bg-muted/40 hover:text-foreground"
             )}
             onClick={() => onViewModeChange("code")}
-            title="Source"
+            title={t("source")}
             type="button"
           >
             <Code className="size-3.5" aria-hidden />

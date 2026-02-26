@@ -2,6 +2,7 @@
 
 import { cn } from "@portfolio/ui";
 import { Minus, Square, X } from "lucide-react";
+import { useTranslations } from "next-intl";
 
 interface TitleBarProps {
   maximized: boolean;
@@ -16,6 +17,7 @@ export function TitleBar({
   onMinimize,
   onMaximize,
 }: TitleBarProps) {
+  const t = useTranslations("common");
   return (
     <div className="flex h-9 shrink-0 select-none items-center border-border border-b bg-secondary px-2 sm:px-4">
       <div className="group/dots hidden items-center gap-[7px] py-2 pr-2 md:flex">
@@ -47,7 +49,7 @@ export function TitleBar({
       </div>
       <div className="flex min-w-0 flex-1 items-center justify-center">
         <span className="truncate font-medium text-muted-foreground text-xs tracking-wide">
-          Martin Vila — Portfolio
+          {t("siteTitle")}
         </span>
       </div>
     </div>

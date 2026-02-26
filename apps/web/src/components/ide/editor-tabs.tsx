@@ -2,6 +2,7 @@
 
 import React from "react";
 import { Link } from "@i18n/routing";
+import { useTranslations } from "next-intl";
 import {
   cn,
   Empty,
@@ -150,6 +151,8 @@ export function EditorTabs({
     [openTabs, onReorder]
   );
 
+  const t = useTranslations("ide");
+
   if (orderedItems.length === 0) {
     return (
       <div className="flex flex-1 flex-col">
@@ -159,9 +162,9 @@ export function EditorTabs({
             <EmptyMedia variant="icon">
               <Code2 />
             </EmptyMedia>
-            <EmptyTitle className="text-sm">No open editors</EmptyTitle>
+            <EmptyTitle className="text-sm">{t("noOpenEditors")}</EmptyTitle>
             <EmptyDescription className="text-xs">
-              Open a file from the sidebar to start editing
+              {t("openFileFromSidebar")}
             </EmptyDescription>
           </EmptyHeader>
         </Empty>

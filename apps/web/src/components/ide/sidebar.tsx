@@ -2,6 +2,7 @@
 
 import { Link } from "@i18n/routing";
 import { cn } from "@portfolio/ui";
+import { useTranslations } from "next-intl";
 import { ChevronDown, ChevronRight, Folder, FolderOpen } from "lucide-react";
 import { useState } from "react";
 import { FileIcon } from "./file-icon";
@@ -60,6 +61,7 @@ interface SidebarProps {
 }
 
 export function Sidebar({ onOpenTab, pathname }: SidebarProps) {
+  const t = useTranslations("ide");
   const [expanded, setExpanded] = useState<Set<string>>(
     new Set(["portfolio", "src", "blog"])
   );
@@ -156,7 +158,7 @@ export function Sidebar({ onOpenTab, pathname }: SidebarProps) {
     <div className="flex h-full w-56 shrink-0 select-none flex-col overflow-hidden border-border border-r bg-sidebar">
       <div className="px-4 py-2">
         <span className="font-medium text-[11px] text-muted-foreground uppercase tracking-wider">
-          Explorer
+          {t("explorer")}
         </span>
       </div>
       <div className="flex-1 overflow-y-auto pb-4">

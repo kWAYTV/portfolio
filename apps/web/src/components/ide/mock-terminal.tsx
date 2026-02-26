@@ -1,5 +1,6 @@
 "use client";
 
+import { useTranslations } from "next-intl";
 import {
   useCallback,
   useEffect,
@@ -308,9 +309,25 @@ function resolveFilePath(_cwd: string, fileArg: string): string | null {
   return null;
 }
 
+type TerminalTranslations = {
+  helpIntro: string;
+  helpLs: string;
+  helpPwd: string;
+  helpCd: string;
+  helpCat: string;
+  helpCat2: string;
+  helpEcho: string;
+  helpClear: string;
+  helpWhoami: string;
+  helpDate: string;
+  helpHelp: string;
+  helpEasterEggs: string;
+};
+
 function executeCommand(
   cmd: string,
-  cwd: string
+  cwd: string,
+  tHelp?: TerminalTranslations
 ): { lines: OutputLine[]; newCwd?: string } {
   const trimmed = cmd.trim();
   const parts = trimmed.split(/\s+/);
@@ -436,21 +453,35 @@ function executeCommand(
   }
 
   if (command === "help" || command === "?") {
+    const h = tHelp ?? {
+      helpIntro: "Available commands:",
+      helpLs: "  ls, ls -la    List files",
+      helpPwd: "  pwd           Print working directory",
+      helpCd: "  cd <dir>      Change directory",
+      helpCat: "  cat <file>   Display file (package.json, tsconfig.json, README.md,",
+      helpCat2: "               .env, about.md, src/welcome.tsx, src/projects.ts, etc.)",
+      helpEcho: "  echo <text>   Echo text",
+      helpClear: "  clear         Clear terminal",
+      helpWhoami: "  whoami        Current user",
+      helpDate: "  date          Current date/time",
+      helpHelp: "  help, ?       Show this help",
+      helpEasterEggs: "Easter eggs: pnpm run dev, git status",
+    };
     return {
       lines: [
-        "Available commands:",
-        "  ls, ls -la    List files",
-        "  pwd           Print working directory",
-        "  cd <dir>      Change directory",
-        "  cat <file>   Display file (package.json, tsconfig.json, README.md,",
-        "               .env, about.md, src/welcome.tsx, src/projects.ts, etc.)",
-        "  echo <text>   Echo text",
-        "  clear         Clear terminal",
-        "  whoami        Current user",
-        "  date          Current date/time",
-        "  help, ?       Show this help",
+        h.helpIntro,
+        h.helpLs,
+        h.helpPwd,
+        h.helpCd,
+        h.helpCat,
+        h.helpCat2,
+        h.helpEcho,
+        h.helpClear,
+        h.helpWhoami,
+        h.helpDate,
+        h.helpHelp,
         "",
-        "Easter eggs: pnpm run dev, git status",
+        h.helpEasterEggs,
       ].map(out),
     };
   }
@@ -476,10 +507,11 @@ function Prompt({ path }: { path: string }) {
 }
 
 export function MockTerminal() {
+  const t = useTranslations("terminal");
   const [lines, setLines] = useState<TerminalLine[]>(() => [
     {
       type: "output",
-      content: "Welcome to the portfolio terminal. Type 'help' for available commands.",
+      content: t("welcome"),
     },
     { type: "input", content: "" },
   ]);
@@ -513,7 +545,21 @@ export function MockTerminal() {
 
     const cmd = inputValue.trim();
     const fullLine = `${prompt} ${inputValue}`;
-    const { lines: outputLines, newCwd } = executeCommand(inputValue, cwd);
+    const tHelp = {
+      helpIntro: t("helpIntro"),
+      helpLs: t("helpLs"),
+      helpPwd: t("helpPwd"),
+      helpCd: t("helpCd"),
+      helpCat: t("helpCat"),
+      helpCat2: t("helpCat2"),
+      helpEcho: t("helpEcho"),
+      helpClear: t("helpClear"),
+      helpWhoami: t("helpWhoami"),
+      helpDate: t("helpDate"),
+      helpHelp: t("helpHelp"),
+      helpEasterEggs: t("helpEasterEggs"),
+    };
+    const { lines: outputLines, newCwd } = executeCommand(inputValue, cwd, tHelp);
 
     if (cmd.toLowerCase() !== "clear") {
       setHistory((prev) => {
@@ -528,7 +574,7 @@ export function MockTerminal() {
       setLines([
         {
           type: "output",
-          content: "Welcome to the portfolio terminal. Type 'help' for available commands.",
+          content: t("welcome"),
         },
         { type: "input", content: "" },
       ]);
@@ -552,7 +598,7 @@ export function MockTerminal() {
 
     if (newCwd) setCwd(newCwd);
     setInputValue("");
-  }, [inputValue, cwd, prompt]);
+  }, [inputValue, cwd, prompt, t]);
 
   const handleKeyDown = useCallback(
     (e: KeyboardEvent<HTMLInputElement>) => {

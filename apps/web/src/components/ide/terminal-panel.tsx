@@ -7,6 +7,7 @@ import {
   TooltipTrigger,
 } from "@portfolio/ui";
 import { GripHorizontal, PanelBottomClose, Play, Terminal } from "lucide-react";
+import { useTranslations } from "next-intl";
 import { useCallback, useEffect, useRef, useState } from "react";
 import { MockTerminal } from "./mock-terminal";
 
@@ -20,6 +21,7 @@ interface TerminalPanelProps {
 }
 
 export function TerminalPanel({ onClose, isOpen }: TerminalPanelProps) {
+  const t = useTranslations("ide");
   const [height, setHeight] = useState(DEFAULT_HEIGHT);
   const [isDragging, setIsDragging] = useState(false);
   const [isHoveringResize, setIsHoveringResize] = useState(false);
@@ -76,7 +78,7 @@ export function TerminalPanel({ onClose, isOpen }: TerminalPanelProps) {
         onMouseEnter={() => setIsHoveringResize(true)}
         onMouseLeave={() => setIsHoveringResize(false)}
         role="separator"
-        aria-label="Resize terminal"
+        aria-label={t("resizeTerminal")}
       >
         <GripHorizontal
           className={cn(
@@ -89,7 +91,7 @@ export function TerminalPanel({ onClose, isOpen }: TerminalPanelProps) {
         <div className="flex items-center gap-2">
           <Terminal className="size-4 text-muted-foreground" />
           <span className="text-[11px] font-medium text-foreground">
-            Terminal
+            {t("terminal")}
           </span>
         </div>
         <div className="flex items-center gap-0.5">
@@ -110,9 +112,7 @@ export function TerminalPanel({ onClose, isOpen }: TerminalPanelProps) {
                 <Play className="size-4" />
               </button>
             </TooltipTrigger>
-            <TooltipContent side="top">
-              Open in new window (preview)
-            </TooltipContent>
+            <TooltipContent side="top">{t("openPreview")}</TooltipContent>
           </Tooltip>
           <Tooltip>
             <TooltipTrigger asChild>
@@ -124,7 +124,7 @@ export function TerminalPanel({ onClose, isOpen }: TerminalPanelProps) {
                 <PanelBottomClose className="size-4" />
               </button>
             </TooltipTrigger>
-            <TooltipContent side="top">Close panel</TooltipContent>
+            <TooltipContent side="top">{t("closePanel")}</TooltipContent>
           </Tooltip>
         </div>
       </div>

@@ -1,7 +1,8 @@
 {
 	"common": {
 		"welcome": "Welcome",
-		"siteDescription": "welcome to my personal space."
+		"siteDescription": "welcome to my personal space.",
+		"siteTitle": "Martin Vila — Portfolio"
 	},
 	"nav": {
 		"home": "home",
@@ -88,5 +89,47 @@
 	"theme": {
 		"dark": "dark",
 		"light": "light"
+	},
+	"ide": {
+		"explorer": "Explorer",
+		"openRepo": "Open portfolio repo",
+		"terminal": "Terminal",
+		"settings": "Settings",
+		"copyContent": "Copy content",
+		"preview": "Preview",
+		"source": "Source",
+		"noOpenEditors": "No open editors",
+		"openFileFromSidebar": "Open a file from the sidebar to start editing",
+		"commandPalette": "Command palette",
+		"commandPaletteShortcut": "⌘K",
+		"openPreview": "Open preview in new window",
+		"resizeTerminal": "Resize terminal",
+		"closePanel": "Close panel",
+		"commandPlaceholder": "Type a command or search...",
+		"noResults": "No results found.",
+		"navigation": "Navigation",
+		"view": "View",
+		"hideSidebar": "Hide sidebar",
+		"showSidebar": "Show sidebar",
+		"hideTerminal": "Hide terminal",
+		"showTerminal": "Show terminal",
+		"openPreviewWindow": "Open preview in new window",
+		"lightTheme": "Light theme",
+		"darkTheme": "Dark theme"
+	},
+	"terminal": {
+		"welcome": "Welcome to the portfolio terminal. Type 'help' for available commands.",
+		"helpIntro": "Available commands:",
+		"helpLs": "  ls, ls -la    List files",
+		"helpPwd": "  pwd           Print working directory",
+		"helpCd": "  cd <dir>      Change directory",
+		"helpCat": "  cat <file>   Display file (package.json, tsconfig.json, README.md,",
+		"helpCat2": "               .env, about.md, src/welcome.tsx, src/projects.ts, etc.)",
+		"helpEcho": "  echo <text>   Echo text",
+		"helpClear": "  clear         Clear terminal",
+		"helpWhoami": "  whoami        Current user",
+		"helpDate": "  date          Current date/time",
+		"helpHelp": "  help, ?       Show this help",
+		"helpEasterEggs": "Easter eggs: pnpm run dev, git status"
 	}
 }

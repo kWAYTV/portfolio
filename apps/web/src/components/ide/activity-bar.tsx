@@ -25,6 +25,7 @@ import {
   User,
 } from "lucide-react";
 import { useTheme } from "next-themes";
+import { useTranslations } from "next-intl";
 
 import { navItems } from "@/consts/nav-items";
 
@@ -55,6 +56,7 @@ export function ActivityBar({
   onToggleTerminal,
 }: ActivityBarProps) {
   const { resolvedTheme, setTheme } = useTheme();
+  const t = useTranslations("ide");
   const isDark = resolvedTheme === "dark";
   const isActive = (href: string) => {
     if (href === "/") {
@@ -78,7 +80,7 @@ export function ActivityBar({
             <PanelLeft className="size-5" />
           </button>
         </TooltipTrigger>
-        <TooltipContent side="right">Explorer</TooltipContent>
+        <TooltipContent side="right">{t("explorer")}</TooltipContent>
       </Tooltip>
 
       {navItems.map((item) => {
@@ -119,7 +121,7 @@ export function ActivityBar({
               <GitBranch className="size-5" />
             </a>
           </TooltipTrigger>
-          <TooltipContent side="right">Open portfolio repo</TooltipContent>
+          <TooltipContent side="right">{t("openRepo")}</TooltipContent>
         </Tooltip>
         <Tooltip>
           <TooltipTrigger asChild>
@@ -134,7 +136,7 @@ export function ActivityBar({
               <Terminal className="size-5" />
             </button>
           </TooltipTrigger>
-          <TooltipContent side="right">Terminal</TooltipContent>
+          <TooltipContent side="right">{t("terminal")}</TooltipContent>
         </Tooltip>
         <DropdownMenu>
           <Tooltip>
@@ -148,16 +150,16 @@ export function ActivityBar({
                 </button>
               </DropdownMenuTrigger>
             </TooltipTrigger>
-            <TooltipContent side="right">Settings</TooltipContent>
+            <TooltipContent side="right">{t("settings")}</TooltipContent>
           </Tooltip>
           <DropdownMenuContent align="start" side="right" className="w-52">
             <DropdownMenuItem onClick={() => setTheme(isDark ? "light" : "dark")}>
               {isDark ? <Sun className="size-4" /> : <Moon className="size-4" />}
-              <span>{isDark ? "Light" : "Dark"} theme</span>
+              <span>{isDark ? t("lightTheme") : t("darkTheme")}</span>
             </DropdownMenuItem>
             <DropdownMenuItem onClick={onOpenCommand}>
-              <span>Command palette</span>
-              <DropdownMenuShortcut>⌘K</DropdownMenuShortcut>
+              <span>{t("commandPalette")}</span>
+              <DropdownMenuShortcut>{t("commandPaletteShortcut")}</DropdownMenuShortcut>
             </DropdownMenuItem>
           </DropdownMenuContent>
         </DropdownMenu>
