@@ -114,6 +114,7 @@ export function IdeLayout({ children }: IdeLayoutProps) {
     navItems.map((item) => item.href)
   );
   const closingRef = useRef(false);
+  const openedFromSidebarRef = useRef<string | null>(null);
 
   useEffect(() => {
     if (closingRef.current) {
@@ -122,13 +123,27 @@ export function IdeLayout({ children }: IdeLayoutProps) {
     }
     if (openTabs.length === 0) return;
     const navItem = matchNavItem(pathname);
-    if (navItem && !openTabs.includes(navItem.href)) {
-      setOpenTabs((prev) => [...prev, navItem.href]);
+    if (!navItem || openTabs.includes(navItem.href)) {
+      openedFromSidebarRef.current = null;
+      return;
     }
+    if (
+      openedFromSidebarRef.current &&
+      openedFromSidebarRef.current !== navItem.href
+    ) {
+      return;
+    }
+    openedFromSidebarRef.current = null;
+    setOpenTabs((prev) => [...prev, navItem.href]);
   }, [pathname, openTabs]);
 
   const toggleSidebar = useCallback(() => {
     setSidebarOpen((prev) => !prev);
+  }, []);
+
+  const openTab = useCallback((href: string) => {
+    openedFromSidebarRef.current = href;
+    setOpenTabs((prev) => (prev.includes(href) ? prev : [...prev, href]));
   }, []);
 
   const closeTab = useCallback(
@@ -154,10 +169,6 @@ export function IdeLayout({ children }: IdeLayoutProps) {
     },
     [pathname, openTabs, router]
   );
-
-  const openTab = useCallback((href: string) => {
-    setOpenTabs((prev) => (prev.includes(href) ? prev : [...prev, href]));
-  }, []);
 
   const reorderTabs = useCallback((newOrder: string[]) => {
     setOpenTabs(newOrder);
