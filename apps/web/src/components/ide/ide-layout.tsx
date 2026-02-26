@@ -312,18 +312,18 @@ export function IdeLayout({ children }: IdeLayoutProps) {
             onClose={closeAllTabs}
             onMaximize={toggleFullscreen}
             onMinimize={isFullscreen ? toggleFullscreen : toggleSidebar}
-            onOpenCommand={() => setCommandOpen(true)}
           />
 
           <div className="flex min-h-0 flex-1">
             <div className="hidden md:block">
               <ActivityBar
-                  onToggleSidebar={toggleSidebar}
-                  onToggleTerminal={() => setTerminalOpen((p) => !p)}
-                  pathname={pathname}
-                  sidebarOpen={sidebarOpen}
-                  terminalOpen={terminalOpen}
-                />
+                onOpenCommand={() => setCommandOpen(true)}
+                onToggleSidebar={toggleSidebar}
+                onToggleTerminal={() => setTerminalOpen((p) => !p)}
+                pathname={pathname}
+                sidebarOpen={sidebarOpen}
+                terminalOpen={terminalOpen}
+              />
             </div>
 
             {sidebarOpen && (

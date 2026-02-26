@@ -1,17 +1,30 @@
 "use client";
 
 import { Link } from "@i18n/routing";
-import { cn, Tooltip, TooltipContent, TooltipTrigger } from "@portfolio/ui";
+import {
+  cn,
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuShortcut,
+  DropdownMenuTrigger,
+  Tooltip,
+  TooltipContent,
+  TooltipTrigger,
+} from "@portfolio/ui";
 import {
   BookOpen,
   Code2,
   FolderGit2,
   GitBranch,
+  Moon,
   PanelLeft,
   Settings,
+  Sun,
   Terminal,
   User,
 } from "lucide-react";
+import { useTheme } from "next-themes";
 
 import { navItems } from "@/consts/nav-items";
 
@@ -25,6 +38,7 @@ const navIcons: Record<string, typeof Code2> = {
 };
 
 interface ActivityBarProps {
+  onOpenCommand: () => void;
   onToggleSidebar: () => void;
   onToggleTerminal: () => void;
   pathname: string;
@@ -36,9 +50,12 @@ export function ActivityBar({
   pathname,
   sidebarOpen,
   terminalOpen,
+  onOpenCommand,
   onToggleSidebar,
   onToggleTerminal,
 }: ActivityBarProps) {
+  const { resolvedTheme, setTheme } = useTheme();
+  const isDark = resolvedTheme === "dark";
   const isActive = (href: string) => {
     if (href === "/") {
       return pathname === "/";
@@ -119,17 +136,31 @@ export function ActivityBar({
           </TooltipTrigger>
           <TooltipContent side="right">Terminal</TooltipContent>
         </Tooltip>
-        <Tooltip>
-          <TooltipTrigger asChild>
-            <button
-              className="flex size-10 cursor-pointer items-center justify-center text-sidebar-foreground/60 transition-colors hover:text-sidebar-primary"
-              type="button"
-            >
-              <Settings className="size-5" />
-            </button>
-          </TooltipTrigger>
-          <TooltipContent side="right">Settings</TooltipContent>
-        </Tooltip>
+        <DropdownMenu>
+          <Tooltip>
+            <TooltipTrigger asChild>
+              <DropdownMenuTrigger asChild>
+                <button
+                  className="flex size-10 cursor-pointer items-center justify-center text-sidebar-foreground/60 transition-colors hover:text-sidebar-primary"
+                  type="button"
+                >
+                  <Settings className="size-5" />
+                </button>
+              </DropdownMenuTrigger>
+            </TooltipTrigger>
+            <TooltipContent side="right">Settings</TooltipContent>
+          </Tooltip>
+          <DropdownMenuContent align="start" side="right" className="w-52">
+            <DropdownMenuItem onClick={() => setTheme(isDark ? "light" : "dark")}>
+              {isDark ? <Sun className="size-4" /> : <Moon className="size-4" />}
+              <span>{isDark ? "Light" : "Dark"} theme</span>
+            </DropdownMenuItem>
+            <DropdownMenuItem onClick={onOpenCommand}>
+              <span>Command palette</span>
+              <DropdownMenuShortcut>⌘K</DropdownMenuShortcut>
+            </DropdownMenuItem>
+          </DropdownMenuContent>
+        </DropdownMenu>
       </div>
     </div>
   );
