@@ -304,7 +304,7 @@ export function IdeLayout({ children }: IdeLayoutProps) {
             maximized={isFullscreen}
             onClose={closeAllTabs}
             onMaximize={toggleFullscreen}
-            onMinimize={toggleSidebar}
+            onMinimize={isFullscreen ? toggleFullscreen : toggleSidebar}
             onOpenCommand={() => setCommandOpen(true)}
           />
 
