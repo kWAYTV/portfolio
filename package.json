@@ -32,5 +32,10 @@
     "turbo": "^2.8.11",
     "typescript": "catalog:",
     "ultracite": "7.2.3"
+  },
+  "dependencies": {
+    "@dnd-kit/helpers": "^0.3.2",
+    "@dnd-kit/react": "^0.3.2",
+    "shiki": "^3.23.0"
   }
 }

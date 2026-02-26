@@ -2,8 +2,10 @@ import { getTranslations, setRequestLocale } from "next-intl/server";
 import { AboutBio } from "@/components/about/about-bio";
 import { AboutHeader } from "@/components/about/about-header";
 import { ExperienceTimeline } from "@/components/about/experience-timeline";
+import { CodeView } from "@/components/ide/code-view";
+import { EditorContent } from "@/components/ide/editor-content";
 import { PageContent } from "@/components/shared/page-content";
-import { PageWrapper } from "@/components/shared/page-wrapper";
+import { aboutCode } from "@/consts/code-content";
 import { createMetadata } from "@/lib/metadata";
 
 export async function generateMetadata({
@@ -28,12 +30,15 @@ export default async function About({ params }: Props) {
   setRequestLocale(locale);
 
   return (
-    <PageWrapper>
-      <PageContent>
-        <AboutHeader />
-        <AboutBio />
-        <ExperienceTimeline />
-      </PageContent>
-    </PageWrapper>
+    <EditorContent
+      preview={
+        <PageContent>
+          <AboutHeader />
+          <AboutBio />
+          <ExperienceTimeline />
+        </PageContent>
+      }
+      source={<CodeView code={aboutCode} lang="markdown" />}
+    />
   );
 }

@@ -1,10 +1,12 @@
 import { getTranslations, setRequestLocale } from "next-intl/server";
 import { Suspense } from "react";
+import { CodeView } from "@/components/ide/code-view";
+import { EditorContent } from "@/components/ide/editor-content";
 import { ProjectListLoader } from "@/components/projects/project-list-loader";
 import { ProjectListSkeleton } from "@/components/projects/project-list-skeleton";
 import { ProjectsHeader } from "@/components/projects/projects-header";
 import { PageContent } from "@/components/shared/page-content";
-import { PageWrapper } from "@/components/shared/page-wrapper";
+import { projectsCode } from "@/consts/code-content";
 import { createMetadata } from "@/lib/metadata";
 
 export async function generateMetadata({
@@ -29,13 +31,16 @@ export default async function Projects({ params }: Props) {
   setRequestLocale(locale);
 
   return (
-    <PageWrapper>
-      <PageContent>
-        <ProjectsHeader />
-        <Suspense fallback={<ProjectListSkeleton />}>
-          <ProjectListLoader />
-        </Suspense>
-      </PageContent>
-    </PageWrapper>
+    <EditorContent
+      preview={
+        <PageContent>
+          <ProjectsHeader />
+          <Suspense fallback={<ProjectListSkeleton />}>
+            <ProjectListLoader />
+          </Suspense>
+        </PageContent>
+      }
+      source={<CodeView code={projectsCode} lang="typescript" />}
+    />
   );
 }

@@ -3,8 +3,10 @@ import { Suspense } from "react";
 import { BlogHeader } from "@/components/blog/blog-header";
 import { BlogListLoader } from "@/components/blog/blog-list-loader";
 import { BlogListSkeleton } from "@/components/blog/blog-list-skeleton";
+import { CodeView } from "@/components/ide/code-view";
+import { EditorContent } from "@/components/ide/editor-content";
 import { PageContent } from "@/components/shared/page-content";
-import { PageWrapper } from "@/components/shared/page-wrapper";
+import { blogCode } from "@/consts/code-content";
 import { createMetadata } from "@/lib/metadata";
 
 export async function generateMetadata({
@@ -29,13 +31,16 @@ export default async function Blog({ params }: Props) {
   setRequestLocale(locale);
 
   return (
-    <PageWrapper>
-      <PageContent>
-        <BlogHeader />
-        <Suspense fallback={<BlogListSkeleton />}>
-          <BlogListLoader locale={locale} />
-        </Suspense>
-      </PageContent>
-    </PageWrapper>
+    <EditorContent
+      preview={
+        <PageContent>
+          <BlogHeader />
+          <Suspense fallback={<BlogListSkeleton />}>
+            <BlogListLoader locale={locale} />
+          </Suspense>
+        </PageContent>
+      }
+      source={<CodeView code={blogCode} lang="mdx" />}
+    />
   );
 }

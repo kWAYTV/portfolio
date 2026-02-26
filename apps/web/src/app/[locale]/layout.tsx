@@ -1,5 +1,6 @@
 import { Toaster } from "@portfolio/ui";
 import { UmamiScript } from "@/components/analytics/umami-script";
+import { IdeLayout } from "@/components/ide/ide-layout";
 import { ThemeProvider } from "@/components/theming/provider";
 import "@/styles/globals.css";
 import { routing } from "@i18n/routing";
@@ -75,7 +76,7 @@ export default async function LocaleLayout({ children, params }: Props) {
               disableTransitionOnChange
               enableSystem
             >
-              {children}
+              <IdeLayout>{children}</IdeLayout>
               <Toaster richColors />
             </ThemeProvider>
           </NuqsAdapter>
