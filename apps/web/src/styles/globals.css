@@ -230,12 +230,12 @@
   margin-right: 0 !important;
   margin-left: 0 !important;
 }
-/* IDE preview: center content horizontally and vertically */
+/* IDE preview: center content horizontally, align to top for scrollable content */
 [data-ide-main][data-preview] {
   display: flex;
   flex-direction: column;
   align-items: center;
-  justify-content: center;
+  justify-content: flex-start;
   min-height: 100%;
 }
 
