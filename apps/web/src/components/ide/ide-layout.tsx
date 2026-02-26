@@ -1,9 +1,9 @@
 "use client";
 
-import { usePathname } from "@i18n/routing";
+import { usePathname, useRouter } from "@i18n/routing";
 import { TooltipProvider } from "@portfolio/ui";
 import { ChevronRight } from "lucide-react";
-import { useCallback, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { navItems } from "@/consts/nav-items";
 import { ActivityBar } from "./activity-bar";
 import { EditorTabs } from "./editor-tabs";
@@ -12,15 +12,19 @@ import { Sidebar } from "./sidebar";
 import { StatusBar } from "./status-bar";
 import { TitleBar } from "./title-bar";
 
-function Breadcrumbs({ pathname }: { pathname: string }) {
-  const parts = ["portfolio", "src"];
-
-  const navItem = navItems.find((item) => {
+function matchNavItem(pathname: string) {
+  return navItems.find((item) => {
     if (item.href === "/") {
       return pathname === "/";
     }
     return pathname.startsWith(item.href);
   });
+}
+
+function Breadcrumbs({ pathname }: { pathname: string }) {
+  const parts = ["portfolio", "src"];
+
+  const navItem = matchNavItem(pathname);
 
   if (navItem) {
     if (pathname.startsWith("/blog") && pathname !== "/blog") {
@@ -59,11 +63,48 @@ interface IdeLayoutProps {
 
 export function IdeLayout({ children }: IdeLayoutProps) {
   const pathname = usePathname();
+  const router = useRouter();
   const [sidebarOpen, setSidebarOpen] = useState(true);
+  const [openTabs, setOpenTabs] = useState<Set<string>>(
+    () => new Set(navItems.map((item) => item.href))
+  );
+
+  useEffect(() => {
+    const navItem = matchNavItem(pathname);
+    if (navItem && !openTabs.has(navItem.href)) {
+      setOpenTabs((prev) => new Set([...prev, navItem.href]));
+    }
+  }, [pathname, openTabs]);
 
   const toggleSidebar = useCallback(() => {
     setSidebarOpen((prev) => !prev);
   }, []);
+
+  const closeTab = useCallback(
+    (href: string) => {
+      if (openTabs.size <= 1) {
+        return;
+      }
+
+      const isActive =
+        href === "/" ? pathname === "/" : pathname.startsWith(href);
+
+      const next = new Set(openTabs);
+      next.delete(href);
+      setOpenTabs(next);
+
+      if (isActive) {
+        const remaining = navItems
+          .filter((item) => next.has(item.href))
+          .map((item) => item.href);
+        const target = remaining.at(-1);
+        if (target) {
+          router.push(target);
+        }
+      }
+    },
+    [pathname, openTabs, router]
+  );
 
   return (
     <TooltipProvider delayDuration={300}>
@@ -91,7 +132,11 @@ export function IdeLayout({ children }: IdeLayoutProps) {
           <div className="flex min-w-0 flex-1 flex-col">
             {/* Tab bar - desktop only */}
             <div className="hidden md:block">
-              <EditorTabs pathname={pathname} />
+              <EditorTabs
+                onCloseTab={closeTab}
+                openTabs={openTabs}
+                pathname={pathname}
+              />
             </div>
 
             <Breadcrumbs pathname={pathname} />
