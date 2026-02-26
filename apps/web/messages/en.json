@@ -111,7 +111,8 @@
     "showTerminal": "Show terminal",
     "openPreviewWindow": "Open preview in new window",
     "lightTheme": "Light theme",
-    "darkTheme": "Dark theme"
+    "darkTheme": "Dark theme",
+    "language": "Language"
   },
   "terminal": {
     "welcome": "Welcome to the portfolio terminal. Type 'help' for available commands.",
