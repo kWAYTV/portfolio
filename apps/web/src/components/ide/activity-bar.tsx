@@ -217,7 +217,10 @@ export function ActivityBar({
             </DropdownMenuCheckboxItem>
             <DropdownMenuSeparator className="my-0.5" />
             <DropdownMenuSub>
-              <DropdownMenuSubTrigger disabled={localePending}>
+              <DropdownMenuSubTrigger
+                className="pl-8"
+                disabled={localePending}
+              >
                 <Languages className="size-3.5" />
                 {t("language")}
               </DropdownMenuSubTrigger>
