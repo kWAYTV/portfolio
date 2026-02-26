@@ -270,11 +270,6 @@
   margin-right: 0 !important;
   margin-left: 0 !important;
 }
-
-/* IDE: subtle base layer for content area (depth hierarchy) */
-[data-ide-main] {
-  background-color: color-mix(in oklch, var(--background) 97%, var(--muted) 3%);
-}
 /* IDE preview: center content horizontally, align to top for scrollable content */
 [data-ide-main][data-preview] {
   display: flex;
@@ -376,16 +371,6 @@
 ::view-transition-new(root) {
   mix-blend-mode: normal;
   animation: none;
-}
-
-/* IDE dropdowns: depth shadow + subtle top highlight (light from above) */
-.ide-dropdown {
-  box-shadow: var(--shadow-elevation-md);
-  background: linear-gradient(
-    180deg,
-    color-mix(in oklch, var(--popover) 96%, oklch(1 0 0) 4%) 0%,
-    var(--popover) 100%
-  ) !important;
 }
 
 /* VSCode-style IDE dropdowns */

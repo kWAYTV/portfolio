@@ -54,7 +54,7 @@ function TabItem({
       className={cn(
         "group relative flex h-full min-w-0 max-w-[180px] select-none items-center border-border/60 border-r pr-1 text-[13px] transition-colors",
         active
-          ? "bg-background text-foreground shadow-[var(--shadow-elevation-sm)]"
+          ? "bg-background text-foreground"
           : "bg-muted/40 text-muted-foreground hover:bg-muted/70",
         isDropTarget && "border-l-2 border-l-primary"
       )}
@@ -208,7 +208,7 @@ export const EditorTabs = memo(function EditorTabs({
   if (orderedItems.length === 0) {
     return (
       <div className="flex flex-1 flex-col">
-        <div className="h-[35px] shrink-0 border-border border-b bg-muted/80 shadow-[var(--shadow-elevation-sm)]" />
+        <div className="h-[35px] shrink-0 border-border border-b bg-muted/80" />
         <Empty className="flex-1 border-0">
           <EmptyHeader>
             <EmptyMedia variant="icon">
@@ -225,7 +225,7 @@ export const EditorTabs = memo(function EditorTabs({
   }
 
   return (
-    <div className="relative flex h-[35px] shrink-0 items-stretch overflow-x-auto border-border border-b bg-muted/80 shadow-[var(--shadow-elevation-sm)]">
+    <div className="relative flex h-[35px] shrink-0 items-stretch overflow-x-auto border-border border-b bg-muted/80">
       {/* Drop zone before first tab - absolute so it doesn't create a gap */}
       <div
         className={cn(

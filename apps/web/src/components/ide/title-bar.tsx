@@ -21,7 +21,7 @@ export function TitleBar({
 }: TitleBarProps) {
   const t = useTranslations("common");
   return (
-    <div className="flex h-9 shrink-0 select-none items-center border-border border-b bg-secondary px-2 shadow-[var(--shadow-elevation-sm)] sm:px-4">
+    <div className="flex h-9 shrink-0 select-none items-center border-border border-b bg-secondary px-2 sm:px-4">
       <div className="flex shrink-0 items-center gap-2 pr-2">
         {leftSlot}
         <div className="group/dots hidden items-center gap-[7px] md:flex">

@@ -40,7 +40,7 @@ export const StatusBar = memo(function StatusBar({
     : "Plain Text";
 
   return (
-    <div className="flex h-11 shrink-0 select-none items-center justify-between gap-2 overflow-hidden border-border border-t bg-secondary px-2 py-1 text-[11px] text-muted-foreground shadow-[var(--shadow-elevation-sm)] sm:h-6 sm:px-3 sm:py-0">
+    <div className="flex h-11 shrink-0 select-none items-center justify-between gap-2 overflow-hidden border-border border-t bg-secondary px-2 py-1 text-[11px] text-muted-foreground sm:h-6 sm:px-3 sm:py-0">
       <div className="flex min-w-0 shrink-0 items-center gap-2 sm:gap-3">
         <a
           className="flex cursor-pointer items-center gap-1 transition-colors hover:text-foreground"
