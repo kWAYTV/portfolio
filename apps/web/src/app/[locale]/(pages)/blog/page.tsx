@@ -1,5 +1,11 @@
 import { getTranslations, setRequestLocale } from "next-intl/server";
+import { Suspense } from "react";
+import { BlogHeader } from "@/components/blog/blog-header";
+import { BlogListLoader } from "@/components/blog/blog-list-loader";
+import { BlogListSkeleton } from "@/components/blog/blog-list-skeleton";
 import { CodeView } from "@/components/ide/code-view";
+import { EditorContent } from "@/components/ide/editor-content";
+import { PageContent } from "@/components/shared/page-content";
 import { blogCode } from "@/consts/code-content";
 import { createMetadata } from "@/lib/metadata";
 
@@ -24,5 +30,17 @@ export default async function Blog({ params }: Props) {
   const { locale } = await params;
   setRequestLocale(locale);
 
-  return <CodeView code={blogCode} lang="mdx" />;
+  return (
+    <EditorContent
+      preview={
+        <PageContent>
+          <BlogHeader />
+          <Suspense fallback={<BlogListSkeleton />}>
+            <BlogListLoader locale={locale} />
+          </Suspense>
+        </PageContent>
+      }
+      source={<CodeView code={blogCode} lang="mdx" />}
+    />
+  );
 }

@@ -1,41 +1,49 @@
-export const welcomeCode = `import { Github, Twitter, Linkedin, FileText } from "lucide-react";
+export const welcomeCode = `import { Separator } from "@portfolio/ui";
+import { FeaturedProjects } from "@/components/home/featured-projects";
+import { SocialNav } from "@/components/home/social-nav";
+import { getGitHubRepos } from "@/lib/github";
 
-const name = "Martin Vila";
-const tagline = "developer · gamer · self-taught";
-
-const bio = \`Building minimal, thoughtful software. Currently exploring
-the intersection of design and engineering.\`;
+export const metadata = {
+  title: "Martin Vila",
+  description: "developer · gamer · self-taught",
+};
 
 const socials = [
-  { name: "github", href: "https://github.com/kWAYTV" },
-  { name: "twitter", href: "https://twitter.com/ogeperc" },
-  { name: "linkedin", href: "https://linkedin.com/in/mvnieto" },
-  { name: "resume", href: "https://gitroll.io/profile/uezq54oxIk4V" },
-];
+  { name: "github", href: "https://github.com/kWAYTV", icon: Github },
+  { name: "twitter", href: "https://twitter.com/ogeperc", icon: Twitter },
+  { name: "linkedin", href: "https://linkedin.com/in/mvnieto", icon: Linkedin },
+  { name: "resume", href: "https://gitroll.io/profile/uezq54oxIk4V", icon: FileText },
+] as const;
 
 const featuredRepos = ["portfolio", "versend/core", "lichess-bot"];
 
-export default function Welcome() {
+export default async function Home() {
+  const repos = await getGitHubRepos();
+  const featured = repos.filter((r) => featuredRepos.includes(r.name));
+
   return (
-    <main>
-      <p className="text-muted">Welcome</p>
-      <h1>{name}</h1>
-      <p>{tagline}</p>
-      <p>{bio}</p>
+    <main className="space-y-6">
+      <p className="text-muted-foreground text-sm">Welcome</p>
 
-      <nav>
-        {socials.map((link) => (
-          <a href={link.href} key={link.name} target="_blank">
-            {link.name}
-          </a>
-        ))}
-      </nav>
+      <header className="space-y-1.5">
+        <h1 className="font-medium text-lg tracking-tight">Martin Vila</h1>
+        <p className="text-muted-foreground/60 text-sm">
+          developer · gamer · self-taught
+        </p>
+      </header>
 
+      <p className="text-muted-foreground/80 text-sm leading-relaxed">
+        Building minimal, thoughtful software. Currently exploring
+        the intersection of design and engineering.
+      </p>
+
+      <Separator />
+      <SocialNav links={socials} />
       <Separator />
 
       <section>
-        <h2>Featured</h2>
-        <FeaturedProjects repos={featuredRepos} />
+        <h2 className="font-medium text-sm">Featured</h2>
+        <FeaturedProjects repos={featured} />
       </section>
     </main>
   );
@@ -52,16 +60,16 @@ I'm a software engineer with a passion for building backend
 
 ## Experience
 
-### Freelance — 2019 - Present
+### Freelance — *2019 - Present*
 Freelance Developer / Open Source Contributor
 
-### Tokyo School — 2024 - Present
+### Tokyo School — *2024 - Present*
 PCAP Python, Computer Programming
 
-### Insergal — 2018 - 2019
+### Insergal — *2018 - 2019*
 Sales Assistant, Marketing
 
-### Insergal — 2018 - 2019
+### Insergal — *2018 - 2019*
 Automotive Mechanic`;
 
 export const projectsCode = `import { Octokit } from "@octokit/rest";
@@ -74,6 +82,7 @@ interface Repository {
   forks_count: number;
   html_url: string;
   pushed_at: string;
+  created_at: string;
 }
 
 const octokit = new Octokit({
@@ -87,53 +96,58 @@ export async function getRepositories(): Promise<Repository[]> {
     per_page: 100,
   });
 
-  return data.map((repo) => ({
-    name: repo.name,
-    description: repo.description,
-    language: repo.language,
-    stargazers_count: repo.stargazers_count,
-    forks_count: repo.forks_count,
-    html_url: repo.html_url,
-    pushed_at: repo.pushed_at,
+  return data.map(({
+    name, description, language, stargazers_count,
+    forks_count, html_url, pushed_at, created_at,
+  }) => ({
+    name, description, language, stargazers_count,
+    forks_count, html_url, pushed_at, created_at,
   }));
 }
 
-// Featured projects pinned on home page
-export const featured = [
-  "portfolio",
-  "versend/core",
-  "lichess-bot",
-];`;
+export const sortOptions = ["stars", "updated", "created", "name"] as const;
+export type SortOption = (typeof sortOptions)[number];
+
+export function sortRepos(repos: Repository[], sort: SortOption) {
+  return [...repos].sort((a, b) => {
+    switch (sort) {
+      case "stars":
+        return b.stargazers_count - a.stargazers_count;
+      case "updated":
+        return +new Date(b.pushed_at) - +new Date(a.pushed_at);
+      case "created":
+        return +new Date(b.created_at) - +new Date(a.created_at);
+      case "name":
+        return a.name.localeCompare(b.name);
+    }
+  });
+}
+
+// Pinned on home page
+export const featured = ["portfolio", "versend/core", "lichess-bot"];`;
 
 export const blogCode = `---
 title: Blog
 description: Quiet notes from current work
 ---
 
+import { BlogList } from "@/components/blog/blog-list"
+import { getPosts } from "@/lib/source"
+
 # Blog
 
 Quiet notes from current work. More entries will fall in here
 as they are published — kept chronologically, nothing fancy.
 
+<BlogList posts={getPosts()} />
+
 ## Latest Posts
 
-### Shipping the Wrong Thing
-*February 23, 2026*
+- **Shipping the Wrong Thing** — *Feb 23, 2026*
+  Sometimes the right move is to ship the feature nobody asked for
 
-Sometimes the right move is to ship the feature nobody asked
-for and see what happens.
+- **The Side Project Graveyard** — *Dec 22, 2025*
+  A guided tour through my unfinished projects and the lies I told myself
 
----
-
-### The Side Project Graveyard
-*December 22, 2025*
-
-A guided tour through my unfinished projects and the lies
-I told myself.
-
----
-
-### Hello World
-*November 29, 2025*
-
-Obligatory first post where I promise to write more.`;
+- **Hello World** — *Nov 29, 2025*
+  Obligatory first post where I promise to write more`;
