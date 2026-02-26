@@ -329,12 +329,12 @@ function executeCommand(
 function Prompt({ path }: { path: string }) {
   return (
     <span className="terminal-prompt">
-      <span className="text-[#7ee787]">visitor</span>
+      <span style={{ color: "var(--terminal-user)" }}>visitor</span>
       <span className="text-muted-foreground">@</span>
-      <span className="text-[#79c0ff]">portfolio</span>
+      <span style={{ color: "var(--terminal-host)" }}>portfolio</span>
       <span className="text-muted-foreground"> </span>
-      <span className="text-[#d2a8ff]">{path}</span>
-      <span className="text-[#7ee787]"> %</span>
+      <span style={{ color: "var(--terminal-path)" }}>{path}</span>
+      <span style={{ color: "var(--terminal-user)" }}> %</span>
     </span>
   );
 }
@@ -492,17 +492,17 @@ export function MockTerminal() {
             ) : line.type === "input" ? (
               <span className="terminal-history-line">
                 <Prompt path={pathDisplay} />
-                <span className="text-[#c9d1d9]">
+                <span className="text-foreground">
                   {" "}
                   {line.content.includes(" % ") ? line.content.split(" % ")[1] ?? "" : line.content}
                 </span>
               </span>
             ) : line.type === "error" ? (
-              <span className="text-[#f85149]">{line.content}</span>
+              <span style={{ color: "var(--terminal-error)" }}>{line.content}</span>
             ) : "isDir" in line && line.isDir ? (
-              <span className="text-[#79c0ff]">{line.content}</span>
+              <span style={{ color: "var(--terminal-host)" }}>{line.content}</span>
             ) : (
-              <span className="text-[#8b949e]">{line.content}</span>
+              <span style={{ color: "var(--terminal-output)" }}>{line.content}</span>
             )}
           </div>
         ))}
