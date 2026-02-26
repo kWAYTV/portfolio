@@ -1,5 +1,8 @@
 "use client";
 
+import { move } from "@dnd-kit/helpers";
+import { DragDropProvider, DragOverlay, useDragOperation } from "@dnd-kit/react";
+import { useSortable } from "@dnd-kit/react/sortable";
 import { Link } from "@i18n/routing";
 import {
   cn,
@@ -10,8 +13,6 @@ import {
   EmptyTitle,
 } from "@portfolio/ui";
 import { Code2, X } from "lucide-react";
-import { useCallback, useEffect, useMemo, useRef, useState } from "react";
-import { createSwapy, utils } from "swapy";
 import { navItems } from "@/consts/nav-items";
 import { FileIcon } from "./file-icon";
 
@@ -20,9 +21,9 @@ interface TabItemProps {
   fileName: string;
   fileType: string;
   href: string;
-  itemId: string;
+  index: number;
   onClose: () => void;
-  slotId: string;
+  isOverlay?: boolean;
 }
 
 function TabItem({
@@ -30,52 +31,87 @@ function TabItem({
   fileName,
   fileType,
   href,
-  itemId,
+  index,
   onClose,
-  slotId,
+  isOverlay = false,
 }: TabItemProps) {
+  const { ref, isDragging } = useSortable({ id: href, index });
+
   return (
     <div
       className={cn(
-        "group relative flex select-none items-center whitespace-nowrap border-border border-r text-xs transition-colors",
+        "group relative flex select-none items-center whitespace-nowrap border-border border-r text-xs transition-[color,transform] duration-200",
         active
           ? "bg-background text-foreground"
-          : "bg-muted text-muted-foreground hover:bg-background/50"
+          : "bg-muted text-muted-foreground hover:bg-background/50",
+        isDragging && !isOverlay && "z-10 opacity-50",
+        isOverlay && "z-50 cursor-grabbing shadow-lg"
       )}
-      data-swapy-slot={slotId}
+      ref={isOverlay ? undefined : ref}
     >
-      <div
-        className="flex min-w-0 flex-1 cursor-grab items-center active:cursor-grabbing"
-        data-swapy-item={itemId}
+      {active && !isDragging && (
+        <span className="absolute inset-x-0 top-0 h-[2px] bg-primary" />
+      )}
+      <Link
+        className="flex cursor-grab items-center gap-2 py-1 pr-1 pl-3 active:cursor-grabbing"
+        draggable={false}
+        href={href}
+        onClick={(e) => {
+          if (isDragging) {
+            e.preventDefault();
+          }
+        }}
       >
-        {active && (
-          <span className="absolute inset-x-0 top-0 h-[2px] bg-primary" />
+        <FileIcon className="size-3.5" type={fileType} />
+        <span>{fileName}</span>
+      </Link>
+      <button
+        className={cn(
+          "mr-1.5 ml-1 rounded-sm p-0.5 transition-opacity hover:bg-foreground/10 hover:opacity-100",
+          active
+            ? "opacity-60"
+            : "pointer-events-none opacity-0 group-hover:opacity-60 group-hover:pointer-events-auto"
         )}
-        <Link
-          className="flex items-center gap-2 py-1 pr-1 pl-3"
-          draggable={false}
-          href={href}
-        >
-          <FileIcon className="size-3.5 shrink-0" type={fileType} />
-          <span className="truncate">{fileName}</span>
-        </Link>
-        <button
-          className={cn(
-            "mr-1.5 ml-1 shrink-0 rounded-sm p-0.5 transition-opacity hover:bg-foreground/10 hover:opacity-100",
-            active
-              ? "opacity-60"
-              : "pointer-events-none opacity-0 group-hover:opacity-60 group-hover:pointer-events-auto"
-          )}
-          onClick={(e) => {
-            e.stopPropagation();
-            onClose();
-          }}
-          type="button"
-        >
-          <X className="size-3" />
-        </button>
-      </div>
+        onClick={(e) => {
+          e.stopPropagation();
+          onClose();
+        }}
+        type="button"
+      >
+        <X className="size-3" />
+      </button>
     </div>
+  );
+}
+
+function TabOverlayContent({
+  pathname,
+  orderedItems,
+  onCloseTab,
+}: {
+  pathname: string;
+  orderedItems: Array<{ href: string; fileName: string; fileType: string }>;
+  onCloseTab: (href: string) => void;
+}) {
+  const source = useDragOperation().source;
+  if (!source) return null;
+
+  const item = orderedItems.find((i) => i.href === source.id);
+  if (!item) return null;
+
+  const isActive =
+    item.href === "/" ? pathname === "/" : pathname.startsWith(item.href);
+
+  return (
+    <TabItem
+      active={isActive}
+      fileName={item.fileName}
+      fileType={item.fileType}
+      href={item.href}
+      index={0}
+      isOverlay
+      onClose={() => onCloseTab(item.href)}
+    />
   );
 }
 
@@ -104,49 +140,6 @@ export function EditorTabs({
     return item ? [item] : [];
   });
 
-  const [slotItemMap, setSlotItemMap] = useState(() =>
-    utils.initSlotItemMap(orderedItems, "href")
-  );
-  const containerRef = useRef<HTMLDivElement>(null);
-  const swapyRef = useRef<ReturnType<typeof createSwapy> | null>(null);
-
-  const slottedItems = useMemo(
-    () => utils.toSlottedItems(orderedItems, "href", slotItemMap),
-    [orderedItems, slotItemMap]
-  );
-
-  const handleSwap = useCallback(
-    (event: { newSlotItemMap: { asArray: Array<{ slot: string; item: string }> } }) => {
-      const newMap = event.newSlotItemMap.asArray;
-      setSlotItemMap(newMap);
-      const newOrder = openTabs.map(
-        (slot) => newMap.find((p) => p.slot === slot)?.item ?? slot
-      );
-      onReorder(newOrder);
-    },
-    [onReorder, openTabs]
-  );
-
-  const tabsKey = openTabs.slice().sort().join(",");
-  useEffect(() => {
-    if (orderedItems.length === 0) return;
-    setSlotItemMap(utils.initSlotItemMap(orderedItems, "href"));
-  }, [tabsKey]);
-
-  useEffect(() => {
-    if (!containerRef.current || orderedItems.length === 0) return;
-    swapyRef.current = createSwapy(containerRef.current, {
-      manualSwap: true,
-      swapMode: "drop",
-      dragAxis: "x",
-    });
-    swapyRef.current.onSwap(handleSwap);
-    return () => {
-      swapyRef.current?.destroy();
-      swapyRef.current = null;
-    };
-  }, [orderedItems.length, handleSwap]);
-
   if (orderedItems.length === 0) {
     return (
       <div className="flex flex-1 flex-col">
@@ -167,24 +160,38 @@ export function EditorTabs({
   }
 
   return (
-    <div
-      ref={containerRef}
-      className="flex h-[35px] shrink-0 items-stretch overflow-x-auto bg-muted"
+    <DragDropProvider
+      onDragEnd={(event) => {
+        if (event.canceled) return;
+        const next = move(openTabs, event);
+        if (next !== openTabs) {
+          onReorder(next);
+        }
+      }}
     >
-      {slottedItems.map(({ slotId, itemId, item }) =>
-        item ? (
+      <div className="flex h-[35px] shrink-0 items-stretch overflow-x-auto bg-muted">
+        {orderedItems.map((item, index) => (
           <TabItem
             active={isActive(item.href)}
             fileName={item.fileName}
             fileType={item.fileType}
             href={item.href}
-            itemId={itemId}
-            key={slotId}
+            index={index}
+            key={item.href}
             onClose={() => onCloseTab(item.href)}
-            slotId={slotId}
           />
-        ) : null
-      )}
-    </div>
+        ))}
+      </div>
+      <DragOverlay
+        disabled={(source) => !source}
+        dropAnimation={{ duration: 200 }}
+      >
+        <TabOverlayContent
+          onCloseTab={onCloseTab}
+          orderedItems={orderedItems}
+          pathname={pathname}
+        />
+      </DragOverlay>
+    </DragDropProvider>
   );
 }
