@@ -72,7 +72,7 @@ export function TerminalPanel({ onClose, isOpen }: TerminalPanelProps) {
       <div
         aria-label={t("resizeTerminal")}
         className={cn(
-          "flex min-h-[8px] items-center justify-center py-0.5 transition-colors duration-150",
+          "-my-2 z-10 flex min-h-[8px] items-center justify-center py-0.5 transition-colors duration-150",
           showResizeHandle
             ? "cursor-ns-resize border-border border-y bg-muted/60"
             : "cursor-default border-transparent bg-transparent",
