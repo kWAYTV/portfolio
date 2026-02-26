@@ -1,8 +1,9 @@
 "use client";
 
+import { cn } from "@portfolio/ui";
 import { GripVertical } from "lucide-react";
 import { useTranslations } from "next-intl";
-import React, { useCallback, useRef } from "react";
+import React, { useCallback, useRef, useState } from "react";
 import { EditorPane } from "./editor-pane";
 import type { EditorGroup } from "./split-editor-types";
 import type { ViewMode } from "./view-mode";
@@ -56,10 +57,17 @@ export function SplitEditorView({
 }: SplitEditorViewProps) {
   const t = useTranslations("ide");
   const containerRef = useRef<HTMLDivElement>(null);
+  const [hoveredDividerIndex, setHoveredDividerIndex] = useState<number | null>(
+    null
+  );
+  const [draggingDividerIndex, setDraggingDividerIndex] = useState<
+    number | null
+  >(null);
 
   const handlePointerDown = useCallback(
-    (e: React.PointerEvent) => {
+    (dividerIndex: number) => (e: React.PointerEvent) => {
       e.preventDefault();
+      setDraggingDividerIndex(dividerIndex);
       const target = e.currentTarget as HTMLElement;
       target.setPointerCapture(e.pointerId);
       document.body.style.cursor = "col-resize";
@@ -76,6 +84,7 @@ export function SplitEditorView({
       };
 
       const onPointerUp = () => {
+        setDraggingDividerIndex(null);
         target.releasePointerCapture(e.pointerId);
         document.body.style.cursor = "";
         document.body.style.userSelect = "";
@@ -127,12 +136,26 @@ export function SplitEditorView({
           </div>
           {i < editorGroups.length - 1 && (
             <div
-              className="flex w-2 shrink-0 cursor-col-resize items-center justify-center border-border border-x bg-muted/30 transition-colors hover:bg-muted/60"
-              onPointerDown={handlePointerDown}
+              className={cn(
+                "flex w-2 shrink-0 items-center justify-center transition-colors duration-150",
+                hoveredDividerIndex === i || draggingDividerIndex === i
+                  ? "cursor-col-resize border-border border-x bg-muted/60"
+                  : "cursor-default border-transparent bg-transparent"
+              )}
+              onPointerDown={handlePointerDown(i)}
+              onPointerEnter={() => setHoveredDividerIndex(i)}
+              onPointerLeave={() => setHoveredDividerIndex(null)}
               role="separator"
               title={t("dragToResize")}
             >
-              <GripVertical className="size-4 text-muted-foreground" />
+              <GripVertical
+                className={cn(
+                  "size-4 text-muted-foreground transition-opacity duration-150",
+                  hoveredDividerIndex === i || draggingDividerIndex === i
+                    ? "opacity-100"
+                    : "opacity-0"
+                )}
+              />
             </div>
           )}
         </React.Fragment>
