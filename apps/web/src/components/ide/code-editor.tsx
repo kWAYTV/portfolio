@@ -12,7 +12,7 @@ import { useMemo } from "react";
 const editorTheme = EditorView.theme({
   "&": {
     backgroundColor: "transparent",
-    fontSize: "13px",
+    fontSize: "clamp(11px, 2.5vw, 13px)",
     height: "100%",
   },
   "&.cm-focused": {
@@ -20,7 +20,9 @@ const editorTheme = EditorView.theme({
   },
   ".cm-scroller": {
     fontFamily: "var(--font-mono), ui-monospace, monospace",
-    lineHeight: "22px",
+    lineHeight: "1.6",
+    minHeight: "min-content",
+    overflow: "auto",
     padding: "16px 0",
   },
   ".cm-gutters": {
@@ -128,7 +130,7 @@ export function CodeEditor({ code, lang }: CodeEditorProps) {
   }, [lang]);
 
   return (
-    <div className="min-h-0 min-w-0 flex-1 overflow-hidden">
+    <div className="min-h-0 min-w-0 flex-1 overflow-auto">
       <CodeMirror
         basicSetup={{
           foldGutter: false,

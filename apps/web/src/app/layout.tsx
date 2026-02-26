@@ -1,9 +1,16 @@
 import { defaultLocale } from "@portfolio/i18n/config";
 import { Geist, Geist_Mono } from "next/font/google";
+import type { Metadata, Viewport } from "next";
 import { baseUrl } from "@/lib/metadata";
 
-export const metadata = {
+export const metadata: Metadata = {
   metadataBase: baseUrl,
+};
+
+export const viewport: Viewport = {
+  width: "device-width",
+  initialScale: 1,
+  maximumScale: 5,
 };
 
 const geistSans = Geist({

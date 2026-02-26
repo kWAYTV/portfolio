@@ -49,15 +49,18 @@ function Breadcrumbs({
   }
 
   return (
-    <div className="flex shrink-0 items-center justify-between border-border border-b bg-background px-4 py-1 text-[11px] text-muted-foreground">
-      <div className="flex items-center gap-1">
+    <div className="flex shrink-0 items-center justify-between gap-2 border-border border-b bg-background px-3 py-1.5 text-[11px] text-muted-foreground sm:px-4 sm:py-1">
+      <div className="flex min-w-0 flex-1 items-center gap-1 overflow-hidden">
         {parts.map((part, i) => {
           const key = parts.slice(0, i + 1).join("/");
           return (
             <span className="flex items-center gap-1" key={key}>
               {i > 0 && <ChevronRight className="size-3 opacity-50" />}
               <span
-                className={i === parts.length - 1 ? "text-foreground/80" : ""}
+                className={cn(
+                  "truncate",
+                  i === parts.length - 1 ? "text-foreground/80" : ""
+                )}
               >
                 {part}
               </span>
@@ -65,10 +68,10 @@ function Breadcrumbs({
           );
         })}
       </div>
-      <div className="flex items-center gap-0.5">
+      <div className="flex shrink-0 items-center gap-0.5">
         <button
           className={cn(
-            "rounded p-1 transition-colors",
+            "rounded p-2 transition-colors touch-manipulation sm:p-1",
             viewMode === "preview"
               ? "bg-muted text-foreground"
               : "text-muted-foreground hover:text-foreground"
@@ -81,7 +84,7 @@ function Breadcrumbs({
         </button>
         <button
           className={cn(
-            "rounded p-1 transition-colors",
+            "rounded p-2 transition-colors touch-manipulation sm:p-1",
             viewMode === "code"
               ? "bg-muted text-foreground"
               : "text-muted-foreground hover:text-foreground"

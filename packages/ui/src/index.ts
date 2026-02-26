@@ -31,6 +31,11 @@ export {
   HoverCardContent,
   HoverCardTrigger,
 } from "./components/hover-card";
+export {
+  Popover,
+  PopoverContent,
+  PopoverTrigger,
+} from "./components/popover";
 export { Input } from "./components/input";
 export {
   Select,

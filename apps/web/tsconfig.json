@@ -4,7 +4,7 @@
     "baseUrl": ".",
     "paths": {
       "@/*": ["./src/*"],
-      "@i18n/*": ["./modules/i18n/*"],
+      "@i18n/*": ["./src/modules/i18n/*"],
       "fumadocs-mdx:collections/*": [".source/*"]
     }
   },
