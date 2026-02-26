@@ -3,6 +3,7 @@ import { notFound } from "next/navigation";
 import { setRequestLocale } from "next-intl/server";
 import { BlogArticle } from "@/components/blog/blog-article";
 import { BlogBackLink } from "@/components/blog/blog-back-link";
+import { BlogPostViewTracker } from "@/components/blog/blog-post-view-tracker";
 import { BlogPostHeader } from "@/components/blog/blog-post-header";
 import { getMDXComponents } from "@/components/blog/mdx-components";
 import { PageContent } from "@/components/shared/page-content";
@@ -29,6 +30,7 @@ export default async function BlogPost({ params }: Props) {
 
   return (
     <PageContent className="max-w-lg sm:max-w-xl">
+      <BlogPostViewTracker slug={slug} />
       <BlogBackLink />
       <BlogPostHeader
         author={post.data.author}
