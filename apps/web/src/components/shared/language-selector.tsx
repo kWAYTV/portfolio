@@ -1,7 +1,7 @@
 "use client";
 
 import { updateLocale } from "@i18n/lib/update-locale";
-import { routing, usePathname, useRouter } from "@i18n/routing";
+import { getPathname, routing, usePathname } from "@i18n/routing";
 import {
   type Locale,
   localeNames,
@@ -15,31 +15,41 @@ import {
   DropdownMenuTrigger,
 } from "@portfolio/ui";
 import { useLocale, useTranslations } from "next-intl";
+import { useState } from "react";
 
 export function LanguageSelector() {
   const locale = useLocale() as Locale;
   const t = useTranslations("nav");
-  const router = useRouter();
   const pathname = usePathname();
+  const [isPending, setIsPending] = useState(false);
 
   const handleChange = async (newLocale: string) => {
     const loc = newLocale as Locale;
-    if (loc === locale) {
-      return;
+    if (loc === locale || isPending) return;
+
+    setIsPending(true);
+    try {
+      await updateLocale(loc);
+      const targetPath = getPathname({ href: pathname, locale: loc });
+      window.location.assign(targetPath);
+    } catch {
+      setIsPending(false);
     }
-    await updateLocale(loc);
-    router.replace(pathname, { locale: loc });
   };
 
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
         <button
-          aria-label="Select language"
-          className="whitespace-nowrap text-muted-foreground/60 text-xs hover:text-foreground sm:text-sm"
+          aria-label={t("language")}
+          className="whitespace-nowrap text-muted-foreground/50 text-xs transition-colors duration-200 hover:text-foreground sm:text-sm"
+          disabled={isPending}
           type="button"
         >
-          {t("language")}
+          <span aria-hidden className="mr-1.5">
+            {localeToFlagEmoji(locale)}
+          </span>
+          {locale.toUpperCase()}
         </button>
       </DropdownMenuTrigger>
       <DropdownMenuContent align="end" className="min-w-[10rem]" sideOffset={4}>
