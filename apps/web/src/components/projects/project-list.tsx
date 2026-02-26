@@ -8,13 +8,14 @@ import {
   parseAsStringLiteral,
   useQueryStates,
 } from "nuqs";
-import { useCallback, useMemo } from "react";
+import { memo, useCallback, useMemo } from "react";
 import { ProjectCard } from "@/components/projects/project-card";
 import {
   ProjectFilters,
   type SortOption,
   sortOptions,
 } from "@/components/projects/project-filters";
+import { useCanHover } from "@/hooks/use-can-hover";
 import { Pagination } from "@/components/shared/pagination";
 
 const ITEMS_PER_PAGE = 5;
@@ -29,8 +30,11 @@ interface ProjectListProps {
   repos: GitHubRepo[];
 }
 
-export function ProjectList({ repos }: ProjectListProps) {
+export const ProjectList = memo(function ProjectList({
+  repos,
+}: ProjectListProps) {
   const t = useTranslations("projects");
+  const canHover = useCanHover();
   const [{ q, sort, page }, setParams] = useQueryStates(projectSearchParams, {
     shallow: true,
   });
@@ -119,7 +123,7 @@ export function ProjectList({ repos }: ProjectListProps) {
           </p>
         ) : (
           paginatedRepos.map((repo) => (
-            <ProjectCard key={repo.id} repo={repo} />
+            <ProjectCard key={repo.id} canHover={canHover} repo={repo} />
           ))
         )}
       </div>
@@ -131,4 +135,4 @@ export function ProjectList({ repos }: ProjectListProps) {
       />
     </div>
   );
-}
+});

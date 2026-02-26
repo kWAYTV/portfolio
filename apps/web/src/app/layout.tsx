@@ -1,5 +1,6 @@
 import { defaultLocale } from "@portfolio/i18n/config";
 import type { Metadata, Viewport } from "next";
+import Script from "next/script";
 import { Geist, Geist_Mono } from "next/font/google";
 import { baseUrl } from "@/lib/metadata";
 
@@ -32,6 +33,13 @@ export default function RootLayout({
       <body
         className={`${geistSans.variable} ${geistMono.variable} min-w-0 overflow-x-hidden antialiased`}
       >
+        {process.env.NODE_ENV === "development" && (
+          <Script
+            crossOrigin="anonymous"
+            src="https://unpkg.com/react-scan/dist/auto.global.js"
+            strategy="afterInteractive"
+          />
+        )}
         {children}
       </body>
     </html>

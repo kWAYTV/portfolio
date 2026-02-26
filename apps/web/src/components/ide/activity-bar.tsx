@@ -1,7 +1,7 @@
 "use client";
 
 import { updateLocale } from "@i18n/lib/update-locale";
-import { getPathname, Link, routing, usePathname } from "@i18n/routing";
+import { getPathname, Link, routing } from "@i18n/routing";
 import type { Locale } from "@portfolio/i18n";
 import { localeNames, localeToFlagEmoji } from "@portfolio/i18n/config";
 import {
@@ -36,7 +36,7 @@ import {
 } from "lucide-react";
 import { useLocale, useTranslations } from "next-intl";
 import { useTheme } from "next-themes";
-import { useRef, useState } from "react";
+import { memo, useRef, useState } from "react";
 import { useThemeTransition } from "@/components/theming/use-theme-transition";
 import { navItems } from "@/consts/nav-items";
 
@@ -58,7 +58,7 @@ interface ActivityBarProps {
   terminalOpen: boolean;
 }
 
-export function ActivityBar({
+export const ActivityBar = memo(function ActivityBar({
   pathname,
   sidebarOpen,
   terminalOpen,
@@ -71,7 +71,6 @@ export function ActivityBar({
   const settingsTriggerRef = useRef<HTMLButtonElement>(null);
   const t = useTranslations("ide");
   const locale = useLocale() as Locale;
-  const pathnameI18n = usePathname();
   const [localePending, setLocalePending] = useState(false);
   const isDark = resolvedTheme === "dark";
 
@@ -83,7 +82,7 @@ export function ActivityBar({
     setLocalePending(true);
     try {
       await updateLocale(loc);
-      const targetPath = getPathname({ href: pathnameI18n, locale: loc });
+      const targetPath = getPathname({ href: pathname, locale: loc });
       window.location.assign(targetPath);
     } catch {
       setLocalePending(false);
@@ -251,4 +250,4 @@ export function ActivityBar({
       </div>
     </div>
   );
-}
+});

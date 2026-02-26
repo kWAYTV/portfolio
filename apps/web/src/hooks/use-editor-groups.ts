@@ -1,6 +1,6 @@
 "use client";
 
-import { usePathname, useRouter } from "@i18n/routing";
+import { useRouter } from "@i18n/routing";
 import { useCallback, useEffect, useRef, useState } from "react";
 import type { EditorGroup } from "@/components/ide/split-editor-types";
 import { navItems } from "@/consts/nav-items";
@@ -8,8 +8,7 @@ import { matchNavItem } from "@/lib/ide/breadcrumb";
 
 const initialTabs = navItems.map((item) => item.href);
 
-export function useEditorGroups() {
-  const pathname = usePathname();
+export function useEditorGroups(pathname: string) {
   const router = useRouter();
   const [editorGroups, setEditorGroups] = useState<EditorGroup[]>(() => [
     { tabs: initialTabs, activeIndex: 0 },
