@@ -1,14 +1,24 @@
 "use client";
 
-import { Link } from "@i18n/routing";
+import { updateLocale } from "@i18n/lib/update-locale";
+import { getPathname, Link, routing, usePathname } from "@i18n/routing";
+import type { Locale } from "@portfolio/i18n";
+import {
+  localeNames,
+  localeToFlagEmoji,
+} from "@portfolio/i18n/config";
 import {
   cn,
   DropdownMenu,
-  DropdownMenuCheckboxItem,
   DropdownMenuContent,
   DropdownMenuItem,
+  DropdownMenuRadioGroup,
+  DropdownMenuRadioItem,
   DropdownMenuSeparator,
   DropdownMenuShortcut,
+  DropdownMenuSub,
+  DropdownMenuSubContent,
+  DropdownMenuSubTrigger,
   DropdownMenuTrigger,
   Tooltip,
   TooltipContent,
@@ -19,6 +29,7 @@ import {
   Code2,
   FolderGit2,
   GitBranch,
+  Languages,
   Moon,
   PanelLeft,
   Settings,
@@ -26,9 +37,10 @@ import {
   Terminal,
   User,
 } from "lucide-react";
+import { useLocale } from "next-intl";
 import { useTheme } from "next-themes";
 import { useTranslations } from "next-intl";
-import { useRef } from "react";
+import { useRef, useState } from "react";
 
 import { navItems } from "@/consts/nav-items";
 import { useThemeTransition } from "@/components/theming/use-theme-transition";
@@ -63,14 +75,30 @@ export function ActivityBar({
   const setThemeWithTransition = useThemeTransition();
   const settingsTriggerRef = useRef<HTMLButtonElement>(null);
   const t = useTranslations("ide");
+  const locale = useLocale() as Locale;
+  const pathnameI18n = usePathname();
+  const [localePending, setLocalePending] = useState(false);
   const isDark = resolvedTheme === "dark";
 
-  const handleThemeChange = (theme: "light" | "dark") => {
+  const handleLocaleChange = async (newLocale: string) => {
+    const loc = newLocale as Locale;
+    if (loc === locale || localePending) return;
+    setLocalePending(true);
+    try {
+      await updateLocale(loc);
+      const targetPath = getPathname({ href: pathnameI18n, locale: loc });
+      window.location.assign(targetPath);
+    } catch {
+      setLocalePending(false);
+    }
+  };
+
+  const handleThemeToggle = () => {
     const rect = settingsTriggerRef.current?.getBoundingClientRect();
     const origin = rect
       ? { x: rect.left + rect.width / 2, y: rect.top + rect.height / 2 }
       : undefined;
-    void setThemeWithTransition(theme, origin);
+    void setThemeWithTransition(isDark ? "light" : "dark", origin);
   };
   const isActive = (href: string) => {
     if (href === "/") {
@@ -172,20 +200,51 @@ export function ActivityBar({
             side="right"
             className="ide-dropdown w-44 rounded-sm border border-border bg-popover p-0.5 shadow-lg"
           >
-            <DropdownMenuCheckboxItem
-              checked={!isDark}
-              onCheckedChange={() => handleThemeChange("light")}
-            >
-              <Sun className="size-3.5" />
-              {t("lightTheme")}
-            </DropdownMenuCheckboxItem>
-            <DropdownMenuCheckboxItem
-              checked={isDark}
-              onCheckedChange={() => handleThemeChange("dark")}
-            >
-              <Moon className="size-3.5" />
-              {t("darkTheme")}
-            </DropdownMenuCheckboxItem>
+            <DropdownMenuItem onClick={handleThemeToggle}>
+              {isDark ? (
+                <>
+                  <Sun className="size-3.5" />
+                  {t("lightTheme")}
+                </>
+              ) : (
+                <>
+                  <Moon className="size-3.5" />
+                  {t("darkTheme")}
+                </>
+              )}
+            </DropdownMenuItem>
+            <DropdownMenuSeparator className="my-0.5" />
+            <DropdownMenuSub>
+              <DropdownMenuSubTrigger
+                className="pl-8"
+                disabled={localePending}
+              >
+                <Languages className="size-3.5" />
+                {t("language")}
+              </DropdownMenuSubTrigger>
+              <DropdownMenuSubContent
+                className="ide-dropdown w-44 rounded-sm border border-border bg-popover p-0.5 shadow-lg"
+                sideOffset={4}
+              >
+                <DropdownMenuRadioGroup
+                  onValueChange={handleLocaleChange}
+                  value={locale}
+                >
+                  {routing.locales.map((loc) => (
+                    <DropdownMenuRadioItem
+                      className="cursor-pointer"
+                      key={loc}
+                      value={loc}
+                    >
+                      <span aria-hidden className="mr-2">
+                        {localeToFlagEmoji(loc as Locale)}
+                      </span>
+                      {localeNames[loc as Locale]}
+                    </DropdownMenuRadioItem>
+                  ))}
+                </DropdownMenuRadioGroup>
+              </DropdownMenuSubContent>
+            </DropdownMenuSub>
             <DropdownMenuSeparator className="my-0.5" />
             <DropdownMenuItem onClick={onOpenCommand}>
               <span>{t("commandPalette")}</span>

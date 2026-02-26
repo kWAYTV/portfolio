@@ -111,7 +111,8 @@
     "showTerminal": "Mostrar terminal",
     "openPreviewWindow": "Abrir vista previa en nueva ventana",
     "lightTheme": "Tema claro",
-    "darkTheme": "Tema oscuro"
+    "darkTheme": "Tema oscuro",
+    "language": "Idioma"
   },
   "terminal": {
     "welcome": "Bienvenido al terminal del portafolio. Escribe 'help' para ver los comandos disponibles.",
