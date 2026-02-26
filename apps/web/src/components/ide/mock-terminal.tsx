@@ -368,6 +368,10 @@ export function MockTerminal() {
     scrollToBottom();
   }, [lines, scrollToBottom]);
 
+  useEffect(() => {
+    inputRef.current?.focus();
+  }, [lines]);
+
   const execute = useCallback(() => {
     if (!inputValue.trim()) return;
 
