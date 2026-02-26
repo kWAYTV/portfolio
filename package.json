@@ -32,5 +32,8 @@
     "turbo": "^2.8.10",
     "typescript": "catalog:",
     "ultracite": "7.2.3"
+  },
+  "dependencies": {
+    "@dnd-kit/react": "^0.3.2"
   }
 }

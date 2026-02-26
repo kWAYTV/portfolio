@@ -107,6 +107,10 @@ export function IdeLayout({ children }: IdeLayoutProps) {
     [pathname, openTabs, router]
   );
 
+  const reorderTabs = useCallback((newOrder: string[]) => {
+    setOpenTabs(newOrder);
+  }, []);
+
   const hasOpenTabs = openTabs.length > 0;
 
   return (
@@ -139,6 +143,7 @@ export function IdeLayout({ children }: IdeLayoutProps) {
                 <div className="hidden md:block">
                   <EditorTabs
                     onCloseTab={closeTab}
+                    onReorder={reorderTabs}
                     openTabs={openTabs}
                     pathname={pathname}
                   />
@@ -150,6 +155,7 @@ export function IdeLayout({ children }: IdeLayoutProps) {
               <div className="hidden flex-1 md:flex">
                 <EditorTabs
                   onCloseTab={closeTab}
+                  onReorder={reorderTabs}
                   openTabs={openTabs}
                   pathname={pathname}
                 />
