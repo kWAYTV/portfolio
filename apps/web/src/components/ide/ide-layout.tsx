@@ -11,6 +11,7 @@ import { EditorTabs } from "./editor-tabs";
 import { MobileNav } from "./mobile-nav";
 import { Sidebar } from "./sidebar";
 import { StatusBar } from "./status-bar";
+import { TerminalPanel } from "./terminal-panel";
 import { TitleBar } from "./title-bar";
 import { type ViewMode, ViewModeProvider } from "./view-mode";
 
@@ -108,6 +109,7 @@ export function IdeLayout({ children }: IdeLayoutProps) {
   const pathname = usePathname();
   const router = useRouter();
   const [sidebarOpen, setSidebarOpen] = useState(true);
+  const [terminalOpen, setTerminalOpen] = useState(false);
   const [maximized, setMaximized] = useState(false);
   const [viewMode, setViewMode] = useState<ViewMode>("preview");
   const [openTabs, setOpenTabs] = useState<string[]>(() =>
@@ -201,8 +203,10 @@ export function IdeLayout({ children }: IdeLayoutProps) {
               <div className="hidden md:block">
                 <ActivityBar
                   onToggleSidebar={toggleSidebar}
+                  onToggleTerminal={() => setTerminalOpen((p) => !p)}
                   pathname={pathname}
                   sidebarOpen={sidebarOpen}
+                  terminalOpen={terminalOpen}
                 />
               </div>
             )}
@@ -213,7 +217,7 @@ export function IdeLayout({ children }: IdeLayoutProps) {
               </div>
             )}
 
-            <div className="flex min-w-0 flex-1 flex-col">
+            <div className="flex min-w-0 flex-1 flex-col overflow-hidden">
               {hasOpenTabs ? (
                 <>
                   <div className="hidden md:block">
@@ -229,7 +233,7 @@ export function IdeLayout({ children }: IdeLayoutProps) {
                     pathname={pathname}
                     viewMode={viewMode}
                   />
-                  <main className="flex-1 overflow-y-auto">{children}</main>
+                  <main className="min-h-0 flex-1 overflow-y-auto">{children}</main>
                 </>
               ) : (
                 <div className="hidden flex-1 md:flex">
@@ -241,10 +245,18 @@ export function IdeLayout({ children }: IdeLayoutProps) {
                   />
                 </div>
               )}
+              <TerminalPanel
+                isOpen={terminalOpen}
+                onClose={() => setTerminalOpen(false)}
+              />
             </div>
           </div>
 
-          <StatusBar pathname={pathname} />
+          <StatusBar
+            onToggleTerminal={() => setTerminalOpen((p) => !p)}
+            pathname={pathname}
+            terminalOpen={terminalOpen}
+          />
 
           <div className="md:hidden">
             <MobileNav pathname={pathname} />

@@ -8,6 +8,7 @@ import {
   FolderGit2,
   PanelLeft,
   Settings,
+  Terminal,
   User,
 } from "lucide-react";
 import { navItems } from "@/consts/nav-items";
@@ -21,14 +22,18 @@ const navIcons: Record<string, typeof Code2> = {
 
 interface ActivityBarProps {
   onToggleSidebar: () => void;
+  onToggleTerminal: () => void;
   pathname: string;
   sidebarOpen: boolean;
+  terminalOpen: boolean;
 }
 
 export function ActivityBar({
   pathname,
   sidebarOpen,
+  terminalOpen,
   onToggleSidebar,
+  onToggleTerminal,
 }: ActivityBarProps) {
   const isActive = (href: string) => {
     if (href === "/") {
@@ -81,7 +86,22 @@ export function ActivityBar({
         );
       })}
 
-      <div className="mt-auto">
+      <div className="mt-auto flex flex-col gap-0">
+        <Tooltip>
+          <TooltipTrigger asChild>
+            <button
+              className={cn(
+                "flex size-10 items-center justify-center text-sidebar-foreground/60 transition-colors hover:text-sidebar-primary",
+                terminalOpen && "text-sidebar-primary"
+              )}
+              onClick={onToggleTerminal}
+              type="button"
+            >
+              <Terminal className="size-5" />
+            </button>
+          </TooltipTrigger>
+          <TooltipContent side="right">Terminal</TooltipContent>
+        </Tooltip>
         <Tooltip>
           <TooltipTrigger asChild>
             <button
