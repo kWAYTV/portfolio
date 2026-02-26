@@ -219,11 +219,11 @@ export function EditorTabs({
   }
 
   return (
-    <div className="flex h-[35px] shrink-0 items-stretch overflow-x-auto border-b border-border bg-muted/80">
-      {/* Drop zone before first tab - allows moving to start */}
+    <div className="relative flex h-[35px] shrink-0 items-stretch overflow-x-auto border-b border-border bg-muted/80">
+      {/* Drop zone before first tab - absolute so it doesn't create a gap */}
       <div
         className={cn(
-          "min-w-[12px] shrink-0 transition-colors",
+          "absolute left-0 top-0 z-10 h-full w-2 transition-colors",
           dragOverIndex === -1 && "bg-primary/20"
         )}
         onDragOver={(e) => {
