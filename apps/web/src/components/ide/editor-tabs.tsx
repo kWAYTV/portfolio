@@ -1,7 +1,6 @@
 "use client";
 
-import { DragDropProvider } from "@dnd-kit/react";
-import { useSortable } from "@dnd-kit/react/sortable";
+import React from "react";
 import { Link } from "@i18n/routing";
 import {
   cn,
@@ -22,6 +21,9 @@ interface TabItemProps {
   href: string;
   index: number;
   onClose: () => void;
+  onDragEnd: () => void;
+  onDragOver: (index: number) => void;
+  dragOverIndex: number | null;
 }
 
 function TabItem({
@@ -31,42 +33,54 @@ function TabItem({
   href,
   index,
   onClose,
+  onDragEnd,
+  onDragOver,
+  dragOverIndex,
 }: TabItemProps) {
-  const { ref, isDragging } = useSortable({ id: href, index });
+  const isDropTarget = dragOverIndex === index;
 
   return (
     <div
       className={cn(
-        "group relative flex select-none items-center whitespace-nowrap border-border border-r text-xs transition-colors",
+        "group relative flex h-full min-w-0 max-w-[180px] select-none items-center border-r border-border/60 text-[13px] transition-colors",
         active
           ? "bg-background text-foreground"
-          : "bg-muted text-muted-foreground hover:bg-background/50",
-        isDragging && "z-10 opacity-80 shadow-lg"
+          : "bg-muted/40 text-muted-foreground hover:bg-muted/70",
+        isDropTarget && "border-l-2 border-l-primary"
       )}
-      ref={ref}
     >
-      {active && !isDragging && (
-        <span className="absolute inset-x-0 top-0 h-[2px] bg-primary" />
+      {active && (
+        <span className="absolute inset-x-0 bottom-0 h-[2px] bg-primary" />
       )}
-      <Link
-        className="flex items-center gap-2 py-1 pr-1 pl-3"
-        draggable={false}
-        href={href}
-        onClick={(e) => {
-          if (isDragging) {
-            e.preventDefault();
-          }
+      <div
+        className="flex min-w-0 flex-1 cursor-grab items-center gap-2 overflow-hidden px-3 py-1.5 active:cursor-grabbing"
+        draggable
+        onDragEnd={onDragEnd}
+        onDragOver={(e) => {
+          e.preventDefault();
+          e.dataTransfer.dropEffect = "move";
+          onDragOver(index);
+        }}
+        onDragStart={(e) => {
+          e.dataTransfer.effectAllowed = "move";
+          e.dataTransfer.setData("text/plain", href);
+          e.dataTransfer.setData("application/json", JSON.stringify({ href, index }));
         }}
       >
-        <FileIcon className="size-3.5" type={fileType} />
-        <span>{fileName}</span>
-      </Link>
+        <Link
+          className="flex min-w-0 flex-1 items-center gap-2 truncate"
+          draggable={false}
+          href={href}
+        >
+          <FileIcon className="size-4 shrink-0" type={fileType} />
+          <span className="truncate">{fileName}</span>
+        </Link>
+      </div>
       <button
         className={cn(
-          "mr-1.5 ml-1 rounded-sm p-0.5 transition-opacity hover:bg-foreground/10 hover:opacity-100",
-          active
-            ? "opacity-60"
-            : "pointer-events-none opacity-0 group-hover:opacity-60 group-hover:pointer-events-auto"
+          "flex size-5 shrink-0 items-center justify-center rounded transition-colors hover:bg-foreground/10",
+          "opacity-0 group-hover:opacity-100",
+          active && "opacity-70"
         )}
         onClick={(e) => {
           e.stopPropagation();
@@ -74,7 +88,7 @@ function TabItem({
         }}
         type="button"
       >
-        <X className="size-3" />
+        <X className="size-3.5" />
       </button>
     </div>
   );
@@ -105,10 +119,41 @@ export function EditorTabs({
     return item ? [item] : [];
   });
 
+  const [dragOverIndex, setDragOverIndex] = React.useState<number | null>(null);
+
+  const handleDragEnd = React.useCallback(() => {
+    setDragOverIndex(null);
+  }, []);
+
+  const handleDragOver = React.useCallback((index: number) => {
+    setDragOverIndex(index);
+  }, []);
+
+  const handleDrop = React.useCallback(
+    (e: React.DragEvent, dropIndex: number) => {
+      e.preventDefault();
+      let dragIndex: number;
+      try {
+        const data = JSON.parse(e.dataTransfer.getData("application/json"));
+        dragIndex = data.index;
+      } catch {
+        return;
+      }
+      if (dragIndex === dropIndex) return;
+
+      const next = [...openTabs];
+      const [removed] = next.splice(dragIndex, 1);
+      next.splice(dropIndex, 0, removed);
+      onReorder(next);
+      setDragOverIndex(null);
+    },
+    [openTabs, onReorder]
+  );
+
   if (orderedItems.length === 0) {
     return (
       <div className="flex flex-1 flex-col">
-        <div className="h-[35px] shrink-0 bg-muted" />
+        <div className="h-[35px] shrink-0 border-b border-border bg-muted/80" />
         <Empty className="flex-1 border-0">
           <EmptyHeader>
             <EmptyMedia variant="icon">
@@ -125,48 +170,31 @@ export function EditorTabs({
   }
 
   return (
-    <DragDropProvider
-      onDragEnd={(event) => {
-        if (event.canceled) {
-          return;
-        }
-        const { source } = event.operation;
-        if (!source) {
-          return;
-        }
-
-        const sortable = source as {
-          index?: number;
-          initialIndex?: number;
-        };
-        const from = sortable.initialIndex;
-        const to = sortable.index;
-
-        if (from == null || to == null || from === to) {
-          return;
-        }
-
-        const next = [...openTabs];
-        const [item] = next.splice(from, 1);
-        if (item) {
-          next.splice(to, 0, item);
-          onReorder(next);
-        }
-      }}
-    >
-      <div className="flex h-[35px] shrink-0 items-stretch overflow-x-auto bg-muted">
-        {orderedItems.map((item, index) => (
+    <div className="flex h-[35px] shrink-0 items-stretch overflow-x-auto border-b border-border bg-muted/80">
+      {orderedItems.map((item, index) => (
+        <div
+          key={item.href}
+          className="flex h-full"
+          onDragOver={(e) => {
+            e.preventDefault();
+            e.dataTransfer.dropEffect = "move";
+            setDragOverIndex(index);
+          }}
+          onDrop={(e) => handleDrop(e, index)}
+        >
           <TabItem
             active={isActive(item.href)}
+            dragOverIndex={dragOverIndex}
             fileName={item.fileName}
             fileType={item.fileType}
             href={item.href}
             index={index}
-            key={item.href}
             onClose={() => onCloseTab(item.href)}
+            onDragEnd={handleDragEnd}
+            onDragOver={handleDragOver}
           />
-        ))}
-      </div>
-    </DragDropProvider>
+        </div>
+      ))}
+    </div>
   );
 }
