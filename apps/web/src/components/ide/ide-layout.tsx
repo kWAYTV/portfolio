@@ -2,6 +2,7 @@
 
 import { usePathname, useRouter } from "@i18n/routing";
 import { cn, TooltipProvider } from "@portfolio/ui";
+import { useSearchParams } from "next/navigation";
 import { useCallback, useEffect, useRef, useState } from "react";
 
 import { navItems } from "@/consts/nav-items";
@@ -50,6 +51,8 @@ interface IdeLayoutProps {
 export function IdeLayout({ children }: IdeLayoutProps) {
   const pathname = usePathname();
   const router = useRouter();
+  const searchParams = useSearchParams();
+  const isEmbed = searchParams.get("embed") === "1";
   const [sidebarOpen, setSidebarOpen] = useState(true);
   const [terminalOpen, setTerminalOpen] = useState(false);
   const [commandOpen, setCommandOpen] = useState(false);
@@ -438,6 +441,14 @@ export function IdeLayout({ children }: IdeLayoutProps) {
 
   const hasOpenTabs = editorGroups.some((g) => g.tabs.length > 0);
   const hasSplit = editorGroups.length > 1;
+
+  if (isEmbed) {
+    return (
+      <main className="min-h-screen w-full overflow-y-auto" data-ide-main>
+        {children}
+      </main>
+    );
+  }
 
   return (
     <ViewModeProvider value={{ viewMode, setViewMode }}>

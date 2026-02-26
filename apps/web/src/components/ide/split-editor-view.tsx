@@ -95,10 +95,9 @@ export function SplitEditorView({
       {editorGroups.map((group, i) => (
         <React.Fragment key={i}>
           <div
-            className="flex min-w-0 flex-col overflow-hidden"
+            className="flex min-w-[120px] flex-col overflow-hidden"
             style={{
-              flex: i === 0 ? splitRatio : 1 - splitRatio,
-              minWidth: 120,
+              flex: `${i === 0 ? splitRatio : 1 - splitRatio} 1 0`,
             }}
           >
             <EditorPane
@@ -126,11 +125,12 @@ export function SplitEditorView({
           </div>
           {i < editorGroups.length - 1 && (
             <div
-              className="flex w-1 shrink-0 cursor-col-resize items-center justify-center border-border border-x bg-transparent transition-colors hover:bg-muted/40"
+              className="flex w-2 shrink-0 cursor-col-resize items-center justify-center border-border border-x bg-muted/30 transition-colors hover:bg-muted/60"
               onMouseDown={handleMouseDown}
               role="separator"
+              title="Drag to resize"
             >
-              <GripVertical className="size-3.5 text-muted-foreground" />
+              <GripVertical className="size-4 text-muted-foreground" />
             </div>
           )}
         </React.Fragment>

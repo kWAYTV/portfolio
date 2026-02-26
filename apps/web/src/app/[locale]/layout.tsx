@@ -3,6 +3,7 @@ import { UmamiScript } from "@/components/analytics/umami-script";
 import { IdeLayout } from "@/components/ide/ide-layout";
 import { ThemeProvider } from "@/components/theming/provider";
 import "@/styles/globals.css";
+import { Suspense } from "react";
 import { routing } from "@i18n/routing";
 import { defineI18nUI } from "fumadocs-ui/i18n";
 import { RootProvider } from "fumadocs-ui/provider/next";
@@ -76,7 +77,9 @@ export default async function LocaleLayout({ children, params }: Props) {
               disableTransitionOnChange
               enableSystem
             >
-              <IdeLayout>{children}</IdeLayout>
+              <Suspense fallback={<div className="flex min-h-dvh items-center justify-center">{children}</div>}>
+                <IdeLayout>{children}</IdeLayout>
+              </Suspense>
               <Toaster richColors />
             </ThemeProvider>
           </NuqsAdapter>

@@ -58,9 +58,9 @@ export function EditorPane({
   const activeHref = group.tabs[group.activeIndex] ?? group.tabs[0];
   const [iframeSrc, setIframeSrc] = useState("");
   useEffect(() => {
-    setIframeSrc(
-      `${window.location.origin}/${locale}${activeHref === "/" ? "" : activeHref}`
-    );
+    const path = activeHref === "/" ? "" : activeHref;
+    const base = `${window.location.origin}/${locale}${path}`;
+    setIframeSrc(`${base}?embed=1`);
   }, [locale, activeHref]);
 
   const handleTabClick = (href?: string) => {
