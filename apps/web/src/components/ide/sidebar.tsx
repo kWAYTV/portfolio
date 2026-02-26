@@ -99,13 +99,13 @@ export function Sidebar({ pathname }: SidebarProps) {
       return (
         <div key={key}>
           <button
-            className="flex w-full items-center gap-1 py-[3px] text-[13px] text-[var(--ide-sidebar-fg)] transition-colors hover:bg-[var(--ide-sidebar-hover)]"
+            className="flex w-full items-center gap-1 py-[3px] text-[13px] text-sidebar-foreground transition-colors hover:bg-sidebar-accent/50"
             onClick={() => toggle(item.name)}
             style={{ paddingLeft: `${depth * 12 + 4}px` }}
             type="button"
           >
             <Chevron className="size-4 shrink-0 opacity-70" />
-            <FolderIcon className="size-4 shrink-0 text-[var(--ide-sidebar-header-fg)]" />
+            <FolderIcon className="size-4 shrink-0 text-muted-foreground" />
             <span className="ml-1 truncate">{item.name}</span>
           </button>
           {isOpen && (
@@ -125,8 +125,8 @@ export function Sidebar({ pathname }: SidebarProps) {
         className={cn(
           "flex items-center gap-1 py-[3px] text-[13px] transition-colors",
           active
-            ? "bg-[var(--ide-sidebar-active)] text-foreground"
-            : "text-[var(--ide-sidebar-fg)] hover:bg-[var(--ide-sidebar-hover)]",
+            ? "bg-sidebar-accent text-sidebar-accent-foreground"
+            : "text-sidebar-foreground hover:bg-sidebar-accent/50",
           !item.href && "cursor-default opacity-50"
         )}
         style={{ paddingLeft: `${depth * 12 + 24}px` }}
@@ -148,16 +148,16 @@ export function Sidebar({ pathname }: SidebarProps) {
   };
 
   return (
-    <div className="flex h-full w-56 shrink-0 flex-col overflow-hidden border-[var(--ide-border)] border-r bg-[var(--ide-sidebar)]">
+    <div className="flex h-full w-56 shrink-0 flex-col overflow-hidden border-border border-r bg-sidebar">
       <div className="px-4 py-2">
-        <span className="font-medium text-[11px] text-[var(--ide-sidebar-header-fg)] uppercase tracking-wider">
+        <span className="font-medium text-[11px] text-muted-foreground uppercase tracking-wider">
           Explorer
         </span>
       </div>
       <div className="flex-1 overflow-y-auto pb-4">
         <div>
           <button
-            className="flex w-full items-center gap-1 py-[3px] pl-1 text-[var(--ide-sidebar-fg)] transition-colors hover:bg-[var(--ide-sidebar-hover)]"
+            className="flex w-full items-center gap-1 py-[3px] pl-1 text-sidebar-foreground transition-colors hover:bg-sidebar-accent/50"
             onClick={() => toggle("portfolio")}
             type="button"
           >

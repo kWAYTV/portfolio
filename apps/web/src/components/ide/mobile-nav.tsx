@@ -28,7 +28,7 @@ export function MobileNav({ pathname }: MobileNavProps) {
   };
 
   return (
-    <nav className="flex h-14 shrink-0 items-center justify-around border-[var(--ide-border)] border-t bg-[var(--ide-titlebar)]">
+    <nav className="flex h-14 shrink-0 items-center justify-around border-border border-t bg-secondary">
       {navItems.map((item) => {
         const Icon = navIcons[item.label];
         const active = isActive(item.href);
@@ -36,9 +36,7 @@ export function MobileNav({ pathname }: MobileNavProps) {
           <Link
             className={cn(
               "flex flex-col items-center gap-1 px-4 py-1.5 text-[10px] transition-colors",
-              active
-                ? "text-[var(--ide-tab-active-top)]"
-                : "text-muted-foreground"
+              active ? "text-primary" : "text-muted-foreground"
             )}
             href={item.href}
             key={item.href}

@@ -30,7 +30,7 @@ export function StatusBar({ pathname }: StatusBarProps) {
     : "Plain Text";
 
   return (
-    <div className="flex h-6 shrink-0 items-center justify-between border-[var(--ide-border)] border-t bg-[var(--ide-statusbar)] px-2 text-[11px] text-[var(--ide-statusbar-fg)]">
+    <div className="flex h-6 shrink-0 items-center justify-between border-border border-t bg-secondary px-2 text-[11px] text-muted-foreground">
       <div className="flex items-center gap-3">
         <span className="flex items-center gap-1">
           <GitBranch className="size-3.5" />
@@ -40,10 +40,10 @@ export function StatusBar({ pathname }: StatusBarProps) {
           <CheckCircle2 className="size-3" />0
         </span>
       </div>
-      <div className="[&_button]:!text-[length:11px] [&_button]:!text-[var(--ide-statusbar-fg)] [&_button:hover]:!opacity-80 flex items-center gap-3">
+      <div className="[&_button]:!text-[length:11px] [&_button]:!text-muted-foreground [&_button:hover]:!text-foreground flex items-center gap-3">
         <span className="hidden tabular-nums sm:inline">Ln 1, Col 1</span>
         <span className="hidden sm:inline">{fileType}</span>
-        <Link className="transition-opacity hover:opacity-80" href="/rss">
+        <Link className="transition-colors hover:text-foreground" href="/rss">
           RSS
         </Link>
         <LanguageSelector />

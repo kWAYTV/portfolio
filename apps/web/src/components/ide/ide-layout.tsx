@@ -40,7 +40,7 @@ function Breadcrumbs({ pathname }: { pathname: string }) {
   }
 
   return (
-    <div className="flex shrink-0 items-center gap-1 border-[var(--ide-border)] border-b bg-[var(--ide-editor)] px-4 py-1 text-[11px] text-[var(--ide-breadcrumb-fg)]">
+    <div className="flex shrink-0 items-center gap-1 border-border border-b bg-background px-4 py-1 text-[11px] text-muted-foreground">
       {parts.map((part, i) => {
         const key = parts.slice(0, i + 1).join("/");
         return (
@@ -118,7 +118,7 @@ export function IdeLayout({ children }: IdeLayoutProps) {
 
   return (
     <TooltipProvider delayDuration={300}>
-      <div className="flex h-dvh flex-col overflow-hidden bg-[var(--ide-editor)]">
+      <div className="flex h-dvh flex-col overflow-hidden bg-background">
         <TitleBar />
 
         <div className="flex min-h-0 flex-1">

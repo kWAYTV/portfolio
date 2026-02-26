@@ -14,13 +14,13 @@ export function EditorContent({ preview, source }: EditorContentProps) {
 
   return (
     <>
-      <div className="flex shrink-0 items-center justify-center border-[var(--ide-border)] border-b bg-[var(--ide-editor)] px-3 py-1.5">
-        <div className="flex items-center rounded-lg border border-[var(--ide-border)] bg-[var(--ide-tab-bar)] p-0.5 text-xs">
+      <div className="flex shrink-0 items-center justify-center border-border border-b bg-background px-3 py-1.5">
+        <div className="flex items-center rounded-lg border border-border bg-muted p-0.5 text-xs">
           <button
             className={cn(
               "flex items-center gap-1.5 rounded-md px-3 py-1.5 font-medium transition-all",
               view === "preview"
-                ? "bg-[var(--ide-tab-active)] text-foreground shadow-sm"
+                ? "bg-background text-foreground shadow-sm"
                 : "text-muted-foreground hover:text-foreground"
             )}
             onClick={() => setView("preview")}
@@ -33,7 +33,7 @@ export function EditorContent({ preview, source }: EditorContentProps) {
             className={cn(
               "flex items-center gap-1.5 rounded-md px-3 py-1.5 font-medium transition-all",
               view === "code"
-                ? "bg-[var(--ide-tab-active)] text-foreground shadow-sm"
+                ? "bg-background text-foreground shadow-sm"
                 : "text-muted-foreground hover:text-foreground"
             )}
             onClick={() => setView("code")}

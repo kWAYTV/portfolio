@@ -38,13 +38,13 @@ export function ActivityBar({
   };
 
   return (
-    <div className="flex h-full w-12 shrink-0 flex-col items-center border-[var(--ide-border)] border-r bg-[var(--ide-activity-bar)] py-1">
+    <div className="flex h-full w-12 shrink-0 flex-col items-center border-border border-r bg-sidebar py-1">
       <Tooltip>
         <TooltipTrigger asChild>
           <button
             className={cn(
-              "flex size-10 items-center justify-center text-[var(--ide-activity-bar-fg)] transition-colors hover:text-[var(--ide-activity-bar-active-fg)]",
-              sidebarOpen && "text-[var(--ide-activity-bar-active-fg)]"
+              "flex size-10 items-center justify-center text-sidebar-foreground/60 transition-colors hover:text-sidebar-primary",
+              sidebarOpen && "text-sidebar-primary"
             )}
             onClick={onToggleSidebar}
             type="button"
@@ -63,13 +63,13 @@ export function ActivityBar({
             <TooltipTrigger asChild>
               <Link
                 className={cn(
-                  "relative flex size-10 items-center justify-center text-[var(--ide-activity-bar-fg)] transition-colors hover:text-[var(--ide-activity-bar-active-fg)]",
-                  active && "text-[var(--ide-activity-bar-active-fg)]"
+                  "relative flex size-10 items-center justify-center text-sidebar-foreground/60 transition-colors hover:text-sidebar-primary",
+                  active && "text-sidebar-primary"
                 )}
                 href={item.href}
               >
                 {active && (
-                  <span className="absolute top-1/2 left-0 h-6 w-0.5 -translate-y-1/2 rounded-r-full bg-[var(--ide-activity-bar-badge)]" />
+                  <span className="absolute top-1/2 left-0 h-6 w-0.5 -translate-y-1/2 rounded-r-full bg-sidebar-primary" />
                 )}
                 <Icon className="size-5" />
               </Link>
@@ -85,7 +85,7 @@ export function ActivityBar({
         <Tooltip>
           <TooltipTrigger asChild>
             <button
-              className="flex size-10 items-center justify-center text-[var(--ide-activity-bar-fg)] transition-colors hover:text-[var(--ide-activity-bar-active-fg)]"
+              className="flex size-10 items-center justify-center text-sidebar-foreground/60 transition-colors hover:text-sidebar-primary"
               type="button"
             >
               <Settings className="size-5" />

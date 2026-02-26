@@ -37,19 +37,19 @@ function TabItem({
   return (
     <div
       className={cn(
-        "group relative flex items-center whitespace-nowrap border-[var(--ide-border)] border-r text-xs transition-colors",
+        "group relative flex select-none items-center whitespace-nowrap border-border border-r text-xs transition-colors",
         active
-          ? "bg-[var(--ide-tab-active)] text-[var(--ide-tab-active-fg)]"
-          : "bg-[var(--ide-tab)] text-[var(--ide-tab-fg)] hover:bg-[var(--ide-tab-active)]/50",
+          ? "bg-background text-foreground"
+          : "bg-muted text-muted-foreground hover:bg-background/50",
         isDragging && "z-10 opacity-80 shadow-lg"
       )}
       ref={ref}
     >
       {active && !isDragging && (
-        <span className="absolute inset-x-0 top-0 h-[2px] bg-[var(--ide-tab-active-top)]" />
+        <span className="absolute inset-x-0 top-0 h-[2px] bg-primary" />
       )}
       <Link
-        className="flex items-center gap-2 py-1 pr-0 pl-3"
+        className="flex items-center gap-2 py-1 pr-1 pl-3"
         draggable={false}
         href={href}
         onClick={(e) => {
@@ -108,7 +108,7 @@ export function EditorTabs({
   if (orderedItems.length === 0) {
     return (
       <div className="flex flex-1 flex-col">
-        <div className="h-[35px] shrink-0 bg-[var(--ide-tab-bar)]" />
+        <div className="h-[35px] shrink-0 bg-muted" />
         <Empty className="flex-1 border-0">
           <EmptyHeader>
             <EmptyMedia variant="icon">
@@ -154,7 +154,7 @@ export function EditorTabs({
         }
       }}
     >
-      <div className="flex h-[35px] shrink-0 items-stretch overflow-x-auto bg-[var(--ide-tab-bar)]">
+      <div className="flex h-[35px] shrink-0 items-stretch overflow-x-auto bg-muted">
         {orderedItems.map((item, index) => (
           <TabItem
             active={isActive(item.href)}

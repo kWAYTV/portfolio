@@ -32,7 +32,7 @@ export function LineNumbers({ containerRef }: LineNumbersProps) {
   return (
     <div
       aria-hidden
-      className="pointer-events-none sticky top-0 left-0 hidden w-12 shrink-0 select-none flex-col items-end pt-8 pr-3 font-mono text-[11px] text-[var(--ide-breadcrumb-fg)] leading-[20px] opacity-40 md:flex"
+      className="pointer-events-none sticky top-0 left-0 hidden w-12 shrink-0 select-none flex-col items-end pt-8 pr-3 font-mono text-[11px] text-muted-foreground leading-[20px] opacity-40 md:flex"
       ref={gutterRef}
     >
       {Array.from({ length: count }, (_, i) => (

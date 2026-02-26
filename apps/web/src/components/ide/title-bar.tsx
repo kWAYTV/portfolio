@@ -4,7 +4,7 @@ import { Minus, Square, X } from "lucide-react";
 
 export function TitleBar() {
   return (
-    <div className="flex h-9 shrink-0 items-center border-[var(--ide-border)] border-b bg-[var(--ide-titlebar)] px-4">
+    <div className="flex h-9 shrink-0 items-center border-border border-b bg-secondary px-4">
       <div className="group/dots hidden items-center gap-[7px] py-2 pr-2 md:flex">
         <span className="dot-close relative flex size-3 items-center justify-center rounded-full bg-[#ff5f57] transition-transform hover:scale-110">
           <X className="size-[8px] stroke-[2.5] text-[#4d0000] opacity-0 transition-opacity group-hover/dots:opacity-100" />
@@ -17,7 +17,7 @@ export function TitleBar() {
         </span>
       </div>
       <div className="flex-1 text-center">
-        <span className="font-medium text-[var(--ide-titlebar-fg)] text-xs tracking-wide">
+        <span className="font-medium text-muted-foreground text-xs tracking-wide">
           Martin Vila — Portfolio
         </span>
       </div>
