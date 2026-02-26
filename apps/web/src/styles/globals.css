@@ -204,6 +204,10 @@
     /* Prevent layout shift when Radix dropdowns/dialogs apply overflow:hidden to body */
     scrollbar-gutter: stable;
   }
+  /* IDE: no scrollbar gutter on html - main content area scrolls, avoids right gap */
+  html:has([data-ide-main]) {
+    scrollbar-gutter: auto;
+  }
   body {
     letter-spacing: var(--tracking-normal);
     @apply bg-background text-foreground;
@@ -211,8 +215,20 @@
 }
 
 /* IDE: content fills pane, no max-width gap on right */
-[data-ide-main] [class*="max-w-"] {
-  max-width: none;
+[data-ide-main] {
+  width: 100%;
+}
+[data-ide-main] [class*="max-w-"],
+[data-ide-main] .max-w-2xl,
+[data-ide-main] .max-w-4xl,
+[data-ide-main] .max-w-lg,
+[data-ide-main] .max-w-xl,
+[data-ide-main] .max-w-md {
+  max-width: none !important;
+}
+[data-ide-main] .mx-auto {
+  margin-left: 0 !important;
+  margin-right: 0 !important;
 }
 
 /* Minimal scrollbar styles */

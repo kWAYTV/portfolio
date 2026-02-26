@@ -111,7 +111,7 @@ export function EditorPane({
             >
               <main
                 ref={mainRef}
-                className="min-h-0 flex-1 overflow-y-auto"
+                className="min-h-0 w-full min-w-0 flex-1 overflow-y-auto"
                 data-ide-main
               >
                 {children}

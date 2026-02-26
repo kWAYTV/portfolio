@@ -90,7 +90,7 @@ export function SplitEditorView({
   return (
     <div
       ref={containerRef}
-      className="flex hidden min-h-0 flex-1 md:flex"
+      className="flex hidden min-h-0 min-w-0 flex-1 md:flex"
     >
       {editorGroups.map((group, i) => (
         <React.Fragment key={i}>

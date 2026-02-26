@@ -481,7 +481,7 @@ export function IdeLayout({ children }: IdeLayoutProps) {
               </div>
             )}
 
-            <div className="flex min-w-0 flex-1 flex-col overflow-hidden">
+            <div className="flex min-w-0 w-full flex-1 flex-col overflow-hidden">
               {hasOpenTabs ? (
                 hasSplit ? (
                   <SplitEditorView
@@ -528,7 +528,7 @@ export function IdeLayout({ children }: IdeLayoutProps) {
                     </div>
                     <div
                       ref={contentRef}
-                      className="flex min-w-0 flex-1 flex-col overflow-hidden outline-none"
+                      className="flex min-w-0 w-full flex-1 flex-col overflow-hidden outline-none"
                       tabIndex={-1}
                     >
                       <span className="sr-only" aria-hidden>
@@ -547,7 +547,7 @@ export function IdeLayout({ children }: IdeLayoutProps) {
                       >
                         <main
                           ref={mainRef}
-                          className="min-h-0 flex-1 overflow-y-auto"
+                          className="min-h-0 w-full min-w-0 flex-1 overflow-y-auto"
                           data-ide-main
                         >
                           {children}
