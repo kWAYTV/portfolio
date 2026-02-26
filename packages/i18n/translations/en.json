@@ -115,7 +115,16 @@
 		"showTerminal": "Show terminal",
 		"openPreviewWindow": "Open preview in new window",
 		"lightTheme": "Light theme",
-		"darkTheme": "Dark theme"
+		"darkTheme": "Dark theme",
+		"close": "Close",
+		"closeOthers": "Close Others",
+		"closeAll": "Close All",
+		"closeToRight": "Close to the Right",
+		"copyPath": "Copy Path",
+		"open": "Open",
+		"openInNewWindow": "Open in New Window",
+		"expandAll": "Expand All",
+		"collapseAll": "Collapse All"
 	},
 	"terminal": {
 		"welcome": "Welcome to the portfolio terminal. Type 'help' for available commands.",

@@ -237,6 +237,29 @@ export function IdeLayout({ children }: IdeLayoutProps) {
     setOpenTabs([]);
   }, []);
 
+  const closeOtherTabs = useCallback(
+    (keepHref: string) => {
+      setOpenTabs([keepHref]);
+      const isActive =
+        keepHref === "/" ? pathname === "/" : pathname.startsWith(keepHref);
+      if (!isActive) {
+        closingRef.current = true;
+        router.push(keepHref);
+      }
+    },
+    [pathname, router]
+  );
+
+  const closeTabsToRight = useCallback(
+    (href: string) => {
+      const idx = openTabs.indexOf(href);
+      if (idx === -1) return;
+      const next = openTabs.slice(0, idx + 1);
+      setOpenTabs(next);
+    },
+    [openTabs]
+  );
+
   useEffect(() => {
     const onFullscreenChange = () => {
       setIsFullscreen(!!document.fullscreenElement);
@@ -339,7 +362,10 @@ export function IdeLayout({ children }: IdeLayoutProps) {
                 <>
                   <div className="hidden md:block">
                     <EditorTabs
+                      onCloseAll={closeAllTabs}
+                      onCloseOtherTabs={closeOtherTabs}
                       onCloseTab={closeTab}
+                      onCloseTabsToRight={closeTabsToRight}
                       onReorder={reorderTabs}
                       openTabs={openTabs}
                       pathname={pathname}
@@ -370,12 +396,15 @@ export function IdeLayout({ children }: IdeLayoutProps) {
                 </>
               ) : (
                 <div className="hidden flex-1 md:flex">
-                  <EditorTabs
-                    onCloseTab={closeTab}
-                    onReorder={reorderTabs}
-                    openTabs={openTabs}
-                    pathname={pathname}
-                  />
+                <EditorTabs
+                  onCloseAll={closeAllTabs}
+                  onCloseOtherTabs={closeOtherTabs}
+                  onCloseTab={closeTab}
+                  onCloseTabsToRight={closeTabsToRight}
+                  onReorder={reorderTabs}
+                  openTabs={openTabs}
+                  pathname={pathname}
+                />
                 </div>
               )}
               <TerminalPanel

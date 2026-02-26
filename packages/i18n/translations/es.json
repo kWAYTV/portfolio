@@ -115,7 +115,16 @@
 		"showTerminal": "Mostrar terminal",
 		"openPreviewWindow": "Abrir vista previa en nueva ventana",
 		"lightTheme": "Tema claro",
-		"darkTheme": "Tema oscuro"
+		"darkTheme": "Tema oscuro",
+		"close": "Cerrar",
+		"closeOthers": "Cerrar otros",
+		"closeAll": "Cerrar todo",
+		"closeToRight": "Cerrar a la derecha",
+		"copyPath": "Copiar ruta",
+		"open": "Abrir",
+		"openInNewWindow": "Abrir en nueva ventana",
+		"expandAll": "Expandir todo",
+		"collapseAll": "Colapsar todo"
 	},
 	"terminal": {
 		"welcome": "Bienvenido al terminal del portafolio. Escribe 'help' para ver los comandos disponibles.",

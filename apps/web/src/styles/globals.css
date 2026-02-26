@@ -312,7 +312,8 @@
 /* VSCode-style IDE dropdowns */
 .ide-dropdown [data-slot="dropdown-menu-item"],
 .ide-dropdown [data-slot="dropdown-menu-radio-item"],
-.ide-dropdown [data-slot="dropdown-menu-checkbox-item"] {
+.ide-dropdown [data-slot="dropdown-menu-checkbox-item"],
+.ide-dropdown [data-slot="context-menu-item"] {
   font-size: 11px;
   padding: 4px 8px;
   min-height: 22px;

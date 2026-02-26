@@ -5,6 +5,11 @@ import { Link } from "@i18n/routing";
 import { useTranslations } from "next-intl";
 import {
   cn,
+  ContextMenu,
+  ContextMenuContent,
+  ContextMenuItem,
+  ContextMenuSeparator,
+  ContextMenuTrigger,
   Empty,
   EmptyDescription,
   EmptyHeader,
@@ -96,7 +101,10 @@ function TabItem({
 }
 
 interface EditorTabsProps {
+  onCloseAll: () => void;
+  onCloseOtherTabs: (href: string) => void;
   onCloseTab: (href: string) => void;
+  onCloseTabsToRight: (href: string) => void;
   onReorder: (newOrder: string[]) => void;
   openTabs: string[];
   pathname: string;
@@ -106,8 +114,12 @@ export function EditorTabs({
   pathname,
   openTabs,
   onCloseTab,
+  onCloseOtherTabs,
+  onCloseTabsToRight,
+  onCloseAll,
   onReorder,
 }: EditorTabsProps) {
+  const t = useTranslations("ide");
   const isActive = (href: string) => {
     if (href === "/") {
       return pathname === "/";
@@ -151,8 +163,6 @@ export function EditorTabs({
     [openTabs, onReorder]
   );
 
-  const t = useTranslations("ide");
-
   if (orderedItems.length === 0) {
     return (
       <div className="flex flex-1 flex-col">
@@ -189,28 +199,55 @@ export function EditorTabs({
         onDrop={(e) => handleDrop(e, 0)}
       />
       {orderedItems.map((item, index) => (
-        <div
-          key={item.href}
-          className="flex h-full"
-          onDragOver={(e) => {
-            e.preventDefault();
-            e.dataTransfer.dropEffect = "move";
-            setDragOverIndex(index);
-          }}
-          onDrop={(e) => handleDrop(e, index)}
-        >
-          <TabItem
-            active={isActive(item.href)}
-            dragOverIndex={dragOverIndex}
-            fileName={item.fileName}
-            fileType={item.fileType}
-            href={item.href}
-            index={index}
-            onClose={() => onCloseTab(item.href)}
-            onDragEnd={handleDragEnd}
-            onDragOver={handleDragOver}
-          />
-        </div>
+        <ContextMenu key={item.href}>
+          <ContextMenuTrigger asChild>
+            <div
+              className="flex h-full"
+              onDragOver={(e) => {
+                e.preventDefault();
+                e.dataTransfer.dropEffect = "move";
+                setDragOverIndex(index);
+              }}
+              onDrop={(e) => handleDrop(e, index)}
+            >
+              <TabItem
+                active={isActive(item.href)}
+                dragOverIndex={dragOverIndex}
+                fileName={item.fileName}
+                fileType={item.fileType}
+                href={item.href}
+                index={index}
+                onClose={() => onCloseTab(item.href)}
+                onDragEnd={handleDragEnd}
+                onDragOver={handleDragOver}
+              />
+            </div>
+          </ContextMenuTrigger>
+          <ContextMenuContent className="ide-dropdown w-44 rounded-sm border border-border bg-popover p-0.5 shadow-lg">
+            <ContextMenuItem onClick={() => onCloseTab(item.href)}>
+              {t("close")}
+            </ContextMenuItem>
+            {orderedItems.length > 1 && (
+              <>
+                <ContextMenuItem
+                  onClick={() => onCloseOtherTabs(item.href)}
+                >
+                  {t("closeOthers")}
+                </ContextMenuItem>
+                <ContextMenuItem
+                  disabled={index >= orderedItems.length - 1}
+                  onClick={() => onCloseTabsToRight(item.href)}
+                >
+                  {t("closeToRight")}
+                </ContextMenuItem>
+              </>
+            )}
+            <ContextMenuSeparator />
+            <ContextMenuItem onClick={onCloseAll}>
+              {t("closeAll")}
+            </ContextMenuItem>
+          </ContextMenuContent>
+        </ContextMenu>
       ))}
       {/* Drop zone after last tab - allows moving to end */}
       <div
