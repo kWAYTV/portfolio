@@ -42,7 +42,7 @@ function TabItem({
   return (
     <div
       className={cn(
-        "group relative flex select-none items-center whitespace-nowrap border-border border-r text-xs transition-colors",
+        "group relative flex h-full select-none items-center whitespace-nowrap border-border border-r text-xs transition-colors",
         active
           ? "bg-background text-foreground"
           : "bg-muted text-muted-foreground hover:bg-background/50",
@@ -175,6 +175,7 @@ export function EditorTabs({
       {orderedItems.map((item, index) => (
         <div
           key={item.href}
+          className="flex h-full"
           onDragOver={(e) => {
             e.preventDefault();
             e.dataTransfer.dropEffect = "move";
