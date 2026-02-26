@@ -137,7 +137,7 @@ export function SplitEditorView({
           {i < editorGroups.length - 1 && (
             <div
               className={cn(
-                "flex w-2 shrink-0 items-center justify-center transition-colors duration-150",
+                "-mx-2 z-10 flex w-2 shrink-0 items-center justify-center transition-colors duration-150",
                 hoveredDividerIndex === i || draggingDividerIndex === i
                   ? "cursor-col-resize border-border border-x bg-muted/60"
                   : "cursor-default border-transparent bg-transparent"
