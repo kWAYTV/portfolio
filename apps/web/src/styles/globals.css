@@ -309,39 +309,120 @@
   background-color: var(--scrollbar-thumb-hover);
 }
 
-/* Syntax highlighting tokens (override with tweakcn or custom themes) */
+/* Syntax highlighting: oklch to match shadcn, derived from theme where possible */
 :root {
-  --syntax-keyword: #8b5cf6;
-  --syntax-string: #16a34a;
-  --syntax-comment: #a1a1aa;
-  --syntax-number: #ea580c;
-  --syntax-type: #0891b2;
-  --syntax-function: #2563eb;
-  --syntax-tag: #dc2626;
-  --syntax-attribute: #7c3aed;
-  --syntax-punctuation: #71717a;
-  --terminal-user: #16a34a;
-  --terminal-host: #2563eb;
-  --terminal-path: #7c3aed;
+  --syntax-comment: var(--muted-foreground);
+  --syntax-keyword: oklch(0.55 0.22 285);
+  --syntax-string: oklch(0.55 0.18 145);
+  --syntax-number: oklch(0.65 0.18 45);
+  --syntax-type: oklch(0.55 0.14 230);
+  --syntax-function: oklch(0.55 0.2 250);
+  --syntax-tag: oklch(0.55 0.2 25);
+  --syntax-attribute: oklch(0.55 0.22 300);
+  --syntax-punctuation: var(--muted-foreground);
+  --terminal-user: oklch(0.55 0.18 145);
+  --terminal-host: oklch(0.55 0.2 250);
+  --terminal-path: oklch(0.55 0.22 300);
   --terminal-output: var(--muted-foreground);
   --terminal-error: var(--destructive);
 }
 
 .dark {
-  --syntax-keyword: #c084fc;
-  --syntax-string: #4ade80;
-  --syntax-comment: #52525b;
-  --syntax-number: #fb923c;
-  --syntax-type: #22d3ee;
-  --syntax-function: #60a5fa;
-  --syntax-tag: #f87171;
-  --syntax-attribute: #a78bfa;
-  --syntax-punctuation: #a1a1aa;
-  --terminal-user: #7ee787;
-  --terminal-host: #79c0ff;
-  --terminal-path: #d2a8ff;
-  --terminal-output: #8b949e;
-  --terminal-error: #f85149;
+  --syntax-comment: var(--muted-foreground);
+  --syntax-keyword: oklch(0.75 0.15 300);
+  --syntax-string: oklch(0.75 0.18 145);
+  --syntax-number: oklch(0.75 0.15 70);
+  --syntax-type: oklch(0.75 0.15 200);
+  --syntax-function: oklch(0.7 0.18 250);
+  --syntax-tag: oklch(0.7 0.18 25);
+  --syntax-attribute: oklch(0.75 0.15 300);
+  --syntax-punctuation: var(--muted-foreground);
+  --terminal-user: oklch(0.75 0.18 145);
+  --terminal-host: oklch(0.7 0.18 250);
+  --terminal-path: oklch(0.75 0.15 300);
+  --terminal-output: var(--muted-foreground);
+  --terminal-error: var(--destructive);
+}
+
+/* Theme presets: tweakcn-compatible. Add themes from tweakcn.com:
+ * 1. Export theme (oklch) from tweakcn.com/editor/theme
+ * 2. Add [data-theme="name"] { ... } for light, .dark[data-theme="name"] { ... } for dark
+ * 3. Add --syntax-* vars for code view. Add preset to THEME_PRESETS in theme-preset-context.tsx
+ */
+[data-theme="catppuccin"] {
+  --background: oklch(0.98 0.01 265);
+  --foreground: oklch(0.25 0.02 265);
+  --card: oklch(1 0 0);
+  --card-foreground: oklch(0.25 0.02 265);
+  --popover: oklch(0.99 0.01 265);
+  --popover-foreground: oklch(0.25 0.02 265);
+  --primary: oklch(0.55 0.22 300);
+  --primary-foreground: oklch(0.99 0 0);
+  --secondary: oklch(0.94 0.02 265);
+  --secondary-foreground: oklch(0.25 0.02 265);
+  --muted: oklch(0.94 0.02 265);
+  --muted-foreground: oklch(0.45 0.02 265);
+  --border: oklch(0.9 0.02 265);
+  --input: oklch(0.92 0.02 265);
+  --ring: oklch(0.55 0.22 300);
+  --sidebar: oklch(0.97 0.01 265);
+  --sidebar-foreground: oklch(0.25 0.02 265);
+  --sidebar-primary: oklch(0.55 0.22 300);
+  --sidebar-primary-foreground: oklch(0.99 0 0);
+  --sidebar-accent: oklch(0.92 0.02 265);
+  --sidebar-accent-foreground: oklch(0.25 0.02 265);
+  --sidebar-border: oklch(0.9 0.02 265);
+  --sidebar-ring: oklch(0.55 0.22 300);
+  --syntax-keyword: oklch(0.45 0.22 300);
+  --syntax-string: oklch(0.45 0.18 145);
+  --syntax-comment: var(--muted-foreground);
+  --syntax-number: oklch(0.55 0.18 70);
+  --syntax-type: oklch(0.45 0.14 230);
+  --syntax-function: oklch(0.45 0.2 250);
+  --syntax-tag: oklch(0.5 0.2 25);
+  --syntax-attribute: oklch(0.45 0.22 300);
+  --syntax-punctuation: var(--muted-foreground);
+}
+
+/* Catppuccin Mocha (dark) - overrides when .dark is on html */
+.dark[data-theme="catppuccin"] {
+  --background: oklch(0.22 0.02 265);
+  --foreground: oklch(0.88 0.02 265);
+  --card: oklch(0.2 0.02 265);
+  --card-foreground: oklch(0.88 0.02 265);
+  --popover: oklch(0.2 0.02 265);
+  --popover-foreground: oklch(0.88 0.02 265);
+  --primary: oklch(0.78 0.15 300);
+  --primary-foreground: oklch(0.22 0.02 265);
+  --secondary: oklch(0.28 0.02 265);
+  --secondary-foreground: oklch(0.88 0.02 265);
+  --muted: oklch(0.28 0.02 265);
+  --muted-foreground: oklch(0.65 0.02 265);
+  --accent: oklch(0.32 0.03 265);
+  --accent-foreground: oklch(0.88 0.02 265);
+  --border: oklch(0.32 0.03 265);
+  --input: oklch(0.32 0.03 265);
+  --ring: oklch(0.78 0.15 300);
+  --sidebar: oklch(0.2 0.02 265);
+  --sidebar-foreground: oklch(0.88 0.02 265);
+  --sidebar-primary: oklch(0.78 0.15 300);
+  --sidebar-primary-foreground: oklch(0.22 0.02 265);
+  --sidebar-accent: oklch(0.32 0.03 265);
+  --sidebar-accent-foreground: oklch(0.88 0.02 265);
+  --sidebar-border: oklch(0.32 0.03 265);
+  --sidebar-ring: oklch(0.78 0.15 300);
+  --syntax-keyword: oklch(0.78 0.15 300);
+  --syntax-string: oklch(0.75 0.18 145);
+  --syntax-comment: var(--muted-foreground);
+  --syntax-number: oklch(0.75 0.15 70);
+  --syntax-type: oklch(0.75 0.15 200);
+  --syntax-function: oklch(0.7 0.18 250);
+  --syntax-tag: oklch(0.7 0.18 25);
+  --syntax-attribute: oklch(0.78 0.15 300);
+  --syntax-punctuation: var(--muted-foreground);
+  --terminal-user: oklch(0.75 0.18 145);
+  --terminal-host: oklch(0.7 0.18 250);
+  --terminal-path: oklch(0.78 0.15 300);
 }
 
 /* Terminal panel - uses theme background, text colors adapt */

@@ -112,6 +112,9 @@
     "openPreviewWindow": "Abrir vista previa en nueva ventana",
     "lightTheme": "Tema claro",
     "darkTheme": "Tema oscuro",
+    "themePreset": "Tema",
+    "themePreset_default": "Por defecto",
+    "themePreset_catppuccin": "Catppuccin",
     "language": "Idioma"
   },
   "terminal": {

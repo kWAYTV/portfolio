@@ -1,6 +1,8 @@
 import { Toaster } from "@portfolio/ui";
+import Script from "next/script";
 import { UmamiScript } from "@/components/analytics/umami-script";
 import { IdeLayout } from "@/components/ide/ide-layout";
+import { ThemePresetProvider } from "@/components/theming/theme-preset-context";
 import { ThemeProvider } from "@/components/theming/provider";
 import "@/styles/globals.css";
 import { routing } from "@i18n/routing";
@@ -67,6 +69,9 @@ export default async function LocaleLayout({ children, params }: Props) {
 
   return (
     <>
+      <Script id="theme-preset-init" strategy="beforeInteractive">
+        {`(function(){var p=localStorage.getItem("ide-theme-preset")||"default";if(p!=="default")document.documentElement.dataset.theme=p})();`}
+      </Script>
       <UmamiScript />
       <NextIntlClientProvider messages={messages}>
         <RootProvider i18n={provider(locale)} search={{ enabled: false }}>
@@ -77,7 +82,8 @@ export default async function LocaleLayout({ children, params }: Props) {
               disableTransitionOnChange
               enableSystem
             >
-              <Suspense
+              <ThemePresetProvider>
+                <Suspense
                 fallback={
                   <div className="flex min-h-dvh items-center justify-center">
                     {children}
@@ -86,7 +92,8 @@ export default async function LocaleLayout({ children, params }: Props) {
               >
                 <IdeLayout>{children}</IdeLayout>
               </Suspense>
-              <Toaster richColors />
+                <Toaster richColors />
+              </ThemePresetProvider>
             </ThemeProvider>
           </NuqsAdapter>
         </RootProvider>

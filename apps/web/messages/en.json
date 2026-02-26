@@ -112,6 +112,9 @@
     "openPreviewWindow": "Open preview in new window",
     "lightTheme": "Light theme",
     "darkTheme": "Dark theme",
+    "themePreset": "Theme",
+    "themePreset_default": "Default",
+    "themePreset_catppuccin": "Catppuccin",
     "language": "Language"
   },
   "terminal": {
