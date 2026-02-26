@@ -170,9 +170,16 @@ export function IdeLayout({ children }: IdeLayoutProps) {
       closingRef.current = false;
       return;
     }
-    if (openTabs.length === 0) return;
     const navItem = matchNavItem(pathname);
-    if (!navItem || openTabs.includes(navItem.href)) {
+    if (!navItem) {
+      openedFromSidebarRef.current = null;
+      return;
+    }
+    if (openTabs.length === 0) {
+      setOpenTabs([navItem.href]);
+      return;
+    }
+    if (openTabs.includes(navItem.href)) {
       openedFromSidebarRef.current = null;
       return;
     }
