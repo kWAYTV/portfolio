@@ -90,7 +90,7 @@ export function TerminalPanel({ onClose, isOpen }: TerminalPanelProps) {
           )}
         />
       </div>
-      <div className="flex h-9 shrink-0 items-center justify-between border-border border-b bg-muted/60 px-2">
+      <div className="flex h-8 shrink-0 items-center justify-between border-border border-b bg-background px-2">
         <div className="flex items-center gap-2">
           <Terminal className="size-4 text-muted-foreground" />
           <span className="font-medium text-[11px] text-foreground">
