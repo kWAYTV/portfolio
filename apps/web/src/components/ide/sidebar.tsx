@@ -153,7 +153,7 @@ export function Sidebar({ onOpenTab, pathname }: SidebarProps) {
   };
 
   return (
-    <div className="flex h-full w-56 shrink-0 flex-col overflow-hidden border-border border-r bg-sidebar">
+    <div className="flex h-full w-56 shrink-0 select-none flex-col overflow-hidden border-border border-r bg-sidebar">
       <div className="px-4 py-2">
         <span className="font-medium text-[11px] text-muted-foreground uppercase tracking-wider">
           Explorer
