@@ -5,7 +5,6 @@ import { cn } from "@portfolio/ui";
 import { useTranslations } from "next-intl";
 import {
   CheckCircle2,
-  Command,
   GitBranch,
   Play,
   Rss,
@@ -71,8 +70,7 @@ export function StatusBar({
           title={`${t("commandPalette")} (${t("commandPaletteShortcut")})`}
           type="button"
         >
-          <Command className="size-3.5" />
-          <span className="hidden sm:inline">{t("commandPaletteShortcut")}</span>
+          <span className="tabular-nums">{t("commandPaletteShortcut")}</span>
         </button>
         <button
           className="flex cursor-pointer items-center gap-1 transition-colors hover:text-foreground"
