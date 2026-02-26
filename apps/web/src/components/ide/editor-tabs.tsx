@@ -16,32 +16,36 @@ import {
   EmptyMedia,
   EmptyTitle,
 } from "@portfolio/ui";
-import { Code2, X } from "lucide-react";
+import { Code2, PanelRight, X } from "lucide-react";
 import { navItems } from "@/consts/nav-items";
 import { FileIcon } from "./file-icon";
 
 interface TabItemProps {
   active: boolean;
+  dragOverIndex: number | null;
   fileName: string;
   fileType: string;
+  groupIndex: number;
   href: string;
   index: number;
   onClose: () => void;
   onDragEnd: () => void;
   onDragOver: (index: number) => void;
-  dragOverIndex: number | null;
+  onTabClick?: (href: string) => void;
 }
 
 function TabItem({
   active,
+  dragOverIndex,
   fileName,
   fileType,
+  groupIndex,
   href,
   index,
   onClose,
   onDragEnd,
   onDragOver,
-  dragOverIndex,
+  onTabClick,
 }: TabItemProps) {
   const isDropTarget = dragOverIndex === index;
 
@@ -70,13 +74,17 @@ function TabItem({
         onDragStart={(e) => {
           e.dataTransfer.effectAllowed = "move";
           e.dataTransfer.setData("text/plain", href);
-          e.dataTransfer.setData("application/json", JSON.stringify({ href, index }));
+          e.dataTransfer.setData(
+            "application/json",
+            JSON.stringify({ href, index, groupIndex })
+          );
         }}
       >
         <Link
           className="flex min-w-0 flex-1 items-center gap-2 truncate"
           draggable={false}
           href={href}
+          onClick={() => onTabClick?.(href)}
         >
           <FileIcon className="size-4 shrink-0" type={fileType} />
           <span className="truncate">{fileName}</span>
@@ -101,13 +109,22 @@ function TabItem({
 }
 
 interface EditorTabsProps {
+  activeGroupIndex?: number;
+  groupIndex?: number;
   onCloseAll: () => void;
+  onCloseGroup?: (groupIndex: number) => void;
   onCloseOtherTabs: (href: string) => void;
   onCloseTab: (href: string) => void;
   onCloseTabsToRight: (href: string) => void;
   onReorder: (newOrder: string[]) => void;
+  onDropFromOtherGroup?: (href: string, sourceGroupIndex: number) => void;
+  onSplitLeft?: (href: string) => void;
+  onSplitRight?: (href: string) => void;
+  onTabClick?: (href: string) => void;
   openTabs: string[];
   pathname: string;
+  showSplitButtons?: boolean;
+  totalGroups?: number;
 }
 
 export function EditorTabs({
@@ -118,6 +135,15 @@ export function EditorTabs({
   onCloseTabsToRight,
   onCloseAll,
   onReorder,
+  onCloseGroup,
+  onDropFromOtherGroup,
+  onSplitLeft,
+  onSplitRight,
+  onTabClick,
+  showSplitButtons,
+  totalGroups = 1,
+  groupIndex = 0,
+  activeGroupIndex = 0,
 }: EditorTabsProps) {
   const t = useTranslations("ide");
   const isActive = (href: string) => {
@@ -146,10 +172,20 @@ export function EditorTabs({
     (e: React.DragEvent, dropIndex: number) => {
       e.preventDefault();
       let dragIndex: number;
+      let sourceGroupIndex: number;
       try {
         const data = JSON.parse(e.dataTransfer.getData("application/json"));
         dragIndex = data.index;
+        sourceGroupIndex = data.groupIndex ?? 0;
       } catch {
+        return;
+      }
+      if (sourceGroupIndex !== groupIndex && onDropFromOtherGroup) {
+        const href = openTabs[dragIndex] ?? e.dataTransfer.getData("text/plain");
+        if (href) {
+          onDropFromOtherGroup(href, sourceGroupIndex);
+        }
+        setDragOverIndex(null);
         return;
       }
       if (dragIndex === dropIndex) return;
@@ -160,7 +196,7 @@ export function EditorTabs({
       onReorder(next);
       setDragOverIndex(null);
     },
-    [openTabs, onReorder]
+    [openTabs, onReorder, groupIndex, onDropFromOtherGroup]
   );
 
   if (orderedItems.length === 0) {
@@ -215,11 +251,13 @@ export function EditorTabs({
                 dragOverIndex={dragOverIndex}
                 fileName={item.fileName}
                 fileType={item.fileType}
+                groupIndex={groupIndex}
                 href={item.href}
                 index={index}
                 onClose={() => onCloseTab(item.href)}
                 onDragEnd={handleDragEnd}
                 onDragOver={handleDragOver}
+                onTabClick={onTabClick}
               />
             </div>
           </ContextMenuTrigger>
@@ -227,8 +265,24 @@ export function EditorTabs({
             <ContextMenuItem onClick={() => onCloseTab(item.href)}>
               {t("close")}
             </ContextMenuItem>
+            {showSplitButtons && totalGroups !== undefined && (
+              <>
+                <ContextMenuSeparator />
+                {((groupIndex ?? 0) < totalGroups - 1 || totalGroups === 1) && (
+                  <ContextMenuItem onClick={() => onSplitRight?.(item.href)}>
+                    {totalGroups === 1 ? t("openToRight") : t("splitRight")}
+                  </ContextMenuItem>
+                )}
+                {((groupIndex ?? 0) > 0 || totalGroups === 1) && (
+                  <ContextMenuItem onClick={() => onSplitLeft?.(item.href)}>
+                    {totalGroups === 1 ? t("openToLeft") : t("splitLeft")}
+                  </ContextMenuItem>
+                )}
+              </>
+            )}
             {orderedItems.length > 1 && (
               <>
+                <ContextMenuSeparator />
                 <ContextMenuItem
                   onClick={() => onCloseOtherTabs(item.href)}
                 >
@@ -243,6 +297,11 @@ export function EditorTabs({
               </>
             )}
             <ContextMenuSeparator />
+            {onCloseGroup && totalGroups !== undefined && totalGroups > 1 && (
+              <ContextMenuItem onClick={() => onCloseGroup(groupIndex)}>
+                {t("closeGroup")}
+              </ContextMenuItem>
+            )}
             <ContextMenuItem onClick={onCloseAll}>
               {t("closeAll")}
             </ContextMenuItem>
@@ -263,6 +322,19 @@ export function EditorTabs({
         onDragLeave={() => setDragOverIndex(null)}
         onDrop={(e) => handleDrop(e, orderedItems.length)}
       />
+      {showSplitButtons && totalGroups !== undefined && totalGroups < 2 && (
+        <button
+          className="flex shrink-0 items-center justify-center px-2 text-muted-foreground transition-colors hover:bg-muted/60 hover:text-foreground"
+          onClick={() => {
+            const activeItem = orderedItems.find((i) => isActive(i.href)) ?? orderedItems[0];
+            if (activeItem) onSplitRight?.(activeItem.href);
+          }}
+          title={t("openToRight")}
+          type="button"
+        >
+          <PanelRight className="size-4" />
+        </button>
+      )}
     </div>
   );
 }

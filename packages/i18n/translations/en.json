@@ -124,7 +124,12 @@
 		"open": "Open",
 		"openInNewWindow": "Open in New Window",
 		"expandAll": "Expand All",
-		"collapseAll": "Collapse All"
+		"collapseAll": "Collapse All",
+		"splitRight": "Split Right",
+		"splitLeft": "Split Left",
+		"openToRight": "Open to the Right",
+		"openToLeft": "Open to the Left",
+		"closeGroup": "Close Editor Group"
 	},
 	"terminal": {
 		"welcome": "Welcome to the portfolio terminal. Type 'help' for available commands.",

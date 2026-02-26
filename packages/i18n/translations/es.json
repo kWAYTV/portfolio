@@ -124,7 +124,12 @@
 		"open": "Abrir",
 		"openInNewWindow": "Abrir en nueva ventana",
 		"expandAll": "Expandir todo",
-		"collapseAll": "Colapsar todo"
+		"collapseAll": "Colapsar todo",
+		"splitRight": "Dividir a la derecha",
+		"splitLeft": "Dividir a la izquierda",
+		"openToRight": "Abrir a la derecha",
+		"openToLeft": "Abrir a la izquierda",
+		"closeGroup": "Cerrar grupo de editor"
 	},
 	"terminal": {
 		"welcome": "Bienvenido al terminal del portafolio. Escribe 'help' para ver los comandos disponibles.",
