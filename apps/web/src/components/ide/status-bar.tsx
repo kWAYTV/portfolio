@@ -37,7 +37,7 @@ export function StatusBar({
     : "Plain Text";
 
   return (
-    <div className="flex h-8 shrink-0 items-center justify-between border-border border-t bg-secondary px-3 py-1 text-[11px] text-muted-foreground sm:h-6 sm:px-2 sm:py-0">
+    <div className="flex h-8 shrink-0 select-none items-center justify-between border-border border-t bg-secondary px-3 py-1 text-[11px] text-muted-foreground sm:h-6 sm:px-2 sm:py-0">
       <div className="flex items-center gap-3">
         <span className="flex items-center gap-1">
           <GitBranch className="size-3.5" />
@@ -50,7 +50,7 @@ export function StatusBar({
       <div className="[&_button]:!text-[length:11px] [&_button]:!text-muted-foreground [&_button:hover]:!text-foreground [&_button]:min-h-[36px] [&_button]:min-w-[36px] [&_button]:touch-manipulation [&_a]:min-h-[36px] [&_a]:min-w-[36px] [&_a]:flex [&_a]:items-center [&_a]:touch-manipulation flex items-center gap-2 sm:gap-3">
         <button
           className={cn(
-            "flex items-center gap-1 transition-colors hover:text-foreground",
+            "flex cursor-pointer items-center gap-1 transition-colors hover:text-foreground",
             terminalOpen && "text-foreground"
           )}
           onClick={onToggleTerminal}
