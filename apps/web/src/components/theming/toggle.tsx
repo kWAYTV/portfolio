@@ -3,8 +3,8 @@
 import { analytics } from "@portfolio/analytics";
 import { cn } from "@portfolio/ui";
 import { Moon, Sun } from "lucide-react";
-import { useTheme } from "next-themes";
 import { useTranslations } from "next-intl";
+import { useTheme } from "next-themes";
 import { useCallback, useEffect, useRef, useState } from "react";
 import { useThemeTransition } from "./use-theme-transition";
 
@@ -20,7 +20,8 @@ export const ThemeToggle = ({
   const t = useTranslations("theme");
   const { resolvedTheme } = useTheme();
   const setThemeWithTransition = useThemeTransition(duration);
-  const [isDark, setIsDark] = useState(resolvedTheme === "dark");
+  // Always false on initial render to avoid hydration mismatch (resolvedTheme is undefined on server)
+  const [isDark, setIsDark] = useState(false);
   const buttonRef = useRef<HTMLButtonElement>(null);
 
   useEffect(() => {
@@ -65,7 +66,9 @@ export const ThemeToggle = ({
       ) : (
         <Moon className="size-3.5 shrink-0" />
       )}
-      <span className="hidden sm:inline">{isDark ? t("light") : t("dark")}</span>
+      <span className="hidden sm:inline">
+        {isDark ? t("light") : t("dark")}
+      </span>
     </button>
   );
 };

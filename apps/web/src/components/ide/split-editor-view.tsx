@@ -1,9 +1,8 @@
 "use client";
 
-import React from "react";
 import { GripVertical } from "lucide-react";
 import { useTranslations } from "next-intl";
-import { useCallback, useRef } from "react";
+import React, { useCallback, useRef } from "react";
 import { EditorPane } from "./editor-pane";
 import type { EditorGroup } from "./split-editor-types";
 import type { ViewMode } from "./view-mode";
@@ -20,14 +19,18 @@ interface SplitEditorViewProps {
   editorGroups: EditorGroup[];
   focusGroup: (groupIndex: number, href?: string) => void;
   mainRef: React.RefObject<HTMLElement | null>;
-  moveTabToGroup: (targetGroupIndex: number, href: string, sourceGroupIndex: number) => void;
+  moveTabToGroup: (
+    targetGroupIndex: number,
+    href: string,
+    sourceGroupIndex: number
+  ) => void;
+  onViewModeChange: (mode: ViewMode) => void;
   reorderTabs: (groupIndex: number, newOrder: string[]) => void;
   setSplitRatio: (ratio: number) => void;
   splitLeft: (groupIndex: number, href: string) => void;
   splitRatio: number;
   splitRight: (groupIndex: number, href: string) => void;
   viewMode: ViewMode;
-  onViewModeChange: (mode: ViewMode) => void;
 }
 
 export function SplitEditorView({
@@ -64,7 +67,9 @@ export function SplitEditorView({
 
       const onPointerMove = (moveEvent: PointerEvent) => {
         const el = containerRef.current;
-        if (!el) return;
+        if (!el) {
+          return;
+        }
         const rect = el.getBoundingClientRect();
         const ratio = (moveEvent.clientX - rect.left) / rect.width;
         setSplitRatio(Math.max(0.2, Math.min(0.8, ratio)));
@@ -86,8 +91,8 @@ export function SplitEditorView({
 
   return (
     <div
-      ref={containerRef}
       className="flex hidden min-h-0 min-w-0 flex-1 md:flex"
+      ref={containerRef}
     >
       {editorGroups.map((group, i) => (
         <React.Fragment key={i}>
@@ -113,9 +118,9 @@ export function SplitEditorView({
               onReorder={reorderTabs}
               onSplitLeft={splitLeft}
               onSplitRight={splitRight}
+              onViewModeChange={onViewModeChange}
               totalGroups={editorGroups.length}
               viewMode={viewMode}
-              onViewModeChange={onViewModeChange}
             >
               {i === activeGroupIndex ? children : undefined}
             </EditorPane>

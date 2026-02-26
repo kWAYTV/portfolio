@@ -1,6 +1,6 @@
 import { defaultLocale } from "@portfolio/i18n/config";
-import { Geist, Geist_Mono } from "next/font/google";
 import type { Metadata, Viewport } from "next";
+import { Geist, Geist_Mono } from "next/font/google";
 import { baseUrl } from "@/lib/metadata";
 
 export const metadata: Metadata = {

@@ -19,9 +19,9 @@ import {
 } from "lucide-react";
 import { useTranslations } from "next-intl";
 import { useState } from "react";
-import { navItems } from "@/consts/nav-items";
 import { LanguageSelector } from "@/components/shared/language-selector";
 import { ThemeToggle } from "@/components/theming/toggle";
+import { navItems } from "@/consts/nav-items";
 
 const navIcons: Record<string, typeof Code2> = {
   home: Code2,
@@ -47,25 +47,27 @@ export function MobileMenu({
   const [open, setOpen] = useState(false);
 
   const isActive = (href: string) => {
-    if (href === "/") return pathname === "/";
+    if (href === "/") {
+      return pathname === "/";
+    }
     return pathname.startsWith(href);
   };
 
   return (
-    <Sheet open={open} onOpenChange={setOpen}>
+    <Sheet onOpenChange={setOpen} open={open}>
       <SheetTrigger asChild>
         <button
+          aria-label="Open menu"
           className="flex size-10 shrink-0 items-center justify-center text-muted-foreground transition-colors hover:text-foreground md:hidden"
           type="button"
-          aria-label="Open menu"
         >
           <Menu className="size-5" />
         </button>
       </SheetTrigger>
       <SheetContent
         className="flex w-72 flex-col gap-0 p-0 md:hidden"
-        side="left"
         showCloseButton={true}
+        side="left"
       >
         <SheetHeader className="border-border border-b px-4 py-3">
           <SheetTitle className="font-medium text-sm">Menu</SheetTitle>
@@ -93,7 +95,7 @@ export function MobileMenu({
         </nav>
         <div className="flex flex-col gap-0 border-border border-t py-2">
           <a
-            className="flex items-center gap-3 px-4 py-3 text-sm text-foreground transition-colors hover:bg-muted/50"
+            className="flex items-center gap-3 px-4 py-3 text-foreground text-sm transition-colors hover:bg-muted/50"
             href={PORTFOLIO_REPO_URL}
             onClick={() => setOpen(false)}
             rel="noopener noreferrer"

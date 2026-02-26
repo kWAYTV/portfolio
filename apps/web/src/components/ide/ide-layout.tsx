@@ -113,10 +113,7 @@ export function IdeLayout({ children }: IdeLayoutProps) {
   const hasOpenTabs = editorGroups.some((g) => g.tabs.length > 0);
   const hasSplit = editorGroups.length > 1;
 
-  const viewModeValue = useMemo(
-    () => ({ viewMode, setViewMode }),
-    [viewMode]
-  );
+  const viewModeValue = useMemo(() => ({ viewMode, setViewMode }), [viewMode]);
 
   if (isEmbed) {
     return (

@@ -1,11 +1,6 @@
 "use client";
 
-import {
-  cn,
-  Tooltip,
-  TooltipContent,
-  TooltipTrigger,
-} from "@portfolio/ui";
+import { cn, Tooltip, TooltipContent, TooltipTrigger } from "@portfolio/ui";
 import { GripHorizontal, PanelBottomClose, Play, Terminal } from "lucide-react";
 import { useTranslations } from "next-intl";
 import { useCallback, useEffect, useRef, useState } from "react";
@@ -16,8 +11,8 @@ const MAX_HEIGHT = 600;
 const DEFAULT_HEIGHT = 200;
 
 interface TerminalPanelProps {
-  onClose: () => void;
   isOpen: boolean;
+  onClose: () => void;
 }
 
 export function TerminalPanel({ onClose, isOpen }: TerminalPanelProps) {
@@ -33,11 +28,15 @@ export function TerminalPanel({ onClose, isOpen }: TerminalPanelProps) {
   }, []);
 
   useEffect(() => {
-    if (!isDragging) return;
+    if (!isDragging) {
+      return;
+    }
 
     const handleMouseMove = (e: MouseEvent) => {
       const panel = panelRef.current;
-      if (!panel) return;
+      if (!panel) {
+        return;
+      }
       const rect = panel.getBoundingClientRect();
       const newHeight = rect.bottom - e.clientY;
       setHeight(Math.min(MAX_HEIGHT, Math.max(MIN_HEIGHT, newHeight)));
@@ -58,15 +57,18 @@ export function TerminalPanel({ onClose, isOpen }: TerminalPanelProps) {
     };
   }, [isDragging]);
 
-  if (!isOpen) return null;
+  if (!isOpen) {
+    return null;
+  }
 
   return (
     <div
-      ref={panelRef}
       className="flex shrink-0 select-none flex-col border-border border-t bg-background"
+      ref={panelRef}
       style={{ height: `${height}px`, minHeight: MIN_HEIGHT }}
     >
       <div
+        aria-label={t("resizeTerminal")}
         className={cn(
           "flex min-h-[6px] items-center justify-center py-0.5 transition-colors",
           isHoveringResize || isDragging
@@ -78,7 +80,6 @@ export function TerminalPanel({ onClose, isOpen }: TerminalPanelProps) {
         onMouseEnter={() => setIsHoveringResize(true)}
         onMouseLeave={() => setIsHoveringResize(false)}
         role="separator"
-        aria-label={t("resizeTerminal")}
       >
         <GripHorizontal
           className={cn(
@@ -90,7 +91,7 @@ export function TerminalPanel({ onClose, isOpen }: TerminalPanelProps) {
       <div className="flex h-9 shrink-0 items-center justify-between border-border border-b bg-muted/60 px-2">
         <div className="flex items-center gap-2">
           <Terminal className="size-4 text-muted-foreground" />
-          <span className="text-[11px] font-medium text-foreground">
+          <span className="font-medium text-[11px] text-foreground">
             {t("terminal")}
           </span>
         </div>

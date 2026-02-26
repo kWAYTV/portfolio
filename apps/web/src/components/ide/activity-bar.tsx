@@ -3,10 +3,7 @@
 import { updateLocale } from "@i18n/lib/update-locale";
 import { getPathname, Link, routing, usePathname } from "@i18n/routing";
 import type { Locale } from "@portfolio/i18n";
-import {
-  localeNames,
-  localeToFlagEmoji,
-} from "@portfolio/i18n/config";
+import { localeNames, localeToFlagEmoji } from "@portfolio/i18n/config";
 import {
   cn,
   DropdownMenu,
@@ -37,13 +34,11 @@ import {
   Terminal,
   User,
 } from "lucide-react";
-import { useLocale } from "next-intl";
+import { useLocale, useTranslations } from "next-intl";
 import { useTheme } from "next-themes";
-import { useTranslations } from "next-intl";
 import { useRef, useState } from "react";
-
-import { navItems } from "@/consts/nav-items";
 import { useThemeTransition } from "@/components/theming/use-theme-transition";
+import { navItems } from "@/consts/nav-items";
 
 const PORTFOLIO_REPO_URL = "https://github.com/kWAYTV/portfolio";
 
@@ -82,7 +77,9 @@ export function ActivityBar({
 
   const handleLocaleChange = async (newLocale: string) => {
     const loc = newLocale as Locale;
-    if (loc === locale || localePending) return;
+    if (loc === locale || localePending) {
+      return;
+    }
     setLocalePending(true);
     try {
       await updateLocale(loc);
@@ -185,8 +182,8 @@ export function ActivityBar({
             <TooltipTrigger asChild>
               <DropdownMenuTrigger asChild>
                 <button
-                  ref={settingsTriggerRef}
                   className="flex size-10 cursor-pointer items-center justify-center text-sidebar-foreground/60 transition-colors hover:text-sidebar-primary"
+                  ref={settingsTriggerRef}
                   type="button"
                 >
                   <Settings className="size-5" />
@@ -197,8 +194,8 @@ export function ActivityBar({
           </Tooltip>
           <DropdownMenuContent
             align="start"
-            side="right"
             className="ide-dropdown w-44 rounded-sm border border-border bg-popover p-0.5 shadow-lg"
+            side="right"
           >
             <DropdownMenuItem onClick={handleThemeToggle}>
               {isDark ? (
@@ -215,10 +212,7 @@ export function ActivityBar({
             </DropdownMenuItem>
             <DropdownMenuSeparator className="my-0.5" />
             <DropdownMenuSub>
-              <DropdownMenuSubTrigger
-                className="pl-8"
-                disabled={localePending}
-              >
+              <DropdownMenuSubTrigger className="pl-8" disabled={localePending}>
                 <Languages className="size-3.5" />
                 {t("language")}
               </DropdownMenuSubTrigger>
@@ -248,7 +242,9 @@ export function ActivityBar({
             <DropdownMenuSeparator className="my-0.5" />
             <DropdownMenuItem onClick={onOpenCommand}>
               <span>{t("commandPalette")}</span>
-              <DropdownMenuShortcut>{t("commandPaletteShortcut")}</DropdownMenuShortcut>
+              <DropdownMenuShortcut>
+                {t("commandPaletteShortcut")}
+              </DropdownMenuShortcut>
             </DropdownMenuItem>
           </DropdownMenuContent>
         </DropdownMenu>

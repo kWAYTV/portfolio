@@ -13,7 +13,11 @@ export function useThemeTransition(duration = 400) {
         flushSync(() => setTheme(theme));
       };
 
-      const svt = (document as Document & { startViewTransition?: (cb: () => void) => { ready: Promise<void> } }).startViewTransition;
+      const svt = (
+        document as Document & {
+          startViewTransition?: (cb: () => void) => { ready: Promise<void> };
+        }
+      ).startViewTransition;
       if (typeof svt === "function") {
         const transition = svt.call(document, runTransition);
         await transition.ready;

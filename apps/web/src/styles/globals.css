@@ -227,8 +227,8 @@
   max-width: none !important;
 }
 [data-ide-main]:not([data-preview]) .mx-auto {
-  margin-left: 0 !important;
   margin-right: 0 !important;
+  margin-left: 0 !important;
 }
 /* IDE preview: center content horizontally and vertically */
 [data-ide-main][data-preview] {
@@ -338,9 +338,9 @@
 .ide-dropdown [data-slot="dropdown-menu-radio-item"],
 .ide-dropdown [data-slot="dropdown-menu-checkbox-item"],
 .ide-dropdown [data-slot="context-menu-item"] {
-  font-size: 11px;
-  padding: 4px 8px;
   min-height: 22px;
+  padding: 4px 8px;
+  font-size: 11px;
 }
 .ide-dropdown [data-slot="dropdown-menu-radio-item"],
 .ide-dropdown [data-slot="dropdown-menu-checkbox-item"] {

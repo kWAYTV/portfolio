@@ -1,6 +1,5 @@
 "use client";
 
-import { CheckIcon, ChevronRightIcon, CircleIcon } from "lucide-react";
 import { ContextMenu as ContextMenuPrimitive } from "radix-ui";
 import type * as React from "react";
 
@@ -9,19 +8,14 @@ import { cn } from "../utils";
 function ContextMenu({
   ...props
 }: React.ComponentProps<typeof ContextMenuPrimitive.Root>) {
-  return (
-    <ContextMenuPrimitive.Root data-slot="context-menu" {...props} />
-  );
+  return <ContextMenuPrimitive.Root data-slot="context-menu" {...props} />;
 }
 
 function ContextMenuTrigger({
   ...props
 }: React.ComponentProps<typeof ContextMenuPrimitive.Trigger>) {
   return (
-    <ContextMenuPrimitive.Trigger
-      data-slot="context-menu-trigger"
-      {...props}
-    />
+    <ContextMenuPrimitive.Trigger data-slot="context-menu-trigger" {...props} />
   );
 }
 

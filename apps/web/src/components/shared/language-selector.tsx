@@ -26,7 +26,9 @@ export function LanguageSelector() {
 
   const handleChange = async (newLocale: string) => {
     const loc = newLocale as Locale;
-    if (loc === locale || isPending) return;
+    if (loc === locale || isPending) {
+      return;
+    }
 
     setIsPending(true);
     try {

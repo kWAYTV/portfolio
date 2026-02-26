@@ -15,7 +15,6 @@ interface EditorPaneProps {
   groupIndex: number;
   isActiveGroup: boolean;
   mainRef?: React.RefObject<HTMLElement | null>;
-  totalGroups: number;
   onCloseAll: (groupIndex: number) => void;
   onCloseGroup?: (groupIndex: number) => void;
   onCloseOtherTabs: (groupIndex: number, href: string) => void;
@@ -27,8 +26,9 @@ interface EditorPaneProps {
   onReorder: (groupIndex: number, newOrder: string[]) => void;
   onSplitLeft: (groupIndex: number, href: string) => void;
   onSplitRight: (groupIndex: number, href: string) => void;
-  viewMode: ViewMode;
   onViewModeChange: (mode: ViewMode) => void;
+  totalGroups: number;
+  viewMode: ViewMode;
 }
 
 export function EditorPane({
@@ -84,7 +84,9 @@ export function EditorPane({
         activeGroupIndex={groupIndex}
         groupIndex={groupIndex}
         onCloseAll={() => onCloseAll(groupIndex)}
-        onCloseGroup={onCloseGroup ? () => onCloseGroup?.(groupIndex) : undefined}
+        onCloseGroup={
+          onCloseGroup ? () => onCloseGroup?.(groupIndex) : undefined
+        }
         onCloseOtherTabs={(href) => onCloseOtherTabs(groupIndex, href)}
         onCloseTab={(href) => onCloseTab(groupIndex, href)}
         onCloseTabsToRight={(href) => onCloseTabsToRight(groupIndex, href)}
@@ -113,12 +115,12 @@ export function EditorPane({
               viewMode={viewMode}
             >
               <main
-                ref={mainRef}
                 className={cn(
-                "min-h-0 w-full min-w-0 flex-1 overflow-y-auto",
-                viewMode === "preview" && "min-h-full"
-              )}
+                  "min-h-0 w-full min-w-0 flex-1 overflow-y-auto",
+                  viewMode === "preview" && "min-h-full"
+                )}
                 data-ide-main
+                ref={mainRef}
                 {...(viewMode === "preview" && { "data-preview": "" })}
               >
                 {children}
@@ -127,7 +129,7 @@ export function EditorPane({
           </>
         ) : (
           <iframe
-            className="min-h-0 flex-1 w-full border-0"
+            className="min-h-0 w-full flex-1 border-0"
             src={iframeSrc}
             title={activeHref}
           />

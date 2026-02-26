@@ -1,7 +1,6 @@
 "use client";
 
 import { useRouter } from "@i18n/routing";
-import { useTranslations } from "next-intl";
 import {
   CommandDialog,
   CommandEmpty,
@@ -20,6 +19,7 @@ import {
   PanelLeftOpen,
   Play,
 } from "lucide-react";
+import { useTranslations } from "next-intl";
 import { useCallback, useEffect } from "react";
 
 import { navItems } from "@/consts/nav-items";
@@ -74,7 +74,7 @@ export function CommandPalette({
   }, []);
 
   return (
-    <CommandDialog open={open} onOpenChange={onOpenChange}>
+    <CommandDialog onOpenChange={onOpenChange} open={open}>
       <CommandInput placeholder={t("commandPlaceholder")} />
       <CommandList>
         <CommandEmpty>{t("noResults")}</CommandEmpty>
@@ -96,9 +96,7 @@ export function CommandPalette({
           ))}
         </CommandGroup>
         <CommandGroup heading={t("view")}>
-          <CommandItem
-            onSelect={() => runCommand(onToggleSidebar)}
-          >
+          <CommandItem onSelect={() => runCommand(onToggleSidebar)}>
             {sidebarOpen ? (
               <PanelLeftClose className="size-4" />
             ) : (
@@ -107,9 +105,7 @@ export function CommandPalette({
             <span>{sidebarOpen ? t("hideSidebar") : t("showSidebar")}</span>
             <CommandShortcut>⌘B</CommandShortcut>
           </CommandItem>
-          <CommandItem
-            onSelect={() => runCommand(onToggleTerminal)}
-          >
+          <CommandItem onSelect={() => runCommand(onToggleTerminal)}>
             <PanelBottomClose className="size-4" />
             <span>{terminalOpen ? t("hideTerminal") : t("showTerminal")}</span>
             <CommandShortcut>⌘J</CommandShortcut>

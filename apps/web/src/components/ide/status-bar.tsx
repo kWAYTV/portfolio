@@ -2,14 +2,8 @@
 
 import { Link } from "@i18n/routing";
 import { cn } from "@portfolio/ui";
+import { CheckCircle2, GitBranch, Play, Rss, Terminal } from "lucide-react";
 import { useTranslations } from "next-intl";
-import {
-  CheckCircle2,
-  GitBranch,
-  Play,
-  Rss,
-  Terminal,
-} from "lucide-react";
 import { LanguageSelector } from "@/components/shared/language-selector";
 import { ThemeToggle } from "@/components/theming/toggle";
 import { navItems } from "@/consts/nav-items";
@@ -61,7 +55,7 @@ export function StatusBar({
           <CheckCircle2 className="size-3" />0
         </span>
       </div>
-      <div className="flex min-w-0 shrink-0 items-center gap-1 overflow-x-auto sm:gap-3 [&_button]:!text-[length:11px] [&_button]:!text-muted-foreground [&_button:hover]:!text-foreground [&_button]:min-h-[44px] [&_button]:min-w-[44px] [&_button]:touch-manipulation [&_a]:flex [&_a]:min-h-[44px] [&_a]:min-w-[44px] [&_a]:items-center [&_a]:touch-manipulation sm:[&_button]:min-h-[36px] sm:[&_button]:min-w-[36px] sm:[&_a]:min-h-[36px] sm:[&_a]:min-w-[36px]">
+      <div className="[&_button]:!text-[length:11px] [&_button]:!text-muted-foreground [&_button:hover]:!text-foreground flex min-w-0 shrink-0 items-center gap-1 overflow-x-auto sm:gap-3 [&_a]:flex [&_a]:min-h-[44px] [&_a]:min-w-[44px] [&_a]:touch-manipulation [&_a]:items-center sm:[&_a]:min-h-[36px] sm:[&_a]:min-w-[36px] [&_button]:min-h-[44px] [&_button]:min-w-[44px] [&_button]:touch-manipulation sm:[&_button]:min-h-[36px] sm:[&_button]:min-w-[36px]">
         <button
           className="flex cursor-pointer items-center gap-1 transition-colors hover:text-foreground"
           onClick={() => {

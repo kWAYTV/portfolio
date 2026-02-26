@@ -13,8 +13,8 @@ import {
 } from "@portfolio/ui";
 import { ExternalLink } from "lucide-react";
 import { useTranslations } from "next-intl";
-import { useCanHover } from "@/hooks/use-can-hover";
 import { ProjectCardDetails } from "@/components/projects/project-card-details";
+import { useCanHover } from "@/hooks/use-can-hover";
 
 interface FeaturedProjectsProps {
   repos: GitHubRepo[];
@@ -70,7 +70,10 @@ export function FeaturedProjects({ repos }: FeaturedProjectsProps) {
               <Popover>
                 <PopoverTrigger asChild>
                   <button
-                    className={cn(cardClassName, "w-full cursor-pointer text-left")}
+                    className={cn(
+                      cardClassName,
+                      "w-full cursor-pointer text-left"
+                    )}
                     type="button"
                   >
                     <FeaturedCardSummary repo={repo} />

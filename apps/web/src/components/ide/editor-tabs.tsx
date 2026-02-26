@@ -1,15 +1,13 @@
 "use client";
 
-import React from "react";
 import { Link } from "@i18n/routing";
-import { useTranslations } from "next-intl";
 import {
-  cn,
   ContextMenu,
   ContextMenuContent,
   ContextMenuItem,
   ContextMenuSeparator,
   ContextMenuTrigger,
+  cn,
   Empty,
   EmptyDescription,
   EmptyHeader,
@@ -17,6 +15,8 @@ import {
   EmptyTitle,
 } from "@portfolio/ui";
 import { Code2, PanelRight, X } from "lucide-react";
+import { useTranslations } from "next-intl";
+import React from "react";
 import { navItems } from "@/consts/nav-items";
 import { FileIcon } from "./file-icon";
 
@@ -52,7 +52,7 @@ function TabItem({
   return (
     <div
       className={cn(
-        "group relative flex h-full min-w-0 max-w-[180px] select-none items-center border-r border-border/60 pr-1 text-[13px] transition-colors",
+        "group relative flex h-full min-w-0 max-w-[180px] select-none items-center border-border/60 border-r pr-1 text-[13px] transition-colors",
         active
           ? "bg-background text-foreground"
           : "bg-muted/40 text-muted-foreground hover:bg-muted/70",
@@ -96,8 +96,8 @@ function TabItem({
           "opacity-0 group-hover:opacity-100",
           active && "opacity-100",
           active
-            ? "hover:bg-foreground/5 text-foreground"
-            : "hover:bg-foreground/5 text-muted-foreground"
+            ? "text-foreground hover:bg-foreground/5"
+            : "text-muted-foreground hover:bg-foreground/5"
         )}
         onClick={(e) => {
           e.stopPropagation();
@@ -119,8 +119,8 @@ interface EditorTabsProps {
   onCloseOtherTabs: (href: string) => void;
   onCloseTab: (href: string) => void;
   onCloseTabsToRight: (href: string) => void;
-  onReorder: (newOrder: string[]) => void;
   onDropFromOtherGroup?: (href: string, sourceGroupIndex: number) => void;
+  onReorder: (newOrder: string[]) => void;
   onSplitLeft?: (href: string) => void;
   onSplitRight?: (href: string) => void;
   onTabClick?: (href: string) => void;
@@ -184,14 +184,17 @@ export function EditorTabs({
         return;
       }
       if (sourceGroupIndex !== groupIndex && onDropFromOtherGroup) {
-        const href = openTabs[dragIndex] ?? e.dataTransfer.getData("text/plain");
+        const href =
+          openTabs[dragIndex] ?? e.dataTransfer.getData("text/plain");
         if (href) {
           onDropFromOtherGroup(href, sourceGroupIndex);
         }
         setDragOverIndex(null);
         return;
       }
-      if (dragIndex === dropIndex) return;
+      if (dragIndex === dropIndex) {
+        return;
+      }
 
       const next = [...openTabs];
       const [removed] = next.splice(dragIndex, 1);
@@ -205,7 +208,7 @@ export function EditorTabs({
   if (orderedItems.length === 0) {
     return (
       <div className="flex flex-1 flex-col">
-        <div className="h-[35px] shrink-0 border-b border-border bg-muted/80" />
+        <div className="h-[35px] shrink-0 border-border border-b bg-muted/80" />
         <Empty className="flex-1 border-0">
           <EmptyHeader>
             <EmptyMedia variant="icon">
@@ -222,19 +225,19 @@ export function EditorTabs({
   }
 
   return (
-    <div className="relative flex h-[35px] shrink-0 items-stretch overflow-x-auto border-b border-border bg-muted/80">
+    <div className="relative flex h-[35px] shrink-0 items-stretch overflow-x-auto border-border border-b bg-muted/80">
       {/* Drop zone before first tab - absolute so it doesn't create a gap */}
       <div
         className={cn(
-          "absolute left-0 top-0 z-10 h-full w-2 transition-colors",
+          "absolute top-0 left-0 z-10 h-full w-2 transition-colors",
           dragOverIndex === -1 && "bg-primary/20"
         )}
+        onDragLeave={() => setDragOverIndex(null)}
         onDragOver={(e) => {
           e.preventDefault();
           e.dataTransfer.dropEffect = "move";
           setDragOverIndex(-1);
         }}
-        onDragLeave={() => setDragOverIndex(null)}
         onDrop={(e) => handleDrop(e, 0)}
       />
       {orderedItems.map((item, index) => (
@@ -286,9 +289,7 @@ export function EditorTabs({
             {orderedItems.length > 1 && (
               <>
                 <ContextMenuSeparator />
-                <ContextMenuItem
-                  onClick={() => onCloseOtherTabs(item.href)}
-                >
+                <ContextMenuItem onClick={() => onCloseOtherTabs(item.href)}>
                   {t("closeOthers")}
                 </ContextMenuItem>
                 <ContextMenuItem
@@ -314,23 +315,26 @@ export function EditorTabs({
       {/* Drop zone after last tab - allows moving to end */}
       <div
         className={cn(
-          "min-w-[12px] shrink-0 flex-1 transition-colors",
+          "min-w-[12px] flex-1 shrink-0 transition-colors",
           dragOverIndex === orderedItems.length && "bg-primary/20"
         )}
+        onDragLeave={() => setDragOverIndex(null)}
         onDragOver={(e) => {
           e.preventDefault();
           e.dataTransfer.dropEffect = "move";
           setDragOverIndex(orderedItems.length);
         }}
-        onDragLeave={() => setDragOverIndex(null)}
         onDrop={(e) => handleDrop(e, orderedItems.length)}
       />
       {showSplitButtons && totalGroups !== undefined && totalGroups < 2 && (
         <button
           className="flex shrink-0 items-center justify-center px-2 text-muted-foreground transition-colors hover:bg-muted/60 hover:text-foreground"
           onClick={() => {
-            const activeItem = orderedItems.find((i) => isActive(i.href)) ?? orderedItems[0];
-            if (activeItem) onSplitRight?.(activeItem.href);
+            const activeItem =
+              orderedItems.find((i) => isActive(i.href)) ?? orderedItems[0];
+            if (activeItem) {
+              onSplitRight?.(activeItem.href);
+            }
           }}
           title={t("openToRight")}
           type="button"
