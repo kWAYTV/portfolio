@@ -5,7 +5,6 @@ import { cn } from "@portfolio/ui";
 import { useTranslations } from "next-intl";
 import {
   CheckCircle2,
-  Command,
   GitBranch,
   Play,
   Rss,
@@ -23,7 +22,6 @@ const fileTypeLabels: Record<string, string> = {
 };
 
 interface StatusBarProps {
-  onOpenCommand: () => void;
   onToggleTerminal: () => void;
   pathname: string;
   terminalOpen: boolean;
@@ -32,7 +30,6 @@ interface StatusBarProps {
 export function StatusBar({
   pathname,
   terminalOpen,
-  onOpenCommand,
   onToggleTerminal,
 }: StatusBarProps) {
   const navItem = navItems.find((item) => {
@@ -65,15 +62,6 @@ export function StatusBar({
         </span>
       </div>
       <div className="flex min-w-0 shrink-0 items-center gap-1 overflow-x-auto sm:gap-3 [&_button]:!text-[length:11px] [&_button]:!text-muted-foreground [&_button:hover]:!text-foreground [&_button]:min-h-[44px] [&_button]:min-w-[44px] [&_button]:touch-manipulation [&_a]:flex [&_a]:min-h-[44px] [&_a]:min-w-[44px] [&_a]:items-center [&_a]:touch-manipulation sm:[&_button]:min-h-[36px] sm:[&_button]:min-w-[36px] sm:[&_a]:min-h-[36px] sm:[&_a]:min-w-[36px]">
-        <button
-          className="flex cursor-pointer items-center gap-1 transition-colors hover:text-foreground"
-          onClick={onOpenCommand}
-          title={`${t("commandPalette")} (${t("commandPaletteShortcut")})`}
-          type="button"
-        >
-          <Command className="size-3.5" />
-          <span className="hidden sm:inline">{t("commandPaletteShortcut")}</span>
-        </button>
         <button
           className="flex cursor-pointer items-center gap-1 transition-colors hover:text-foreground"
           onClick={() => {
