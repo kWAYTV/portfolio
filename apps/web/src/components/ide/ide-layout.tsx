@@ -10,7 +10,7 @@ import { useTranslations } from "next-intl";
 import { ActivityBar } from "./activity-bar";
 import { CommandPalette } from "./command-palette";
 import { EditorTabs } from "./editor-tabs";
-import { MobileFooter } from "./mobile-footer";
+import { MobileMenu } from "./mobile-menu";
 import { Sidebar } from "./sidebar";
 import { StatusBar } from "./status-bar";
 import { TerminalPanel } from "./terminal-panel";
@@ -333,6 +333,13 @@ export function IdeLayout({ children }: IdeLayoutProps) {
         />
         <div className="flex h-dvh flex-col overflow-hidden bg-background">
           <TitleBar
+            leftSlot={
+              <MobileMenu
+                onToggleTerminal={() => setTerminalOpen((p) => !p)}
+                pathname={pathname}
+                terminalOpen={terminalOpen}
+              />
+            }
             maximized={isFullscreen}
             onClose={closeAllTabs}
             onMaximize={toggleFullscreen}
@@ -422,11 +429,6 @@ export function IdeLayout({ children }: IdeLayoutProps) {
             />
           </div>
 
-          <MobileFooter
-            onToggleTerminal={() => setTerminalOpen((p) => !p)}
-            pathname={pathname}
-            terminalOpen={terminalOpen}
-          />
         </div>
       </TooltipProvider>
     </ViewModeProvider>

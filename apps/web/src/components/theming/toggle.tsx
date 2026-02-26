@@ -5,65 +5,19 @@ import { cn } from "@portfolio/ui";
 import { Moon, Sun } from "lucide-react";
 import { useTheme } from "next-themes";
 import { useTranslations } from "next-intl";
-import { useCallback, useRef } from "react";
-import { flushSync } from "react-dom";
 
-interface AnimatedThemeTogglerProps
-  extends React.ComponentPropsWithoutRef<"button"> {
-  duration?: number;
-}
+interface ThemeToggleProps extends React.ComponentPropsWithoutRef<"button"> {}
 
-export const ThemeToggle = ({
-  className,
-  duration = 400,
-  ...props
-}: AnimatedThemeTogglerProps) => {
+export const ThemeToggle = ({ className, ...props }: ThemeToggleProps) => {
   const t = useTranslations("theme");
   const { resolvedTheme, setTheme } = useTheme();
-  const buttonRef = useRef<HTMLButtonElement>(null);
   const isDark = resolvedTheme === "dark";
 
-  const toggleTheme = useCallback(async () => {
-    if (!buttonRef.current) return;
-
+  const handleClick = () => {
     const newTheme = isDark ? "light" : "dark";
-
-    const svt = (document as unknown as { startViewTransition?: (cb: () => void) => { ready: Promise<void> } }).startViewTransition;
-    const transition =
-      typeof svt === "function"
-        ? svt(() => {
-            flushSync(() => setTheme(newTheme));
-          })
-        : { ready: Promise.resolve() };
-
-    await transition.ready;
-
+    setTheme(newTheme);
     analytics.themeToggle(newTheme);
-
-    if (typeof svt === "function" && buttonRef.current) {
-      const { top, left } = buttonRef.current.getBoundingClientRect();
-      const x = left + 12;
-      const y = top + 12;
-      const maxRadius = Math.hypot(
-        Math.max(left, window.innerWidth - left),
-        Math.max(top, window.innerHeight - top)
-      );
-
-      document.documentElement.animate(
-        {
-          clipPath: [
-            `circle(0px at ${x}px ${y}px)`,
-            `circle(${maxRadius}px at ${x}px ${y}px)`,
-          ],
-        },
-        {
-          duration,
-          easing: "ease-in-out",
-          pseudoElement: "::view-transition-new(root)",
-        }
-      );
-    }
-  }, [isDark, setTheme, duration]);
+  };
 
   return (
     <button
@@ -71,8 +25,8 @@ export const ThemeToggle = ({
         "flex cursor-pointer items-center gap-1 text-muted-foreground/50 text-xs transition-colors duration-200 hover:text-foreground sm:text-sm",
         className
       )}
-      onClick={toggleTheme}
-      ref={buttonRef}
+      onClick={handleClick}
+      type="button"
       {...props}
     >
       {isDark ? (

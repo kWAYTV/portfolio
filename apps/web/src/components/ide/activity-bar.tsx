@@ -1,7 +1,6 @@
 "use client";
 
 import { Link } from "@i18n/routing";
-import { flushSync } from "react-dom";
 import {
   cn,
   DropdownMenu,
@@ -162,32 +161,14 @@ export function ActivityBar({
           >
             <DropdownMenuCheckboxItem
               checked={!isDark}
-              onCheckedChange={() => {
-                const newTheme = "light";
-                if (document.startViewTransition) {
-                  document.startViewTransition(() => {
-                    flushSync(() => setTheme(newTheme));
-                  });
-                } else {
-                  setTheme(newTheme);
-                }
-              }}
+              onCheckedChange={() => setTheme("light")}
             >
               <Sun className="size-3.5" />
               {t("lightTheme")}
             </DropdownMenuCheckboxItem>
             <DropdownMenuCheckboxItem
               checked={isDark}
-              onCheckedChange={() => {
-                const newTheme = "dark";
-                if (document.startViewTransition) {
-                  document.startViewTransition(() => {
-                    flushSync(() => setTheme(newTheme));
-                  });
-                } else {
-                  setTheme(newTheme);
-                }
-              }}
+              onCheckedChange={() => setTheme("dark")}
             >
               <Moon className="size-3.5" />
               {t("darkTheme")}
