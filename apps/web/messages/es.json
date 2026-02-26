@@ -113,7 +113,7 @@
     "lightTheme": "Tema claro",
     "darkTheme": "Tema oscuro",
     "themePreset": "Tema",
-    "themePreset_default": "Por defecto",
+    "themePreset_default": "Vercel",
     "themePreset_catppuccin": "Catppuccin",
     "themePreset_violet-bloom": "Violet Bloom",
     "themePreset_caffeine": "Caffeine",
