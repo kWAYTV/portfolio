@@ -8,7 +8,6 @@ import { useCallback, useEffect, useRef, useState } from "react";
 import { navItems } from "@/consts/nav-items";
 import { ActivityBar } from "./activity-bar";
 import { EditorTabs } from "./editor-tabs";
-import { LineNumbers } from "./line-numbers";
 import { MobileNav } from "./mobile-nav";
 import { Sidebar } from "./sidebar";
 import { StatusBar } from "./status-bar";
@@ -71,7 +70,6 @@ export function IdeLayout({ children }: IdeLayoutProps) {
     navItems.map((item) => item.href)
   );
   const closingRef = useRef(false);
-  const editorRef = useRef<HTMLElement>(null);
 
   useEffect(() => {
     if (closingRef.current) {
@@ -154,10 +152,7 @@ export function IdeLayout({ children }: IdeLayoutProps) {
                   />
                 </div>
                 <Breadcrumbs pathname={pathname} />
-                <main className="flex flex-1 overflow-y-auto" ref={editorRef}>
-                  <LineNumbers containerRef={editorRef} />
-                  <div className="min-w-0 flex-1">{children}</div>
-                </main>
+                <main className="flex-1 overflow-y-auto">{children}</main>
               </>
             ) : (
               <div className="hidden flex-1 md:flex">

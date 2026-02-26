@@ -1,32 +1,15 @@
 import { Skeleton } from "@portfolio/ui";
-import { PageContent } from "@/components/shared/page-content";
 
-/** Matches about page structure to avoid content flash. */
 export default function Loading() {
   return (
-    <PageContent>
-      <header className="space-y-1.5">
-        <Skeleton className="h-5 w-24" />
-        <Skeleton className="h-4 w-32" />
-      </header>
-      <Skeleton className="h-12 w-full" />
-      <section className="space-y-3">
-        <Skeleton className="h-4 w-20" />
-        <div className="space-y-3">
-          {[1, 2, 3, 4].map((i) => (
-            <div className="flex gap-3" key={i}>
-              <Skeleton className="size-2 shrink-0 rounded-full" />
-              <div className="flex-1 space-y-1">
-                <div className="flex gap-2">
-                  <Skeleton className="h-3 w-16" />
-                  <Skeleton className="h-3 w-24" />
-                </div>
-                <Skeleton className="h-3 w-full" />
-              </div>
-            </div>
-          ))}
-        </div>
-      </section>
-    </PageContent>
+    <div className="space-y-1 p-6 font-mono text-[13px]">
+      {Array.from({ length: 25 }, (_, i) => (
+        <Skeleton
+          className="h-[20px] rounded-none"
+          key={`loading-${i + 1}`}
+          style={{ width: `${20 + Math.random() * 60}%` }}
+        />
+      ))}
+    </div>
   );
 }

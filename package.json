@@ -35,6 +35,7 @@
   },
   "dependencies": {
     "@dnd-kit/helpers": "^0.3.2",
-    "@dnd-kit/react": "^0.3.2"
+    "@dnd-kit/react": "^0.3.2",
+    "shiki": "^3.23.0"
   }
 }

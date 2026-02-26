@@ -1,8 +1,6 @@
 import { getTranslations, setRequestLocale } from "next-intl/server";
-import { AboutBio } from "@/components/about/about-bio";
-import { AboutHeader } from "@/components/about/about-header";
-import { ExperienceTimeline } from "@/components/about/experience-timeline";
-import { PageContent } from "@/components/shared/page-content";
+import { CodeView } from "@/components/ide/code-view";
+import { aboutCode } from "@/consts/code-content";
 import { createMetadata } from "@/lib/metadata";
 
 export async function generateMetadata({
@@ -26,11 +24,5 @@ export default async function About({ params }: Props) {
   const { locale } = await params;
   setRequestLocale(locale);
 
-  return (
-    <PageContent>
-      <AboutHeader />
-      <AboutBio />
-      <ExperienceTimeline />
-    </PageContent>
-  );
+  return <CodeView code={aboutCode} lang="markdown" />;
 }
