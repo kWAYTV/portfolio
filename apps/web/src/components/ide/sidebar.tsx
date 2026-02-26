@@ -215,7 +215,7 @@ export const Sidebar = memo(function Sidebar({
   };
 
   return (
-    <div className="flex h-full w-56 shrink-0 select-none flex-col overflow-hidden border-border border-r bg-sidebar">
+    <div className="flex h-full w-56 shrink-0 select-none flex-col overflow-hidden border-border border-r bg-sidebar shadow-[var(--shadow-elevation-sm)]">
       <div className="flex items-center justify-between gap-1 px-2 py-2">
         <span className="flex-1 px-2 font-medium text-[11px] text-muted-foreground uppercase tracking-wider">
           {t("explorer")}

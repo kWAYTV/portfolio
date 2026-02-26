@@ -217,23 +217,23 @@
   --scrollbar-thumb: oklch(0.6 0 0 / 0.3);
   --scrollbar-thumb-hover: oklch(0.7 0 0 / 0.5);
 
-  /* Depth: light glow top + dark shadow bottom (raised elements) */
+  /* Depth: stronger for dark mode - brighter top highlight, visible shadow */
   --shadow-elevation-sm:
-    inset 0 1px 0 0 oklch(1 0 0 / 0.04),
-    0 1px 3px 0 oklch(0 0 0 / 0.3),
-    0 2px 6px -1px oklch(0 0 0 / 0.4);
+    inset 0 1px 0 0 oklch(1 0 0 / 0.1),
+    0 1px 2px 0 oklch(0 0 0 / 0.5),
+    0 2px 4px -1px oklch(0 0 0 / 0.6);
   --shadow-elevation-md:
-    inset 0 1px 0 0 oklch(1 0 0 / 0.06),
-    0 2px 4px -1px oklch(0 0 0 / 0.35),
-    0 4px 8px -2px oklch(0 0 0 / 0.45);
+    inset 0 1px 0 0 oklch(1 0 0 / 0.12),
+    0 2px 4px -1px oklch(0 0 0 / 0.55),
+    0 4px 8px -2px oklch(0 0 0 / 0.65);
   --shadow-elevation-lg:
-    inset 0 1px 0 0 oklch(1 0 0 / 0.08),
-    0 4px 6px -1px oklch(0 0 0 / 0.4),
-    0 8px 16px -4px oklch(0 0 0 / 0.5);
-  /* Recessed: dark inset top + light inset bottom */
+    inset 0 1px 0 0 oklch(1 0 0 / 0.14),
+    0 4px 6px -1px oklch(0 0 0 / 0.6),
+    0 8px 16px -4px oklch(0 0 0 / 0.7);
+  /* Recessed: visible on dark bg */
   --shadow-inset-recess:
-    inset 0 2px 4px 0 oklch(0 0 0 / 0.2),
-    inset 0 -1px 0 0 oklch(1 0 0 / 0.03);
+    inset 0 2px 4px 0 oklch(0 0 0 / 0.35),
+    inset 0 -1px 0 0 oklch(1 0 0 / 0.06);
 }
 
 @layer base {
@@ -371,6 +371,11 @@
 ::view-transition-new(root) {
   mix-blend-mode: normal;
   animation: none;
+}
+
+/* IDE dropdowns: depth shadow (theme-aware, visible in dark mode) */
+.ide-dropdown {
+  box-shadow: var(--shadow-elevation-md);
 }
 
 /* VSCode-style IDE dropdowns */
