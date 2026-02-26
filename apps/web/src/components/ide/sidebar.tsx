@@ -2,14 +2,25 @@
 
 import { Link } from "@i18n/routing";
 import {
+  Button,
   ContextMenu,
   ContextMenuContent,
   ContextMenuItem,
   ContextMenuSeparator,
   ContextMenuTrigger,
   cn,
+  Tooltip,
+  TooltipContent,
+  TooltipTrigger,
 } from "@portfolio/ui";
-import { ChevronDown, ChevronRight, Folder, FolderOpen } from "lucide-react";
+import {
+  ChevronDown,
+  ChevronRight,
+  ChevronsDownUp,
+  ChevronsUpDown,
+  Folder,
+  FolderOpen,
+} from "lucide-react";
 import { useTranslations } from "next-intl";
 import { memo, useState } from "react";
 import {
@@ -65,6 +76,16 @@ export const Sidebar = memo(function Sidebar({
       return next;
     });
   };
+
+  const allFolderNames = [
+    "portfolio",
+    ...explorerTree.flatMap((c) =>
+      c.type === "folder" ? getFolderNames(c as FolderItem) : []
+    ),
+  ];
+
+  const handleExpandAll = () => setExpanded(new Set(allFolderNames));
+  const handleCollapseAll = () => setExpanded(new Set());
 
   const copyPath = (path: string) => {
     navigator.clipboard.writeText(path);
@@ -195,10 +216,42 @@ export const Sidebar = memo(function Sidebar({
 
   return (
     <div className="flex h-full w-56 shrink-0 select-none flex-col overflow-hidden border-border border-r bg-sidebar">
-      <div className="px-4 py-2">
-        <span className="font-medium text-[11px] text-muted-foreground uppercase tracking-wider">
+      <div className="flex items-center justify-between gap-1 px-2 py-2">
+        <span className="flex-1 px-2 font-medium text-[11px] text-muted-foreground uppercase tracking-wider">
           {t("explorer")}
         </span>
+        <div className="flex items-center gap-0.5">
+          <Tooltip>
+            <TooltipTrigger asChild>
+              <Button
+                aria-label={t("expandAll")}
+                className="size-6 rounded p-0"
+                onClick={handleExpandAll}
+                size="icon-sm"
+                type="button"
+                variant="ghost"
+              >
+                <ChevronsDownUp className="size-3.5" />
+              </Button>
+            </TooltipTrigger>
+            <TooltipContent side="bottom">{t("expandAll")}</TooltipContent>
+          </Tooltip>
+          <Tooltip>
+            <TooltipTrigger asChild>
+              <Button
+                aria-label={t("collapseAll")}
+                className="size-6 rounded p-0"
+                onClick={handleCollapseAll}
+                size="icon-sm"
+                type="button"
+                variant="ghost"
+              >
+                <ChevronsUpDown className="size-3.5" />
+              </Button>
+            </TooltipTrigger>
+            <TooltipContent side="bottom">{t("collapseAll")}</TooltipContent>
+          </Tooltip>
+        </div>
       </div>
       <div className="flex-1 overflow-y-auto pb-4">
         <div>
