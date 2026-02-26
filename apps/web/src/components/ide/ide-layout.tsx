@@ -4,6 +4,7 @@ import { usePathname, useRouter } from "@i18n/routing";
 import { TooltipProvider } from "@portfolio/ui";
 import { ChevronRight } from "lucide-react";
 import { useCallback, useEffect, useRef, useState } from "react";
+
 import { navItems } from "@/consts/nav-items";
 import { ActivityBar } from "./activity-bar";
 import { EditorTabs } from "./editor-tabs";

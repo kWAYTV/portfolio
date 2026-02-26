@@ -62,7 +62,12 @@ function TabItem({
         <span>{fileName}</span>
       </Link>
       <button
-        className="mr-1.5 ml-1 rounded-sm p-0.5 opacity-40 transition-opacity hover:bg-foreground/10 hover:opacity-100"
+        className={cn(
+          "mr-1.5 ml-1 rounded-sm p-0.5 transition-opacity hover:bg-foreground/10",
+          active
+            ? "opacity-60 hover:opacity-100"
+            : "pointer-events-none opacity-0"
+        )}
         onClick={(e) => {
           e.stopPropagation();
           onClose();
