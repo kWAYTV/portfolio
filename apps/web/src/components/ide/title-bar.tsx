@@ -33,7 +33,7 @@ export function TitleBar({
   const isDark = resolvedTheme === "dark";
 
   return (
-    <div className="flex h-9 shrink-0 select-none items-center border-border border-b bg-secondary px-4">
+    <div className="flex h-9 shrink-0 select-none items-center border-border border-b bg-secondary px-2 sm:px-4">
       <div className="group/dots hidden items-center gap-[7px] py-2 pr-2 md:flex">
         <Tooltip>
           <TooltipTrigger asChild>
@@ -78,8 +78,8 @@ export function TitleBar({
           </TooltipContent>
         </Tooltip>
       </div>
-      <div className="flex flex-1 items-center justify-center gap-2">
-        <span className="font-medium text-muted-foreground text-xs tracking-wide">
+      <div className="flex min-w-0 flex-1 items-center justify-center gap-1 sm:gap-2">
+        <span className="truncate font-medium text-muted-foreground text-xs tracking-wide">
           Martin Vila — Portfolio
         </span>
         <Tooltip>
@@ -95,7 +95,7 @@ export function TitleBar({
           <TooltipContent side="bottom">Open command palette</TooltipContent>
         </Tooltip>
       </div>
-      <div className="hidden items-center gap-0.5 md:flex">
+      <div className="flex items-center gap-0.5">
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
             <button

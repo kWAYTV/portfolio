@@ -28,7 +28,7 @@ export function MobileNav({ pathname }: MobileNavProps) {
   };
 
   return (
-    <nav className="flex h-14 shrink-0 items-center justify-around border-border border-t bg-secondary">
+    <nav className="flex h-14 shrink-0 items-center justify-around border-border border-t bg-secondary pb-[env(safe-area-inset-bottom)]">
       {navItems.map((item) => {
         const Icon = navIcons[item.label];
         const active = isActive(item.href);

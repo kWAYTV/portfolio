@@ -6,12 +6,16 @@ import {
   BookOpen,
   Code2,
   FolderGit2,
+  GitBranch,
   PanelLeft,
   Settings,
   Terminal,
   User,
 } from "lucide-react";
+
 import { navItems } from "@/consts/nav-items";
+
+const PORTFOLIO_REPO_URL = "https://github.com/kWAYTV/portfolio";
 
 const navIcons: Record<string, typeof Code2> = {
   home: Code2,
@@ -87,6 +91,19 @@ export function ActivityBar({
       })}
 
       <div className="mt-auto flex flex-col gap-0">
+        <Tooltip>
+          <TooltipTrigger asChild>
+            <a
+              className="flex size-10 cursor-pointer items-center justify-center text-sidebar-foreground/60 transition-colors hover:text-sidebar-primary"
+              href={PORTFOLIO_REPO_URL}
+              rel="noopener noreferrer"
+              target="_blank"
+            >
+              <GitBranch className="size-5" />
+            </a>
+          </TooltipTrigger>
+          <TooltipContent side="right">Open portfolio repo</TooltipContent>
+        </Tooltip>
         <Tooltip>
           <TooltipTrigger asChild>
             <button

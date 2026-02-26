@@ -69,7 +69,7 @@ function Breadcrumbs({
   }
 
   return (
-    <div className="flex shrink-0 items-center justify-between gap-2 border-border border-b bg-background px-3 py-1.5 text-[11px] text-muted-foreground sm:px-4 sm:py-1">
+      <div className="flex shrink-0 items-center justify-between gap-2 overflow-hidden border-border border-b bg-background px-2 py-1.5 text-[11px] text-muted-foreground sm:px-4 sm:py-1">
       <div className="flex min-w-0 flex-1 items-center gap-1 overflow-hidden">
         {parts.map((part, i) => {
           const key = parts.slice(0, i + 1).join("/");
@@ -100,13 +100,13 @@ function Breadcrumbs({
           </button>
         )}
         <div
-          className="flex rounded-md border border-border bg-muted/30 p-0.5"
+          className="flex shrink-0 rounded-md border border-border bg-muted/30 p-0.5"
           role="group"
           aria-label="View mode"
         >
           <button
             className={cn(
-              "cursor-pointer rounded px-2.5 py-1 text-[11px] font-medium transition-colors sm:px-3",
+              "cursor-pointer touch-manipulation rounded px-2 py-1.5 text-[11px] font-medium transition-colors sm:px-3 sm:py-1",
               viewMode === "preview"
                 ? "bg-background text-foreground shadow-sm"
                 : "text-muted-foreground hover:text-foreground"
@@ -122,7 +122,7 @@ function Breadcrumbs({
           </button>
           <button
             className={cn(
-              "cursor-pointer rounded px-2.5 py-1 text-[11px] font-medium transition-colors sm:px-3",
+              "cursor-pointer touch-manipulation rounded px-2 py-1.5 text-[11px] font-medium transition-colors sm:px-3 sm:py-1",
               viewMode === "code"
                 ? "bg-background text-foreground shadow-sm"
                 : "text-muted-foreground hover:text-foreground"
