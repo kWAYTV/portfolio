@@ -54,7 +54,7 @@ export function IdeLayout({ children }: IdeLayoutProps) {
     splitLeft,
     splitRatio,
     splitRight,
-  } = useEditorGroups();
+  } = useEditorGroups(pathname);
 
   const contentRef = useRef<HTMLDivElement>(null);
   const mainRef = useRef<HTMLElement>(null);

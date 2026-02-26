@@ -11,7 +11,7 @@ import {
 } from "@portfolio/ui";
 import { ChevronDown, ChevronRight, Folder, FolderOpen } from "lucide-react";
 import { useTranslations } from "next-intl";
-import { useState } from "react";
+import { memo, useState } from "react";
 import {
   explorerTree,
   type FolderItem,
@@ -24,7 +24,10 @@ interface SidebarProps {
   pathname: string;
 }
 
-export function Sidebar({ onOpenTab, pathname }: SidebarProps) {
+export const Sidebar = memo(function Sidebar({
+  onOpenTab,
+  pathname,
+}: SidebarProps) {
   const t = useTranslations("ide");
   const [expanded, setExpanded] = useState<Set<string>>(
     new Set(["portfolio", "src", "blog"])
@@ -222,4 +225,4 @@ export function Sidebar({ onOpenTab, pathname }: SidebarProps) {
       </div>
     </div>
   );
-}
+});

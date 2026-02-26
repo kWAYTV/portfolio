@@ -4,6 +4,7 @@ import { Link } from "@i18n/routing";
 import { cn } from "@portfolio/ui";
 import { CheckCircle2, GitBranch, Play, Rss, Terminal } from "lucide-react";
 import { useTranslations } from "next-intl";
+import { memo } from "react";
 import { LanguageSelector } from "@/components/shared/language-selector";
 import { ThemeToggle } from "@/components/theming/toggle";
 import { navItems } from "@/consts/nav-items";
@@ -21,7 +22,7 @@ interface StatusBarProps {
   terminalOpen: boolean;
 }
 
-export function StatusBar({
+export const StatusBar = memo(function StatusBar({
   pathname,
   terminalOpen,
   onToggleTerminal,
@@ -97,4 +98,4 @@ export function StatusBar({
       </div>
     </div>
   );
-}
+});

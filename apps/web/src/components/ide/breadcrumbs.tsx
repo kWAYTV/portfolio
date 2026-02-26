@@ -3,6 +3,7 @@
 import { cn } from "@portfolio/ui";
 import { ChevronRight, Code, Copy, Eye } from "lucide-react";
 import { useTranslations } from "next-intl";
+import { memo } from "react";
 import { navItems } from "@/consts/nav-items";
 import { getBreadcrumbParts } from "@/lib/ide/breadcrumb";
 import type { ViewMode } from "./view-mode";
@@ -14,7 +15,7 @@ interface BreadcrumbsProps {
   viewMode: ViewMode;
 }
 
-export function Breadcrumbs({
+export const Breadcrumbs = memo(function Breadcrumbs({
   pathname,
   viewMode,
   onViewModeChange,
@@ -96,4 +97,4 @@ export function Breadcrumbs({
       </div>
     </div>
   );
-}
+});

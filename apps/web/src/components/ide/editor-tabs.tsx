@@ -16,7 +16,7 @@ import {
 } from "@portfolio/ui";
 import { Code2, PanelRight, X } from "lucide-react";
 import { useTranslations } from "next-intl";
-import React from "react";
+import React, { memo } from "react";
 import { navItems } from "@/consts/nav-items";
 import { FileIcon } from "./file-icon";
 
@@ -130,7 +130,7 @@ interface EditorTabsProps {
   totalGroups?: number;
 }
 
-export function EditorTabs({
+export const EditorTabs = memo(function EditorTabs({
   pathname,
   openTabs,
   onCloseTab,
@@ -344,4 +344,4 @@ export function EditorTabs({
       )}
     </div>
   );
-}
+});

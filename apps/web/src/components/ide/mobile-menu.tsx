@@ -18,7 +18,7 @@ import {
   User,
 } from "lucide-react";
 import { useTranslations } from "next-intl";
-import { useState } from "react";
+import { memo, useState } from "react";
 import { LanguageSelector } from "@/components/shared/language-selector";
 import { ThemeToggle } from "@/components/theming/toggle";
 import { navItems } from "@/consts/nav-items";
@@ -38,7 +38,7 @@ interface MobileMenuProps {
   terminalOpen: boolean;
 }
 
-export function MobileMenu({
+export const MobileMenu = memo(function MobileMenu({
   pathname,
   terminalOpen,
   onToggleTerminal,
@@ -129,4 +129,4 @@ export function MobileMenu({
       </SheetContent>
     </Sheet>
   );
-}
+});
