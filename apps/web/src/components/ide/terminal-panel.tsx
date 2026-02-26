@@ -22,6 +22,7 @@ interface TerminalPanelProps {
 export function TerminalPanel({ onClose, isOpen }: TerminalPanelProps) {
   const [height, setHeight] = useState(DEFAULT_HEIGHT);
   const [isDragging, setIsDragging] = useState(false);
+  const [isHoveringResize, setIsHoveringResize] = useState(false);
   const panelRef = useRef<HTMLDivElement>(null);
 
   const handleMouseDown = useCallback((e: React.MouseEvent) => {
@@ -65,14 +66,24 @@ export function TerminalPanel({ onClose, isOpen }: TerminalPanelProps) {
     >
       <div
         className={cn(
-          "flex cursor-ns-resize items-center justify-center border-border border-b bg-muted/40 py-0.5 transition-colors hover:bg-muted/60",
+          "flex min-h-[6px] items-center justify-center border-border border-b py-0.5 transition-colors",
+          isHoveringResize || isDragging
+            ? "cursor-ns-resize bg-muted/60"
+            : "cursor-default bg-transparent",
           isDragging && "bg-muted/80"
         )}
         onMouseDown={handleMouseDown}
+        onMouseEnter={() => setIsHoveringResize(true)}
+        onMouseLeave={() => setIsHoveringResize(false)}
         role="separator"
         aria-label="Resize terminal"
       >
-        <GripHorizontal className="size-3.5 text-muted-foreground" />
+        <GripHorizontal
+          className={cn(
+            "size-3.5 text-muted-foreground transition-opacity",
+            isHoveringResize || isDragging ? "opacity-100" : "opacity-0"
+          )}
+        />
       </div>
       <div className="flex h-9 shrink-0 items-center justify-between border-border border-b bg-muted/60 px-2">
         <div className="flex items-center gap-2">
