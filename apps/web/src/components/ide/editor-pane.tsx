@@ -1,5 +1,6 @@
 "use client";
 
+import { cn } from "@portfolio/ui";
 import { useLocale } from "next-intl";
 import { useEffect, useRef, useState } from "react";
 import { Breadcrumbs } from "./breadcrumbs";
@@ -113,8 +114,12 @@ export function EditorPane({
             >
               <main
                 ref={mainRef}
-                className="min-h-0 w-full min-w-0 flex-1 overflow-y-auto"
+                className={cn(
+                "min-h-0 w-full min-w-0 flex-1 overflow-y-auto",
+                viewMode === "preview" && "min-h-full"
+              )}
                 data-ide-main
+                {...(viewMode === "preview" && { "data-preview": "" })}
               >
                 {children}
               </main>

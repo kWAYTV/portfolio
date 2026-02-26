@@ -214,21 +214,29 @@
   }
 }
 
-/* IDE: content fills pane, no max-width gap on right */
+/* IDE: content fills pane, no max-width gap on right (code view only) */
 [data-ide-main] {
   width: 100%;
 }
-[data-ide-main] [class*="max-w-"],
-[data-ide-main] .max-w-2xl,
-[data-ide-main] .max-w-4xl,
-[data-ide-main] .max-w-lg,
-[data-ide-main] .max-w-xl,
-[data-ide-main] .max-w-md {
+[data-ide-main]:not([data-preview]) [class*="max-w-"],
+[data-ide-main]:not([data-preview]) .max-w-2xl,
+[data-ide-main]:not([data-preview]) .max-w-4xl,
+[data-ide-main]:not([data-preview]) .max-w-lg,
+[data-ide-main]:not([data-preview]) .max-w-xl,
+[data-ide-main]:not([data-preview]) .max-w-md {
   max-width: none !important;
 }
-[data-ide-main] .mx-auto {
+[data-ide-main]:not([data-preview]) .mx-auto {
   margin-left: 0 !important;
   margin-right: 0 !important;
+}
+/* IDE preview: center content horizontally and vertically */
+[data-ide-main][data-preview] {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 100%;
 }
 
 /* Minimal scrollbar styles */

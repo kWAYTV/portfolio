@@ -446,7 +446,11 @@ export function IdeLayout({ children }: IdeLayoutProps) {
 
   if (isEmbed) {
     return (
-      <main className="min-h-screen w-full overflow-y-auto" data-ide-main>
+      <main
+        className="min-h-screen w-full overflow-y-auto"
+        data-ide-main
+        data-preview
+      >
         {children}
       </main>
     );
@@ -562,8 +566,12 @@ export function IdeLayout({ children }: IdeLayoutProps) {
                       >
                         <main
                           ref={mainRef}
-                          className="min-h-0 w-full min-w-0 flex-1 overflow-y-auto"
+                          className={cn(
+                            "min-h-0 w-full min-w-0 flex-1 overflow-y-auto",
+                            viewMode === "preview" && "min-h-full"
+                          )}
                           data-ide-main
+                          {...(viewMode === "preview" && { "data-preview": "" })}
                         >
                           {children}
                         </main>
