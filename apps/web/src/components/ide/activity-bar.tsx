@@ -10,7 +10,6 @@ import {
 import {
   cn,
   DropdownMenu,
-  DropdownMenuCheckboxItem,
   DropdownMenuContent,
   DropdownMenuItem,
   DropdownMenuRadioGroup,
@@ -94,12 +93,12 @@ export function ActivityBar({
     }
   };
 
-  const handleThemeChange = (theme: "light" | "dark") => {
+  const handleThemeToggle = () => {
     const rect = settingsTriggerRef.current?.getBoundingClientRect();
     const origin = rect
       ? { x: rect.left + rect.width / 2, y: rect.top + rect.height / 2 }
       : undefined;
-    void setThemeWithTransition(theme, origin);
+    void setThemeWithTransition(isDark ? "light" : "dark", origin);
   };
   const isActive = (href: string) => {
     if (href === "/") {
@@ -201,20 +200,19 @@ export function ActivityBar({
             side="right"
             className="ide-dropdown w-44 rounded-sm border border-border bg-popover p-0.5 shadow-lg"
           >
-            <DropdownMenuCheckboxItem
-              checked={!isDark}
-              onCheckedChange={() => handleThemeChange("light")}
-            >
-              <Sun className="size-3.5" />
-              {t("lightTheme")}
-            </DropdownMenuCheckboxItem>
-            <DropdownMenuCheckboxItem
-              checked={isDark}
-              onCheckedChange={() => handleThemeChange("dark")}
-            >
-              <Moon className="size-3.5" />
-              {t("darkTheme")}
-            </DropdownMenuCheckboxItem>
+            <DropdownMenuItem onClick={handleThemeToggle}>
+              {isDark ? (
+                <>
+                  <Sun className="size-3.5" />
+                  {t("lightTheme")}
+                </>
+              ) : (
+                <>
+                  <Moon className="size-3.5" />
+                  {t("darkTheme")}
+                </>
+              )}
+            </DropdownMenuItem>
             <DropdownMenuSeparator className="my-0.5" />
             <DropdownMenuSub>
               <DropdownMenuSubTrigger
