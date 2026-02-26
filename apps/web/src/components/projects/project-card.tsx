@@ -15,18 +15,17 @@ import { GitFork, Star } from "lucide-react";
 import Link from "next/link";
 import { memo, useCallback } from "react";
 import { languageColors } from "@/consts/language-colors";
-import { useCanHover } from "@/hooks/use-can-hover";
 import { ProjectCardDetails } from "./project-card-details";
 
 interface ProjectCardProps {
+  canHover: boolean;
   repo: GitHubRepo;
 }
 
 const cardClassName =
   "group -mx-2 flex flex-col gap-2 rounded-md px-2 py-3 transition-colors duration-200 hover:bg-muted/30 sm:flex-row sm:items-start sm:justify-between sm:gap-4";
 
-function ProjectCardInner({ repo }: ProjectCardProps) {
-  const canHover = useCanHover();
+function ProjectCardInner({ canHover, repo }: ProjectCardProps) {
   const languageColor = repo.language
     ? (languageColors[repo.language] ?? "bg-muted-foreground/50")
     : null;
