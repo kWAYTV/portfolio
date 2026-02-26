@@ -105,6 +105,7 @@ export function IdeLayout({ children }: IdeLayoutProps) {
   const pathname = usePathname();
   const router = useRouter();
   const [sidebarOpen, setSidebarOpen] = useState(true);
+  const [maximized, setMaximized] = useState(false);
   const [viewMode, setViewMode] = useState<ViewMode>("preview");
   const [openTabs, setOpenTabs] = useState<string[]>(() =>
     navItems.map((item) => item.href)
@@ -154,24 +155,40 @@ export function IdeLayout({ children }: IdeLayoutProps) {
     setOpenTabs(newOrder);
   }, []);
 
+  const closeAllTabs = useCallback(() => {
+    closingRef.current = true;
+    setOpenTabs([]);
+  }, []);
+
+  const toggleMaximized = useCallback(() => {
+    setMaximized((prev) => !prev);
+  }, []);
+
   const hasOpenTabs = openTabs.length > 0;
 
   return (
     <ViewModeProvider value={{ viewMode, setViewMode }}>
       <TooltipProvider delayDuration={300}>
         <div className="flex h-dvh flex-col overflow-hidden bg-background">
-          <TitleBar />
+          <TitleBar
+            maximized={maximized}
+            onClose={closeAllTabs}
+            onMaximize={toggleMaximized}
+            onMinimize={toggleSidebar}
+          />
 
           <div className="flex min-h-0 flex-1">
-            <div className="hidden md:block">
-              <ActivityBar
-                onToggleSidebar={toggleSidebar}
-                pathname={pathname}
-                sidebarOpen={sidebarOpen}
-              />
-            </div>
+            {!maximized && (
+              <div className="hidden md:block">
+                <ActivityBar
+                  onToggleSidebar={toggleSidebar}
+                  pathname={pathname}
+                  sidebarOpen={sidebarOpen}
+                />
+              </div>
+            )}
 
-            {sidebarOpen && (
+            {!maximized && sidebarOpen && (
               <div className="hidden md:block">
                 <Sidebar pathname={pathname} />
               </div>

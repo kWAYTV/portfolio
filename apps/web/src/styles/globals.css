@@ -236,34 +236,29 @@
   background-color: var(--scrollbar-thumb-hover);
 }
 
-/* Shiki dual-theme: switch to dark colors when .dark is active */
-html.dark .shiki,
-html.dark .shiki span {
-  font-style: var(--shiki-dark-font-style) !important;
-  font-weight: var(--shiki-dark-font-weight) !important;
-  color: var(--shiki-dark) !important;
-  background-color: var(--shiki-dark-bg) !important;
+/* Syntax highlighting tokens (override with tweakcn or custom themes) */
+:root {
+  --syntax-keyword: #8b5cf6;
+  --syntax-string: #16a34a;
+  --syntax-comment: #a1a1aa;
+  --syntax-number: #ea580c;
+  --syntax-type: #0891b2;
+  --syntax-function: #2563eb;
+  --syntax-tag: #dc2626;
+  --syntax-attribute: #7c3aed;
+  --syntax-punctuation: #71717a;
 }
 
-.code-view pre,
-.code-view .shiki {
-  padding: 0;
-  margin: 0;
-  background-color: transparent !important;
-}
-
-.code-view code {
-  counter-reset: line;
-}
-
-.code-view code > .line::before {
-  display: inline-block;
-  width: 3ch;
-  margin-right: 1.5ch;
-  text-align: right;
-  content: counter(line);
-  counter-increment: line;
-  opacity: 0.3;
+.dark {
+  --syntax-keyword: #c084fc;
+  --syntax-string: #4ade80;
+  --syntax-comment: #52525b;
+  --syntax-number: #fb923c;
+  --syntax-type: #22d3ee;
+  --syntax-function: #60a5fa;
+  --syntax-tag: #f87171;
+  --syntax-attribute: #a78bfa;
+  --syntax-punctuation: #a1a1aa;
 }
 
 /* macOS traffic-light dot glow */

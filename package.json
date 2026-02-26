@@ -34,8 +34,15 @@
     "ultracite": "7.2.3"
   },
   "dependencies": {
+    "@codemirror/lang-javascript": "^6.2.4",
+    "@codemirror/lang-markdown": "^6.5.0",
+    "@codemirror/language": "^6.12.2",
+    "@codemirror/state": "^6.5.4",
+    "@codemirror/view": "^6.39.15",
     "@dnd-kit/helpers": "^0.3.2",
     "@dnd-kit/react": "^0.3.2",
+    "@lezer/highlight": "^1.2.3",
+    "@uiw/react-codemirror": "^4.25.5",
     "shiki": "^3.23.0"
   }
 }
