@@ -17,7 +17,7 @@ export function TitleBar({
   onMaximize,
 }: TitleBarProps) {
   return (
-    <div className="flex h-9 shrink-0 items-center border-border border-b bg-secondary px-4">
+    <div className="flex h-9 shrink-0 select-none items-center border-border border-b bg-secondary px-4">
       <div className="group/dots hidden items-center gap-[7px] py-2 pr-2 md:flex">
         <Tooltip>
           <TooltipTrigger asChild>

@@ -2,7 +2,7 @@
 
 import { usePathname, useRouter } from "@i18n/routing";
 import { cn, TooltipProvider } from "@portfolio/ui";
-import { ChevronRight, Code2, Eye } from "lucide-react";
+import { ChevronRight, Copy, Code2, Eye } from "lucide-react";
 import { useCallback, useEffect, useRef, useState } from "react";
 
 import { navItems } from "@/consts/nav-items";
@@ -24,17 +24,35 @@ function matchNavItem(pathname: string) {
   });
 }
 
+function getBreadcrumbPath(pathname: string): string {
+  const parts = ["portfolio", "src"];
+  const navItem = matchNavItem(pathname);
+  if (navItem) {
+    if (pathname.startsWith("/blog") && pathname !== "/blog") {
+      parts.push("blog");
+      const slug = pathname.replace("/blog/", "");
+      parts.push(`${slug}.mdx`);
+    } else if (navItem.href === "/blog") {
+      parts.push("blog", "index.mdx");
+    } else {
+      parts.push(navItem.fileName);
+    }
+  }
+  return parts.join(" / ");
+}
+
 function Breadcrumbs({
   pathname,
   viewMode,
   onViewModeChange,
+  onCopy,
 }: {
+  onCopy?: () => void;
   onViewModeChange: (mode: ViewMode) => void;
   pathname: string;
   viewMode: ViewMode;
 }) {
   const parts = ["portfolio", "src"];
-
   const navItem = matchNavItem(pathname);
 
   if (navItem) {
@@ -69,10 +87,20 @@ function Breadcrumbs({
           );
         })}
       </div>
-      <div className="flex shrink-0 items-center gap-0.5">
+      <div className="flex shrink-0 select-none items-center gap-0.5">
+        {onCopy && (
+          <button
+            className="rounded p-2 transition-colors touch-manipulation sm:p-1 text-muted-foreground hover:text-foreground"
+            onClick={onCopy}
+            title="Copy content"
+            type="button"
+          >
+            <Copy className="size-3.5" />
+          </button>
+        )}
         <button
           className={cn(
-            "rounded p-2 transition-colors touch-manipulation sm:p-1",
+            "rounded p-2 cursor-pointer transition-colors touch-manipulation sm:p-1",
             viewMode === "preview"
               ? "bg-muted text-foreground"
               : "text-muted-foreground hover:text-foreground"
@@ -85,7 +113,7 @@ function Breadcrumbs({
         </button>
         <button
           className={cn(
-            "rounded p-2 transition-colors touch-manipulation sm:p-1",
+            "rounded p-2 cursor-pointer transition-colors touch-manipulation sm:p-1",
             viewMode === "code"
               ? "bg-muted text-foreground"
               : "text-muted-foreground hover:text-foreground"
@@ -110,8 +138,13 @@ export function IdeLayout({ children }: IdeLayoutProps) {
   const router = useRouter();
   const [sidebarOpen, setSidebarOpen] = useState(true);
   const [terminalOpen, setTerminalOpen] = useState(false);
-  const [maximized, setMaximized] = useState(false);
+  const [isFullscreen, setIsFullscreen] = useState(false);
+  const [pageTitle, setPageTitle] = useState("");
   const [viewMode, setViewMode] = useState<ViewMode>("preview");
+
+  useEffect(() => {
+    setPageTitle(typeof document !== "undefined" ? document.title : "");
+  }, []);
   const [openTabs, setOpenTabs] = useState<string[]>(() =>
     navItems.map((item) => item.href)
   );
@@ -181,8 +214,54 @@ export function IdeLayout({ children }: IdeLayoutProps) {
     setOpenTabs([]);
   }, []);
 
-  const toggleMaximized = useCallback(() => {
-    setMaximized((prev) => !prev);
+  useEffect(() => {
+    const onFullscreenChange = () => {
+      setIsFullscreen(!!document.fullscreenElement);
+    };
+    document.addEventListener("fullscreenchange", onFullscreenChange);
+    return () => document.removeEventListener("fullscreenchange", onFullscreenChange);
+  }, []);
+
+  const toggleFullscreen = useCallback(async () => {
+    try {
+      if (document.fullscreenElement) {
+        await document.exitFullscreen();
+      } else {
+        await document.documentElement.requestFullscreen();
+      }
+    } catch {
+      // Fullscreen not supported or denied
+    }
+  }, []);
+
+  const contentRef = useRef<HTMLDivElement>(null);
+  const mainRef = useRef<HTMLElement>(null);
+
+  const copyContent = useCallback(() => {
+    const title = pageTitle || (typeof document !== "undefined" ? document.title : "");
+    const breadcrumb = getBreadcrumbPath(pathname);
+    const mainText = mainRef.current?.innerText ?? "";
+    const formatted = [title, breadcrumb, mainText].filter(Boolean).join("\n\n");
+    void navigator.clipboard.writeText(formatted);
+  }, [pathname, pageTitle]);
+
+  useEffect(() => {
+    const onKeyDown = (e: KeyboardEvent) => {
+      if ((e.ctrlKey || e.metaKey) && e.key === "a") {
+        e.preventDefault();
+        const el = contentRef.current;
+        if (!el) return;
+        const range = document.createRange();
+        range.selectNodeContents(el);
+        const selection = window.getSelection();
+        if (selection) {
+          selection.removeAllRanges();
+          selection.addRange(range);
+        }
+      }
+    };
+    document.addEventListener("keydown", onKeyDown);
+    return () => document.removeEventListener("keydown", onKeyDown);
   }, []);
 
   const hasOpenTabs = openTabs.length > 0;
@@ -192,26 +271,24 @@ export function IdeLayout({ children }: IdeLayoutProps) {
       <TooltipProvider delayDuration={300}>
         <div className="flex h-dvh flex-col overflow-hidden bg-background">
           <TitleBar
-            maximized={maximized}
+            maximized={isFullscreen}
             onClose={closeAllTabs}
-            onMaximize={toggleMaximized}
+            onMaximize={toggleFullscreen}
             onMinimize={toggleSidebar}
           />
 
           <div className="flex min-h-0 flex-1">
-            {!maximized && (
-              <div className="hidden md:block">
-                <ActivityBar
+            <div className="hidden md:block">
+              <ActivityBar
                   onToggleSidebar={toggleSidebar}
                   onToggleTerminal={() => setTerminalOpen((p) => !p)}
                   pathname={pathname}
                   sidebarOpen={sidebarOpen}
                   terminalOpen={terminalOpen}
                 />
-              </div>
-            )}
+            </div>
 
-            {!maximized && sidebarOpen && (
+            {sidebarOpen && (
               <div className="hidden md:block">
                 <Sidebar onOpenTab={openTab} pathname={pathname} />
               </div>
@@ -228,12 +305,27 @@ export function IdeLayout({ children }: IdeLayoutProps) {
                       pathname={pathname}
                     />
                   </div>
-                  <Breadcrumbs
-                    onViewModeChange={setViewMode}
-                    pathname={pathname}
-                    viewMode={viewMode}
-                  />
-                  <main className="min-h-0 flex-1 overflow-y-auto">{children}</main>
+                  <div
+                    ref={contentRef}
+                    className="flex min-w-0 flex-1 flex-col overflow-hidden outline-none"
+                    tabIndex={-1}
+                  >
+                    <span className="sr-only" aria-hidden>
+                      {pageTitle}
+                    </span>
+                    <Breadcrumbs
+                      onCopy={copyContent}
+                      onViewModeChange={setViewMode}
+                      pathname={pathname}
+                      viewMode={viewMode}
+                    />
+                    <main
+                      ref={mainRef}
+                      className="min-h-0 flex-1 overflow-y-auto"
+                    >
+                      {children}
+                    </main>
+                  </div>
                 </>
               ) : (
                 <div className="hidden flex-1 md:flex">
