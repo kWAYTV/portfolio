@@ -1,8 +1,6 @@
 "use client";
 
-import { move } from "@dnd-kit/helpers";
-import { DragDropProvider, DragOverlay, useDragOperation } from "@dnd-kit/react";
-import { useSortable } from "@dnd-kit/react/sortable";
+import React from "react";
 import { Link } from "@i18n/routing";
 import {
   cn,
@@ -12,7 +10,7 @@ import {
   EmptyMedia,
   EmptyTitle,
 } from "@portfolio/ui";
-import { Code2, X } from "lucide-react";
+import { Code2, GripVertical, X } from "lucide-react";
 import { navItems } from "@/consts/nav-items";
 import { FileIcon } from "./file-icon";
 
@@ -23,7 +21,9 @@ interface TabItemProps {
   href: string;
   index: number;
   onClose: () => void;
-  isOverlay?: boolean;
+  onDragEnd: () => void;
+  onDragOver: (index: number) => void;
+  dragOverIndex: number | null;
 }
 
 function TabItem({
@@ -33,34 +33,45 @@ function TabItem({
   href,
   index,
   onClose,
-  isOverlay = false,
+  onDragEnd,
+  onDragOver,
+  dragOverIndex,
 }: TabItemProps) {
-  const { ref, isDragging } = useSortable({ id: href, index });
+  const isDropTarget = dragOverIndex === index;
 
   return (
     <div
       className={cn(
-        "group relative flex select-none items-center whitespace-nowrap border-border border-r text-xs transition-[color,transform] duration-200",
+        "group relative flex select-none items-center whitespace-nowrap border-border border-r text-xs transition-colors",
         active
           ? "bg-background text-foreground"
           : "bg-muted text-muted-foreground hover:bg-background/50",
-        isDragging && !isOverlay && "z-10 opacity-50",
-        isOverlay && "z-50 cursor-grabbing shadow-lg"
+        isDropTarget && "border-l-2 border-l-primary"
       )}
-      ref={isOverlay ? undefined : ref}
     >
-      {active && !isDragging && (
+      {active && (
         <span className="absolute inset-x-0 top-0 h-[2px] bg-primary" />
       )}
-      <Link
-        className="flex cursor-grab items-center gap-2 py-1 pr-1 pl-3 active:cursor-grabbing"
-        draggable={false}
-        href={href}
-        onClick={(e) => {
-          if (isDragging) {
-            e.preventDefault();
-          }
+      <div
+        className="flex cursor-grab items-center py-1 pl-1 pr-0.5 active:cursor-grabbing"
+        draggable
+        onDragEnd={onDragEnd}
+        onDragOver={(e) => {
+          e.preventDefault();
+          e.dataTransfer.dropEffect = "move";
+          onDragOver(index);
         }}
+        onDragStart={(e) => {
+          e.dataTransfer.effectAllowed = "move";
+          e.dataTransfer.setData("text/plain", href);
+          e.dataTransfer.setData("application/json", JSON.stringify({ href, index }));
+        }}
+      >
+        <GripVertical className="size-3 shrink-0 opacity-50" />
+      </div>
+      <Link
+        className="flex flex-1 items-center gap-2 py-1 pr-1 pl-2"
+        href={href}
       >
         <FileIcon className="size-3.5" type={fileType} />
         <span>{fileName}</span>
@@ -81,37 +92,6 @@ function TabItem({
         <X className="size-3" />
       </button>
     </div>
-  );
-}
-
-function TabOverlayContent({
-  pathname,
-  orderedItems,
-  onCloseTab,
-}: {
-  pathname: string;
-  orderedItems: Array<{ href: string; fileName: string; fileType: string }>;
-  onCloseTab: (href: string) => void;
-}) {
-  const source = useDragOperation().source;
-  if (!source) return null;
-
-  const item = orderedItems.find((i) => i.href === source.id);
-  if (!item) return null;
-
-  const isActive =
-    item.href === "/" ? pathname === "/" : pathname.startsWith(item.href);
-
-  return (
-    <TabItem
-      active={isActive}
-      fileName={item.fileName}
-      fileType={item.fileType}
-      href={item.href}
-      index={0}
-      isOverlay
-      onClose={() => onCloseTab(item.href)}
-    />
   );
 }
 
@@ -140,6 +120,37 @@ export function EditorTabs({
     return item ? [item] : [];
   });
 
+  const [dragOverIndex, setDragOverIndex] = React.useState<number | null>(null);
+
+  const handleDragEnd = React.useCallback(() => {
+    setDragOverIndex(null);
+  }, []);
+
+  const handleDragOver = React.useCallback((index: number) => {
+    setDragOverIndex(index);
+  }, []);
+
+  const handleDrop = React.useCallback(
+    (e: React.DragEvent, dropIndex: number) => {
+      e.preventDefault();
+      let dragIndex: number;
+      try {
+        const data = JSON.parse(e.dataTransfer.getData("application/json"));
+        dragIndex = data.index;
+      } catch {
+        return;
+      }
+      if (dragIndex === dropIndex) return;
+
+      const next = [...openTabs];
+      const [removed] = next.splice(dragIndex, 1);
+      next.splice(dropIndex, 0, removed);
+      onReorder(next);
+      setDragOverIndex(null);
+    },
+    [openTabs, onReorder]
+  );
+
   if (orderedItems.length === 0) {
     return (
       <div className="flex flex-1 flex-col">
@@ -160,38 +171,30 @@ export function EditorTabs({
   }
 
   return (
-    <DragDropProvider
-      onDragEnd={(event) => {
-        if (event.canceled) return;
-        const next = move(openTabs, event);
-        if (next !== openTabs) {
-          onReorder(next);
-        }
-      }}
-    >
-      <div className="flex h-[35px] shrink-0 items-stretch overflow-x-auto bg-muted">
-        {orderedItems.map((item, index) => (
+    <div className="flex h-[35px] shrink-0 items-stretch overflow-x-auto bg-muted">
+      {orderedItems.map((item, index) => (
+        <div
+          key={item.href}
+          onDragOver={(e) => {
+            e.preventDefault();
+            e.dataTransfer.dropEffect = "move";
+            setDragOverIndex(index);
+          }}
+          onDrop={(e) => handleDrop(e, index)}
+        >
           <TabItem
             active={isActive(item.href)}
+            dragOverIndex={dragOverIndex}
             fileName={item.fileName}
             fileType={item.fileType}
             href={item.href}
             index={index}
-            key={item.href}
             onClose={() => onCloseTab(item.href)}
+            onDragEnd={handleDragEnd}
+            onDragOver={handleDragOver}
           />
-        ))}
-      </div>
-      <DragOverlay
-        disabled={(source) => !source}
-        dropAnimation={{ duration: 200 }}
-      >
-        <TabOverlayContent
-          onCloseTab={onCloseTab}
-          orderedItems={orderedItems}
-          pathname={pathname}
-        />
-      </DragOverlay>
-    </DragDropProvider>
+        </div>
+      ))}
+    </div>
   );
 }
