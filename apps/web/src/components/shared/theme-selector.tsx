@@ -14,10 +14,18 @@ import {
 } from "@portfolio/ui";
 import { Palette } from "lucide-react";
 import { useTranslations } from "next-intl";
+import { useTheme } from "next-themes";
 
 export function ThemeSelector() {
   const { preset, setPreset } = useThemePreset();
+  const { resolvedTheme } = useTheme();
   const t = useTranslations("ide");
+  const tTheme = useTranslations("theme");
+
+  const isDark = resolvedTheme === "dark";
+  const variantLabel =
+    preset === "default" ? "" : ` ${isDark ? tTheme("dark") : tTheme("light")}`;
+  const displayName = `${t(`themePreset_${preset}`)}${variantLabel}`;
 
   return (
     <DropdownMenu>
@@ -28,7 +36,7 @@ export function ThemeSelector() {
           type="button"
         >
           <Palette className="size-3.5 shrink-0" />
-          <span aria-hidden>{t(`themePreset_${preset}`)}</span>
+          <span aria-hidden>{displayName}</span>
         </button>
       </DropdownMenuTrigger>
       <DropdownMenuContent
