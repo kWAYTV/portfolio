@@ -68,7 +68,7 @@ export default async function LocaleLayout({ children, params }: Props) {
     <>
       <UmamiScript />
       <NextIntlClientProvider messages={messages}>
-        <RootProvider i18n={provider(locale)}>
+        <RootProvider i18n={provider(locale)} search={{ enabled: false }}>
           <NuqsAdapter>
             <ThemeProvider
               attribute="class"

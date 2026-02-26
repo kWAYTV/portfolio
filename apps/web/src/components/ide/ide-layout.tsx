@@ -305,6 +305,7 @@ export function IdeLayout({ children }: IdeLayoutProps) {
             onClose={closeAllTabs}
             onMaximize={toggleFullscreen}
             onMinimize={toggleSidebar}
+            onOpenCommand={() => setCommandOpen(true)}
           />
 
           <div className="flex min-h-0 flex-1">
