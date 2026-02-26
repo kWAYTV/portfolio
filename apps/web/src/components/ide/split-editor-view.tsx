@@ -2,7 +2,7 @@
 
 import React from "react";
 import { GripVertical } from "lucide-react";
-import { useCallback, useEffect, useRef, useState } from "react";
+import { useCallback, useRef } from "react";
 import { EditorPane } from "./editor-pane";
 import type { EditorGroup } from "./split-editor-types";
 import type { ViewMode } from "./view-mode";
@@ -50,42 +50,37 @@ export function SplitEditorView({
   viewMode,
   onViewModeChange,
 }: SplitEditorViewProps) {
-  const [isDragging, setIsDragging] = useState(false);
   const containerRef = useRef<HTMLDivElement>(null);
 
-  const handleMouseDown = useCallback(
-    (e: React.MouseEvent) => {
+  const handlePointerDown = useCallback(
+    (e: React.PointerEvent) => {
       e.preventDefault();
-      setIsDragging(true);
-    },
-    []
-  );
+      const target = e.currentTarget as HTMLElement;
+      target.setPointerCapture(e.pointerId);
+      document.body.style.cursor = "col-resize";
+      document.body.style.userSelect = "none";
 
-  useEffect(() => {
-    if (!isDragging) return;
-    const onMouseMove = (e: MouseEvent) => {
-      const el = containerRef.current;
-      if (!el) return;
-      const rect = el.getBoundingClientRect();
-      const ratio = (e.clientX - rect.left) / rect.width;
-      setSplitRatio(Math.max(0.2, Math.min(0.8, ratio)));
-    };
-    const onMouseUp = () => {
-      setIsDragging(false);
-      document.body.style.cursor = "";
-      document.body.style.userSelect = "";
-    };
-    document.addEventListener("mousemove", onMouseMove);
-    document.addEventListener("mouseup", onMouseUp);
-    document.body.style.cursor = "col-resize";
-    document.body.style.userSelect = "none";
-    return () => {
-      document.removeEventListener("mousemove", onMouseMove);
-      document.removeEventListener("mouseup", onMouseUp);
-      document.body.style.cursor = "";
-      document.body.style.userSelect = "";
-    };
-  }, [isDragging, setSplitRatio]);
+      const onPointerMove = (moveEvent: PointerEvent) => {
+        const el = containerRef.current;
+        if (!el) return;
+        const rect = el.getBoundingClientRect();
+        const ratio = (moveEvent.clientX - rect.left) / rect.width;
+        setSplitRatio(Math.max(0.2, Math.min(0.8, ratio)));
+      };
+
+      const onPointerUp = () => {
+        target.releasePointerCapture(e.pointerId);
+        document.body.style.cursor = "";
+        document.body.style.userSelect = "";
+        target.removeEventListener("pointermove", onPointerMove);
+        target.removeEventListener("pointerup", onPointerUp);
+      };
+
+      target.addEventListener("pointermove", onPointerMove);
+      target.addEventListener("pointerup", onPointerUp);
+    },
+    [setSplitRatio]
+  );
 
   return (
     <div
@@ -126,7 +121,7 @@ export function SplitEditorView({
           {i < editorGroups.length - 1 && (
             <div
               className="flex w-2 shrink-0 cursor-col-resize items-center justify-center border-border border-x bg-muted/30 transition-colors hover:bg-muted/60"
-              onMouseDown={handleMouseDown}
+              onPointerDown={handlePointerDown}
               role="separator"
               title="Drag to resize"
             >
