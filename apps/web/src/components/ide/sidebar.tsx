@@ -55,10 +55,11 @@ const explorerTree: TreeItem[] = [
 ];
 
 interface SidebarProps {
+  onOpenTab?: (href: string) => void;
   pathname: string;
 }
 
-export function Sidebar({ pathname }: SidebarProps) {
+export function Sidebar({ onOpenTab, pathname }: SidebarProps) {
   const [expanded, setExpanded] = useState<Set<string>>(
     new Set(["portfolio", "src", "blog"])
   );
@@ -138,7 +139,11 @@ export function Sidebar({ pathname }: SidebarProps) {
 
     if (item.href) {
       return (
-        <Link href={item.href} key={key}>
+        <Link
+          href={item.href}
+          key={key}
+          onClick={() => onOpenTab?.(item.href!)}
+        >
           {content}
         </Link>
       );

@@ -154,6 +154,10 @@ export function IdeLayout({ children }: IdeLayoutProps) {
     [pathname, openTabs, router]
   );
 
+  const openTab = useCallback((href: string) => {
+    setOpenTabs((prev) => (prev.includes(href) ? prev : [...prev, href]));
+  }, []);
+
   const reorderTabs = useCallback((newOrder: string[]) => {
     setOpenTabs(newOrder);
   }, []);
@@ -193,7 +197,7 @@ export function IdeLayout({ children }: IdeLayoutProps) {
 
             {!maximized && sidebarOpen && (
               <div className="hidden md:block">
-                <Sidebar pathname={pathname} />
+                <Sidebar onOpenTab={openTab} pathname={pathname} />
               </div>
             )}
 
