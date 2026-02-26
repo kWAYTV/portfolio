@@ -2,7 +2,14 @@
 
 import { Link } from "@i18n/routing";
 import { cn } from "@portfolio/ui";
-import { CheckCircle2, GitBranch, Play, Rss, Terminal } from "lucide-react";
+import {
+  CheckCircle2,
+  Command,
+  GitBranch,
+  Play,
+  Rss,
+  Terminal,
+} from "lucide-react";
 import { LanguageSelector } from "@/components/shared/language-selector";
 import { ThemeToggle } from "@/components/theming/toggle";
 import { navItems } from "@/consts/nav-items";
@@ -15,6 +22,7 @@ const fileTypeLabels: Record<string, string> = {
 };
 
 interface StatusBarProps {
+  onOpenCommand: () => void;
   onToggleTerminal: () => void;
   pathname: string;
   terminalOpen: boolean;
@@ -23,6 +31,7 @@ interface StatusBarProps {
 export function StatusBar({
   pathname,
   terminalOpen,
+  onOpenCommand,
   onToggleTerminal,
 }: StatusBarProps) {
   const navItem = navItems.find((item) => {
@@ -48,6 +57,15 @@ export function StatusBar({
         </span>
       </div>
       <div className="[&_button]:!text-[length:11px] [&_button]:!text-muted-foreground [&_button:hover]:!text-foreground [&_button]:min-h-[36px] [&_button]:min-w-[36px] [&_button]:touch-manipulation [&_a]:min-h-[36px] [&_a]:min-w-[36px] [&_a]:flex [&_a]:items-center [&_a]:touch-manipulation flex items-center gap-2 sm:gap-3">
+        <button
+          className="flex cursor-pointer items-center gap-1 transition-colors hover:text-foreground"
+          onClick={onOpenCommand}
+          title="Command palette (⌘K)"
+          type="button"
+        >
+          <Command className="size-3.5" />
+          <span className="hidden sm:inline">⌘K</span>
+        </button>
         <button
           className="flex cursor-pointer items-center gap-1 transition-colors hover:text-foreground"
           onClick={() => {

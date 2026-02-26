@@ -7,6 +7,7 @@ import { useCallback, useEffect, useRef, useState } from "react";
 
 import { navItems } from "@/consts/nav-items";
 import { ActivityBar } from "./activity-bar";
+import { CommandPalette } from "./command-palette";
 import { EditorTabs } from "./editor-tabs";
 import { MobileNav } from "./mobile-nav";
 import { Sidebar } from "./sidebar";
@@ -150,6 +151,7 @@ export function IdeLayout({ children }: IdeLayoutProps) {
   const router = useRouter();
   const [sidebarOpen, setSidebarOpen] = useState(true);
   const [terminalOpen, setTerminalOpen] = useState(false);
+  const [commandOpen, setCommandOpen] = useState(false);
   const [isFullscreen, setIsFullscreen] = useState(false);
   const [pageTitle, setPageTitle] = useState("");
   const [viewMode, setViewMode] = useState<ViewMode>("preview");
@@ -271,16 +273,32 @@ export function IdeLayout({ children }: IdeLayoutProps) {
           selection.addRange(range);
         }
       }
+      if ((e.ctrlKey || e.metaKey) && e.key === "b") {
+        e.preventDefault();
+        toggleSidebar();
+      }
+      if ((e.ctrlKey || e.metaKey) && e.key === "j") {
+        e.preventDefault();
+        setTerminalOpen((p) => !p);
+      }
     };
     document.addEventListener("keydown", onKeyDown);
     return () => document.removeEventListener("keydown", onKeyDown);
-  }, []);
+  }, [toggleSidebar]);
 
   const hasOpenTabs = openTabs.length > 0;
 
   return (
     <ViewModeProvider value={{ viewMode, setViewMode }}>
       <TooltipProvider delayDuration={300}>
+        <CommandPalette
+          onOpenChange={setCommandOpen}
+          onToggleSidebar={toggleSidebar}
+          onToggleTerminal={() => setTerminalOpen((p) => !p)}
+          open={commandOpen}
+          sidebarOpen={sidebarOpen}
+          terminalOpen={terminalOpen}
+        />
         <div className="flex h-dvh flex-col overflow-hidden bg-background">
           <TitleBar
             maximized={isFullscreen}
@@ -357,6 +375,7 @@ export function IdeLayout({ children }: IdeLayoutProps) {
           </div>
 
           <StatusBar
+            onOpenCommand={() => setCommandOpen(true)}
             onToggleTerminal={() => setTerminalOpen((p) => !p)}
             pathname={pathname}
             terminalOpen={terminalOpen}
