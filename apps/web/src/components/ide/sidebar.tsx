@@ -2,65 +2,22 @@
 
 import { Link } from "@i18n/routing";
 import {
-  cn,
   ContextMenu,
   ContextMenuContent,
   ContextMenuItem,
   ContextMenuSeparator,
   ContextMenuTrigger,
+  cn,
 } from "@portfolio/ui";
-import { useTranslations } from "next-intl";
 import { ChevronDown, ChevronRight, Folder, FolderOpen } from "lucide-react";
+import { useTranslations } from "next-intl";
 import { useState } from "react";
+import {
+  explorerTree,
+  type FolderItem,
+  type TreeItem,
+} from "@/consts/explorer-tree";
 import { FileIcon } from "./file-icon";
-
-interface FileItem {
-  fileType: string;
-  href?: string;
-  name: string;
-  type: "file";
-}
-
-interface FolderItem {
-  children: TreeItem[];
-  name: string;
-  type: "folder";
-}
-
-type TreeItem = FileItem | FolderItem;
-
-const explorerTree: TreeItem[] = [
-  { name: ".env", type: "file", fileType: "env" },
-  { name: "package.json", type: "file", fileType: "json" },
-  {
-    name: "src",
-    type: "folder",
-    children: [
-      { name: "welcome.tsx", type: "file", fileType: "tsx", href: "/" },
-      { name: "about.md", type: "file", fileType: "md", href: "/about" },
-      {
-        name: "projects.ts",
-        type: "file",
-        fileType: "ts",
-        href: "/projects",
-      },
-      {
-        name: "blog",
-        type: "folder",
-        children: [
-          {
-            name: "index.mdx",
-            type: "file",
-            fileType: "mdx",
-            href: "/blog",
-          },
-        ],
-      },
-    ],
-  },
-  { name: "tsconfig.json", type: "file", fileType: "json" },
-  { name: "README.md", type: "file", fileType: "md" },
-];
 
 interface SidebarProps {
   onOpenTab?: (href: string) => void;
@@ -112,9 +69,7 @@ export function Sidebar({ onOpenTab, pathname }: SidebarProps) {
 
   const openInNewWindow = (href: string) => {
     const url =
-      typeof window !== "undefined"
-        ? `${window.location.origin}${href}`
-        : href;
+      typeof window !== "undefined" ? `${window.location.origin}${href}` : href;
     window.open(url, "_blank", "noopener,noreferrer");
   };
 
@@ -201,10 +156,7 @@ export function Sidebar({ onOpenTab, pathname }: SidebarProps) {
       return (
         <ContextMenu key={key}>
           <ContextMenuTrigger asChild>
-            <Link
-              href={item.href}
-              onClick={() => onOpenTab?.(item.href!)}
-            >
+            <Link href={item.href} onClick={() => onOpenTab?.(item.href!)}>
               {content}
             </Link>
           </ContextMenuTrigger>
@@ -212,9 +164,7 @@ export function Sidebar({ onOpenTab, pathname }: SidebarProps) {
             <ContextMenuItem onClick={() => onOpenTab?.(item.href!)}>
               {t("open")}
             </ContextMenuItem>
-            <ContextMenuItem
-              onClick={() => openInNewWindow(item.href!)}
-            >
+            <ContextMenuItem onClick={() => openInNewWindow(item.href!)}>
               {t("openInNewWindow")}
             </ContextMenuItem>
             <ContextMenuSeparator />

@@ -3,6 +3,7 @@
 import type { GitHubRepo } from "@portfolio/github";
 import { cn } from "@portfolio/ui";
 import { ExternalLink, GitFork, Star } from "lucide-react";
+import { memo } from "react";
 import { languageColors } from "@/consts/language-colors";
 
 interface ProjectCardDetailsProps {
@@ -12,7 +13,7 @@ interface ProjectCardDetailsProps {
   showOpenLink?: boolean;
 }
 
-export function ProjectCardDetails({
+function ProjectCardDetailsInner({
   onOpenClick,
   repo,
   showOpenLink = false,
@@ -66,7 +67,7 @@ export function ProjectCardDetails({
       </div>
       {showOpenLink && (
         <a
-          className="mt-3 flex min-h-[44px] w-full items-center justify-center gap-1.5 rounded-md border border-border bg-muted/50 px-3 py-2 text-xs font-medium text-foreground/80 transition-colors hover:bg-muted hover:text-foreground"
+          className="mt-3 flex min-h-[44px] w-full items-center justify-center gap-1.5 rounded-md border border-border bg-muted/50 px-3 py-2 font-medium text-foreground/80 text-xs transition-colors hover:bg-muted hover:text-foreground"
           href={repo.html_url}
           onClick={onOpenClick}
           rel="noopener noreferrer"
@@ -79,3 +80,5 @@ export function ProjectCardDetails({
     </div>
   );
 }
+
+export const ProjectCardDetails = memo(ProjectCardDetailsInner);

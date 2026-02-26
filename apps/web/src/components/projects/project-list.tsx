@@ -8,7 +8,7 @@ import {
   parseAsStringLiteral,
   useQueryStates,
 } from "nuqs";
-import { useMemo } from "react";
+import { useCallback, useMemo } from "react";
 import { ProjectCard } from "@/components/projects/project-card";
 import {
   ProjectFilters,
@@ -32,7 +32,7 @@ interface ProjectListProps {
 export function ProjectList({ repos }: ProjectListProps) {
   const t = useTranslations("projects");
   const [{ q, sort, page }, setParams] = useQueryStates(projectSearchParams, {
-    shallow: false,
+    shallow: true,
   });
 
   const filteredAndSorted = useMemo(() => {
@@ -77,17 +77,26 @@ export function ProjectList({ repos }: ProjectListProps) {
     startIndex + ITEMS_PER_PAGE
   );
 
-  const handleSearchChange = (value: string) => {
-    setParams({ q: value || null, page: 1 });
-  };
+  const handleSearchChange = useCallback(
+    (value: string) => {
+      setParams({ q: value || null, page: 1 });
+    },
+    [setParams]
+  );
 
-  const handleSortChange = (value: SortOption) => {
-    setParams({ sort: value, page: 1 });
-  };
+  const handleSortChange = useCallback(
+    (value: SortOption) => {
+      setParams({ sort: value, page: 1 });
+    },
+    [setParams]
+  );
 
-  const handlePageChange = (newPage: number) => {
-    setParams({ page: newPage });
-  };
+  const handlePageChange = useCallback(
+    (newPage: number) => {
+      setParams({ page: newPage });
+    },
+    [setParams]
+  );
 
   return (
     <div className="space-y-3">

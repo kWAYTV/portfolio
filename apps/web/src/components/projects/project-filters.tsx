@@ -10,6 +10,7 @@ import {
 } from "@portfolio/ui";
 import { Search } from "lucide-react";
 import { useTranslations } from "next-intl";
+import { memo } from "react";
 
 export const sortOptions = ["stars", "updated", "name", "created"] as const;
 export type SortOption = (typeof sortOptions)[number];
@@ -21,7 +22,7 @@ interface ProjectFiltersProps {
   sort: SortOption;
 }
 
-export function ProjectFilters({
+export const ProjectFilters = memo(function ProjectFilters({
   search,
   sort,
   onSearchChange,
@@ -62,4 +63,4 @@ export function ProjectFilters({
       </Select>
     </div>
   );
-}
+});

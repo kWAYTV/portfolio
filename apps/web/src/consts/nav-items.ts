@@ -1,4 +1,11 @@
-export const navItems = [
+export interface NavItem {
+  fileName: string;
+  fileType: string;
+  href: string;
+  label: string;
+}
+
+export const navItems: NavItem[] = [
   { href: "/", label: "home", fileName: "welcome.tsx", fileType: "tsx" },
   { href: "/about", label: "about", fileName: "about.md", fileType: "md" },
   {
