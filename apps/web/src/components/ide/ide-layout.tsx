@@ -153,12 +153,7 @@ export function IdeLayout({ children }: IdeLayoutProps) {
             onMinimize={isFullscreen ? toggleFullscreen : toggleSidebar}
           />
 
-          <div
-            className={cn(
-              "flex min-h-0",
-              viewMode === "preview" ? "flex-none" : "flex-1"
-            )}
-          >
+          <div className="flex min-h-0 flex-1">
             <div className="hidden md:block">
               <ActivityBar
                 onOpenCommand={() => setCommandOpen(true)}
@@ -224,10 +219,7 @@ export function IdeLayout({ children }: IdeLayoutProps) {
                       />
                     </div>
                     <div
-                      className={cn(
-                        "flex w-full min-w-0 flex-col overflow-hidden outline-none",
-                        viewMode === "preview" ? "flex-none" : "flex-1"
-                      )}
+                      className="flex w-full min-w-0 flex-1 flex-col overflow-hidden outline-none"
                       ref={contentRef}
                       tabIndex={-1}
                     >
@@ -247,10 +239,8 @@ export function IdeLayout({ children }: IdeLayoutProps) {
                       >
                         <main
                           className={cn(
-                            "min-h-0 w-full min-w-0 overflow-y-auto",
-                            viewMode === "preview"
-                              ? "flex-none"
-                              : "flex-1"
+                            "min-h-0 w-full min-w-0 flex-1 overflow-y-auto",
+                            viewMode === "preview" && "min-h-full"
                           )}
                           data-ide-main
                           ref={mainRef}
