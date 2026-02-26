@@ -10,7 +10,12 @@ import {
 
 const STORAGE_KEY = "ide-theme-preset";
 
-export const THEME_PRESETS = ["default", "catppuccin"] as const;
+export const THEME_PRESETS = [
+  "default",
+  "catppuccin",
+  "violet-bloom",
+  "caffeine",
+] as const;
 export type ThemePreset = (typeof THEME_PRESETS)[number];
 
 interface ThemePresetContextValue {

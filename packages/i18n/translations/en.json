@@ -119,6 +119,8 @@
 		"themePreset": "Theme",
 		"themePreset_default": "Default",
 		"themePreset_catppuccin": "Catppuccin",
+		"themePreset_violet-bloom": "Violet Bloom",
+		"themePreset_caffeine": "Caffeine",
 		"language": "Language",
 		"close": "Close",
 		"closeOthers": "Close Others",
