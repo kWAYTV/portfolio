@@ -60,7 +60,7 @@ export function EditorPane({
   useEffect(() => {
     const path = activeHref === "/" ? "" : activeHref;
     const base = `${window.location.origin}/${locale}${path}`;
-    setIframeSrc(`${base}?embed=1`);
+    setIframeSrc(`${base}?embed=true`);
   }, [locale, activeHref]);
 
   const handleTabClick = (href?: string) => {

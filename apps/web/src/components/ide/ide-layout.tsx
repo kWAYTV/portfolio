@@ -2,7 +2,7 @@
 
 import { usePathname, useRouter } from "@i18n/routing";
 import { cn, TooltipProvider } from "@portfolio/ui";
-import { useSearchParams } from "next/navigation";
+import { parseAsBoolean, useQueryState } from "nuqs";
 import { useCallback, useEffect, useRef, useState } from "react";
 
 import { navItems } from "@/consts/nav-items";
@@ -51,8 +51,8 @@ interface IdeLayoutProps {
 export function IdeLayout({ children }: IdeLayoutProps) {
   const pathname = usePathname();
   const router = useRouter();
-  const searchParams = useSearchParams();
-  const isEmbed = searchParams.get("embed") === "1";
+  const [embed] = useQueryState("embed", parseAsBoolean.withDefault(false));
+  const isEmbed = embed;
   const [sidebarOpen, setSidebarOpen] = useState(true);
   const [terminalOpen, setTerminalOpen] = useState(false);
   const [commandOpen, setCommandOpen] = useState(false);
