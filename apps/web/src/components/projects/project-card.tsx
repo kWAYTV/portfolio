@@ -11,8 +11,9 @@ import {
   PopoverContent,
   PopoverTrigger,
 } from "@portfolio/ui";
-import { ExternalLink, GitFork, Star } from "lucide-react";
+import { GitFork, Star } from "lucide-react";
 import Link from "next/link";
+import { memo, useCallback } from "react";
 import { languageColors } from "@/consts/language-colors";
 import { useCanHover } from "@/hooks/use-can-hover";
 import { ProjectCardDetails } from "./project-card-details";
@@ -24,11 +25,15 @@ interface ProjectCardProps {
 const cardClassName =
   "group -mx-2 flex flex-col gap-2 rounded-md px-2 py-3 transition-colors duration-200 hover:bg-muted/30 sm:flex-row sm:items-start sm:justify-between sm:gap-4";
 
-export function ProjectCard({ repo }: ProjectCardProps) {
+function ProjectCardInner({ repo }: ProjectCardProps) {
   const canHover = useCanHover();
   const languageColor = repo.language
     ? (languageColors[repo.language] ?? "bg-muted-foreground/50")
     : null;
+
+  const handleAnalyticsClick = useCallback(() => {
+    analytics.projectClick(repo.name);
+  }, [repo.name]);
 
   if (canHover) {
     return (
@@ -37,11 +42,11 @@ export function ProjectCard({ repo }: ProjectCardProps) {
           <Link
             className={cardClassName}
             href={repo.html_url}
-            onClick={() => analytics.projectClick(repo.name)}
+            onClick={handleAnalyticsClick}
             rel="noopener noreferrer"
             target="_blank"
           >
-            <ProjectCardSummary repo={repo} languageColor={languageColor} />
+            <ProjectCardSummary languageColor={languageColor} repo={repo} />
           </Link>
         </HoverCardTrigger>
         <HoverCardContent align="start" className="w-80" side="top">
@@ -58,7 +63,7 @@ export function ProjectCard({ repo }: ProjectCardProps) {
           className={cn(cardClassName, "w-full cursor-pointer text-left")}
           type="button"
         >
-          <ProjectCardSummary repo={repo} languageColor={languageColor} />
+          <ProjectCardSummary languageColor={languageColor} repo={repo} />
         </button>
       </PopoverTrigger>
       <PopoverContent
@@ -67,7 +72,7 @@ export function ProjectCard({ repo }: ProjectCardProps) {
         side="top"
       >
         <ProjectCardDetails
-          onOpenClick={() => analytics.projectClick(repo.name)}
+          onOpenClick={handleAnalyticsClick}
           repo={repo}
           showOpenLink
         />
@@ -75,6 +80,8 @@ export function ProjectCard({ repo }: ProjectCardProps) {
     </Popover>
   );
 }
+
+export const ProjectCard = memo(ProjectCardInner);
 
 function ProjectCardSummary({
   repo,

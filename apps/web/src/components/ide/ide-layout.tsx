@@ -3,7 +3,7 @@
 import { usePathname } from "@i18n/routing";
 import { cn, TooltipProvider } from "@portfolio/ui";
 import { parseAsBoolean, useQueryState } from "nuqs";
-import { useCallback, useEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 
 import { navItems } from "@/consts/nav-items";
 import { useEditorGroups } from "@/hooks/use-editor-groups";
@@ -113,6 +113,11 @@ export function IdeLayout({ children }: IdeLayoutProps) {
   const hasOpenTabs = editorGroups.some((g) => g.tabs.length > 0);
   const hasSplit = editorGroups.length > 1;
 
+  const viewModeValue = useMemo(
+    () => ({ viewMode, setViewMode }),
+    [viewMode]
+  );
+
   if (isEmbed) {
     return (
       <main
@@ -126,7 +131,7 @@ export function IdeLayout({ children }: IdeLayoutProps) {
   }
 
   return (
-    <ViewModeProvider value={{ viewMode, setViewMode }}>
+    <ViewModeProvider value={viewModeValue}>
       <TooltipProvider delayDuration={300}>
         <CommandPalette
           onOpenChange={setCommandOpen}
