@@ -225,7 +225,7 @@ export function ActivityBar({
                 {t("language")}
               </DropdownMenuSubTrigger>
               <DropdownMenuSubContent
-                className="ide-dropdown min-w-[8rem] rounded-sm border border-border bg-popover p-0.5 shadow-lg"
+                className="ide-dropdown w-44 rounded-sm border border-border bg-popover p-0.5 shadow-lg"
                 sideOffset={4}
               >
                 <DropdownMenuRadioGroup
