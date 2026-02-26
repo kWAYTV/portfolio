@@ -98,10 +98,12 @@ export function IdeLayout({ children }: IdeLayoutProps) {
       const isActive =
         href === "/" ? pathname === "/" : pathname.startsWith(href);
 
-      if (isActive && next.length > 0) {
+      if (isActive) {
         closingRef.current = true;
-        const target = next[Math.min(idx, next.length - 1)];
-        router.push(target);
+        if (next.length > 0) {
+          const target = next[Math.min(idx, next.length - 1)];
+          router.push(target);
+        }
       }
     },
     [pathname, openTabs, router]
