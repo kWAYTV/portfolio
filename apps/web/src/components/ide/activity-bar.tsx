@@ -38,7 +38,7 @@ export function ActivityBar({
   };
 
   return (
-    <div className="flex w-12 shrink-0 flex-col items-center border-[var(--ide-border)] border-r bg-[var(--ide-activity-bar)] py-1">
+    <div className="flex h-full w-12 shrink-0 flex-col items-center border-[var(--ide-border)] border-r bg-[var(--ide-activity-bar)] py-1">
       <Tooltip>
         <TooltipTrigger asChild>
           <button
