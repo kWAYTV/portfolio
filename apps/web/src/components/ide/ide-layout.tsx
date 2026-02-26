@@ -10,7 +10,7 @@ import { useTranslations } from "next-intl";
 import { ActivityBar } from "./activity-bar";
 import { CommandPalette } from "./command-palette";
 import { EditorTabs } from "./editor-tabs";
-import { MobileNav } from "./mobile-nav";
+import { MobileFooter } from "./mobile-footer";
 import { Sidebar } from "./sidebar";
 import { StatusBar } from "./status-bar";
 import { TerminalPanel } from "./terminal-panel";
@@ -384,15 +384,19 @@ export function IdeLayout({ children }: IdeLayoutProps) {
             </div>
           </div>
 
-          <StatusBar
+          <div className="hidden md:block">
+            <StatusBar
+              onToggleTerminal={() => setTerminalOpen((p) => !p)}
+              pathname={pathname}
+              terminalOpen={terminalOpen}
+            />
+          </div>
+
+          <MobileFooter
             onToggleTerminal={() => setTerminalOpen((p) => !p)}
             pathname={pathname}
             terminalOpen={terminalOpen}
           />
-
-          <div className="md:hidden">
-            <MobileNav pathname={pathname} />
-          </div>
         </div>
       </TooltipProvider>
     </ViewModeProvider>
