@@ -25,7 +25,7 @@ export const Breadcrumbs = memo(function Breadcrumbs({
   const parts = getBreadcrumbParts(pathname, navItems);
 
   return (
-    <div className="flex shrink-0 items-center justify-between gap-2 overflow-hidden border-border border-b bg-background px-2 py-1.5 text-[11px] text-muted-foreground shadow-[var(--shadow-elevation-sm)] sm:px-4 sm:py-1">
+    <div className="flex shrink-0 items-center justify-between gap-2 overflow-hidden border-border border-b bg-background px-2 py-1.5 text-[11px] text-muted-foreground sm:px-4 sm:py-1">
       <div className="flex min-w-0 flex-1 items-center gap-1 overflow-hidden">
         {parts.map((part, i) => {
           const key = parts.slice(0, i + 1).join("/");
@@ -69,9 +69,9 @@ export const Breadcrumbs = memo(function Breadcrumbs({
         >
           <button
             className={cn(
-              "flex cursor-pointer items-center justify-center rounded p-1.5 transition-all",
+              "flex cursor-pointer items-center justify-center rounded p-1.5 transition-colors",
               viewMode === "preview"
-                ? "bg-background text-foreground shadow-[var(--shadow-elevation-sm)]"
+                ? "bg-muted/80 text-foreground"
                 : "text-muted-foreground hover:bg-muted/40 hover:text-foreground"
             )}
             onClick={() => onViewModeChange("preview")}
@@ -82,9 +82,9 @@ export const Breadcrumbs = memo(function Breadcrumbs({
           </button>
           <button
             className={cn(
-              "flex cursor-pointer items-center justify-center rounded p-1.5 transition-all",
+              "flex cursor-pointer items-center justify-center rounded p-1.5 transition-colors",
               viewMode === "code"
-                ? "bg-background text-foreground shadow-[var(--shadow-elevation-sm)]"
+                ? "bg-muted/80 text-foreground"
                 : "text-muted-foreground hover:bg-muted/40 hover:text-foreground"
             )}
             onClick={() => onViewModeChange("code")}
