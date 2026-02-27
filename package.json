@@ -16,7 +16,8 @@
     "lint": "turbo run lint",
     "check": "ultracite check",
     "fix": "ultracite fix",
-    "prepare": "husky"
+    "prepare": "husky",
+    "bump": "pnpm dlx bumpp -w -r -f"
   },
   "dependencies": {
     "@repo/env": "workspace:*",
@@ -26,6 +27,7 @@
   "devDependencies": {
     "@biomejs/biome": "2.4.0",
     "@repo/config": "workspace:*",
+    "bumpp": "^10.4.1",
     "husky": "latest",
     "lint-staged": "latest",
     "turbo": "^2.6.3",
