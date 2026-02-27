@@ -15,7 +15,6 @@ import { TitleBar } from "@/components/ide/layout/title-bar";
 import { ViewModeProvider } from "@/components/ide/shared/view-mode";
 import { Sidebar } from "@/components/ide/sidebar/sidebar";
 import { SourceControlView } from "@/components/ide/sidebar/source-control-view";
-import { TerminalPanel } from "@/components/ide/terminal/terminal-panel";
 import { navItems } from "@/consts/nav-items";
 import { useIdeKeyboardShortcuts } from "@/hooks/use-ide-keyboard-shortcuts";
 import { useIsMobile } from "@/hooks/use-is-mobile";
@@ -24,12 +23,29 @@ import { copyContentToClipboard } from "@/lib/ide/breadcrumb";
 import { useEditorGroupsStore } from "@/stores/editor-groups-store";
 import { useIdeLayoutStore } from "@/stores/ide-layout-store";
 
+/** Lazy: command palette, keyboard-driven, rarely needed on initial load */
 const CommandPalette = dynamic(
   () =>
     import("@/components/ide/command/command-palette").then((m) => ({
       default: m.CommandPalette,
     })),
   { ssr: false }
+);
+
+/** Lazy: terminal loads only when opened, reduces initial bundle */
+const TerminalPanel = dynamic(
+  () =>
+    import("@/components/ide/terminal/terminal-panel").then((m) => ({
+      default: m.TerminalPanel,
+    })),
+  {
+    loading: () => (
+      <div className="flex h-[200px] shrink-0 items-center justify-center border-border border-t bg-muted/20">
+        <div className="h-4 w-24 animate-pulse rounded bg-muted" />
+      </div>
+    ),
+    ssr: false,
+  }
 );
 
 interface IdeLayoutProps {
@@ -191,10 +207,12 @@ export function IdeLayout({ children }: IdeLayoutProps) {
               >
                 {children}
               </IdeEditorArea>
-              <TerminalPanel
-                isOpen={layout.terminalOpen}
-                onClose={() => layout.setTerminalOpen(false)}
-              />
+              {layout.terminalOpen && (
+                <TerminalPanel
+                  isOpen={layout.terminalOpen}
+                  onClose={() => layout.setTerminalOpen(false)}
+                />
+              )}
             </div>
           </div>
 
