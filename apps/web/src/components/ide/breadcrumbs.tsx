@@ -6,7 +6,7 @@ import { useTranslations } from "next-intl";
 import { memo } from "react";
 import { navItems } from "@/consts/nav-items";
 import { getBreadcrumbParts } from "@/lib/ide/breadcrumb";
-import type { ViewMode } from "./view-mode";
+import type { ViewMode } from "@/components/ide/view-mode";
 
 interface BreadcrumbsProps {
   onViewModeChange: (mode: ViewMode) => void;

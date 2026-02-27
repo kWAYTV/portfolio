@@ -2,7 +2,7 @@ import { blog } from "fumadocs-mdx:collections/server";
 import { loader } from "fumadocs-core/source";
 import { toFumadocsSource } from "fumadocs-mdx/runtime/server";
 import { cache } from "react";
-import { fumadocsI18n } from "./i18n";
+import { fumadocsI18n } from "@/lib/i18n";
 
 export const blogSource = loader({
   baseUrl: "/blog",

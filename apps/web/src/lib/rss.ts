@@ -2,7 +2,7 @@ import { Feed } from "feed";
 import { unstable_cache } from "next/cache";
 import { baseUrl, siteName } from "@/lib/metadata";
 import { blogSource } from "@/lib/source";
-import { fumadocsI18n } from "./i18n";
+import { fumadocsI18n } from "@/lib/i18n";
 
 export async function getRSS(): Promise<string> {
   return await unstable_cache(

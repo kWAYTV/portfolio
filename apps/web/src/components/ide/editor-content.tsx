@@ -1,6 +1,6 @@
 "use client";
 
-import { useViewMode } from "./view-mode";
+import { useViewMode } from "@/components/ide/view-mode";
 
 interface EditorContentProps {
   preview: React.ReactNode;

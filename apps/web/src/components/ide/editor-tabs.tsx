@@ -18,7 +18,7 @@ import { Code2, PanelRight, X } from "lucide-react";
 import { useTranslations } from "next-intl";
 import React, { memo } from "react";
 import { navItems } from "@/consts/nav-items";
-import { FileIcon } from "./file-icon";
+import { FileIcon } from "@/components/ide/file-icon";
 
 interface TabItemProps {
   active: boolean;

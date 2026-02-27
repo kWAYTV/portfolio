@@ -15,8 +15,8 @@ import {
   getGhostSuggestion,
   getTabCompletions,
   MOCK_CWD,
-} from "./terminal/commands";
-import { TerminalPrompt } from "./terminal/prompt";
+} from "@/components/ide/terminal/commands";
+import { TerminalPrompt } from "@/components/ide/terminal/prompt";
 
 interface TerminalLine {
   content: string;
