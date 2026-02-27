@@ -42,12 +42,12 @@ Copy `apps/web/.env.example` to `apps/web/.env.local`. All variables are optiona
 TURBO_TELEMETRY_DISABLED=1
 
 # GitHub API token (increases rate limits for projects page)
-GITHUB_TOKEN=
+GITHUB_TOKEN=ghp_1234567890
 
 # Umami Analytics (self-hosted or cloud)
 NEXT_PUBLIC_UMAMI_URL=https://your-umami-instance.com/script.js
 NEXT_PUBLIC_UMAMI_WEBSITE_ID=your-website-id
 
 # Site URL
-NEXT_PUBLIC_SITE_URL=
+NEXT_PUBLIC_SITE_URL=https://localhost:3000
 ```
