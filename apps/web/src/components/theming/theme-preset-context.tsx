@@ -16,6 +16,7 @@ export const THEME_PRESETS = [
   "violet-bloom",
   "caffeine",
   "mono",
+  "deep-purple",
 ] as const;
 export type ThemePreset = (typeof THEME_PRESETS)[number];
 
