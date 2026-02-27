@@ -10,37 +10,31 @@ import {
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 
-/** File icons using shadcn theme vars. tsx/ts/mdx distinct. */
+/** File icons – VS Code–style colored palette. */
 const fileTypeConfig: Record<string, { Icon: typeof File; color: string }> = {
-  // Code – tsx primary, ts muted
-  tsx: { Icon: FileCode2, color: "text-primary" },
-  ts: { Icon: FileCode2, color: "text-muted-foreground" },
-  jsx: { Icon: FileCode2, color: "text-chart-1" },
-  js: { Icon: FileCode2, color: "text-muted-foreground" },
-  css: { Icon: FileCode2, color: "text-chart-2" },
-  scss: { Icon: FileCode2, color: "text-chart-2" },
-  sass: { Icon: FileCode2, color: "text-chart-2" },
-  html: { Icon: FileCode2, color: "text-muted-foreground" },
-  vue: { Icon: FileCode2, color: "text-chart-1" },
-  svelte: { Icon: FileCode2, color: "text-chart-1" },
-  // Data/config
-  json: { Icon: FileJson2, color: "text-chart-1" },
-  yaml: { Icon: FileJson2, color: "text-chart-2" },
-  yml: { Icon: FileJson2, color: "text-chart-2" },
-  env: { Icon: FileKey, color: "text-chart-1" },
-  // Docs – mdx amber (chart-1), md muted
-  md: { Icon: FileText, color: "text-muted-foreground" },
-  mdx: { Icon: FileText, color: "text-chart-1" },
-  // Diff / version control
-  diff: { Icon: GitCompare, color: "text-chart-2" },
-  patch: { Icon: GitCompare, color: "text-chart-2" },
-  // Assets
-  svg: { Icon: FileImage, color: "text-chart-1" },
-  png: { Icon: FileImage, color: "text-muted-foreground" },
-  jpg: { Icon: FileImage, color: "text-muted-foreground" },
-  webp: { Icon: FileImage, color: "text-muted-foreground" },
-  // Lock files
-  lock: { Icon: FileLock2, color: "text-muted-foreground" },
+  tsx: { Icon: FileCode2, color: "var(--file-icon-tsx)" },
+  ts: { Icon: FileCode2, color: "var(--file-icon-ts)" },
+  jsx: { Icon: FileCode2, color: "var(--file-icon-jsx)" },
+  js: { Icon: FileCode2, color: "var(--file-icon-js)" },
+  css: { Icon: FileCode2, color: "var(--file-icon-css)" },
+  scss: { Icon: FileCode2, color: "var(--file-icon-css)" },
+  sass: { Icon: FileCode2, color: "var(--file-icon-css)" },
+  html: { Icon: FileCode2, color: "var(--file-icon-mdx)" },
+  vue: { Icon: FileCode2, color: "var(--file-icon-env)" },
+  svelte: { Icon: FileCode2, color: "var(--file-icon-mdx)" },
+  json: { Icon: FileJson2, color: "var(--file-icon-json)" },
+  yaml: { Icon: FileJson2, color: "var(--file-icon-json)" },
+  yml: { Icon: FileJson2, color: "var(--file-icon-json)" },
+  env: { Icon: FileKey, color: "var(--file-icon-env)" },
+  md: { Icon: FileText, color: "var(--file-icon-md)" },
+  mdx: { Icon: FileText, color: "var(--file-icon-mdx)" },
+  diff: { Icon: GitCompare, color: "var(--file-icon-diff)" },
+  patch: { Icon: GitCompare, color: "var(--file-icon-diff)" },
+  svg: { Icon: FileImage, color: "var(--file-icon-mdx)" },
+  png: { Icon: FileImage, color: "var(--file-icon-env)" },
+  jpg: { Icon: FileImage, color: "var(--file-icon-env)" },
+  webp: { Icon: FileImage, color: "var(--file-icon-env)" },
+  lock: { Icon: FileLock2, color: "var(--muted-foreground)" },
 };
 
 /** Derive file type from filename for icon lookup. */
@@ -74,8 +68,14 @@ export function FileIcon({ className, name, type }: FileIconProps) {
   const resolvedType = type ?? (name ? getFileTypeFromName(name) : "unknown");
   const config = fileTypeConfig[resolvedType] ?? {
     Icon: File,
-    color: "text-muted-foreground",
+    color: "var(--muted-foreground)",
   };
   const { Icon, color } = config;
-  return <Icon className={cn("size-4 shrink-0", color, className)} />;
+  const isVar = color.startsWith("var(");
+  return (
+    <Icon
+      className={cn("size-4 shrink-0", !isVar && color, className)}
+      style={isVar ? { color } : undefined}
+    />
+  );
 }
