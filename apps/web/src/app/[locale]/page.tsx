@@ -18,7 +18,7 @@ export default async function HomePage({
           <p>Home</p>
         </main>
       }
-      source={<CodeView code={welcomeCode} lang="typescript" />}
+      source={<CodeView code={welcomeCode} lang="tsx" />}
     />
   );
 }
