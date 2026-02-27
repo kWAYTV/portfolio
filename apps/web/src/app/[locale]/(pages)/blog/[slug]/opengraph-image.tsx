@@ -1,4 +1,3 @@
-import { cacheLife } from "next/cache";
 import { ImageResponse } from "next/og";
 import { siteName } from "@/lib/metadata";
 import { getCachedBlogPage } from "@/lib/source";
@@ -12,9 +11,6 @@ export default async function Image({
 }: {
   params: Promise<{ locale: string; slug: string }>;
 }) {
-  "use cache";
-  cacheLife("weeks");
-
   const { locale, slug } = await params;
   const post = getCachedBlogPage(slug, locale);
 
