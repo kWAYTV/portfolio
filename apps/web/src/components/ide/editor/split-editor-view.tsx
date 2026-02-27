@@ -1,12 +1,11 @@
 "use client";
 
-import { cn } from "@portfolio/ui";
-import { GripVertical } from "lucide-react";
-import { useTranslations } from "next-intl";
-import React, { useCallback, useRef, useState } from "react";
+import React from "react";
 import { EditorPane } from "@/components/ide/editor/editor-pane";
+import { SplitDivider } from "@/components/ide/editor/split-divider";
 import type { EditorGroup } from "@/components/ide/shared/split-editor-types";
 import type { ViewMode } from "@/components/ide/shared/view-mode";
+import { useSplitResize } from "@/hooks/use-split-resize";
 
 interface SplitEditorViewProps {
   activeGroupIndex: number;
@@ -55,48 +54,13 @@ export function SplitEditorView({
   viewMode,
   onViewModeChange,
 }: SplitEditorViewProps) {
-  const t = useTranslations("ide");
-  const containerRef = useRef<HTMLDivElement>(null);
-  const [hoveredDividerIndex, setHoveredDividerIndex] = useState<number | null>(
-    null
-  );
-  const [draggingDividerIndex, setDraggingDividerIndex] = useState<
-    number | null
-  >(null);
-
-  const handlePointerDown = useCallback(
-    (dividerIndex: number) => (e: React.PointerEvent) => {
-      e.preventDefault();
-      setDraggingDividerIndex(dividerIndex);
-      const target = e.currentTarget as HTMLElement;
-      target.setPointerCapture(e.pointerId);
-      document.body.style.cursor = "col-resize";
-      document.body.style.userSelect = "none";
-
-      const onPointerMove = (moveEvent: PointerEvent) => {
-        const el = containerRef.current;
-        if (!el) {
-          return;
-        }
-        const rect = el.getBoundingClientRect();
-        const ratio = (moveEvent.clientX - rect.left) / rect.width;
-        setSplitRatio(Math.max(0.2, Math.min(0.8, ratio)));
-      };
-
-      const onPointerUp = () => {
-        setDraggingDividerIndex(null);
-        target.releasePointerCapture(e.pointerId);
-        document.body.style.cursor = "";
-        document.body.style.userSelect = "";
-        target.removeEventListener("pointermove", onPointerMove);
-        target.removeEventListener("pointerup", onPointerUp);
-      };
-
-      target.addEventListener("pointermove", onPointerMove);
-      target.addEventListener("pointerup", onPointerUp);
-    },
-    [setSplitRatio]
-  );
+  const {
+    containerRef,
+    draggingDividerIndex,
+    handlePointerDown,
+    hoveredDividerIndex,
+    setHoveredDividerIndex,
+  } = useSplitResize({ setSplitRatio });
 
   return (
     <div
@@ -135,28 +99,12 @@ export function SplitEditorView({
             </EditorPane>
           </div>
           {i < editorGroups.length - 1 && (
-            <div
-              className={cn(
-                "-mx-2 z-10 flex w-2 shrink-0 items-center justify-center transition-colors duration-150",
-                hoveredDividerIndex === i || draggingDividerIndex === i
-                  ? "cursor-col-resize border-border border-x bg-muted/60"
-                  : "cursor-default border-transparent bg-transparent"
-              )}
+            <SplitDivider
+              isActive={hoveredDividerIndex === i || draggingDividerIndex === i}
               onPointerDown={handlePointerDown(i)}
               onPointerEnter={() => setHoveredDividerIndex(i)}
               onPointerLeave={() => setHoveredDividerIndex(null)}
-              role="separator"
-              title={t("dragToResize")}
-            >
-              <GripVertical
-                className={cn(
-                  "size-4 text-muted-foreground transition-opacity duration-150",
-                  hoveredDividerIndex === i || draggingDividerIndex === i
-                    ? "opacity-100"
-                    : "opacity-0"
-                )}
-              />
-            </div>
+            />
           )}
         </React.Fragment>
       ))}

@@ -1,7 +1,7 @@
 "use client";
 
 import { usePathname } from "@i18n/routing";
-import { cn, TooltipProvider } from "@portfolio/ui";
+import { TooltipProvider } from "@portfolio/ui";
 import { parseAsBoolean, useQueryState } from "nuqs";
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 
@@ -10,14 +10,12 @@ import { useEditorGroups } from "@/hooks/use-editor-groups";
 import { useIdeKeyboardShortcuts } from "@/hooks/use-ide-keyboard-shortcuts";
 import { getBreadcrumbPath } from "@/lib/ide/breadcrumb";
 import { ActivityBar } from "@/components/ide/layout/activity-bar";
-import { Breadcrumbs } from "@/components/ide/editor/breadcrumbs";
 import { CommandPalette } from "@/components/ide/command/command-palette";
-import { EditorContentContextMenu } from "@/components/ide/editor/editor-content-context-menu";
-import { EditorTabs } from "@/components/ide/editor/editor-tabs";
+import { IdeEditorArea } from "@/components/ide/layout/ide-editor-area";
+import { IdeLayoutEmbed } from "@/components/ide/layout/ide-layout-embed";
 import { MobileMenu } from "@/components/ide/layout/mobile-menu";
 import { Sidebar } from "@/components/ide/sidebar/sidebar";
 import { SourceControlView } from "@/components/ide/sidebar/source-control-view";
-import { SplitEditorView } from "@/components/ide/editor/split-editor-view";
 import { StatusBar } from "@/components/ide/layout/status-bar";
 import { TerminalPanel } from "@/components/ide/terminal/terminal-panel";
 import { TitleBar } from "@/components/ide/layout/title-bar";
@@ -121,15 +119,7 @@ export function IdeLayout({ children, commits = [] }: IdeLayoutProps) {
   const viewModeValue = useMemo(() => ({ viewMode, setViewMode }), [viewMode]);
 
   if (isEmbed) {
-    return (
-      <main
-        className="min-h-screen w-full overflow-y-auto"
-        data-ide-main
-        data-preview
-      >
-        {children}
-      </main>
-    );
+    return <IdeLayoutEmbed>{children}</IdeLayoutEmbed>;
   }
 
   return (
@@ -183,103 +173,31 @@ export function IdeLayout({ children, commits = [] }: IdeLayoutProps) {
             )}
 
             <div className="flex w-full min-w-0 flex-1 flex-col overflow-hidden">
-              {hasOpenTabs ? (
-                hasSplit ? (
-                  <SplitEditorView
-                    activeGroupIndex={activeGroupIndex}
-                    closeAllTabs={closeAllTabs}
-                    closeGroup={closeGroup}
-                    closeOtherTabs={closeOtherTabs}
-                    closeTab={closeTab}
-                    closeTabsToRight={closeTabsToRight}
-                    copyContent={copyContent}
-                    editorGroups={editorGroups}
-                    focusGroup={focusGroup}
-                    mainRef={mainRef}
-                    moveTabToGroup={moveTabToGroup}
-                    onViewModeChange={setViewMode}
-                    reorderTabs={reorderTabs}
-                    setSplitRatio={setSplitRatio}
-                    splitLeft={splitLeft}
-                    splitRatio={splitRatio}
-                    splitRight={splitRight}
-                    viewMode={viewMode}
-                  >
-                    {children}
-                  </SplitEditorView>
-                ) : (
-                  <>
-                    <div className="hidden md:block">
-                      <EditorTabs
-                        groupIndex={0}
-                        onCloseAll={() => closeAllTabs()}
-                        onCloseOtherTabs={(href) => closeOtherTabs(0, href)}
-                        onCloseTab={(href) => closeTab(0, href)}
-                        onCloseTabsToRight={(href) => closeTabsToRight(0, href)}
-                        onDropFromOtherGroup={(href, src) =>
-                          moveTabToGroup(0, href, src)
-                        }
-                        onReorder={(order) => reorderTabs(0, order)}
-                        onSplitLeft={(href) => splitLeft(0, href)}
-                        onSplitRight={(href) => splitRight(0, href)}
-                        onTabClick={(href) => focusGroup(0, href)}
-                        openTabs={editorGroups[0]?.tabs ?? []}
-                        pathname={pathname}
-                        showSplitButtons={true}
-                        totalGroups={1}
-                      />
-                    </div>
-                    <div
-                      className="flex w-full min-w-0 flex-1 flex-col overflow-hidden outline-none"
-                      ref={contentRef}
-                      tabIndex={-1}
-                    >
-                      <span aria-hidden className="sr-only">
-                        {pageTitle}
-                      </span>
-                      <Breadcrumbs
-                        onViewModeChange={setViewMode}
-                        pathname={pathname}
-                        viewMode={viewMode}
-                      />
-                      <EditorContentContextMenu
-                        onCopy={copyContent}
-                        onViewModeChange={setViewMode}
-                        viewMode={viewMode}
-                      >
-                        <main
-                          className={cn(
-                            "min-h-0 w-full min-w-0 flex-1 overflow-y-auto",
-                            viewMode === "preview" && "min-h-full"
-                          )}
-                          data-ide-main
-                          ref={mainRef}
-                          {...(viewMode === "preview" && {
-                            "data-preview": "",
-                          })}
-                        >
-                          {children}
-                        </main>
-                      </EditorContentContextMenu>
-                    </div>
-                  </>
-                )
-              ) : (
-                <div className="hidden flex-1 md:flex">
-                  <EditorTabs
-                    onCloseAll={() => closeAllTabs()}
-                    onCloseGroup={
-                      editorGroups.length > 1 ? (i) => closeGroup(i) : undefined
-                    }
-                    onCloseOtherTabs={(href) => closeOtherTabs(0, href)}
-                    onCloseTab={(href) => closeTab(0, href)}
-                    onCloseTabsToRight={(href) => closeTabsToRight(0, href)}
-                    onReorder={(order) => reorderTabs(0, order)}
-                    openTabs={[]}
-                    pathname={pathname}
-                  />
-                </div>
-              )}
+              <IdeEditorArea
+                activeGroupIndex={activeGroupIndex}
+                closeAllTabs={closeAllTabs}
+                closeGroup={closeGroup}
+                closeOtherTabs={closeOtherTabs}
+                closeTab={closeTab}
+                closeTabsToRight={closeTabsToRight}
+                contentRef={contentRef}
+                copyContent={copyContent}
+                editorGroups={editorGroups}
+                focusGroup={focusGroup}
+                mainRef={mainRef}
+                moveTabToGroup={moveTabToGroup}
+                onViewModeChange={setViewMode}
+                pageTitle={pageTitle}
+                pathname={pathname}
+                reorderTabs={reorderTabs}
+                setSplitRatio={setSplitRatio}
+                splitLeft={splitLeft}
+                splitRatio={splitRatio}
+                splitRight={splitRight}
+                viewMode={viewMode}
+              >
+                {children}
+              </IdeEditorArea>
               <TerminalPanel
                 isOpen={terminalOpen}
                 onClose={() => setTerminalOpen(false)}

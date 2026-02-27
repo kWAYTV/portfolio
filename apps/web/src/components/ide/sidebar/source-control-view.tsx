@@ -8,25 +8,21 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
   cn,
-  HoverCard,
-  HoverCardContent,
-  HoverCardTrigger,
   Tooltip,
   TooltipContent,
   TooltipTrigger,
 } from "@portfolio/ui";
 import {
-  ChevronDown,
-  ChevronRight,
   ExternalLink,
   GitBranch,
   GitCommit,
-  Github,
   MoreHorizontal,
   RefreshCw,
 } from "lucide-react";
 import { useTranslations } from "next-intl";
-import { memo, useState } from "react";
+import { memo } from "react";
+import { CommitHistoryItem } from "@/components/ide/sidebar/commit-history-item";
+import { CollapsibleSection } from "@/components/ide/sidebar/collapsible-section";
 
 const PORTFOLIO_REPO_URL = "https://github.com/kWAYTV/portfolio";
 
@@ -46,33 +42,6 @@ const MOCK_COMMITS: CommitWithStats[] = [
 interface SourceControlViewProps {
   commits?: GitCommitItem[];
   hasStagedChanges?: boolean;
-}
-
-function CollapsibleSection({
-  children,
-  defaultOpen = true,
-  title,
-}: {
-  children: React.ReactNode;
-  defaultOpen?: boolean;
-  title: string;
-}) {
-  const [open, setOpen] = useState(defaultOpen);
-  const Chevron = open ? ChevronDown : ChevronRight;
-
-  return (
-    <div className="flex flex-col">
-      <button
-        className="flex w-full items-center gap-1 py-[3px] pl-1 text-left text-[11px] font-medium uppercase tracking-wider text-muted-foreground transition-colors hover:bg-sidebar-accent/50 hover:text-sidebar-foreground"
-        onClick={() => setOpen(!open)}
-        type="button"
-      >
-        <Chevron className="size-3.5 shrink-0 opacity-70" />
-        {title}
-      </button>
-      {open && children}
-    </div>
-  );
 }
 
 export const SourceControlView = memo(function SourceControlView({
@@ -194,25 +163,24 @@ export const SourceControlView = memo(function SourceControlView({
           </CollapsibleSection>
         </div>
 
-        {/* Branch + View on GitHub */}
-        <div className="flex flex-col gap-1 border-border border-t px-2 py-2">
-          <div className="flex items-center gap-1.5 rounded px-2 py-1.5 text-[11px] text-muted-foreground">
-            <GitBranch className="size-3.5 shrink-0" />
+        {/* Branch + View on GitHub - compact single row */}
+        <div className="flex items-center justify-between gap-2 border-border border-t px-2 py-1.5">
+          <div className="flex min-w-0 items-center gap-1.5 text-[11px] text-muted-foreground">
+            <GitBranch className="size-3.5 shrink-0 opacity-70" />
             <span className="truncate font-medium">main</span>
           </div>
           <Tooltip>
             <TooltipTrigger asChild>
               <a
                 className={cn(
-                  "flex w-full items-center justify-center gap-2 rounded-md px-2 py-2",
-                  "text-[11px] text-muted-foreground transition-colors",
-                  "hover:bg-sidebar-accent/50 hover:text-sidebar-foreground"
+                  "flex shrink-0 items-center gap-1 rounded px-1.5 py-0.5 text-[10px] transition-colors",
+                  "text-muted-foreground/70 hover:bg-sidebar-accent/50 hover:text-sidebar-foreground"
                 )}
                 href={PORTFOLIO_REPO_URL}
                 rel="noopener noreferrer"
                 target="_blank"
               >
-                <ExternalLink className="size-3.5" />
+                <ExternalLink className="size-3" />
                 {t("viewOnGitHub")}
               </a>
             </TooltipTrigger>
@@ -220,75 +188,16 @@ export const SourceControlView = memo(function SourceControlView({
           </Tooltip>
         </div>
 
-        {/* Commit History - at very bottom, separate from changes */}
+        {/* Commit History - at very bottom */}
         <div className="border-border border-t px-2 py-1">
           <CollapsibleSection defaultOpen={true} title={t("commitHistory")}>
             <div className="max-h-32 space-y-0.5 overflow-y-auto py-1">
-              {displayCommits.map((commit) => {
-                const commitWithStats = commit as CommitWithStats;
-                return (
-                  <HoverCard closeDelay={100} key={commit.sha} openDelay={150}>
-                    <HoverCardTrigger asChild>
-                      <a
-                        className={cn(
-                          "block rounded px-2 py-1.5 text-left transition-colors",
-                          "hover:bg-sidebar-accent/50"
-                        )}
-                        href={`${PORTFOLIO_REPO_URL}/commit/${commit.sha}`}
-                        rel="noopener noreferrer"
-                        target="_blank"
-                      >
-                        <p className="truncate text-[11px] text-sidebar-foreground">
-                          {commit.message}
-                        </p>
-                        <p className="mt-0.5 truncate text-[10px] text-muted-foreground">
-                          {commit.sha} · {commit.author} · {commit.date}
-                        </p>
-                      </a>
-                    </HoverCardTrigger>
-                    <HoverCardContent
-                      align="start"
-                      className="ide-dropdown w-72 rounded-sm border border-border bg-popover p-3 shadow-lg"
-                      side="right"
-                    >
-                      <div className="space-y-2.5">
-                        <p className="text-[11px] text-muted-foreground">
-                          {commit.author} · {commit.date}
-                        </p>
-                        <p className="text-[13px] leading-snug text-popover-foreground">
-                          {commit.message}
-                        </p>
-                        {commitWithStats.filesChanged != null &&
-                          commitWithStats.insertions != null && (
-                            <p className="text-[11px] text-muted-foreground">
-                              {commitWithStats.filesChanged} files changed,{" "}
-                              {commitWithStats.insertions} insertions(+)
-                            </p>
-                          )}
-                        <div className="flex flex-wrap items-center gap-1.5">
-                          <span className="inline-flex items-center gap-1 rounded px-1.5 py-0.5 text-[10px] font-medium text-blue-600 dark:text-blue-400">
-                            <GitBranch className="size-3" />
-                            main
-                          </span>
-                          <span className="inline-flex items-center gap-1 rounded px-1.5 py-0.5 text-[10px] font-medium text-muted-foreground">
-                            <GitBranch className="size-3" />
-                            origin/main
-                          </span>
-                        </div>
-                        <a
-                          className="flex w-full items-center justify-center gap-2 rounded-md border border-border bg-muted/30 px-2 py-2 text-[11px] text-muted-foreground transition-colors hover:bg-muted/50 hover:text-foreground"
-                          href={`${PORTFOLIO_REPO_URL}/commit/${commit.sha}`}
-                          rel="noopener noreferrer"
-                          target="_blank"
-                        >
-                          <Github className="size-3.5" />
-                          {commit.sha} · {t("viewOnGitHub")}
-                        </a>
-                      </div>
-                    </HoverCardContent>
-                  </HoverCard>
-                );
-              })}
+              {displayCommits.map((commit) => (
+                <CommitHistoryItem
+                  key={commit.sha}
+                  commit={commit as CommitWithStats}
+                />
+              ))}
             </div>
           </CollapsibleSection>
         </div>
