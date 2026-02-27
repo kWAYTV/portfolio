@@ -1,11 +1,6 @@
 "use client";
 
-import {
-  Button,
-  Tooltip,
-  TooltipContent,
-  TooltipTrigger,
-} from "@portfolio/ui";
+import { Button, Tooltip, TooltipContent, TooltipTrigger } from "@portfolio/ui";
 import {
   ChevronDown,
   ChevronRight,
@@ -15,9 +10,9 @@ import {
 } from "lucide-react";
 import { useTranslations } from "next-intl";
 import { memo, useCallback } from "react";
+import { ExplorerTreeItem } from "@/components/ide/sidebar/explorer-tree-item";
 import { explorerTree } from "@/consts/explorer-tree";
 import { useExplorerState } from "@/hooks/use-explorer-state";
-import { ExplorerTreeItem } from "@/components/ide/sidebar/explorer-tree-item";
 
 interface SidebarProps {
   fullWidth?: boolean;
@@ -55,7 +50,7 @@ export const Sidebar = memo(function Sidebar({
   return (
     <div
       className={`flex h-full select-none flex-col overflow-hidden bg-sidebar shadow-[var(--shadow-elevation-sm)] ${
-        fullWidth ? "min-w-0 w-full" : "w-56 shrink-0 border-border border-r"
+        fullWidth ? "w-full min-w-0" : "w-56 shrink-0 border-border border-r"
       }`}
     >
       <div className="flex items-center justify-between gap-1 px-2 py-2">
@@ -127,11 +122,11 @@ export const Sidebar = memo(function Sidebar({
             <div>
               {explorerTree.map((item) => (
                 <ExplorerTreeItem
-                  key={item.name}
                   copyPath={copyPath}
                   depth={1}
                   expanded={expanded}
                   item={item}
+                  key={item.name}
                   onCollapseAll={collapseAll}
                   onExpandAll={expandAll}
                   onOpenInNewWindow={openInNewWindow}

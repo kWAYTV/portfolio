@@ -4,26 +4,28 @@ import { usePathname } from "@i18n/routing";
 import { Sheet, SheetContent, TooltipProvider } from "@portfolio/ui";
 import { parseAsBoolean, useQueryState } from "nuqs";
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
-
-import { navItems } from "@/consts/nav-items";
-import { useEditorGroups } from "@/hooks/use-editor-groups";
-import { useIdeKeyboardShortcuts } from "@/hooks/use-ide-keyboard-shortcuts";
-import { useIsMobile } from "@/hooks/use-is-mobile";
-import { getBreadcrumbPath } from "@/lib/ide/breadcrumb";
-import { ActivityBar } from "@/components/ide/layout/activity-bar";
 import { CommandPalette } from "@/components/ide/command/command-palette";
+import { ActivityBar } from "@/components/ide/layout/activity-bar";
 import { IdeEditorArea } from "@/components/ide/layout/ide-editor-area";
 import { IdeLayoutEmbed } from "@/components/ide/layout/ide-layout-embed";
 import { MobileActivityBar } from "@/components/ide/layout/mobile-activity-bar";
 import { MobileMenu } from "@/components/ide/layout/mobile-menu";
+import { StatusBar } from "@/components/ide/layout/status-bar";
+import { TitleBar } from "@/components/ide/layout/title-bar";
+import type { SidebarView } from "@/components/ide/shared/ide-types";
+import {
+  type ViewMode,
+  ViewModeProvider,
+} from "@/components/ide/shared/view-mode";
 import { Sidebar } from "@/components/ide/sidebar/sidebar";
 import { SourceControlView } from "@/components/ide/sidebar/source-control-view";
-import { StatusBar } from "@/components/ide/layout/status-bar";
 import { TerminalPanel } from "@/components/ide/terminal/terminal-panel";
-import { TitleBar } from "@/components/ide/layout/title-bar";
-import { type ViewMode, ViewModeProvider } from "@/components/ide/shared/view-mode";
+import { navItems } from "@/consts/nav-items";
+import { useEditorGroups } from "@/hooks/use-editor-groups";
+import { useIdeKeyboardShortcuts } from "@/hooks/use-ide-keyboard-shortcuts";
+import { useIsMobile } from "@/hooks/use-is-mobile";
 import type { GitCommitItem } from "@/lib/github";
-import type { SidebarView } from "@/components/ide/shared/ide-types";
+import { getBreadcrumbPath } from "@/lib/ide/breadcrumb";
 
 interface IdeLayoutProps {
   children: React.ReactNode;
@@ -37,9 +39,8 @@ export function IdeLayout({ children, commits = [] }: IdeLayoutProps) {
   const isEmbed = embed;
   const [sidebarOpen, setSidebarOpen] = useState(true);
   const [sidebarView, setSidebarView] = useState<SidebarView>("explorer");
-  const [mobileSidebarView, setMobileSidebarView] = useState<
-    SidebarView | null
-  >(null);
+  const [mobileSidebarView, setMobileSidebarView] =
+    useState<SidebarView | null>(null);
   const [terminalOpen, setTerminalOpen] = useState(false);
   const [commandOpen, setCommandOpen] = useState(false);
   const [isFullscreen, setIsFullscreen] = useState(false);
@@ -130,9 +131,6 @@ export function IdeLayout({ children, commits = [] }: IdeLayoutProps) {
       .join("\n\n");
     void navigator.clipboard.writeText(formatted);
   }, [pathname, pageTitle, activeHref]);
-
-  const hasOpenTabs = editorGroups.some((g) => g.tabs.length > 0);
-  const hasSplit = editorGroups.length > 1;
 
   const viewModeValue = useMemo(() => ({ viewMode, setViewMode }), [viewMode]);
 

@@ -1,13 +1,12 @@
 "use client";
 
-import type { GitCommitItem } from "@/lib/github";
 import {
   Button,
+  cn,
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
   DropdownMenuTrigger,
-  cn,
   Tooltip,
   TooltipContent,
   TooltipTrigger,
@@ -22,8 +21,9 @@ import {
 } from "lucide-react";
 import { useTranslations } from "next-intl";
 import { memo } from "react";
-import { CommitHistoryItem } from "@/components/ide/sidebar/commit-history-item";
 import { CollapsibleSection } from "@/components/ide/sidebar/collapsible-section";
+import { CommitHistoryItem } from "@/components/ide/sidebar/commit-history-item";
+import type { GitCommitItem } from "@/lib/github";
 
 const PORTFOLIO_REPO_URL = "https://github.com/kWAYTV/portfolio";
 
@@ -33,11 +33,46 @@ interface CommitWithStats extends GitCommitItem {
 }
 
 const MOCK_COMMITS: CommitWithStats[] = [
-  { sha: "a1b2c3d", message: "feat(ide): add VS Code-style source control panel", author: "kWAYTV", date: "2 hours ago", filesChanged: 3, insertions: 42 },
-  { sha: "e4f5g6h", message: "chore: update dependencies", author: "kWAYTV", date: "1 day ago", filesChanged: 2, insertions: 6 },
-  { sha: "i7j8k9l", message: "fix: resolve layout issues on mobile", author: "kWAYTV", date: "2 days ago", filesChanged: 5, insertions: 12 },
-  { sha: "m0n1o2p", message: "feat: add blog section", author: "kWAYTV", date: "1 week ago", filesChanged: 8, insertions: 120 },
-  { sha: "q3r4s5t", message: "style: improve theme consistency", author: "kWAYTV", date: "2 weeks ago", filesChanged: 4, insertions: 18 },
+  {
+    sha: "a1b2c3d",
+    message: "feat(ide): add VS Code-style source control panel",
+    author: "kWAYTV",
+    date: "2 hours ago",
+    filesChanged: 3,
+    insertions: 42,
+  },
+  {
+    sha: "e4f5g6h",
+    message: "chore: update dependencies",
+    author: "kWAYTV",
+    date: "1 day ago",
+    filesChanged: 2,
+    insertions: 6,
+  },
+  {
+    sha: "i7j8k9l",
+    message: "fix: resolve layout issues on mobile",
+    author: "kWAYTV",
+    date: "2 days ago",
+    filesChanged: 5,
+    insertions: 12,
+  },
+  {
+    sha: "m0n1o2p",
+    message: "feat: add blog section",
+    author: "kWAYTV",
+    date: "1 week ago",
+    filesChanged: 8,
+    insertions: 120,
+  },
+  {
+    sha: "q3r4s5t",
+    message: "style: improve theme consistency",
+    author: "kWAYTV",
+    date: "2 weeks ago",
+    filesChanged: 4,
+    insertions: 18,
+  },
 ];
 
 interface SourceControlViewProps {
@@ -59,7 +94,7 @@ export const SourceControlView = memo(function SourceControlView({
   return (
     <div
       className={`flex h-full select-none flex-col overflow-hidden bg-sidebar shadow-[var(--shadow-elevation-sm)] ${
-        fullWidth ? "min-w-0 w-full" : "w-56 shrink-0 border-border border-r"
+        fullWidth ? "w-full min-w-0" : "w-56 shrink-0 border-border border-r"
       }`}
     >
       {/* Header - matches VS Code */}
@@ -131,7 +166,7 @@ export const SourceControlView = memo(function SourceControlView({
         <div className="flex flex-col gap-2 border-border border-b px-2 py-2">
           <div
             className={cn(
-              "flex min-h-[28px] items-center gap-1.5 rounded px-2 py-1.5 text-[13px] ring-1 ring-inset ring-border/50",
+              "flex min-h-[28px] items-center gap-1.5 rounded px-2 py-1.5 text-[13px] ring-1 ring-border/50 ring-inset",
               "cursor-not-allowed bg-muted/30 text-muted-foreground/80"
             )}
           >
@@ -215,8 +250,8 @@ export const SourceControlView = memo(function SourceControlView({
             <div className="max-h-32 space-y-0.5 overflow-y-auto py-1">
               {displayCommits.map((commit) => (
                 <CommitHistoryItem
-                  key={commit.sha}
                   commit={commit as CommitWithStats}
+                  key={commit.sha}
                 />
               ))}
             </div>

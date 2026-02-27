@@ -14,10 +14,10 @@ import {
   FileCode2,
   FileText,
   Home,
+  Palette,
   PanelBottomClose,
   PanelLeftClose,
   PanelLeftOpen,
-  Palette,
   Play,
 } from "lucide-react";
 import { useTranslations } from "next-intl";

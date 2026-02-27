@@ -1,12 +1,11 @@
 "use client";
 
+import { useTranslations } from "next-intl";
 import type { KeyboardEvent } from "react";
 import { useCallback, useEffect, useRef, useState } from "react";
-import { useTranslations } from "next-intl";
 import {
   applyTabCompletion,
   executeCommand,
-  getGhostSuggestion,
   getTabCompletions,
   MOCK_CWD,
 } from "@/components/ide/terminal/commands";

@@ -22,7 +22,7 @@ export function SplitDivider({
   return (
     <div
       className={cn(
-        "-mx-2 z-10 flex w-2 shrink-0 items-center justify-center transition-colors duration-150",
+        "z-10 -mx-2 flex w-2 shrink-0 items-center justify-center transition-colors duration-150",
         isActive
           ? "cursor-col-resize border-border border-x bg-muted/60"
           : "cursor-default border-transparent bg-transparent"

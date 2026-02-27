@@ -12,7 +12,10 @@ function getFolderNames(folder: FolderItem): string[] {
   ];
 }
 
-export function useExplorerState(tree: TreeItem[], initialExpanded: string[] = ["portfolio", "src", "blog"]) {
+export function useExplorerState(
+  tree: TreeItem[],
+  initialExpanded: string[] = ["portfolio", "src", "blog"]
+) {
   const [expanded, setExpanded] = useState<Set<string>>(
     new Set(initialExpanded)
   );

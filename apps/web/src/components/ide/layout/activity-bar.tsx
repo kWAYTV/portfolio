@@ -3,9 +3,9 @@
 import { GitBranch, PanelLeft, Terminal } from "lucide-react";
 import { useTranslations } from "next-intl";
 import { memo } from "react";
-import type { SidebarView } from "@/components/ide/shared/ide-types";
 import { ActivityBarButton } from "@/components/ide/layout/activity-bar-button";
 import { ActivityBarSettingsMenu } from "@/components/ide/layout/activity-bar-settings-menu";
+import type { SidebarView } from "@/components/ide/shared/ide-types";
 
 interface ActivityBarProps {
   onOpenCommand: () => void;
@@ -37,7 +37,9 @@ export const ActivityBar = memo(function ActivityBar({
         icon={PanelLeft}
         onClick={() => {
           onToggleSidebarView("explorer");
-          if (!sidebarOpen) onToggleSidebar();
+          if (!sidebarOpen) {
+            onToggleSidebar();
+          }
         }}
         tooltip={t("explorer")}
       />
@@ -46,7 +48,9 @@ export const ActivityBar = memo(function ActivityBar({
         icon={GitBranch}
         onClick={() => {
           onToggleSidebarView("sourceControl");
-          if (!sidebarOpen) onToggleSidebar();
+          if (!sidebarOpen) {
+            onToggleSidebar();
+          }
         }}
         tooltip={t("sourceControl")}
       />
