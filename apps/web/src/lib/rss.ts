@@ -1,12 +1,12 @@
 import { Feed } from "feed";
 import { unstable_cache } from "next/cache";
+import { fumadocsI18n } from "@/lib/i18n";
 import { baseUrl, siteName } from "@/lib/metadata";
 import { blogSource } from "@/lib/source";
-import { fumadocsI18n } from "@/lib/i18n";
 
-export async function getRSS(): Promise<string> {
+export function getRSS(): Promise<string> {
   return unstable_cache(
-    async () => {
+    () => {
       const feed = new Feed({
         title: `Blog | ${siteName}`,
         id: `${baseUrl.origin}/blog`,
@@ -35,7 +35,7 @@ export async function getRSS(): Promise<string> {
         });
       }
 
-      return feed.rss2();
+      return Promise.resolve(feed.rss2());
     },
     ["rss"],
     { revalidate: 86_400 }
