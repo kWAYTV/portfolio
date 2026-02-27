@@ -154,8 +154,8 @@ export function IdeLayout({ children }: IdeLayoutProps) {
                 {layout.sidebarView === "sourceControl" ? (
                   <SourceControlView
                     commits={commits}
-                    isRefreshing={isRefreshing}
-                    onRefresh={fetchCommits}
+                    isSyncing={isRefreshing}
+                    onSync={fetchCommits}
                   />
                 ) : (
                   <Sidebar onOpenTab={editor.openTab} pathname={pathname} />
@@ -231,9 +231,9 @@ export function IdeLayout({ children }: IdeLayoutProps) {
                   <SourceControlView
                     commits={commits}
                     fullWidth
-                    isRefreshing={isRefreshing}
+                    isSyncing={isRefreshing}
                     onClose={() => layout.setMobileSidebarView(null)}
-                    onRefresh={fetchCommits}
+                    onSync={fetchCommits}
                   />
                 ) : layout.mobileSidebarView === "explorer" ? (
                   <Sidebar

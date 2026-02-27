@@ -30,10 +30,8 @@ interface SourceControlViewProps {
   commits?: GitCommitItem[];
   fullWidth?: boolean;
   hasStagedChanges?: boolean;
-  isRefreshing?: boolean;
   isSyncing?: boolean;
   onClose?: () => void;
-  onRefresh?: () => void;
   onSync?: () => void;
 }
 
@@ -41,10 +39,8 @@ export const SourceControlView = memo(function SourceControlView({
   commits = MOCK_COMMITS,
   fullWidth = false,
   hasStagedChanges = false,
-  isRefreshing = false,
   isSyncing = false,
   onClose,
-  onRefresh,
   onSync,
 }: SourceControlViewProps) {
   const t = useTranslations("ide");
@@ -74,23 +70,6 @@ export const SourceControlView = memo(function SourceControlView({
               <X className="size-4" />
             </Button>
           )}
-          <Tooltip>
-            <TooltipTrigger asChild>
-              <Button
-                aria-label="Refresh"
-                className="size-6 rounded p-0"
-                onClick={onRefresh}
-                size="icon-sm"
-                type="button"
-                variant="ghost"
-              >
-                <RefreshCw
-                  className={cn("size-3.5", isRefreshing && "animate-spin")}
-                />
-              </Button>
-            </TooltipTrigger>
-            <TooltipContent side="bottom">Refresh</TooltipContent>
-          </Tooltip>
           <Tooltip>
             <TooltipTrigger asChild>
               <Button
