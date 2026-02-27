@@ -1,0 +1,39 @@
+{
+  "name": "ide-portfolio",
+  "private": true,
+  "workspaces": [
+    "apps/*",
+    "packages/*"
+  ],
+  "type": "module",
+  "scripts": {
+    "dev": "turbo dev",
+    "build": "turbo build",
+    "check-types": "turbo check-types",
+    "dev:native": "turbo -F native dev",
+    "dev:web": "turbo -F web dev",
+    "check": "ultracite check",
+    "fix": "ultracite fix",
+    "prepare": "husky"
+  },
+  "dependencies": {
+    "@ide-portfolio/env": "workspace:*",
+    "dotenv": "catalog:",
+    "zod": "catalog:"
+  },
+  "devDependencies": {
+    "@biomejs/biome": "2.4.0",
+    "@ide-portfolio/config": "workspace:*",
+    "husky": "latest",
+    "lint-staged": "latest",
+    "turbo": "^2.6.3",
+    "typescript": "catalog:",
+    "ultracite": "7.2.4"
+  },
+  "lint-staged": {
+    "*.{js,jsx,ts,tsx,json,jsonc,css,scss,md,mdx}": [
+      "pnpm dlx ultracite fix"
+    ]
+  },
+  "packageManager": "pnpm@10.30.2"
+}
