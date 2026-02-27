@@ -1,6 +1,7 @@
 "use client";
 
 import { GripHorizontal, PanelBottomClose, Play, Terminal } from "lucide-react";
+import { useTranslations } from "next-intl";
 import { useCallback, useEffect, useRef, useState } from "react";
 import { cn } from "@/lib/utils";
 import { MockTerminal } from "./mock-terminal";
@@ -15,6 +16,7 @@ interface TerminalPanelProps {
 }
 
 export function TerminalPanel({ onClose, isOpen }: TerminalPanelProps) {
+  const t = useTranslations("ide");
   const [height, setHeight] = useState(DEFAULT_HEIGHT);
   const [isDragging, setIsDragging] = useState(false);
   const [isHoveringResize, setIsHoveringResize] = useState(false);
@@ -67,19 +69,25 @@ export function TerminalPanel({ onClose, isOpen }: TerminalPanelProps) {
       ref={panelRef}
       style={{ height: `${height}px`, minHeight: MIN_HEIGHT }}
     >
-      <button
+      {/* biome-ignore lint/a11y/useSemanticElements: resize handle needs div for grip icon */}
+      <div
         aria-label="Resize terminal"
+        aria-orientation="horizontal"
+        aria-valuemax={MAX_HEIGHT}
+        aria-valuemin={MIN_HEIGHT}
+        aria-valuenow={height}
         className={cn(
-          "z-10 -my-2 flex min-h-[8px] w-full cursor-ns-resize items-center justify-center border-0 bg-transparent py-0.5 transition-colors duration-150",
+          "z-10 -my-2 flex min-h-[8px] items-center justify-center py-0.5 transition-colors duration-150",
           showResizeHandle
             ? "cursor-ns-resize border-border border-y bg-muted/60"
-            : "cursor-default border-transparent",
+            : "cursor-default border-transparent bg-transparent",
           isDragging && "bg-muted/80"
         )}
         onMouseDown={handleMouseDown}
         onMouseEnter={() => setIsHoveringResize(true)}
         onMouseLeave={() => setIsHoveringResize(false)}
-        type="button"
+        role="separator"
+        tabIndex={0}
       >
         <GripHorizontal
           className={cn(
@@ -87,12 +95,12 @@ export function TerminalPanel({ onClose, isOpen }: TerminalPanelProps) {
             showResizeHandle ? "opacity-100" : "opacity-0"
           )}
         />
-      </button>
+      </div>
       <div className="flex h-8 shrink-0 items-center justify-between border-border border-b bg-muted/50 px-2 shadow-(--shadow-elevation-sm)">
         <div className="flex items-center gap-2">
           <Terminal className="size-4 text-muted-foreground" />
           <span className="font-medium text-[11px] text-foreground">
-            Terminal
+            {t("terminal")}
           </span>
         </div>
         <div className="flex items-center gap-0.5">
