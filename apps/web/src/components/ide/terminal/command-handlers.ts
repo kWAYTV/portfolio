@@ -42,6 +42,7 @@ const RE_TILDE_PREFIX = /^~\//;
 const RE_WORKSPACE_PREFIX = /^\/workspace\/portfolio\/?/;
 const RE_TRAILING_SLASH = /\/[^/]+$/;
 const RE_SLASHES = /\/+/g;
+const RE_TRAILING_SLASHES = /\/+$/;
 const RE_MSG_QUOTES = /^["']|["']$/g;
 
 function randomHash(): string {
@@ -78,6 +79,89 @@ function runCat(parts: string[]): CommandResult {
     return { lines: content.split("\n").map(out) };
   }
   return { lines: [err(`cat: ${file}: No such file or directory`)] };
+}
+
+const DIR_CONTENTS: Record<
+  string,
+  { short: string[]; long: { perm: string; name: string }[] }
+> = {
+  "/workspace/portfolio": {
+    short: ["package.json", "tsconfig.json", "README.md", "src", ".env"],
+    long: [
+      { perm: "drwxr-xr-x   8 visitor staff   256 Feb 27 14:32 .", name: "." },
+      {
+        perm: "drwxr-xr-x   3 visitor staff    96 Feb 26 09:15 ..",
+        name: "..",
+      },
+      {
+        perm: "-rw-r--r--   1 visitor staff  1523 Feb 27 10:12",
+        name: "package.json",
+      },
+      {
+        perm: "-rw-r--r--   1 visitor staff   312 Feb 26 08:44",
+        name: "tsconfig.json",
+      },
+      {
+        perm: "-rw-r--r--   1 visitor staff   156 Feb 25 16:20",
+        name: "README.md",
+      },
+      { perm: "drwxr-xr-x   5 visitor staff   160 Feb 27 14:30", name: "src" },
+      { perm: "-rw-r--r--   1 visitor staff    42 Feb 24 11:05", name: ".env" },
+    ],
+  },
+  "/workspace/portfolio/src": {
+    short: ["page.tsx", "about.mdx", "projects.ts", "blog"],
+    long: [
+      { perm: "drwxr-xr-x   5 visitor staff   160 Feb 27 14:30 .", name: "." },
+      {
+        perm: "drwxr-xr-x   8 visitor staff   256 Feb 27 14:32 ..",
+        name: "..",
+      },
+      {
+        perm: "-rw-r--r--   1 visitor staff   412 Feb 27 11:20",
+        name: "page.tsx",
+      },
+      {
+        perm: "-rw-r--r--   1 visitor staff   189 Feb 26 15:10",
+        name: "about.mdx",
+      },
+      {
+        perm: "-rw-r--r--   1 visitor staff   256 Feb 25 09:33",
+        name: "projects.ts",
+      },
+      { perm: "drwxr-xr-x   4 visitor staff   128 Feb 27 12:05", name: "blog" },
+    ],
+  },
+  "/workspace/portfolio/src/blog": {
+    short: ["index.mdx"],
+    long: [
+      { perm: "drwxr-xr-x   4 visitor staff   128 Feb 27 12:05 .", name: "." },
+      {
+        perm: "drwxr-xr-x   5 visitor staff   160 Feb 27 14:30 ..",
+        name: "..",
+      },
+      {
+        perm: "-rw-r--r--   1 visitor staff   312 Feb 27 12:08",
+        name: "index.mdx",
+      },
+    ],
+  },
+};
+
+function runLs(cwd: string, long: boolean): CommandResult {
+  const normalized =
+    cwd.replace(RE_TRAILING_SLASHES, "") || "/workspace/portfolio";
+  const contents =
+    DIR_CONTENTS[normalized] ?? DIR_CONTENTS["/workspace/portfolio"]; // fallback for unknown dirs
+  if (long) {
+    return {
+      lines: [
+        out("total 24"),
+        ...contents.long.map((e) => out(`${e.perm} ${e.name}`)),
+      ],
+    };
+  }
+  return { lines: [out(contents.short.join("  "))] };
 }
 
 function runCd(parts: string[], cwd: string): CommandResult {
@@ -175,12 +259,11 @@ export function executeCommand(cmd: string, cwd: string): CommandResult {
     case "pwd":
       return { lines: [out(cwd.replace("/workspace/portfolio", "~"))] };
     case "ls":
+      return runLs(cwd, false);
     case "ls -la":
     case "ls -l":
     case "ls -a":
-      return {
-        lines: [out("package.json  tsconfig.json  README.md  src  .env")],
-      };
+      return runLs(cwd, true);
     case "whoami":
       return { lines: [out("visitor")] };
     case "help":
