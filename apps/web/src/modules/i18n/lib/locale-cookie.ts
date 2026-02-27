@@ -1,6 +1,6 @@
 import "server-only";
 
-import type { Locale } from "@portfolio/i18n";
+import type { Locale } from "@portfolio/i18n/config";
 import { config } from "@portfolio/i18n/config";
 import { cookies } from "next/headers";
 

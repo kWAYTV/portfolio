@@ -2,7 +2,7 @@
 
 import { updateLocale } from "@i18n/lib/update-locale";
 import { getPathname, routing } from "@i18n/routing";
-import type { Locale } from "@portfolio/i18n";
+import type { Locale } from "@portfolio/i18n/config";
 import { localeNames, localeToFlagEmoji } from "@portfolio/i18n/config";
 import {
   cn,
