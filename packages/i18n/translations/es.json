@@ -137,7 +137,13 @@
 		"openToRight": "Abrir a la derecha",
 		"openToLeft": "Abrir a la izquierda",
 		"closeGroup": "Cerrar grupo de editor",
-		"dragToResize": "Arrastrar para redimensionar"
+		"dragToResize": "Arrastrar para redimensionar",
+		"sourceControl": "Control de código fuente",
+		"commitMessagePlaceholder": "Mensaje (Ctrl+Enter para confirmar)",
+		"commit": "Confirmar",
+		"noChanges": "Sin cambios",
+		"noChangesHint": "Árbol de trabajo limpio",
+		"viewOnGitHub": "Ver en GitHub"
 	},
 	"terminal": {
 		"welcome": "Bienvenido al terminal del portafolio. Escribe 'help' para ver los comandos disponibles.",

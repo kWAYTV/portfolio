@@ -41,23 +41,27 @@ import {
 } from "@/components/theming/theme-preset-context";
 import { useThemeTransition } from "@/components/theming/use-theme-transition";
 
-const PORTFOLIO_REPO_URL = "https://github.com/kWAYTV/portfolio";
+import type { SidebarView } from "./ide-types";
 
 interface ActivityBarProps {
   onOpenCommand: () => void;
   onToggleSidebar: () => void;
+  onToggleSidebarView: (view: SidebarView) => void;
   onToggleTerminal: () => void;
   pathname: string;
   sidebarOpen: boolean;
+  sidebarView: SidebarView;
   terminalOpen: boolean;
 }
 
 export const ActivityBar = memo(function ActivityBar({
   pathname,
   sidebarOpen,
+  sidebarView,
   terminalOpen,
   onOpenCommand,
   onToggleSidebar,
+  onToggleSidebarView,
   onToggleTerminal,
 }: ActivityBarProps) {
   const { resolvedTheme } = useTheme();
@@ -99,9 +103,12 @@ export const ActivityBar = memo(function ActivityBar({
           <button
             className={cn(
               "flex size-10 cursor-pointer items-center justify-center text-sidebar-foreground/60 transition-colors hover:text-sidebar-primary",
-              sidebarOpen && "text-sidebar-primary"
+              sidebarOpen && sidebarView === "explorer" && "text-sidebar-primary"
             )}
-            onClick={onToggleSidebar}
+            onClick={() => {
+              onToggleSidebarView("explorer");
+              if (!sidebarOpen) onToggleSidebar();
+            }}
             type="button"
           >
             <PanelLeft className="size-5" />
@@ -127,16 +134,21 @@ export const ActivityBar = memo(function ActivityBar({
       </Tooltip>
       <Tooltip>
         <TooltipTrigger asChild>
-          <a
-            className="flex size-10 cursor-pointer items-center justify-center text-sidebar-foreground/60 transition-colors hover:text-sidebar-primary"
-            href={PORTFOLIO_REPO_URL}
-            rel="noopener noreferrer"
-            target="_blank"
+          <button
+            className={cn(
+              "flex size-10 cursor-pointer items-center justify-center text-sidebar-foreground/60 transition-colors hover:text-sidebar-primary",
+              sidebarOpen && sidebarView === "sourceControl" && "text-sidebar-primary"
+            )}
+            onClick={() => {
+              onToggleSidebarView("sourceControl");
+              if (!sidebarOpen) onToggleSidebar();
+            }}
+            type="button"
           >
             <GitBranch className="size-5" />
-          </a>
+          </button>
         </TooltipTrigger>
-        <TooltipContent side="right">{t("openRepo")}</TooltipContent>
+        <TooltipContent side="right">{t("sourceControl")}</TooltipContent>
       </Tooltip>
 
       <div className="mt-auto">

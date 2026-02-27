@@ -118,7 +118,13 @@
     "themePreset_violet-bloom": "Violet Bloom",
     "themePreset_caffeine": "Caffeine",
     "themePreset_mono": "Mono",
-    "language": "Language"
+    "language": "Language",
+    "sourceControl": "Source Control",
+    "commitMessagePlaceholder": "Message (Ctrl+Enter to commit)",
+    "commit": "Commit",
+    "noChanges": "No changes",
+    "noChangesHint": "Working tree clean",
+    "viewOnGitHub": "View on GitHub"
   },
   "terminal": {
     "welcome": "Welcome to the portfolio terminal. Type 'help' for available commands.",

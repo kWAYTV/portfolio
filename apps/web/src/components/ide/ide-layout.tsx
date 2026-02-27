@@ -16,11 +16,13 @@ import { EditorContentContextMenu } from "./editor-content-context-menu";
 import { EditorTabs } from "./editor-tabs";
 import { MobileMenu } from "./mobile-menu";
 import { Sidebar } from "./sidebar";
+import { SourceControlView } from "./source-control-view";
 import { SplitEditorView } from "./split-editor-view";
 import { StatusBar } from "./status-bar";
 import { TerminalPanel } from "./terminal-panel";
 import { TitleBar } from "./title-bar";
 import { type ViewMode, ViewModeProvider } from "./view-mode";
+import type { SidebarView } from "./ide-types";
 
 interface IdeLayoutProps {
   children: React.ReactNode;
@@ -31,6 +33,7 @@ export function IdeLayout({ children }: IdeLayoutProps) {
   const [embed] = useQueryState("embed", parseAsBoolean.withDefault(false));
   const isEmbed = embed;
   const [sidebarOpen, setSidebarOpen] = useState(true);
+  const [sidebarView, setSidebarView] = useState<SidebarView>("explorer");
   const [terminalOpen, setTerminalOpen] = useState(false);
   const [commandOpen, setCommandOpen] = useState(false);
   const [isFullscreen, setIsFullscreen] = useState(false);
@@ -158,16 +161,22 @@ export function IdeLayout({ children }: IdeLayoutProps) {
               <ActivityBar
                 onOpenCommand={() => setCommandOpen(true)}
                 onToggleSidebar={toggleSidebar}
+                onToggleSidebarView={setSidebarView}
                 onToggleTerminal={toggleTerminal}
                 pathname={pathname}
                 sidebarOpen={sidebarOpen}
+                sidebarView={sidebarView}
                 terminalOpen={terminalOpen}
               />
             </div>
 
             {sidebarOpen && (
               <div className="hidden md:block">
-                <Sidebar onOpenTab={openTab} pathname={pathname} />
+                {sidebarView === "sourceControl" ? (
+                  <SourceControlView />
+                ) : (
+                  <Sidebar onOpenTab={openTab} pathname={pathname} />
+                )}
               </div>
             )}
 
@@ -278,6 +287,10 @@ export function IdeLayout({ children }: IdeLayoutProps) {
 
           <div className="hidden md:block">
             <StatusBar
+              onFocusSourceControl={() => {
+                setSidebarView("sourceControl");
+                setSidebarOpen(true);
+              }}
               onToggleTerminal={toggleTerminal}
               pathname={pathname}
               terminalOpen={terminalOpen}
