@@ -6,18 +6,11 @@ import {
   useThemePreset,
 } from "@/components/theming/theme-preset-context";
 import { useThemeTransition } from "@/components/theming/use-theme-transition";
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuRadioGroup,
-  DropdownMenuRadioItem,
-  DropdownMenuSeparator,
-  DropdownMenuTrigger,
-} from "@portfolio/ui";
-import { Moon, Palette, Sun } from "lucide-react";
+import { cn } from "@portfolio/ui";
+import { ChevronDown, Moon, Palette, Sun } from "lucide-react";
 import { useTheme } from "next-themes";
 import { useTranslations } from "next-intl";
-import { memo } from "react";
+import { memo, useState } from "react";
 
 export const MobileThemeMenu = memo(function MobileThemeMenu() {
   const t = useTranslations("ide");
@@ -25,67 +18,73 @@ export const MobileThemeMenu = memo(function MobileThemeMenu() {
   const { preset, setPreset } = useThemePreset();
   const setThemeWithTransition = useThemeTransition();
   const isDark = resolvedTheme === "dark";
+  const [expanded, setExpanded] = useState(false);
 
   const handleLightDark = () => {
     void setThemeWithTransition(isDark ? "light" : "dark");
   };
 
   return (
-    <DropdownMenu>
-      <DropdownMenuTrigger asChild>
-        <button
-          className="flex w-full items-center justify-between gap-2 px-4 py-3 text-left text-sm transition-colors hover:bg-muted/50 text-foreground"
-          type="button"
-        >
-          <span className="flex items-center gap-3">
-            <Palette className="size-4 shrink-0" />
-            <span>{t("themePreset")}</span>
-          </span>
-          <span className="text-muted-foreground text-xs">
-            {t(`themePreset_${preset}`)}
-          </span>
-        </button>
-      </DropdownMenuTrigger>
-      <DropdownMenuContent
-        align="end"
-        className="ide-dropdown w-56 max-w-[calc(100vw-2rem)] rounded-sm border border-border bg-popover p-0.5 shadow-lg"
-        collisionPadding={16}
-        side="left"
-        sideOffset={4}
+    <div className="flex flex-col">
+      <button
+        className="flex w-full items-center justify-between gap-2 px-4 py-3 text-left text-sm transition-colors hover:bg-muted/50 text-foreground"
+        onClick={() => setExpanded((e) => !e)}
+        type="button"
       >
-        <button
-          className="flex w-full cursor-pointer items-center gap-2 rounded-sm px-2 py-1.5 text-sm outline-none transition-colors hover:bg-accent hover:text-accent-foreground"
-          onClick={handleLightDark}
-          type="button"
-        >
-          {isDark ? (
-            <>
-              <Sun className="size-3.5" />
-              {t("lightTheme")}
-            </>
-          ) : (
-            <>
-              <Moon className="size-3.5" />
-              {t("darkTheme")}
-            </>
-          )}
-        </button>
-        <DropdownMenuSeparator className="my-0.5" />
-        <DropdownMenuRadioGroup
-          onValueChange={(v) => setPreset(v as ThemePreset)}
-          value={preset}
-        >
-          {THEME_PRESETS.map((p) => (
-            <DropdownMenuRadioItem
-              className="cursor-pointer"
-              key={p}
-              value={p}
-            >
-              {t(`themePreset_${p}`)}
-            </DropdownMenuRadioItem>
-          ))}
-        </DropdownMenuRadioGroup>
-      </DropdownMenuContent>
-    </DropdownMenu>
+        <span className="flex items-center gap-3">
+          <Palette className="size-4 shrink-0" />
+          <span>{t("themePreset")}</span>
+        </span>
+        <span className="flex items-center gap-2 text-muted-foreground text-xs">
+          {t(`themePreset_${preset}`)}
+          <ChevronDown
+            className={cn("size-4 transition-transform", expanded && "rotate-180")}
+          />
+        </span>
+      </button>
+      {expanded && (
+        <div className="border-border border-t bg-muted/30 px-4 py-2">
+          <button
+            className="flex w-full items-center gap-3 rounded-md px-3 py-2.5 text-left text-sm transition-colors hover:bg-muted/50"
+            onClick={handleLightDark}
+            type="button"
+          >
+            {isDark ? (
+              <>
+                <Sun className="size-4 shrink-0" />
+                {t("lightTheme")}
+              </>
+            ) : (
+              <>
+                <Moon className="size-4 shrink-0" />
+                {t("darkTheme")}
+              </>
+            )}
+          </button>
+          <div className="mt-1">
+            <span className="px-3 text-muted-foreground text-[10px] uppercase tracking-wider">
+              {t("themePreset")}
+            </span>
+            <div className="mt-1 flex flex-col gap-0.5">
+              {THEME_PRESETS.map((p) => (
+                <button
+                  className={cn(
+                    "flex w-full items-center gap-3 rounded-md px-3 py-2 text-left text-sm transition-colors",
+                    preset === p
+                      ? "bg-muted/80 text-foreground"
+                      : "hover:bg-muted/50 text-muted-foreground"
+                  )}
+                  key={p}
+                  onClick={() => setPreset(p)}
+                  type="button"
+                >
+                  {t(`themePreset_${p}`)}
+                </button>
+              ))}
+            </div>
+          </div>
+        </div>
+      )}
+    </div>
   );
 });
