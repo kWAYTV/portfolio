@@ -20,7 +20,7 @@ importers:
 
   .:
     dependencies:
-      '@ide-portfolio/env':
+      '@repo/env':
         specifier: workspace:*
         version: link:packages/env
       dotenv:
@@ -33,7 +33,7 @@ importers:
       '@biomejs/biome':
         specifier: 2.4.0
         version: 2.4.0
-      '@ide-portfolio/config':
+      '@repo/config':
         specifier: workspace:*
         version: link:packages/config
       husky:
@@ -57,7 +57,7 @@ importers:
       '@base-ui/react':
         specifier: ^1.0.0
         version: 1.2.0(@types/react@19.2.14)(react-dom@19.2.4(react@19.2.4))(react@19.2.4)
-      '@ide-portfolio/env':
+      '@repo/env':
         specifier: workspace:*
         version: link:../../packages/env
       babel-plugin-react-compiler:
@@ -103,7 +103,7 @@ importers:
         specifier: 'catalog:'
         version: 4.3.6
     devDependencies:
-      '@ide-portfolio/config':
+      '@repo/config':
         specifier: workspace:*
         version: link:../../packages/config
       '@tailwindcss/postcss':
@@ -139,7 +139,7 @@ importers:
         specifier: 'catalog:'
         version: 4.3.6
     devDependencies:
-      '@ide-portfolio/config':
+      '@repo/config':
         specifier: workspace:*
         version: link:../config
       '@types/node':

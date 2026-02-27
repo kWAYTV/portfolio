@@ -19,13 +19,13 @@
     "prepare": "husky"
   },
   "dependencies": {
-    "@ide-portfolio/env": "workspace:*",
+    "@repo/env": "workspace:*",
     "dotenv": "catalog:",
     "zod": "catalog:"
   },
   "devDependencies": {
     "@biomejs/biome": "2.4.0",
-    "@ide-portfolio/config": "workspace:*",
+    "@repo/config": "workspace:*",
     "husky": "latest",
     "lint-staged": "latest",
     "turbo": "^2.6.3",

@@ -1,5 +1,5 @@
 {
-  "name": "@ide-portfolio/env",
+  "name": "@repo/env",
   "version": "0.0.0",
   "private": true,
   "type": "module",
@@ -12,7 +12,7 @@
     "zod": "catalog:"
   },
   "devDependencies": {
-    "@ide-portfolio/config": "workspace:*",
+    "@repo/config": "workspace:*",
     "@types/node": "^20.19.35",
     "typescript": "catalog:"
   }
