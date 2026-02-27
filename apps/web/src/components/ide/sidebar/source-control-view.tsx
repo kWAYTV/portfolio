@@ -16,8 +16,6 @@ import {
   TooltipTrigger,
 } from "@portfolio/ui";
 import {
-  ChevronDown,
-  ChevronRight,
   ExternalLink,
   GitBranch,
   GitCommit,
@@ -26,7 +24,8 @@ import {
   RefreshCw,
 } from "lucide-react";
 import { useTranslations } from "next-intl";
-import { memo, useState } from "react";
+import { memo } from "react";
+import { CollapsibleSection } from "@/components/ide/sidebar/collapsible-section";
 
 const PORTFOLIO_REPO_URL = "https://github.com/kWAYTV/portfolio";
 
@@ -46,33 +45,6 @@ const MOCK_COMMITS: CommitWithStats[] = [
 interface SourceControlViewProps {
   commits?: GitCommitItem[];
   hasStagedChanges?: boolean;
-}
-
-function CollapsibleSection({
-  children,
-  defaultOpen = true,
-  title,
-}: {
-  children: React.ReactNode;
-  defaultOpen?: boolean;
-  title: string;
-}) {
-  const [open, setOpen] = useState(defaultOpen);
-  const Chevron = open ? ChevronDown : ChevronRight;
-
-  return (
-    <div className="flex flex-col">
-      <button
-        className="flex w-full items-center gap-1 py-[3px] pl-1 text-left text-[11px] font-medium uppercase tracking-wider text-muted-foreground transition-colors hover:bg-sidebar-accent/50 hover:text-sidebar-foreground"
-        onClick={() => setOpen(!open)}
-        type="button"
-      >
-        <Chevron className="size-3.5 shrink-0 opacity-70" />
-        {title}
-      </button>
-      {open && children}
-    </div>
-  );
 }
 
 export const SourceControlView = memo(function SourceControlView({
