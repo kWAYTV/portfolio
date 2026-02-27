@@ -51,11 +51,22 @@
   --syntax-tag: oklch(0.55 0.2 25);
   --syntax-attribute: oklch(0.55 0.22 300);
   --syntax-punctuation: var(--muted-foreground);
-  --terminal-user: var(--syntax-string);
-  --terminal-host: var(--syntax-type);
-  --terminal-path: var(--syntax-keyword);
+  --terminal-user: var(--foreground);
+  --terminal-host: var(--muted-foreground);
+  --terminal-path: var(--chart-1);
   --terminal-output: var(--muted-foreground);
   --terminal-error: var(--destructive);
+  /* File icons – VS Code–style palette */
+  --file-icon-tsx: oklch(0.55 0.2 250);
+  --file-icon-ts: oklch(0.55 0.2 280);
+  --file-icon-jsx: oklch(0.65 0.18 85);
+  --file-icon-js: oklch(0.6 0.18 75);
+  --file-icon-json: oklch(0.65 0.18 85);
+  --file-icon-md: oklch(0.55 0.18 230);
+  --file-icon-mdx: oklch(0.6 0.2 35);
+  --file-icon-env: oklch(0.55 0.18 155);
+  --file-icon-css: oklch(0.6 0.22 330);
+  --file-icon-diff: oklch(0.55 0.2 280);
 }
 
 .dark {
@@ -101,11 +112,22 @@
   --syntax-tag: oklch(0.7 0.18 25);
   --syntax-attribute: oklch(0.75 0.15 300);
   --syntax-punctuation: var(--muted-foreground);
-  --terminal-user: var(--syntax-string);
-  --terminal-host: var(--syntax-type);
-  --terminal-path: var(--syntax-keyword);
+  --terminal-user: var(--foreground);
+  --terminal-host: var(--muted-foreground);
+  --terminal-path: var(--chart-1);
   --terminal-output: var(--muted-foreground);
   --terminal-error: var(--destructive);
+  /* File icons – lighter for dark mode */
+  --file-icon-tsx: oklch(0.7 0.18 250);
+  --file-icon-ts: oklch(0.7 0.18 280);
+  --file-icon-jsx: oklch(0.75 0.16 85);
+  --file-icon-js: oklch(0.72 0.16 75);
+  --file-icon-json: oklch(0.75 0.16 85);
+  --file-icon-md: oklch(0.7 0.16 230);
+  --file-icon-mdx: oklch(0.72 0.18 35);
+  --file-icon-env: oklch(0.7 0.16 155);
+  --file-icon-css: oklch(0.72 0.2 330);
+  --file-icon-diff: oklch(0.7 0.18 280);
 }
 
 @theme inline {
