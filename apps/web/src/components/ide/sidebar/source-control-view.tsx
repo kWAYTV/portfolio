@@ -8,6 +8,9 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
   cn,
+  HoverCard,
+  HoverCardContent,
+  HoverCardTrigger,
   Tooltip,
   TooltipContent,
   TooltipTrigger,
@@ -18,6 +21,7 @@ import {
   ExternalLink,
   GitBranch,
   GitCommit,
+  Github,
   MoreHorizontal,
   RefreshCw,
 } from "lucide-react";
@@ -26,16 +30,22 @@ import { memo, useState } from "react";
 
 const PORTFOLIO_REPO_URL = "https://github.com/kWAYTV/portfolio";
 
-const MOCK_COMMITS: GitCommitItem[] = [
-  { sha: "a1b2c3d", message: "feat(ide): add VS Code-style source control panel", author: "kWAYTV", date: "2 hours ago" },
-  { sha: "e4f5g6h", message: "chore: update dependencies", author: "kWAYTV", date: "1 day ago" },
-  { sha: "i7j8k9l", message: "fix: resolve layout issues on mobile", author: "kWAYTV", date: "2 days ago" },
-  { sha: "m0n1o2p", message: "feat: add blog section", author: "kWAYTV", date: "1 week ago" },
-  { sha: "q3r4s5t", message: "style: improve theme consistency", author: "kWAYTV", date: "2 weeks ago" },
+interface CommitWithStats extends GitCommitItem {
+  filesChanged?: number;
+  insertions?: number;
+}
+
+const MOCK_COMMITS: CommitWithStats[] = [
+  { sha: "a1b2c3d", message: "feat(ide): add VS Code-style source control panel", author: "kWAYTV", date: "2 hours ago", filesChanged: 3, insertions: 42 },
+  { sha: "e4f5g6h", message: "chore: update dependencies", author: "kWAYTV", date: "1 day ago", filesChanged: 2, insertions: 6 },
+  { sha: "i7j8k9l", message: "fix: resolve layout issues on mobile", author: "kWAYTV", date: "2 days ago", filesChanged: 5, insertions: 12 },
+  { sha: "m0n1o2p", message: "feat: add blog section", author: "kWAYTV", date: "1 week ago", filesChanged: 8, insertions: 120 },
+  { sha: "q3r4s5t", message: "style: improve theme consistency", author: "kWAYTV", date: "2 weeks ago", filesChanged: 4, insertions: 18 },
 ];
 
 interface SourceControlViewProps {
   commits?: GitCommitItem[];
+  hasStagedChanges?: boolean;
 }
 
 function CollapsibleSection({
@@ -67,6 +77,7 @@ function CollapsibleSection({
 
 export const SourceControlView = memo(function SourceControlView({
   commits = MOCK_COMMITS,
+  hasStagedChanges = false,
 }: SourceControlViewProps) {
   const t = useTranslations("ide");
   const displayCommits = commits.length > 0 ? commits : MOCK_COMMITS;
@@ -128,7 +139,12 @@ export const SourceControlView = memo(function SourceControlView({
       <div className="flex flex-1 flex-col overflow-hidden">
         {/* Commit message + buttons - VS Code style */}
         <div className="flex flex-col gap-2 border-border border-b px-2 py-2">
-          <div className="flex min-h-[28px] items-center gap-1.5 rounded px-2 py-1.5 text-[13px] text-muted-foreground ring-1 ring-inset ring-border/50">
+          <div
+            className={cn(
+              "flex min-h-[28px] items-center gap-1.5 rounded px-2 py-1.5 text-[13px] ring-1 ring-inset ring-border/50",
+              "cursor-not-allowed bg-muted/30 text-muted-foreground/80"
+            )}
+          >
             <GitCommit className="size-4 shrink-0 opacity-60" />
             <span className="truncate">{t("commitMessagePlaceholder")}</span>
           </div>
@@ -154,8 +170,18 @@ export const SourceControlView = memo(function SourceControlView({
           </div>
         </div>
 
-        {/* Scrollable sections - CHANGES, STAGED, HISTORY */}
+        {/* Scrollable sections - STAGED (when present), CHANGES */}
         <div className="flex-1 overflow-y-auto px-2 py-1">
+          {hasStagedChanges && (
+            <CollapsibleSection defaultOpen={true} title={t("stagedChanges")}>
+              <div className="rounded-md border border-border/60 bg-muted/20 px-2 py-2.5">
+                <p className="text-[11px] text-muted-foreground">
+                  {t("noChanges")}
+                </p>
+              </div>
+            </CollapsibleSection>
+          )}
+
           <CollapsibleSection defaultOpen={true} title={t("changes")}>
             <div className="rounded-md border border-border/60 bg-muted/20 px-2 py-2.5">
               <p className="text-[11px] text-muted-foreground">
@@ -164,41 +190,6 @@ export const SourceControlView = memo(function SourceControlView({
               <p className="mt-0.5 text-[10px] text-muted-foreground/70">
                 {t("noChangesHint")}
               </p>
-            </div>
-          </CollapsibleSection>
-
-          <CollapsibleSection defaultOpen={true} title={t("stagedChanges")}>
-            <div className="rounded-md border border-border/60 bg-muted/20 px-2 py-2.5">
-              <p className="text-[11px] text-muted-foreground">
-                {t("noChanges")}
-              </p>
-            </div>
-          </CollapsibleSection>
-
-          <CollapsibleSection
-            defaultOpen={true}
-            title={t("commitHistory")}
-          >
-            <div className="space-y-0.5 py-1">
-              {displayCommits.map((commit) => (
-                <a
-                  className={cn(
-                    "block rounded px-2 py-1.5 text-left transition-colors",
-                    "hover:bg-sidebar-accent/50"
-                  )}
-                  href={`${PORTFOLIO_REPO_URL}/commit/${commit.sha}`}
-                  key={commit.sha}
-                  rel="noopener noreferrer"
-                  target="_blank"
-                >
-                  <p className="truncate text-[11px] text-sidebar-foreground">
-                    {commit.message}
-                  </p>
-                  <p className="mt-0.5 truncate text-[10px] text-muted-foreground">
-                    {commit.sha} · {commit.author} · {commit.date}
-                  </p>
-                </a>
-              ))}
             </div>
           </CollapsibleSection>
         </div>
@@ -227,6 +218,79 @@ export const SourceControlView = memo(function SourceControlView({
             </TooltipTrigger>
             <TooltipContent side="top">{t("openRepo")}</TooltipContent>
           </Tooltip>
+        </div>
+
+        {/* Commit History - at very bottom, separate from changes */}
+        <div className="border-border border-t px-2 py-1">
+          <CollapsibleSection defaultOpen={true} title={t("commitHistory")}>
+            <div className="max-h-32 space-y-0.5 overflow-y-auto py-1">
+              {displayCommits.map((commit) => {
+                const commitWithStats = commit as CommitWithStats;
+                return (
+                  <HoverCard closeDelay={100} key={commit.sha} openDelay={150}>
+                    <HoverCardTrigger asChild>
+                      <a
+                        className={cn(
+                          "block rounded px-2 py-1.5 text-left transition-colors",
+                          "hover:bg-sidebar-accent/50"
+                        )}
+                        href={`${PORTFOLIO_REPO_URL}/commit/${commit.sha}`}
+                        rel="noopener noreferrer"
+                        target="_blank"
+                      >
+                        <p className="truncate text-[11px] text-sidebar-foreground">
+                          {commit.message}
+                        </p>
+                        <p className="mt-0.5 truncate text-[10px] text-muted-foreground">
+                          {commit.sha} · {commit.author} · {commit.date}
+                        </p>
+                      </a>
+                    </HoverCardTrigger>
+                    <HoverCardContent
+                      align="start"
+                      className="ide-dropdown w-72 rounded-sm border border-border bg-popover p-3 shadow-lg"
+                      side="right"
+                    >
+                      <div className="space-y-2.5">
+                        <p className="text-[11px] text-muted-foreground">
+                          {commit.author} · {commit.date}
+                        </p>
+                        <p className="text-[13px] leading-snug text-popover-foreground">
+                          {commit.message}
+                        </p>
+                        {commitWithStats.filesChanged != null &&
+                          commitWithStats.insertions != null && (
+                            <p className="text-[11px] text-muted-foreground">
+                              {commitWithStats.filesChanged} files changed,{" "}
+                              {commitWithStats.insertions} insertions(+)
+                            </p>
+                          )}
+                        <div className="flex flex-wrap items-center gap-1.5">
+                          <span className="inline-flex items-center gap-1 rounded px-1.5 py-0.5 text-[10px] font-medium text-blue-600 dark:text-blue-400">
+                            <GitBranch className="size-3" />
+                            main
+                          </span>
+                          <span className="inline-flex items-center gap-1 rounded px-1.5 py-0.5 text-[10px] font-medium text-muted-foreground">
+                            <GitBranch className="size-3" />
+                            origin/main
+                          </span>
+                        </div>
+                        <a
+                          className="flex w-full items-center justify-center gap-2 rounded-md border border-border bg-muted/30 px-2 py-2 text-[11px] text-muted-foreground transition-colors hover:bg-muted/50 hover:text-foreground"
+                          href={`${PORTFOLIO_REPO_URL}/commit/${commit.sha}`}
+                          rel="noopener noreferrer"
+                          target="_blank"
+                        >
+                          <Github className="size-3.5" />
+                          {commit.sha} · {t("viewOnGitHub")}
+                        </a>
+                      </div>
+                    </HoverCardContent>
+                  </HoverCard>
+                );
+              })}
+            </div>
+          </CollapsibleSection>
         </div>
       </div>
     </div>

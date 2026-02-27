@@ -1,8 +1,8 @@
 import { Toaster } from "@portfolio/ui";
 import Script from "next/script";
 import { UmamiScript } from "@/components/analytics/umami-script";
-import { IdeLayout } from "@/components/ide/ide-layout";
-import { IdeLayoutSkeleton } from "@/components/ide/ide-layout-skeleton";
+import { IdeLayout } from "@/components/ide/layout/ide-layout";
+import { IdeLayoutSkeleton } from "@/components/ide/layout/ide-layout-skeleton";
 import { ThemePresetProvider } from "@/components/theming/theme-preset-context";
 import { ThemeProvider } from "@/components/theming/provider";
 import "@/styles/globals.css";

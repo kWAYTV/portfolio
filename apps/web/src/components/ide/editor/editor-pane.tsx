@@ -3,11 +3,11 @@
 import { cn } from "@portfolio/ui";
 import { useLocale } from "next-intl";
 import { useEffect, useRef, useState } from "react";
-import { Breadcrumbs } from "@/components/ide/breadcrumbs";
-import { EditorContentContextMenu } from "@/components/ide/editor-content-context-menu";
-import { EditorTabs } from "@/components/ide/editor-tabs";
-import type { EditorGroup } from "@/components/ide/split-editor-types";
-import type { ViewMode } from "@/components/ide/view-mode";
+import { Breadcrumbs } from "@/components/ide/editor/breadcrumbs";
+import { EditorContentContextMenu } from "@/components/ide/editor/editor-content-context-menu";
+import { EditorTabs } from "@/components/ide/editor/editor-tabs";
+import type { EditorGroup } from "@/components/ide/shared/split-editor-types";
+import type { ViewMode } from "@/components/ide/shared/view-mode";
 
 interface EditorPaneProps {
   children?: React.ReactNode;

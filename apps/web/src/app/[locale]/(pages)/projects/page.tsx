@@ -1,7 +1,7 @@
 import { getTranslations, setRequestLocale } from "next-intl/server";
 import { Suspense } from "react";
-import { CodeView } from "@/components/ide/code-view";
-import { EditorContent } from "@/components/ide/editor-content";
+import { CodeView } from "@/components/ide/editor/code-view";
+import { EditorContent } from "@/components/ide/editor/editor-content";
 import { ProjectListLoader } from "@/components/projects/project-list-loader";
 import { ProjectListSkeleton } from "@/components/projects/project-list-skeleton";
 import { ProjectsHeader } from "@/components/projects/projects-header";

@@ -41,7 +41,7 @@ import {
 } from "@/components/theming/theme-preset-context";
 import { useThemeTransition } from "@/components/theming/use-theme-transition";
 
-import type { SidebarView } from "@/components/ide/ide-types";
+import type { SidebarView } from "@/components/ide/shared/ide-types";
 
 interface ActivityBarProps {
   onOpenCommand: () => void;

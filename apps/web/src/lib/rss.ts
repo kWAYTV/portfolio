@@ -5,7 +5,7 @@ import { blogSource } from "@/lib/source";
 import { fumadocsI18n } from "@/lib/i18n";
 
 export async function getRSS(): Promise<string> {
-  return await unstable_cache(
+  return unstable_cache(
     async () => {
       const feed = new Feed({
         title: `Blog | ${siteName}`,
@@ -35,7 +35,6 @@ export async function getRSS(): Promise<string> {
         });
       }
 
-      await Promise.resolve();
       return feed.rss2();
     },
     ["rss"],
