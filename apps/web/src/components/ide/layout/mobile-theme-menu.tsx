@@ -47,10 +47,11 @@ export const MobileThemeMenu = memo(function MobileThemeMenu() {
         </button>
       </DropdownMenuTrigger>
       <DropdownMenuContent
-        align="start"
-        className="ide-dropdown w-56 rounded-sm border border-border bg-popover p-0.5 shadow-lg"
-        side="right"
-        sideOffset={8}
+        align="end"
+        className="ide-dropdown w-56 max-w-[calc(100vw-2rem)] rounded-sm border border-border bg-popover p-0.5 shadow-lg"
+        collisionPadding={16}
+        side="left"
+        sideOffset={4}
       >
         <button
           className="flex w-full cursor-pointer items-center gap-2 rounded-sm px-2 py-1.5 text-sm outline-none transition-colors hover:bg-accent hover:text-accent-foreground"
