@@ -4,8 +4,7 @@ import { usePathname, useRouter } from "@i18n/routing";
 import { Sheet, SheetContent, TooltipProvider } from "@portfolio/ui";
 import dynamic from "next/dynamic";
 import { parseAsBoolean, useQueryState } from "nuqs";
-import { Suspense, useEffect, useMemo, useRef } from "react";
-import { PageContentSkeleton } from "@/components/ide/layout/page-content-skeleton";
+import { useEffect, useMemo, useRef } from "react";
 import { ActivityBar } from "@/components/ide/layout/activity-bar";
 import { IdeEditorArea } from "@/components/ide/layout/ide-editor-area";
 import { IdeLayoutEmbed } from "@/components/ide/layout/ide-layout-embed";
@@ -190,9 +189,7 @@ export function IdeLayout({ children }: IdeLayoutProps) {
                 splitRight={editor.splitRight}
                 viewMode={layout.viewMode}
               >
-                <Suspense fallback={<PageContentSkeleton />}>
-                  {children}
-                </Suspense>
+                {children}
               </IdeEditorArea>
               <TerminalPanel
                 isOpen={layout.terminalOpen}

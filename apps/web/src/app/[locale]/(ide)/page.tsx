@@ -1,8 +1,6 @@
 import { Separator } from "@portfolio/ui";
 import { setRequestLocale } from "next-intl/server";
-import { Suspense } from "react";
 import { FeaturedProjectsLoader } from "@/components/home/featured-projects-loader";
-import { FeaturedProjectsSkeleton } from "@/components/home/featured-projects-skeleton";
 import { HeroBio } from "@/components/home/hero-bio";
 import { HeroHeader } from "@/components/home/hero-header";
 import { HeroQuote } from "@/components/home/hero-quote";
@@ -37,9 +35,7 @@ export default async function Home({ params }: Props) {
           <Separator className="bg-border/50" />
           <SocialNav />
           <Separator className="bg-border/50" />
-          <Suspense fallback={<FeaturedProjectsSkeleton />}>
-            <FeaturedProjectsLoader />
-          </Suspense>
+          <FeaturedProjectsLoader />
           <HeroQuote />
         </PageContent>
       }

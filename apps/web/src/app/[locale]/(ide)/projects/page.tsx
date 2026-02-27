@@ -1,9 +1,7 @@
 import { getTranslations, setRequestLocale } from "next-intl/server";
-import { Suspense } from "react";
 import { CodeView } from "@/components/ide/editor/code-view";
 import { EditorContent } from "@/components/ide/editor/editor-content";
 import { ProjectListLoader } from "@/components/projects/project-list-loader";
-import { ProjectListSkeleton } from "@/components/projects/project-list-skeleton";
 import { ProjectsHeader } from "@/components/projects/projects-header";
 import { PageContent } from "@/components/shared/page-content";
 import { projectsCode } from "@/consts/code-content";
@@ -35,9 +33,7 @@ export default async function Projects({ params }: Props) {
       preview={
         <PageContent>
           <ProjectsHeader />
-          <Suspense fallback={<ProjectListSkeleton />}>
-            <ProjectListLoader />
-          </Suspense>
+          <ProjectListLoader />
         </PageContent>
       }
       source={<CodeView code={projectsCode} lang="typescript" />}

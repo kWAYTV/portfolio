@@ -6,6 +6,11 @@ interface IdeLayoutProps {
   children: React.ReactNode;
 }
 
+/**
+ * Single Suspense boundary: IdeLayout (client) uses usePathname/useRouter which
+ * access request context. Page loaders (getGitHubRepos, blogSource) use use cache
+ * or sync - no additional Suspense needed.
+ */
 export default function IdeLayout({ children }: IdeLayoutProps) {
   return (
     <Suspense fallback={<IdeLayoutSkeleton>{null}</IdeLayoutSkeleton>}>
