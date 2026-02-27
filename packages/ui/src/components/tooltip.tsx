@@ -1,7 +1,7 @@
 "use client";
 
 /** biome-ignore lint/performance/noNamespaceImport: <shadcn> */
-import * as TooltipPrimitive from "@radix-ui/react-tooltip";
+import { Tooltip as TooltipPrimitive } from "radix-ui";
 import type * as React from "react";
 
 import { cn } from "../utils";
