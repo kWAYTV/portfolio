@@ -8,6 +8,7 @@ export const navItems = [
     fileName: "projects.ts",
     fileType: "ts",
   },
+  { href: "/blog", label: "blog", fileName: "index.mdx", fileType: "mdx" },
 ] as const;
 
 /** Static explorer tree (no data fetching). Mimics repo structure; files without href are unaccessible. */
@@ -28,7 +29,9 @@ export const explorerTree: TreeItem[] = [
       {
         type: "folder",
         name: "blog",
-        children: [{ type: "file", name: "index.mdx", fileType: "mdx" }],
+        children: [
+          { type: "file", name: "index.mdx", href: "/blog", fileType: "mdx" },
+        ],
       },
     ],
   },

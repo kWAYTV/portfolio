@@ -1,3 +1,4 @@
+import { RootProvider } from "fumadocs-ui/provider/next";
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import { notFound } from "next/navigation";
@@ -48,13 +49,15 @@ export default async function LocaleLayout({
   return (
     <html lang={locale} suppressHydrationWarning>
       <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased`}
+        className={`${geistSans.variable} ${geistMono.variable} flex min-h-screen flex-col antialiased`}
       >
-        <Providers>
-          <NextIntlClientProvider locale={locale} messages={messages}>
-            <IdeLayout>{children}</IdeLayout>
-          </NextIntlClientProvider>
-        </Providers>
+        <RootProvider>
+          <Providers>
+            <NextIntlClientProvider locale={locale} messages={messages}>
+              <IdeLayout>{children}</IdeLayout>
+            </NextIntlClientProvider>
+          </Providers>
+        </RootProvider>
       </body>
     </html>
   );

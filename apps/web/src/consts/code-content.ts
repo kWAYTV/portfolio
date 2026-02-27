@@ -128,28 +128,48 @@ export function sortRepos(repos: Repository[], sort: SortOption) {
 // Pinned on home page
 export const featured = ["portfolio", "versend/core", "lichess-bot"];`;
 
-export const blogCode = `---
-title: Blog
-description: Quiet notes from current work
----
+export const blogCode = `import { BlogCard } from "@/components/blog/blog-card";
+import { BlogHeader } from "@/components/blog/blog-header";
+import { PageContent } from "@/components/shared/page-content";
+import { Pagination } from "@/components/shared/pagination";
+import { getBlog } from "@/lib/source";
 
-import { BlogList } from "@/components/blog/blog-list"
-import { getPosts } from "@/lib/source"
+const POSTS_PER_PAGE = 12;
 
-# Blog
+export default async function BlogPage({ params, searchParams }) {
+  const { locale } = await params;
+  const blog = getBlog(locale);
+  const allPosts = blog.getPages().sort((a, b) =>
+    new Date(b.data.date).getTime() - new Date(a.data.date).getTime()
+  );
+  const totalPages = Math.max(1, Math.ceil(allPosts.length / POSTS_PER_PAGE));
+  const page = Math.min(totalPages, parseInt(searchParams?.page ?? "1") || 1);
+  const posts = allPosts.slice(
+    (page - 1) * POSTS_PER_PAGE,
+    page * POSTS_PER_PAGE
+  );
 
-Quiet notes from current work. More entries will fall in here
-as they are published — kept chronologically, nothing fancy.
-
-<BlogList posts={getPosts()} />
-
-## Latest Posts
-
-- **Shipping the Wrong Thing** — *Feb 23, 2026*
-  Sometimes the right move is to ship the feature nobody asked for
-
-- **The Side Project Graveyard** — *Dec 22, 2025*
-  A guided tour through my unfinished projects and the lies I told myself
-
-- **Hello World** — *Nov 29, 2025*
-  Obligatory first post where I promise to write more`;
+  return (
+    <PageContent>
+      <BlogHeader />
+      <div className="space-y-3">
+        <p className="text-[11px] text-muted-foreground/60">
+          {allPosts.length} post{allPosts.length !== 1 ? "s" : ""}
+        </p>
+        <div className="space-y-1">
+          {posts.map((post) => (
+            <BlogCard
+              key={post.url}
+              locale={locale}
+              title={post.data.title}
+              description={post.data.description}
+              date={post.data.date}
+              url={post.url}
+            />
+          ))}
+        </div>
+        <Pagination currentPage={page} totalPages={totalPages} />
+      </div>
+    </PageContent>
+  );
+}`;
