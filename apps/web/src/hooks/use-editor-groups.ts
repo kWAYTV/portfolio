@@ -2,7 +2,7 @@
 
 import { useRouter } from "@i18n/routing";
 import { useCallback, useEffect, useRef, useState } from "react";
-import type { EditorGroup } from "@/components/ide/split-editor-types";
+import type { EditorGroup } from "@/components/ide/shared/split-editor-types";
 import { navItems } from "@/consts/nav-items";
 import { matchNavItem } from "@/lib/ide/breadcrumb";
 

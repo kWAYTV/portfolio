@@ -9,7 +9,7 @@ import {
 } from "@portfolio/ui";
 import { Code, Copy, Eye } from "lucide-react";
 import { useTranslations } from "next-intl";
-import type { ViewMode } from "@/components/ide/view-mode";
+import type { ViewMode } from "@/components/ide/shared/view-mode";
 
 interface EditorContentContextMenuProps {
   children: React.ReactNode;

@@ -1,4 +1,4 @@
-import { FILE_CONTENTS } from "@/components/ide/terminal/file-contents";
+import { FILE_CONTENTS } from "./file-contents";
 
 export const MOCK_CWD = "/workspace/portfolio";
 export const MOCK_FILES = [

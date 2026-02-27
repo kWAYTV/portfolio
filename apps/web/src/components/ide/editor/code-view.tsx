@@ -1,4 +1,4 @@
-import { CodeEditor } from "@/components/ide/code-editor";
+import { CodeEditor } from "@/components/ide/editor/code-editor";
 
 interface CodeViewProps {
   code: string;
