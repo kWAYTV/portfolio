@@ -31,6 +31,7 @@ interface SourceControlViewProps {
   fullWidth?: boolean;
   hasStagedChanges?: boolean;
   onClose?: () => void;
+  onRefresh?: () => void;
 }
 
 export const SourceControlView = memo(function SourceControlView({
@@ -38,6 +39,7 @@ export const SourceControlView = memo(function SourceControlView({
   fullWidth = false,
   hasStagedChanges = false,
   onClose,
+  onRefresh,
 }: SourceControlViewProps) {
   const t = useTranslations("ide");
   const displayCommits = commits.length > 0 ? commits : MOCK_COMMITS;
@@ -71,6 +73,7 @@ export const SourceControlView = memo(function SourceControlView({
               <Button
                 aria-label="Refresh"
                 className="size-6 rounded p-0"
+                onClick={onRefresh}
                 size="icon-sm"
                 type="button"
                 variant="ghost"

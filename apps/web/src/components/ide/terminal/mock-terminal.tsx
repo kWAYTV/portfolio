@@ -22,6 +22,7 @@ export function MockTerminal() {
 
   return (
     <div
+      aria-label="Terminal output"
       className="terminal-root flex h-full min-h-0 flex-col font-mono text-[13px]"
       onClick={handleTerminalClick}
       onKeyDown={() => inputRef.current?.focus()}

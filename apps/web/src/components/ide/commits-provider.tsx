@@ -2,25 +2,32 @@
 
 import type { GitCommitItem } from "@/lib/github";
 import { getCommits } from "@/lib/actions";
-import {
-  createContext,
-  useCallback,
-  useContext,
-  useEffect,
-  useState,
-} from "react";
+import { createContext, useCallback, useContext, useState } from "react";
 
 const CommitsContext = createContext<{
   commits: GitCommitItem[];
+  fetchCommits: () => Promise<void>;
   isLoading: boolean;
-}>({ commits: [], isLoading: false });
+}>({
+  commits: [],
+  fetchCommits: async () => {},
+  isLoading: false,
+});
 
 export function useCommits() {
   return useContext(CommitsContext);
 }
 
-export function CommitsProvider({ children }: { children: React.ReactNode }) {
-  const [commits, setCommits] = useState<GitCommitItem[]>([]);
+interface CommitsProviderProps {
+  children: React.ReactNode;
+  initialCommits?: GitCommitItem[];
+}
+
+export function CommitsProvider({
+  children,
+  initialCommits = [],
+}: CommitsProviderProps) {
+  const [commits, setCommits] = useState<GitCommitItem[]>(initialCommits);
   const [isLoading, setIsLoading] = useState(false);
 
   const fetchCommits = useCallback(async () => {
@@ -33,12 +40,8 @@ export function CommitsProvider({ children }: { children: React.ReactNode }) {
     }
   }, []);
 
-  useEffect(() => {
-    void fetchCommits();
-  }, [fetchCommits]);
-
   return (
-    <CommitsContext.Provider value={{ commits, isLoading }}>
+    <CommitsContext.Provider value={{ commits, isLoading, fetchCommits }}>
       {children}
     </CommitsContext.Provider>
   );

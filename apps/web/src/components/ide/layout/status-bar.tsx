@@ -47,6 +47,7 @@ export const StatusBar = memo(function StatusBar({
       <div className="flex min-w-0 shrink-0 items-center gap-2 sm:gap-3">
         {onFocusSourceControl ? (
           <button
+            aria-label={t("sourceControl")}
             className="flex cursor-pointer items-center gap-1 transition-colors hover:text-foreground"
             onClick={onFocusSourceControl}
             title={t("sourceControl")}
@@ -57,6 +58,7 @@ export const StatusBar = memo(function StatusBar({
           </button>
         ) : (
           <a
+            aria-label={t("openRepo")}
             className="flex cursor-pointer items-center gap-1 transition-colors hover:text-foreground"
             href="https://github.com/kWAYTV/portfolio"
             rel="noopener noreferrer"
@@ -73,6 +75,7 @@ export const StatusBar = memo(function StatusBar({
       </div>
       <div className="[&_button]:!text-[length:11px] [&_button]:!text-muted-foreground [&_button:hover]:!text-foreground flex min-w-0 shrink-0 items-center gap-1 overflow-x-auto sm:gap-3 [&_a]:flex [&_a]:min-h-[44px] [&_a]:min-w-[44px] [&_a]:touch-manipulation [&_a]:items-center sm:[&_a]:min-h-[36px] sm:[&_a]:min-w-[36px] [&_button]:min-h-[44px] [&_button]:min-w-[44px] [&_button]:touch-manipulation sm:[&_button]:min-h-[36px] sm:[&_button]:min-w-[36px]">
         <button
+          aria-label={t("openPreview")}
           className="flex cursor-pointer items-center gap-1 transition-colors hover:text-foreground"
           onClick={() => {
             const w = window.open(
@@ -89,6 +92,7 @@ export const StatusBar = memo(function StatusBar({
           <span className="hidden sm:inline">{t("preview")}</span>
         </button>
         <button
+          aria-label={t("terminal")}
           className={cn(
             "flex cursor-pointer items-center gap-1 transition-colors hover:text-foreground",
             terminalOpen && "text-foreground"
@@ -102,6 +106,7 @@ export const StatusBar = memo(function StatusBar({
         <span className="hidden tabular-nums sm:inline">Ln 1, Col 1</span>
         <span className="hidden sm:inline">{fileType}</span>
         <Link
+          aria-label="RSS feed"
           className="flex cursor-pointer items-center gap-1 transition-colors hover:text-foreground"
           href="/rss"
         >

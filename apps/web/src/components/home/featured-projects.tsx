@@ -52,6 +52,7 @@ export function FeaturedProjects({ repos }: FeaturedProjectsProps) {
               <HoverCard closeDelay={100} openDelay={150}>
                 <HoverCardTrigger asChild>
                   <a
+                    aria-label={`Open ${repo.name} on GitHub`}
                     className={cardClassName}
                     href={repo.html_url}
                     rel="noopener noreferrer"
@@ -70,6 +71,7 @@ export function FeaturedProjects({ repos }: FeaturedProjectsProps) {
               <Popover>
                 <PopoverTrigger asChild>
                   <button
+                    aria-label={`View ${repo.name} details`}
                     className={cn(
                       cardClassName,
                       "w-full cursor-pointer text-left"

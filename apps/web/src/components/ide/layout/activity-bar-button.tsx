@@ -20,6 +20,7 @@ export function ActivityBarButton({
     <Tooltip>
       <TooltipTrigger asChild>
         <button
+          aria-label={tooltip}
           className={cn(
             "flex size-10 cursor-pointer items-center justify-center text-sidebar-foreground/60 transition-colors hover:text-sidebar-primary",
             active && "text-sidebar-primary"
