@@ -2,8 +2,8 @@
 
 import { ChevronRight } from "lucide-react";
 import { navItems } from "@/components/ide/config";
-import type { ViewMode } from "@/components/ide/shared/view-mode";
 import { cn } from "@/lib/utils";
+import { useIdeStore } from "@/stores/ide-store";
 
 function getBreadcrumbParts(pathname: string): string[] {
   if (pathname === "/") {
@@ -17,16 +17,12 @@ function getBreadcrumbParts(pathname: string): string[] {
 }
 
 interface BreadcrumbsProps {
-  onViewModeChange: (mode: ViewMode) => void;
   pathname: string;
-  viewMode: ViewMode;
 }
 
-export function Breadcrumbs({
-  pathname,
-  viewMode,
-  onViewModeChange,
-}: BreadcrumbsProps) {
+export function Breadcrumbs({ pathname }: BreadcrumbsProps) {
+  const viewMode = useIdeStore((s) => s.viewMode);
+  const setViewMode = useIdeStore((s) => s.setViewMode);
   const parts = getBreadcrumbParts(pathname);
 
   return (
@@ -63,7 +59,7 @@ export function Breadcrumbs({
               ? "bg-muted/80 text-foreground"
               : "hover:text-foreground"
           )}
-          onClick={() => onViewModeChange("preview")}
+          onClick={() => setViewMode("preview")}
           title="Preview"
           type="button"
         >
@@ -76,7 +72,7 @@ export function Breadcrumbs({
               ? "bg-muted/80 text-foreground"
               : "hover:text-foreground"
           )}
-          onClick={() => onViewModeChange("code")}
+          onClick={() => setViewMode("code")}
           title="Source"
           type="button"
         >

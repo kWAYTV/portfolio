@@ -4,13 +4,12 @@ import { GitBranch, Play, Terminal } from "lucide-react";
 import { LocaleSwitcher } from "@/components/internationalization/locale-switcher";
 import { ModeToggle } from "@/components/shared/mode-toggle";
 import { cn } from "@/lib/utils";
+import { useIdeStore } from "@/stores/ide-store";
 
-interface StatusBarProps {
-  onToggleTerminal: () => void;
-  terminalOpen: boolean;
-}
+export function StatusBar() {
+  const terminalOpen = useIdeStore((s) => s.terminalOpen);
+  const toggleTerminal = useIdeStore((s) => s.toggleTerminal);
 
-export function StatusBar({ terminalOpen, onToggleTerminal }: StatusBarProps) {
   return (
     <div className="flex h-11 shrink-0 select-none items-center justify-between gap-2 overflow-hidden border-border border-t bg-secondary px-2 py-1 text-[11px] text-muted-foreground shadow-(--shadow-elevation-sm) sm:h-6 sm:px-3 sm:py-0">
       <div className="flex min-w-0 shrink-0 items-center gap-2 sm:gap-3">
@@ -51,7 +50,7 @@ export function StatusBar({ terminalOpen, onToggleTerminal }: StatusBarProps) {
             "flex cursor-pointer items-center gap-1 transition-colors hover:text-foreground",
             terminalOpen && "text-foreground"
           )}
-          onClick={onToggleTerminal}
+          onClick={toggleTerminal}
           type="button"
         >
           <Terminal className="size-3.5" />

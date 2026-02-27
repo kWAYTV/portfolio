@@ -3,22 +3,17 @@
 import { navItems } from "@/components/ide/config";
 import { EditorTabItem } from "@/components/ide/editor/editor-tab-item";
 import { EditorTabsEmpty } from "@/components/ide/editor/editor-tabs-empty";
+import { useIdeStore } from "@/stores/ide-store";
 
 interface EditorTabsProps {
-  onCloseAll: () => void;
-  onCloseTab: (href: string) => void;
-  onTabClick?: (href: string) => void;
-  openTabs: string[];
   pathname: string;
 }
 
-export function EditorTabs({
-  pathname,
-  openTabs,
-  onCloseTab,
-  onCloseAll: _onCloseAll,
-  onTabClick,
-}: EditorTabsProps) {
+export function EditorTabs({ pathname }: EditorTabsProps) {
+  const openTabs = useIdeStore((s) => s.openTabs);
+  const closeTab = useIdeStore((s) => s.closeTab);
+  const openTab = useIdeStore((s) => s.openTab);
+
   const isActive = (href: string) => {
     if (href === "/") {
       return pathname === "/";
@@ -44,8 +39,8 @@ export function EditorTabs({
           fileType={item.fileType}
           href={item.href}
           key={item.href}
-          onClose={() => onCloseTab(item.href)}
-          onTabClick={onTabClick}
+          onClose={() => closeTab(item.href)}
+          onTabClick={(href) => openTab(href)}
         />
       ))}
     </div>

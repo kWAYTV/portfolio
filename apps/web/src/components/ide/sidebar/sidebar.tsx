@@ -7,79 +7,25 @@ import {
   ChevronsUpDown,
   X,
 } from "lucide-react";
-import { useCallback, useState } from "react";
 import { explorerTree } from "@/components/ide/config";
 import { ExplorerTreeItem } from "@/components/ide/sidebar/explorer-tree-item";
 import { Button } from "@/components/ui/button";
+import { useExplorerExpanded, useIdeStore } from "@/stores/ide-store";
 
 interface SidebarProps {
   fullWidth?: boolean;
   onClose?: () => void;
-  onOpenTab?: (href: string) => void;
   pathname: string;
-}
-
-function collectExpandableKeys(
-  items: typeof explorerTree,
-  prefix: string
-): Set<string> {
-  const keys = new Set<string>();
-  for (const item of items) {
-    if (item.type === "folder") {
-      const key = `${prefix}/${item.name}`;
-      keys.add(key);
-      for (const k of collectExpandableKeys(item.children, key)) {
-        keys.add(k);
-      }
-    }
-  }
-  return keys;
-}
-
-const ALL_EXPANDABLE_KEYS = new Set([
-  "portfolio",
-  ...collectExpandableKeys(explorerTree, "portfolio"),
-]);
-
-function useExplorerState() {
-  const [expanded, setExpanded] = useState<Set<string>>(
-    new Set(["portfolio", "portfolio/src", "portfolio/src/blog"])
-  );
-
-  const toggle = useCallback((pathKey: string) => {
-    setExpanded((prev) => {
-      const next = new Set(prev);
-      if (next.has(pathKey)) {
-        next.delete(pathKey);
-      } else {
-        next.add(pathKey);
-      }
-      return next;
-    });
-  }, []);
-
-  const expandAll = useCallback(
-    () => setExpanded(new Set(["portfolio", ...ALL_EXPANDABLE_KEYS])),
-    []
-  );
-
-  const collapseAll = useCallback(() => setExpanded(new Set()), []);
-
-  const isFullyExpanded =
-    expanded.has("portfolio") &&
-    [...ALL_EXPANDABLE_KEYS].every((k) => expanded.has(k));
-
-  return { expanded, toggle, expandAll, collapseAll, isFullyExpanded };
 }
 
 export function Sidebar({
   fullWidth = false,
   onClose,
-  onOpenTab,
   pathname,
 }: SidebarProps) {
+  const openTab = useIdeStore((s) => s.openTab);
   const { expanded, toggle, expandAll, collapseAll, isFullyExpanded } =
-    useExplorerState();
+    useExplorerExpanded();
 
   return (
     <div
@@ -160,7 +106,7 @@ export function Sidebar({
                   expanded={expanded}
                   item={item}
                   key={item.name}
-                  onOpenTab={onOpenTab}
+                  onOpenTab={openTab}
                   onToggle={toggle}
                   path="portfolio"
                   pathname={pathname}

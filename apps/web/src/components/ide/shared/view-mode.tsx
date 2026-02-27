@@ -1,18 +1,10 @@
 "use client";
 
-import { createContext, useContext } from "react";
+import { useIdeStore } from "@/stores/ide-store";
 
 export type ViewMode = "code" | "preview";
 
-interface ViewModeContextValue {
-  setViewMode: (mode: ViewMode) => void;
-  viewMode: ViewMode;
-}
-
-const ViewModeContext = createContext<ViewModeContextValue>({
-  viewMode: "preview",
-  setViewMode: () => undefined,
+export const useViewMode = () => ({
+  viewMode: useIdeStore((s) => s.viewMode),
+  setViewMode: useIdeStore((s) => s.setViewMode),
 });
-
-export const useViewMode = () => useContext(ViewModeContext);
-export const ViewModeProvider = ViewModeContext.Provider;

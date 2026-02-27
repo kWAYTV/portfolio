@@ -5,18 +5,17 @@ import { useTranslations } from "next-intl";
 import { useCallback, useEffect, useRef, useState } from "react";
 import { MockTerminal } from "@/components/ide/terminal/mock-terminal";
 import { cn } from "@/lib/utils";
+import { useIdeStore } from "@/stores/ide-store";
 
 const MIN_HEIGHT = 120;
 const MAX_HEIGHT = 600;
 const DEFAULT_HEIGHT = 200;
 
-interface TerminalPanelProps {
-  isOpen: boolean;
-  onClose: () => void;
-}
-
-export function TerminalPanel({ onClose, isOpen }: TerminalPanelProps) {
+export function TerminalPanel() {
+  const terminalOpen = useIdeStore((s) => s.terminalOpen);
+  const toggleTerminal = useIdeStore((s) => s.toggleTerminal);
   const t = useTranslations("ide");
+
   const [height, setHeight] = useState(DEFAULT_HEIGHT);
   const [isDragging, setIsDragging] = useState(false);
   const [isHoveringResize, setIsHoveringResize] = useState(false);
@@ -57,7 +56,7 @@ export function TerminalPanel({ onClose, isOpen }: TerminalPanelProps) {
     };
   }, [isDragging]);
 
-  if (!isOpen) {
+  if (!terminalOpen) {
     return null;
   }
 
@@ -124,7 +123,7 @@ export function TerminalPanel({ onClose, isOpen }: TerminalPanelProps) {
           <button
             aria-label="Close panel"
             className="flex size-6 cursor-pointer items-center justify-center rounded text-muted-foreground transition-colors hover:bg-muted hover:text-foreground"
-            onClick={onClose}
+            onClick={toggleTerminal}
             title="Close panel"
             type="button"
           >

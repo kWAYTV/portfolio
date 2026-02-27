@@ -2,36 +2,29 @@
 
 import { GitBranch, PanelLeft, Settings, Terminal } from "lucide-react";
 import { ActivityBarButton } from "@/components/ide/layout/activity-bar-button";
-import type { SidebarView } from "@/components/ide/shared/ide-types";
+import { useIdeStore } from "@/stores/ide-store";
 
 interface ActivityBarProps {
   onOpenSettings?: () => void;
-  onToggleSidebar: () => void;
-  onToggleSidebarView: (view: SidebarView) => void;
-  onToggleTerminal: () => void;
-  sidebarOpen: boolean;
-  sidebarView: SidebarView;
-  terminalOpen: boolean;
 }
 
-export function ActivityBar({
-  sidebarOpen,
-  sidebarView,
-  terminalOpen,
-  onToggleSidebar,
-  onToggleSidebarView,
-  onToggleTerminal,
-  onOpenSettings,
-}: ActivityBarProps) {
+export function ActivityBar({ onOpenSettings }: ActivityBarProps) {
+  const sidebarOpen = useIdeStore((s) => s.sidebarOpen);
+  const sidebarView = useIdeStore((s) => s.sidebarView);
+  const terminalOpen = useIdeStore((s) => s.terminalOpen);
+  const toggleSidebar = useIdeStore((s) => s.toggleSidebar);
+  const setSidebarView = useIdeStore((s) => s.setSidebarView);
+  const toggleTerminal = useIdeStore((s) => s.toggleTerminal);
+
   return (
     <div className="flex h-full w-12 shrink-0 select-none flex-col items-center border-border border-r bg-sidebar py-1 shadow-(--shadow-elevation-sm)">
       <ActivityBarButton
         active={sidebarOpen && sidebarView === "explorer"}
         icon={PanelLeft}
         onClick={() => {
-          onToggleSidebarView("explorer");
+          setSidebarView("explorer");
           if (!sidebarOpen) {
-            onToggleSidebar();
+            toggleSidebar();
           }
         }}
         tooltip="Explorer"
@@ -40,9 +33,9 @@ export function ActivityBar({
         active={sidebarOpen && sidebarView === "sourceControl"}
         icon={GitBranch}
         onClick={() => {
-          onToggleSidebarView("sourceControl");
+          setSidebarView("sourceControl");
           if (!sidebarOpen) {
-            onToggleSidebar();
+            toggleSidebar();
           }
         }}
         tooltip="Source Control"
@@ -50,7 +43,7 @@ export function ActivityBar({
       <ActivityBarButton
         active={terminalOpen}
         icon={Terminal}
-        onClick={onToggleTerminal}
+        onClick={toggleTerminal}
         tooltip="Terminal"
       />
       <div className="mt-auto">
