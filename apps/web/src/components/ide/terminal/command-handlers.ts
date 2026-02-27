@@ -258,12 +258,12 @@ export function executeCommand(cmd: string, cwd: string): CommandResult {
       return { lines: [] };
     case "pwd":
       return { lines: [out(cwd.replace("/workspace/portfolio", "~"))] };
-    case "ls":
-      return runLs(cwd, false);
-    case "ls -la":
-    case "ls -l":
-    case "ls -a":
-      return runLs(cwd, true);
+    case "ls": {
+      const hasLongFlag = parts.some(
+        (p) => p === "-l" || p === "-a" || p === "-la" || p === "-al"
+      );
+      return runLs(cwd, hasLongFlag);
+    }
     case "whoami":
       return { lines: [out("visitor")] };
     case "help":
