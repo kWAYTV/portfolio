@@ -42,7 +42,7 @@ export function CommitHistoryItem({ commit }: CommitHistoryItemProps) {
       </HoverCardTrigger>
       <HoverCardContent
         align="start"
-        className="ide-dropdown w-72 rounded-sm border border-border bg-popover p-3 shadow-lg"
+        className="ide-dropdown w-72 rounded-sm border border-border bg-popover p-3"
         side="right"
       >
         <div className="space-y-2.5">

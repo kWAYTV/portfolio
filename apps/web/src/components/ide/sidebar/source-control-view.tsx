@@ -101,7 +101,7 @@ export const SourceControlView = memo(function SourceControlView({
             </DropdownMenuTrigger>
             <DropdownMenuContent
               align="end"
-              className="ide-dropdown w-48 rounded-sm border border-border bg-popover p-0.5 shadow-lg"
+              className="ide-dropdown w-48 rounded-sm border border-border bg-popover p-0.5"
               side="right"
             >
               <DropdownMenuItem asChild>

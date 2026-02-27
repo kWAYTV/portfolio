@@ -95,7 +95,7 @@ export function ExplorerTreeItem({
             </div>
           )}
         </div>
-        <ContextMenuContent className="ide-dropdown w-44 rounded-sm border border-border bg-popover p-0.5 shadow-lg">
+        <ContextMenuContent className="ide-dropdown w-44 rounded-sm border border-border bg-popover p-0.5">
           <ContextMenuItem onClick={() => onExpandAll(item)}>
             {t("expandAll")}
           </ContextMenuItem>
@@ -138,7 +138,7 @@ export function ExplorerTreeItem({
             {content}
           </Link>
         </ContextMenuTrigger>
-        <ContextMenuContent className="ide-dropdown w-44 rounded-sm border border-border bg-popover p-0.5 shadow-lg">
+        <ContextMenuContent className="ide-dropdown w-44 rounded-sm border border-border bg-popover p-0.5">
           <ContextMenuItem onClick={() => onOpenTab?.(item.href!)}>
             {t("open")}
           </ContextMenuItem>
@@ -159,7 +159,7 @@ export function ExplorerTreeItem({
       <ContextMenuTrigger asChild>
         <div>{content}</div>
       </ContextMenuTrigger>
-      <ContextMenuContent className="ide-dropdown w-44 rounded-sm border border-border bg-popover p-0.5 shadow-lg">
+      <ContextMenuContent className="ide-dropdown w-44 rounded-sm border border-border bg-popover p-0.5">
         <ContextMenuItem onClick={() => copyPath(key)}>
           {t("copyPath")}
         </ContextMenuItem>

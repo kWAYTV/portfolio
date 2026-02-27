@@ -29,7 +29,7 @@ export function EditorContentContextMenu({
   return (
     <ContextMenu>
       <ContextMenuTrigger asChild>{children}</ContextMenuTrigger>
-      <ContextMenuContent className="ide-dropdown w-44 rounded-sm border border-border bg-popover p-0.5 shadow-lg">
+      <ContextMenuContent className="ide-dropdown w-44 rounded-sm border border-border bg-popover p-0.5">
         {onCopy && (
           <ContextMenuItem onClick={onCopy}>
             <Copy className="mr-2 size-3.5" />
