@@ -1,7 +1,7 @@
 "use client";
 
+import { TerminalLine } from "@/components/ide/terminal/terminal-line";
 import { useTerminalState } from "@/hooks/use-terminal-state";
-import { TerminalLine } from "./terminal-line";
 
 const TERMINAL_INPUT_ID = "terminal-input";
 

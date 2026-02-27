@@ -1,6 +1,5 @@
 "use client";
 
-import { LocaleLink } from "@i18n/routing";
 import {
   BookOpen,
   Code2,
@@ -10,6 +9,7 @@ import {
   User,
 } from "lucide-react";
 import { useState } from "react";
+import { navItems } from "@/components/ide/config";
 import { LocaleSwitcher } from "@/components/internationalization/locale-switcher";
 import { ModeToggle } from "@/components/shared/mode-toggle";
 import {
@@ -18,7 +18,7 @@ import {
   SheetHeader,
   SheetTitle,
 } from "@/components/ui/sheet";
-import { navItems } from "../config";
+import { LocaleLink } from "@/modules/i18n/routing";
 
 const navIcons: Record<string, typeof Code2> = {
   home: Code2,

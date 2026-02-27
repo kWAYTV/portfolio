@@ -1,9 +1,9 @@
 "use client";
 
-import { LocaleLink } from "@i18n/routing";
 import { X } from "lucide-react";
+import { FileIcon } from "@/components/ide/sidebar/file-icon";
 import { cn } from "@/lib/utils";
-import { FileIcon } from "../sidebar/file-icon";
+import { LocaleLink } from "@/modules/i18n/routing";
 
 interface EditorTabItemProps {
   active: boolean;

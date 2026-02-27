@@ -1,8 +1,8 @@
 "use client";
 
+import { getGhostSuggestion } from "@/components/ide/terminal/commands";
+import { TerminalPrompt } from "@/components/ide/terminal/prompt";
 import type { TerminalLine as TerminalLineData } from "@/hooks/use-terminal-state";
-import { getGhostSuggestion } from "./commands";
-import { TerminalPrompt } from "./prompt";
 
 interface TerminalLineProps {
   inputId?: string;

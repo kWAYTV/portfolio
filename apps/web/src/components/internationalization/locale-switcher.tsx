@@ -14,7 +14,7 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import { updateLocale } from "@/i18n/lib/update-locale";
+import { updateLocale } from "@/modules/i18n/lib/update-locale";
 
 const locales = Object.keys(config.locales) as Locale[];
 

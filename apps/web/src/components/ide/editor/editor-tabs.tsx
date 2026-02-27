@@ -1,8 +1,8 @@
 "use client";
 
-import { navItems } from "../config";
-import { EditorTabItem } from "./editor-tab-item";
-import { EditorTabsEmpty } from "./editor-tabs-empty";
+import { navItems } from "@/components/ide/config";
+import { EditorTabItem } from "@/components/ide/editor/editor-tab-item";
+import { EditorTabsEmpty } from "@/components/ide/editor/editor-tabs-empty";
 
 interface EditorTabsProps {
   onCloseAll: () => void;

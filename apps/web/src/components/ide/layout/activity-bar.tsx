@@ -1,8 +1,8 @@
 "use client";
 
 import { GitBranch, PanelLeft, Settings, Terminal } from "lucide-react";
-import type { SidebarView } from "../shared/ide-types";
-import { ActivityBarButton } from "./activity-bar-button";
+import { ActivityBarButton } from "@/components/ide/layout/activity-bar-button";
+import type { SidebarView } from "@/components/ide/shared/ide-types";
 
 interface ActivityBarProps {
   onOpenSettings?: () => void;

@@ -1,9 +1,9 @@
 "use client";
 
-import { LocaleLink } from "@i18n/routing";
 import { ChevronDown, ChevronRight, Folder, FolderOpen } from "lucide-react";
-import type { TreeItem } from "../config";
-import { FileIcon } from "./file-icon";
+import type { TreeItem } from "@/components/ide/config";
+import { FileIcon } from "@/components/ide/sidebar/file-icon";
+import { LocaleLink } from "@/modules/i18n/routing";
 
 function isFileActive(pathname: string, href?: string): boolean {
   if (!href) {

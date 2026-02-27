@@ -8,9 +8,9 @@ import {
   X,
 } from "lucide-react";
 import { useCallback, useState } from "react";
+import { explorerTree } from "@/components/ide/config";
+import { ExplorerTreeItem } from "@/components/ide/sidebar/explorer-tree-item";
 import { Button } from "@/components/ui/button";
-import { explorerTree } from "../config";
-import { ExplorerTreeItem } from "./explorer-tree-item";
 
 interface SidebarProps {
   fullWidth?: boolean;

@@ -2,11 +2,11 @@
 
 import { ExternalLink, GitBranch, GitCommit, RefreshCw, X } from "lucide-react";
 import { useTranslations } from "next-intl";
+import { CollapsibleSection } from "@/components/ide/sidebar/collapsible-section";
+import { CommitHistoryItem } from "@/components/ide/sidebar/commit-history-item";
 import { Button } from "@/components/ui/button";
 import { MOCK_COMMITS, REPO_URL } from "@/consts/ide-constants";
 import { cn } from "@/lib/utils";
-import { CollapsibleSection } from "./collapsible-section";
-import { CommitHistoryItem } from "./commit-history-item";
 
 interface SourceControlViewProps {
   fullWidth?: boolean;

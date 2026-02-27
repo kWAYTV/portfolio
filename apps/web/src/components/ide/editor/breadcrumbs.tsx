@@ -1,9 +1,9 @@
 "use client";
 
 import { ChevronRight } from "lucide-react";
+import { navItems } from "@/components/ide/config";
+import type { ViewMode } from "@/components/ide/shared/view-mode";
 import { cn } from "@/lib/utils";
-import { navItems } from "../config";
-import type { ViewMode } from "../shared/view-mode";
 
 function getBreadcrumbParts(pathname: string): string[] {
   if (pathname === "/") {

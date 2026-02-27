@@ -3,8 +3,8 @@
 import { GripHorizontal, PanelBottomClose, Play, Terminal } from "lucide-react";
 import { useTranslations } from "next-intl";
 import { useCallback, useEffect, useRef, useState } from "react";
+import { MockTerminal } from "@/components/ide/terminal/mock-terminal";
 import { cn } from "@/lib/utils";
-import { MockTerminal } from "./mock-terminal";
 
 const MIN_HEIGHT = 120;
 const MAX_HEIGHT = 600;

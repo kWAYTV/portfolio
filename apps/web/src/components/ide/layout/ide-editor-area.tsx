@@ -1,9 +1,9 @@
 "use client";
 
+import { Breadcrumbs } from "@/components/ide/editor/breadcrumbs";
+import { EditorTabs } from "@/components/ide/editor/editor-tabs";
+import type { ViewMode } from "@/components/ide/shared/view-mode";
 import { cn } from "@/lib/utils";
-import { Breadcrumbs } from "../editor/breadcrumbs";
-import { EditorTabs } from "../editor/editor-tabs";
-import type { ViewMode } from "../shared/view-mode";
 
 interface IdeEditorAreaProps {
   children: React.ReactNode;

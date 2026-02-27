@@ -1,19 +1,19 @@
 "use client";
 
-import { useLocalePathname } from "@i18n/routing";
 import { useCallback, useMemo, useState } from "react";
+import { ActivityBar } from "@/components/ide/layout/activity-bar";
+import { IdeEditorArea } from "@/components/ide/layout/ide-editor-area";
+import { MobileActivityBar } from "@/components/ide/layout/mobile-activity-bar";
+import { MobileMenu } from "@/components/ide/layout/mobile-menu";
+import { StatusBar } from "@/components/ide/layout/status-bar";
+import { TitleBar } from "@/components/ide/layout/title-bar";
+import type { SidebarView } from "@/components/ide/shared/ide-types";
+import { ViewModeProvider } from "@/components/ide/shared/view-mode";
+import { Sidebar } from "@/components/ide/sidebar/sidebar";
+import { SourceControlView } from "@/components/ide/sidebar/source-control-view";
+import { TerminalPanel } from "@/components/ide/terminal/terminal-panel";
 import { Sheet, SheetContent } from "@/components/ui/sheet";
-import { ActivityBar } from "./layout/activity-bar";
-import { IdeEditorArea } from "./layout/ide-editor-area";
-import { MobileActivityBar } from "./layout/mobile-activity-bar";
-import { MobileMenu } from "./layout/mobile-menu";
-import { StatusBar } from "./layout/status-bar";
-import { TitleBar } from "./layout/title-bar";
-import type { SidebarView } from "./shared/ide-types";
-import { ViewModeProvider } from "./shared/view-mode";
-import { Sidebar } from "./sidebar/sidebar";
-import { SourceControlView } from "./sidebar/source-control-view";
-import { TerminalPanel } from "./terminal/terminal-panel";
+import { useLocalePathname } from "@/modules/i18n/routing";
 
 interface IdeLayoutProps {
   children: React.ReactNode;
