@@ -2,54 +2,23 @@
 
 import type { AppRouterInstance } from "next/dist/shared/lib/app-router-context.shared-runtime";
 import { create } from "zustand";
-import type { SidebarView } from "@/components/ide/shared/ide-types";
 import type { EditorGroup } from "@/components/ide/shared/split-editor-types";
-import type { ViewMode } from "@/components/ide/shared/view-mode";
 import { navItems } from "@/consts/nav-items";
 import { matchNavItem } from "@/lib/ide/breadcrumb";
 
 const initialTabs = navItems.map((item) => item.href);
 
-interface IdeState {
-  // Internal (for sync)
+interface EditorGroupsState {
   _closing: boolean;
   _openedFromSidebar: string | null;
   _router: AppRouterInstance | null;
   activeGroupIndex: number;
-  commandOpen: boolean;
-
-  // Editor groups
   editorGroups: EditorGroup[];
-  isFullscreen: boolean;
-  mobileSidebarView: SidebarView | null;
-  pageTitle: string;
-  // Layout
-  sidebarOpen: boolean;
-  sidebarView: SidebarView;
   splitRatio: number;
-  terminalOpen: boolean;
-  viewMode: ViewMode;
 }
 
-type IdeActions = {
+type EditorGroupsActions = {
   setRouter: (router: AppRouterInstance | null) => void;
-  setPageTitle: (title: string) => void;
-
-  // Layout actions
-  toggleSidebar: () => void;
-  toggleTerminal: () => void;
-  setTerminalOpen: (open: boolean) => void;
-  setSidebarView: (view: SidebarView) => void;
-  setCommandOpen: (open: boolean) => void;
-  setMobileSidebarView: (view: SidebarView | null) => void;
-  setViewMode: (mode: ViewMode) => void;
-  setIsFullscreen: (fullscreen: boolean) => void;
-  toggleFullscreen: () => Promise<void>;
-  openMobileExplorer: () => void;
-  openMobileSourceControl: () => void;
-  focusSourceControl: (isMobile: boolean) => void;
-
-  // Editor actions
   syncFromPathname: (pathname: string) => void;
   openTab: (href: string) => void;
   closeTab: (pathname: string, groupIndex: number, href: string) => void;
@@ -73,17 +42,9 @@ type IdeActions = {
   setSplitRatio: (ratio: number) => void;
 };
 
-export type IdeStore = IdeState & IdeActions;
-
-export const useIdeStore = create<IdeStore>((set, get) => ({
-  sidebarOpen: true,
-  sidebarView: "explorer",
-  mobileSidebarView: null,
-  terminalOpen: false,
-  commandOpen: false,
-  isFullscreen: false,
-  viewMode: "preview",
-  pageTitle: "",
+export const useEditorGroupsStore = create<
+  EditorGroupsState & EditorGroupsActions
+>((set, get) => ({
   editorGroups: [{ tabs: initialTabs, activeIndex: 0 }],
   activeGroupIndex: 0,
   splitRatio: 0.5,
@@ -92,35 +53,6 @@ export const useIdeStore = create<IdeStore>((set, get) => ({
   _router: null,
 
   setRouter: (router) => set({ _router: router }),
-  setPageTitle: (title) => set({ pageTitle: title }),
-
-  toggleSidebar: () => set((s) => ({ sidebarOpen: !s.sidebarOpen })),
-  toggleTerminal: () => set((s) => ({ terminalOpen: !s.terminalOpen })),
-  setTerminalOpen: (open) => set({ terminalOpen: open }),
-  setSidebarView: (view) => set({ sidebarView: view }),
-  setCommandOpen: (open) => set({ commandOpen: open }),
-  setMobileSidebarView: (view) => set({ mobileSidebarView: view }),
-  setViewMode: (mode) => set({ viewMode: mode }),
-  setIsFullscreen: (fullscreen) => set({ isFullscreen: fullscreen }),
-  toggleFullscreen: async () => {
-    try {
-      if (document.fullscreenElement) {
-        await document.exitFullscreen();
-      } else {
-        await document.documentElement.requestFullscreen();
-      }
-    } catch {
-      // Fullscreen not supported or denied
-    }
-  },
-  openMobileExplorer: () => set({ mobileSidebarView: "explorer" }),
-  openMobileSourceControl: () => set({ mobileSidebarView: "sourceControl" }),
-  focusSourceControl: (isMobile) =>
-    set((s) =>
-      isMobile
-        ? { mobileSidebarView: "sourceControl" }
-        : { sidebarView: "sourceControl", sidebarOpen: true }
-    ),
 
   syncFromPathname: (pathname) => {
     const { _closing, _openedFromSidebar, editorGroups, activeGroupIndex } =
@@ -469,11 +401,10 @@ export const useIdeStore = create<IdeStore>((set, get) => ({
   setSplitRatio: (ratio) => set({ splitRatio: ratio }),
 }));
 
-// Selectors
 export const useActiveGroup = () =>
-  useIdeStore((s) => s.editorGroups[s.activeGroupIndex]);
+  useEditorGroupsStore((s) => s.editorGroups[s.activeGroupIndex]);
 export const useActiveHref = () =>
-  useIdeStore((s) => {
+  useEditorGroupsStore((s) => {
     const g = s.editorGroups[s.activeGroupIndex];
     return g?.tabs[g.activeIndex] ?? g?.tabs[0];
   });
