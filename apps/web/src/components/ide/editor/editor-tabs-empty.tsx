@@ -1,6 +1,12 @@
 "use client";
 
-import { Empty, EmptyDescription, EmptyHeader, EmptyMedia, EmptyTitle } from "@portfolio/ui";
+import {
+  Empty,
+  EmptyDescription,
+  EmptyHeader,
+  EmptyMedia,
+  EmptyTitle,
+} from "@portfolio/ui";
 import { Code2 } from "lucide-react";
 import { useTranslations } from "next-intl";
 

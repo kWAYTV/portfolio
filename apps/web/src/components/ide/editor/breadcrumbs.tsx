@@ -4,9 +4,9 @@ import { cn } from "@portfolio/ui";
 import { ChevronRight } from "lucide-react";
 import { useTranslations } from "next-intl";
 import { memo } from "react";
+import type { ViewMode } from "@/components/ide/shared/view-mode";
 import { navItems } from "@/consts/nav-items";
 import { getBreadcrumbParts } from "@/lib/ide/breadcrumb";
-import type { ViewMode } from "@/components/ide/shared/view-mode";
 
 interface BreadcrumbsProps {
   onViewModeChange: (mode: ViewMode) => void;

@@ -5,8 +5,8 @@ import { EditorView } from "@codemirror/view";
 import CodeMirror from "@uiw/react-codemirror";
 import { useMemo } from "react";
 import { editorTheme } from "@/components/ide/editor/extensions/editor-theme";
-import { syntaxHighlight } from "@/components/ide/editor/extensions/syntax-highlight";
 import { langExtensions } from "@/components/ide/editor/extensions/supported-languages";
+import { syntaxHighlight } from "@/components/ide/editor/extensions/syntax-highlight";
 
 interface CodeEditorProps {
   code: string;

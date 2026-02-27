@@ -15,8 +15,8 @@ import {
   type SortOption,
   sortOptions,
 } from "@/components/projects/project-filters";
-import { useCanHover } from "@/hooks/use-can-hover";
 import { Pagination } from "@/components/shared/pagination";
+import { useCanHover } from "@/hooks/use-can-hover";
 
 const ITEMS_PER_PAGE = 5;
 
@@ -123,7 +123,7 @@ export const ProjectList = memo(function ProjectList({
           </p>
         ) : (
           paginatedRepos.map((repo) => (
-            <ProjectCard key={repo.id} canHover={canHover} repo={repo} />
+            <ProjectCard canHover={canHover} key={repo.id} repo={repo} />
           ))
         )}
       </div>

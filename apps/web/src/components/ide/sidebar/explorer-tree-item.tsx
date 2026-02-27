@@ -9,15 +9,10 @@ import {
   ContextMenuTrigger,
   cn,
 } from "@portfolio/ui";
-import {
-  ChevronDown,
-  ChevronRight,
-  Folder,
-  FolderOpen,
-} from "lucide-react";
+import { ChevronDown, ChevronRight, Folder, FolderOpen } from "lucide-react";
 import { useTranslations } from "next-intl";
-import type { FolderItem, TreeItem } from "@/consts/explorer-tree";
 import { FileIcon } from "@/components/ide/sidebar/file-icon";
+import type { FolderItem, TreeItem } from "@/consts/explorer-tree";
 
 interface ExplorerTreeItemProps {
   copyPath: (path: string) => void;
@@ -34,8 +29,12 @@ interface ExplorerTreeItemProps {
 }
 
 function isFileActive(pathname: string, href?: string): boolean {
-  if (!href) return false;
-  if (href === "/") return pathname === "/";
+  if (!href) {
+    return false;
+  }
+  if (href === "/") {
+    return pathname === "/";
+  }
   return pathname === href || pathname.startsWith(`${href}/`);
 }
 
@@ -79,11 +78,11 @@ export function ExplorerTreeItem({
             <div>
               {item.children.map((child) => (
                 <ExplorerTreeItem
-                  key={`${key}/${child.name}`}
                   copyPath={copyPath}
                   depth={depth + 1}
                   expanded={expanded}
                   item={child}
+                  key={`${key}/${child.name}`}
                   onCollapseAll={onCollapseAll}
                   onExpandAll={onExpandAll}
                   onOpenInNewWindow={onOpenInNewWindow}

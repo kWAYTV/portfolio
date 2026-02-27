@@ -8,11 +8,18 @@ import {
   SheetTitle,
   SheetTrigger,
 } from "@portfolio/ui";
-import { BookOpen, Code2, ExternalLink, FolderGit2, Menu, User } from "lucide-react";
+import {
+  BookOpen,
+  Code2,
+  ExternalLink,
+  FolderGit2,
+  Menu,
+  User,
+} from "lucide-react";
 import { useTranslations } from "next-intl";
 import { memo, useState } from "react";
-import { LanguageSelector } from "@/components/shared/language-selector";
 import { MobileThemeMenu } from "@/components/ide/layout/mobile-theme-menu";
+import { LanguageSelector } from "@/components/shared/language-selector";
 import { navItems } from "@/consts/nav-items";
 
 const navIcons: Record<string, typeof Code2> = {
@@ -28,7 +35,9 @@ interface MobileMenuProps {
   pathname: string;
 }
 
-export const MobileMenu = memo(function MobileMenu({ pathname }: MobileMenuProps) {
+export const MobileMenu = memo(function MobileMenu({
+  pathname,
+}: MobileMenuProps) {
   const t = useTranslations("nav");
   const tIde = useTranslations("ide");
   const [open, setOpen] = useState(false);

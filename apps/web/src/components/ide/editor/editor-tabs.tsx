@@ -1,17 +1,13 @@
 "use client";
 
-import {
-  ContextMenu,
-  ContextMenuTrigger,
-  cn,
-} from "@portfolio/ui";
+import { ContextMenu, ContextMenuTrigger, cn } from "@portfolio/ui";
 import { PanelRight } from "lucide-react";
 import { useTranslations } from "next-intl";
 import React, { memo } from "react";
-import { navItems } from "@/consts/nav-items";
 import { EditorTabContextMenu } from "@/components/ide/editor/editor-tab-context-menu";
 import { EditorTabItem } from "@/components/ide/editor/editor-tab-item";
 import { EditorTabsEmpty } from "@/components/ide/editor/editor-tabs-empty";
+import { navItems } from "@/consts/nav-items";
 
 interface EditorTabsProps {
   activeGroupIndex?: number;

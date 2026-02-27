@@ -120,27 +120,27 @@ export function IdeEditorArea({
         </div>
         {/* Desktop: split view */}
         <SplitEditorView
-            activeGroupIndex={activeGroupIndex}
-            closeAllTabs={closeAllTabs}
-            closeGroup={closeGroup}
-            closeOtherTabs={closeOtherTabs}
-            closeTab={closeTab}
-            closeTabsToRight={closeTabsToRight}
-            copyContent={copyContent}
-            editorGroups={editorGroups}
-            focusGroup={focusGroup}
-            mainRef={mainRef}
-            moveTabToGroup={moveTabToGroup}
-            onViewModeChange={onViewModeChange}
-            reorderTabs={reorderTabs}
-            setSplitRatio={setSplitRatio}
-            splitLeft={splitLeft}
-            splitRatio={splitRatio}
-            splitRight={splitRight}
-            viewMode={viewMode}
-          >
-            {children}
-          </SplitEditorView>
+          activeGroupIndex={activeGroupIndex}
+          closeAllTabs={closeAllTabs}
+          closeGroup={closeGroup}
+          closeOtherTabs={closeOtherTabs}
+          closeTab={closeTab}
+          closeTabsToRight={closeTabsToRight}
+          copyContent={copyContent}
+          editorGroups={editorGroups}
+          focusGroup={focusGroup}
+          mainRef={mainRef}
+          moveTabToGroup={moveTabToGroup}
+          onViewModeChange={onViewModeChange}
+          reorderTabs={reorderTabs}
+          setSplitRatio={setSplitRatio}
+          splitLeft={splitLeft}
+          splitRatio={splitRatio}
+          splitRight={splitRight}
+          viewMode={viewMode}
+        >
+          {children}
+        </SplitEditorView>
       </>
     );
   }
@@ -149,23 +149,21 @@ export function IdeEditorArea({
     return (
       <div className="flex min-h-0 min-w-0 flex-1 flex-col overflow-hidden">
         <EditorTabs
-            groupIndex={0}
-            onCloseAll={closeAllTabs}
-            onCloseOtherTabs={(href) => closeOtherTabs(0, href)}
-            onCloseTab={(href) => closeTab(0, href)}
-            onCloseTabsToRight={(href) => closeTabsToRight(0, href)}
-            onDropFromOtherGroup={(href, src) =>
-              moveTabToGroup(0, href, src)
-            }
-            onReorder={(order) => reorderTabs(0, order)}
-            onSplitLeft={(href) => splitLeft(0, href)}
-            onSplitRight={(href) => splitRight(0, href)}
-            onTabClick={(href) => focusGroup(0, href)}
-            openTabs={editorGroups[0]?.tabs ?? []}
-            pathname={pathname}
-            showSplitButtons={true}
-            totalGroups={1}
-          />
+          groupIndex={0}
+          onCloseAll={closeAllTabs}
+          onCloseOtherTabs={(href) => closeOtherTabs(0, href)}
+          onCloseTab={(href) => closeTab(0, href)}
+          onCloseTabsToRight={(href) => closeTabsToRight(0, href)}
+          onDropFromOtherGroup={(href, src) => moveTabToGroup(0, href, src)}
+          onReorder={(order) => reorderTabs(0, order)}
+          onSplitLeft={(href) => splitLeft(0, href)}
+          onSplitRight={(href) => splitRight(0, href)}
+          onTabClick={(href) => focusGroup(0, href)}
+          openTabs={editorGroups[0]?.tabs ?? []}
+          pathname={pathname}
+          showSplitButtons={true}
+          totalGroups={1}
+        />
         <div
           className="flex w-full min-w-0 flex-1 flex-col overflow-hidden outline-none"
           ref={contentRef}

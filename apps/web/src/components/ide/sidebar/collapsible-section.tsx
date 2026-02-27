@@ -20,7 +20,7 @@ export function CollapsibleSection({
   return (
     <div className="flex flex-col">
       <button
-        className="flex w-full items-center gap-1 py-[3px] pl-1 text-left text-[11px] font-medium uppercase tracking-wider text-muted-foreground transition-colors hover:bg-sidebar-accent/50 hover:text-sidebar-foreground"
+        className="flex w-full items-center gap-1 py-[3px] pl-1 text-left font-medium text-[11px] text-muted-foreground uppercase tracking-wider transition-colors hover:bg-sidebar-accent/50 hover:text-sidebar-foreground"
         onClick={() => setOpen(!open)}
         type="button"
       >

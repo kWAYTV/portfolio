@@ -1,4 +1,19 @@
-import { CodeEditor } from "@/components/ide/editor/code-editor";
+"use client";
+
+import dynamic from "next/dynamic";
+
+const CodeEditorDynamic = dynamic(
+  () =>
+    import("@/components/ide/editor/code-editor").then((m) => ({
+      default: m.CodeEditor,
+    })),
+  {
+    loading: () => (
+      <div className="h-full min-h-[200px] animate-pulse rounded bg-muted/30" />
+    ),
+    ssr: false,
+  }
+);
 
 interface CodeViewProps {
   code: string;
@@ -6,5 +21,5 @@ interface CodeViewProps {
 }
 
 export function CodeView({ code, lang }: CodeViewProps) {
-  return <CodeEditor code={code} lang={lang} />;
+  return <CodeEditorDynamic code={code} lang={lang} />;
 }

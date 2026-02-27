@@ -1,16 +1,17 @@
 "use client";
 
-import type { GitCommitItem } from "@/lib/github";
-import { HoverCard, HoverCardContent, HoverCardTrigger, cn } from "@portfolio/ui";
+import {
+  cn,
+  HoverCard,
+  HoverCardContent,
+  HoverCardTrigger,
+} from "@portfolio/ui";
 import { GitBranch, Github } from "lucide-react";
 import { useTranslations } from "next-intl";
-
-const PORTFOLIO_REPO_URL = "https://github.com/kWAYTV/portfolio";
-
-interface CommitWithStats extends GitCommitItem {
-  filesChanged?: number;
-  insertions?: number;
-}
+import {
+  type CommitWithStats,
+  PORTFOLIO_REPO_URL,
+} from "@/consts/ide-constants";
 
 interface CommitHistoryItemProps {
   commit: CommitWithStats;
@@ -48,20 +49,21 @@ export function CommitHistoryItem({ commit }: CommitHistoryItemProps) {
           <p className="text-[11px] text-muted-foreground">
             {commit.author} · {commit.date}
           </p>
-          <p className="text-[13px] leading-snug text-popover-foreground">
+          <p className="text-[13px] text-popover-foreground leading-snug">
             {commit.message}
           </p>
           {commit.filesChanged != null && commit.insertions != null && (
             <p className="text-[11px] text-muted-foreground">
-              {commit.filesChanged} files changed, {commit.insertions} insertions(+)
+              {commit.filesChanged} files changed, {commit.insertions}{" "}
+              insertions(+)
             </p>
           )}
           <div className="flex flex-wrap items-center gap-1.5">
-            <span className="inline-flex items-center gap-1 rounded px-1.5 py-0.5 text-[10px] font-medium text-blue-600 dark:text-blue-400">
+            <span className="inline-flex items-center gap-1 rounded px-1.5 py-0.5 font-medium text-[10px] text-blue-600 dark:text-blue-400">
               <GitBranch className="size-3" />
               main
             </span>
-            <span className="inline-flex items-center gap-1 rounded px-1.5 py-0.5 text-[10px] font-medium text-muted-foreground">
+            <span className="inline-flex items-center gap-1 rounded px-1.5 py-0.5 font-medium text-[10px] text-muted-foreground">
               <GitBranch className="size-3" />
               origin/main
             </span>

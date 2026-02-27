@@ -80,9 +80,7 @@ export function EditorTabContextMenu({
           {t("closeGroup")}
         </ContextMenuItem>
       )}
-      <ContextMenuItem onClick={onCloseAll}>
-        {t("closeAll")}
-      </ContextMenuItem>
+      <ContextMenuItem onClick={onCloseAll}>{t("closeAll")}</ContextMenuItem>
     </ContextMenuContent>
   );
 }

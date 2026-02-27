@@ -63,7 +63,7 @@ export function IdeLayoutSkeleton({ children }: IdeLayoutSkeletonProps) {
       </div>
 
       {/* Status bar */}
-      <div className="hidden h-11 shrink-0 items-center justify-between border-border border-t bg-secondary px-2 py-1 md:flex sm:h-6 sm:px-3 sm:py-0">
+      <div className="hidden h-11 shrink-0 items-center justify-between border-border border-t bg-secondary px-2 py-1 sm:h-6 sm:px-3 sm:py-0 md:flex">
         <Skeleton className="h-3 w-16" />
         <div className="flex gap-2">
           <Skeleton className="h-3 w-12" />

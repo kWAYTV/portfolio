@@ -1,7 +1,7 @@
 import { defaultLocale } from "@portfolio/i18n/config";
 import type { Metadata, Viewport } from "next";
-import Script from "next/script";
 import { Geist, Geist_Mono } from "next/font/google";
+import Script from "next/script";
 import { baseUrl } from "@/lib/metadata";
 
 export const metadata: Metadata = {

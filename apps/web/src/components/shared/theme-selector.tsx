@@ -1,11 +1,6 @@
 "use client";
 
 import {
-  THEME_PRESETS,
-  type ThemePreset,
-  useThemePreset,
-} from "@/components/theming/theme-preset-context";
-import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuRadioGroup,
@@ -15,6 +10,11 @@ import {
 import { Palette } from "lucide-react";
 import { useTranslations } from "next-intl";
 import { useTheme } from "next-themes";
+import {
+  THEME_PRESETS,
+  type ThemePreset,
+  useThemePreset,
+} from "@/components/theming/theme-preset-context";
 
 export function ThemeSelector() {
   const { preset, setPreset } = useThemePreset();
@@ -49,11 +49,7 @@ export function ThemeSelector() {
           value={preset}
         >
           {THEME_PRESETS.map((p) => (
-            <DropdownMenuRadioItem
-              className="cursor-pointer"
-              key={p}
-              value={p}
-            >
+            <DropdownMenuRadioItem className="cursor-pointer" key={p} value={p}>
               {t(`themePreset_${p}`)}
             </DropdownMenuRadioItem>
           ))}
