@@ -5,7 +5,7 @@ import createNextIntlPlugin from "next-intl/plugin";
 /** @type {import('next').NextConfig} */
 const config = {
   reactStrictMode: true,
-  cacheComponents: false,
+  cacheComponents: true,
   devIndicators: false,
 };
 

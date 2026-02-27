@@ -18,6 +18,7 @@ const fileTypeLabels: Record<string, string> = {
 };
 
 interface StatusBarProps {
+  onFocusSourceControl?: () => void;
   onToggleTerminal: () => void;
   pathname: string;
   terminalOpen: boolean;
@@ -26,6 +27,7 @@ interface StatusBarProps {
 export const StatusBar = memo(function StatusBar({
   pathname,
   terminalOpen,
+  onFocusSourceControl,
   onToggleTerminal,
 }: StatusBarProps) {
   const navItem = navItems.find((item) => {
@@ -43,16 +45,28 @@ export const StatusBar = memo(function StatusBar({
   return (
     <div className="flex h-11 shrink-0 select-none items-center justify-between gap-2 overflow-hidden border-border border-t bg-secondary px-2 py-1 text-[11px] text-muted-foreground shadow-[var(--shadow-elevation-sm)] sm:h-6 sm:px-3 sm:py-0">
       <div className="flex min-w-0 shrink-0 items-center gap-2 sm:gap-3">
-        <a
-          className="flex cursor-pointer items-center gap-1 transition-colors hover:text-foreground"
-          href="https://github.com/kWAYTV/portfolio"
-          rel="noopener noreferrer"
-          target="_blank"
-          title={t("openRepo")}
-        >
-          <GitBranch className="size-3.5 shrink-0" />
-          <span className="hidden sm:inline">main</span>
-        </a>
+        {onFocusSourceControl ? (
+          <button
+            className="flex cursor-pointer items-center gap-1 transition-colors hover:text-foreground"
+            onClick={onFocusSourceControl}
+            title={t("sourceControl")}
+            type="button"
+          >
+            <GitBranch className="size-3.5 shrink-0" />
+            <span className="hidden sm:inline">main</span>
+          </button>
+        ) : (
+          <a
+            className="flex cursor-pointer items-center gap-1 transition-colors hover:text-foreground"
+            href="https://github.com/kWAYTV/portfolio"
+            rel="noopener noreferrer"
+            target="_blank"
+            title={t("openRepo")}
+          >
+            <GitBranch className="size-3.5 shrink-0" />
+            <span className="hidden sm:inline">main</span>
+          </a>
+        )}
         <span className="hidden items-center gap-1 sm:flex">
           <CheckCircle2 className="size-3" />0
         </span>

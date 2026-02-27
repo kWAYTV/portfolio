@@ -137,7 +137,18 @@
 		"openToRight": "Open to the Right",
 		"openToLeft": "Open to the Left",
 		"closeGroup": "Close Editor Group",
-		"dragToResize": "Drag to resize"
+		"dragToResize": "Drag to resize",
+		"sourceControl": "Source Control",
+		"commitMessagePlaceholder": "Message (Ctrl+Enter to commit)",
+		"commit": "Commit",
+		"noChanges": "No changes",
+		"noChangesHint": "Working tree clean",
+		"viewOnGitHub": "View on GitHub",
+		"changes": "Changes",
+		"stagedChanges": "Staged Changes",
+		"commitHistory": "Commit History",
+		"syncChanges": "Sync Changes",
+		"moreActions": "More Actions"
 	},
 	"terminal": {
 		"welcome": "Welcome to the portfolio terminal. Type 'help' for available commands.",
