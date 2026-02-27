@@ -1,19 +1,10 @@
 "use client";
 
-import { usePathname } from "@i18n/routing";
+import { usePathname, useRouter } from "@i18n/routing";
 import { Sheet, SheetContent, TooltipProvider } from "@portfolio/ui";
 import dynamic from "next/dynamic";
 import { parseAsBoolean, useQueryState } from "nuqs";
-import { useMemo, useRef } from "react";
-
-const CommandPalette = dynamic(
-  () =>
-    import("@/components/ide/command/command-palette").then((m) => ({
-      default: m.CommandPalette,
-    })),
-  { ssr: false }
-);
-
+import { useEffect, useMemo, useRef } from "react";
 import { ActivityBar } from "@/components/ide/layout/activity-bar";
 import { IdeEditorArea } from "@/components/ide/layout/ide-editor-area";
 import { IdeLayoutEmbed } from "@/components/ide/layout/ide-layout-embed";
@@ -25,10 +16,20 @@ import { ViewModeProvider } from "@/components/ide/shared/view-mode";
 import { Sidebar } from "@/components/ide/sidebar/sidebar";
 import { SourceControlView } from "@/components/ide/sidebar/source-control-view";
 import { TerminalPanel } from "@/components/ide/terminal/terminal-panel";
-import { useEditorGroups } from "@/hooks/use-editor-groups";
+import { navItems } from "@/consts/nav-items";
 import { useIdeKeyboardShortcuts } from "@/hooks/use-ide-keyboard-shortcuts";
-import { useIdeLayoutState } from "@/hooks/use-ide-layout-state";
+import { useIsMobile } from "@/hooks/use-is-mobile";
 import type { GitCommitItem } from "@/lib/github";
+import { copyContentToClipboard } from "@/lib/ide/breadcrumb";
+import { useIdeStore } from "@/stores/ide-store";
+
+const CommandPalette = dynamic(
+  () =>
+    import("@/components/ide/command/command-palette").then((m) => ({
+      default: m.CommandPalette,
+    })),
+  { ssr: false }
+);
 
 interface IdeLayoutProps {
   children: React.ReactNode;
@@ -37,54 +38,85 @@ interface IdeLayoutProps {
 
 export function IdeLayout({ children, commits = [] }: IdeLayoutProps) {
   const pathname = usePathname();
+  const router = useRouter();
+  const isMobile = useIsMobile();
   const [embed] = useQueryState("embed", parseAsBoolean.withDefault(false));
   const isEmbed = embed;
   const contentRef = useRef<HTMLDivElement>(null);
+  const mainRef = useRef<HTMLElement>(null);
 
   const {
     activeGroupIndex,
-    activeHref,
-    closeAllTabs,
-    closeGroup,
-    closeOtherTabs,
-    closeTab,
-    closeTabsToRight,
     editorGroups,
-    focusGroup,
-    moveTabToGroup,
-    openTab,
-    reorderTabs,
-    setSplitRatio,
-    splitLeft,
     splitRatio,
-    splitRight,
-  } = useEditorGroups(pathname);
-
-  const layoutState = useIdeLayoutState(activeHref);
-
-  const {
-    commandOpen,
-    copyContent,
-    focusSourceControl,
-    mainRef,
-    mobileSidebarView,
-    openMobileExplorer,
-    openMobileSourceControl,
-    pageTitle,
-    setCommandOpen,
-    setMobileSidebarView,
-    setSidebarView,
-    setTerminalOpen,
-    setViewMode,
     sidebarOpen,
     sidebarView,
     terminalOpen,
-    toggleFullscreen,
+    commandOpen,
+    viewMode,
+    pageTitle,
+    mobileSidebarView,
+    isFullscreen,
+    setRouter,
+    setPageTitle,
+    setCommandOpen,
+    setMobileSidebarView,
+    setSidebarView,
+    setViewMode,
+    setTerminalOpen,
+    syncFromPathname,
+    setIsFullscreen,
     toggleSidebar,
     toggleTerminal,
-    viewMode,
-    isFullscreen,
-  } = layoutState;
+    toggleFullscreen,
+    openTab,
+    openMobileExplorer,
+    openMobileSourceControl,
+    focusSourceControl,
+  } = useIdeStore();
+
+  const closeTab = useIdeStore((s) => s.closeTab);
+  const closeAllTabs = useIdeStore((s) => s.closeAllTabs);
+  const closeGroup = useIdeStore((s) => s.closeGroup);
+  const closeOtherTabs = useIdeStore((s) => s.closeOtherTabs);
+  const closeTabsToRight = useIdeStore((s) => s.closeTabsToRight);
+  const reorderTabs = useIdeStore((s) => s.reorderTabs);
+  const splitLeft = useIdeStore((s) => s.splitLeft);
+  const splitRight = useIdeStore((s) => s.splitRight);
+  const focusGroup = useIdeStore((s) => s.focusGroup);
+  const moveTabToGroup = useIdeStore((s) => s.moveTabToGroup);
+  const setSplitRatio = useIdeStore((s) => s.setSplitRatio);
+
+  const activeHref = useIdeStore((s) => {
+    const g = s.editorGroups[s.activeGroupIndex];
+    return g?.tabs[g.activeIndex] ?? g?.tabs[0];
+  });
+
+  useEffect(() => {
+    setRouter(router);
+    return () => setRouter(null);
+  }, [router, setRouter]);
+
+  useEffect(() => {
+    syncFromPathname(pathname);
+  }, [pathname, syncFromPathname]);
+
+  useEffect(() => {
+    setPageTitle(typeof document !== "undefined" ? document.title : "");
+  }, [setPageTitle]);
+
+  useEffect(() => {
+    setMobileSidebarView(null);
+  }, [pathname, setMobileSidebarView]);
+
+  useEffect(() => {
+    const onFullscreenChange = () => {
+      setIsFullscreen(!!document.fullscreenElement);
+    };
+    document.addEventListener("fullscreenchange", onFullscreenChange);
+    return () =>
+      document.removeEventListener("fullscreenchange", onFullscreenChange);
+  }, [setIsFullscreen]);
 
   useIdeKeyboardShortcuts({
     contentRef,
@@ -92,7 +124,15 @@ export function IdeLayout({ children, commits = [] }: IdeLayoutProps) {
     onToggleTerminal: toggleTerminal,
   });
 
-  const viewModeValue = useMemo(() => ({ viewMode, setViewMode }), [viewMode]);
+  const copyContent = () =>
+    copyContentToClipboard(mainRef, pathname, activeHref, pageTitle, navItems);
+
+  const viewModeValue = useMemo(
+    () => ({ viewMode, setViewMode }),
+    [viewMode, setViewMode]
+  );
+
+  const handleFocusSourceControl = () => focusSourceControl(isMobile);
 
   if (isEmbed) {
     return <IdeLayoutEmbed>{children}</IdeLayoutEmbed>;
@@ -147,9 +187,11 @@ export function IdeLayout({ children, commits = [] }: IdeLayoutProps) {
                 activeGroupIndex={activeGroupIndex}
                 closeAllTabs={closeAllTabs}
                 closeGroup={closeGroup}
-                closeOtherTabs={closeOtherTabs}
-                closeTab={closeTab}
-                closeTabsToRight={closeTabsToRight}
+                closeOtherTabs={(gi, href) =>
+                  closeOtherTabs(pathname, gi, href)
+                }
+                closeTab={(gi, href) => closeTab(pathname, gi, href)}
+                closeTabsToRight={(gi, href) => closeTabsToRight(gi, href)}
                 contentRef={contentRef}
                 copyContent={copyContent}
                 editorGroups={editorGroups}
@@ -183,13 +225,12 @@ export function IdeLayout({ children, commits = [] }: IdeLayoutProps) {
           />
 
           <StatusBar
-            onFocusSourceControl={focusSourceControl}
+            onFocusSourceControl={handleFocusSourceControl}
             onToggleTerminal={toggleTerminal}
             pathname={pathname}
             terminalOpen={terminalOpen}
           />
 
-          {/* Mobile: sidebar views in Sheet (Explorer / Source Control) */}
           <Sheet
             onOpenChange={(open) => !open && setMobileSidebarView(null)}
             open={mobileSidebarView !== null}

@@ -34,3 +34,19 @@ export function getBreadcrumbPath(
 ): string {
   return getBreadcrumbParts(pathname, navItems).join(" / ");
 }
+
+export function copyContentToClipboard(
+  mainRef: { current: HTMLElement | null },
+  pathname: string,
+  activeHref: string | undefined,
+  pageTitle: string,
+  navItems: NavItem[]
+): void {
+  const path = activeHref ?? pathname;
+  const title =
+    pageTitle || (typeof document !== "undefined" ? document.title : "");
+  const breadcrumb = getBreadcrumbPath(path, navItems);
+  const mainText = mainRef.current?.innerText ?? "";
+  const formatted = [title, breadcrumb, mainText].filter(Boolean).join("\n\n");
+  void navigator.clipboard.writeText(formatted);
+}
