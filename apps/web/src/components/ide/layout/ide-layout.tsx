@@ -153,16 +153,7 @@ export function IdeLayout({ children, commits = [] }: IdeLayoutProps) {
         />
         <div className="flex h-dvh flex-col overflow-hidden bg-background">
           <TitleBar
-            leftSlot={
-              <MobileMenu
-                onOpenCommand={() => setCommandOpen(true)}
-                onOpenExplorer={openMobileExplorer}
-                onOpenSourceControl={openMobileSourceControl}
-                onToggleTerminal={toggleTerminal}
-                pathname={pathname}
-                terminalOpen={terminalOpen}
-              />
-            }
+            leftSlot={<MobileMenu pathname={pathname} />}
             maximized={isFullscreen}
             onClose={() => closeAllTabs()}
             onMaximize={toggleFullscreen}

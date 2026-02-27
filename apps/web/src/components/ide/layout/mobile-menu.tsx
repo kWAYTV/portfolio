@@ -8,23 +8,11 @@ import {
   SheetTitle,
   SheetTrigger,
 } from "@portfolio/ui";
-import {
-  BookOpen,
-  Code2,
-  Command,
-  ExternalLink,
-  FolderGit2,
-  GitBranch,
-  Menu,
-  PanelLeft,
-  Terminal,
-  User,
-} from "lucide-react";
+import { BookOpen, Code2, ExternalLink, FolderGit2, Menu, User } from "lucide-react";
 import { useTranslations } from "next-intl";
 import { memo, useState } from "react";
 import { LanguageSelector } from "@/components/shared/language-selector";
-import { ThemeSelector } from "@/components/shared/theme-selector";
-import { ThemeToggle } from "@/components/theming/toggle";
+import { MobileThemeMenu } from "@/components/ide/layout/mobile-theme-menu";
 import { navItems } from "@/consts/nav-items";
 
 const navIcons: Record<string, typeof Code2> = {
@@ -37,22 +25,10 @@ const navIcons: Record<string, typeof Code2> = {
 const PORTFOLIO_REPO_URL = "https://github.com/kWAYTV/portfolio";
 
 interface MobileMenuProps {
-  onOpenCommand: () => void;
-  onOpenExplorer: () => void;
-  onOpenSourceControl: () => void;
-  onToggleTerminal: () => void;
   pathname: string;
-  terminalOpen: boolean;
 }
 
-export const MobileMenu = memo(function MobileMenu({
-  pathname,
-  terminalOpen,
-  onToggleTerminal,
-  onOpenExplorer,
-  onOpenSourceControl,
-  onOpenCommand,
-}: MobileMenuProps) {
+export const MobileMenu = memo(function MobileMenu({ pathname }: MobileMenuProps) {
   const t = useTranslations("nav");
   const tIde = useTranslations("ide");
   const [open, setOpen] = useState(false);
@@ -105,28 +81,6 @@ export const MobileMenu = memo(function MobileMenu({
           })}
         </nav>
         <div className="flex flex-col gap-0 border-border border-t py-2">
-          <button
-            className="flex w-full items-center gap-3 px-4 py-3 text-left text-sm transition-colors hover:bg-muted/50 text-foreground"
-            onClick={() => {
-              onOpenExplorer();
-              setOpen(false);
-            }}
-            type="button"
-          >
-            <PanelLeft className="size-4 shrink-0" />
-            {tIde("explorer")}
-          </button>
-          <button
-            className="flex w-full items-center gap-3 px-4 py-3 text-left text-sm transition-colors hover:bg-muted/50 text-foreground"
-            onClick={() => {
-              onOpenSourceControl();
-              setOpen(false);
-            }}
-            type="button"
-          >
-            <GitBranch className="size-4 shrink-0" />
-            {tIde("sourceControl")}
-          </button>
           <a
             className="flex items-center gap-3 px-4 py-3 text-foreground text-sm transition-colors hover:bg-muted/50"
             href={PORTFOLIO_REPO_URL}
@@ -137,42 +91,11 @@ export const MobileMenu = memo(function MobileMenu({
             <ExternalLink className="size-4 shrink-0" />
             {tIde("viewOnGitHub")}
           </a>
-          <button
-            className={`flex w-full items-center gap-3 px-4 py-3 text-left text-sm transition-colors hover:bg-muted/50 ${
-              terminalOpen ? "bg-muted/60 text-foreground" : "text-foreground"
-            }`}
-            onClick={() => {
-              onToggleTerminal();
-              setOpen(false);
-            }}
-            type="button"
-          >
-            <Terminal className="size-4 shrink-0" />
-            Terminal
-          </button>
-          <button
-            className="flex w-full items-center gap-3 px-4 py-3 text-left text-foreground text-sm transition-colors hover:bg-muted/50"
-            onClick={() => {
-              onOpenCommand();
-              setOpen(false);
-            }}
-            type="button"
-          >
-            <Command className="size-4 shrink-0" />
-            {tIde("commandPalette")}
-          </button>
           <div className="flex items-center justify-between gap-2 px-4 py-3">
             <span className="text-muted-foreground text-sm">Language</span>
             <LanguageSelector />
           </div>
-          <div className="flex items-center justify-between gap-2 px-4 py-3">
-            <span className="text-muted-foreground text-sm">Theme</span>
-            <ThemeToggle />
-          </div>
-          <div className="flex items-center justify-between gap-2 px-4 py-3">
-            <span className="text-muted-foreground text-sm">{tIde("themePreset")}</span>
-            <ThemeSelector />
-          </div>
+          <MobileThemeMenu />
         </div>
       </SheetContent>
     </Sheet>
