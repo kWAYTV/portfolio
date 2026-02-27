@@ -28,7 +28,7 @@ import {
   type FolderItem,
   type TreeItem,
 } from "@/consts/explorer-tree";
-import { FileIcon } from "./file-icon";
+import { FileIcon } from "@/components/ide/file-icon";
 
 interface SidebarProps {
   onOpenTab?: (href: string) => void;

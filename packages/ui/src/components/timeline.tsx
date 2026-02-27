@@ -4,7 +4,9 @@
 /** biome-ignore-all lint/performance/noNamespaceImport: <shadcn/ui diceui timeline> */
 "use client";
 
-import { Slot } from "@radix-ui/react-slot";
+import { Slot as SlotNamespace } from "radix-ui";
+
+const Slot = SlotNamespace.Slot;
 import { cva } from "class-variance-authority";
 import * as React from "react";
 

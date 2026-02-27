@@ -15,7 +15,7 @@ import { GitFork, Star } from "lucide-react";
 import Link from "next/link";
 import { memo, useCallback } from "react";
 import { languageColors } from "@/consts/language-colors";
-import { ProjectCardDetails } from "./project-card-details";
+import { ProjectCardDetails } from "@/components/projects/project-card-details";
 
 interface ProjectCardProps {
   canHover: boolean;

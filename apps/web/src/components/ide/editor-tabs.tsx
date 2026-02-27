@@ -18,7 +18,7 @@ import { Code2, PanelRight, X } from "lucide-react";
 import { useTranslations } from "next-intl";
 import React, { memo } from "react";
 import { navItems } from "@/consts/nav-items";
-import { FileIcon } from "./file-icon";
+import { FileIcon } from "@/components/ide/file-icon";
 
 interface TabItemProps {
   active: boolean;
@@ -28,9 +28,11 @@ interface TabItemProps {
   groupIndex: number;
   href: string;
   index: number;
+  isDragging: boolean;
   onClose: () => void;
   onDragEnd: () => void;
   onDragOver: (index: number) => void;
+  onDragStart: () => void;
   onTabClick?: (href: string) => void;
 }
 
@@ -42,9 +44,11 @@ function TabItem({
   groupIndex,
   href,
   index,
+  isDragging,
   onClose,
   onDragEnd,
   onDragOver,
+  onDragStart,
   onTabClick,
 }: TabItemProps) {
   const isDropTarget = dragOverIndex === index;
@@ -63,7 +67,10 @@ function TabItem({
         <span className="absolute inset-x-0 bottom-0 h-[2px] bg-primary" />
       )}
       <div
-        className="flex min-w-0 flex-1 cursor-grab items-center gap-2 overflow-hidden px-3 py-1.5 active:cursor-grabbing"
+        className={cn(
+          "flex min-w-0 flex-1 items-center gap-2 overflow-hidden px-3 py-1.5",
+          isDragging ? "cursor-grabbing" : "cursor-default"
+        )}
         draggable
         onDragEnd={onDragEnd}
         onDragOver={(e) => {
@@ -78,6 +85,7 @@ function TabItem({
             "application/json",
             JSON.stringify({ href, index, groupIndex })
           );
+          onDragStart();
         }}
       >
         <Link
@@ -162,8 +170,16 @@ export const EditorTabs = memo(function EditorTabs({
   });
 
   const [dragOverIndex, setDragOverIndex] = React.useState<number | null>(null);
+  const [isDragging, setIsDragging] = React.useState(false);
+
+  const handleDragStart = React.useCallback(() => {
+    setIsDragging(true);
+    document.body.style.cursor = "grabbing";
+  }, []);
 
   const handleDragEnd = React.useCallback(() => {
+    setIsDragging(false);
+    document.body.style.cursor = "";
     setDragOverIndex(null);
   }, []);
 
@@ -225,11 +241,11 @@ export const EditorTabs = memo(function EditorTabs({
   }
 
   return (
-    <div className="relative flex h-[35px] shrink-0 items-stretch overflow-x-auto border-border border-b bg-muted/80 shadow-[var(--shadow-elevation-sm)]">
+    <div className="relative flex h-[35px] shrink-0 cursor-default items-stretch overflow-x-auto border-border border-b bg-muted/80 shadow-[var(--shadow-elevation-sm)]">
       {/* Drop zone before first tab - absolute so it doesn't create a gap */}
       <div
         className={cn(
-          "absolute top-0 left-0 z-10 h-full w-2 transition-colors",
+          "absolute top-0 left-0 z-10 h-full w-2 cursor-default transition-colors",
           dragOverIndex === -1 && "bg-primary/20"
         )}
         onDragLeave={() => setDragOverIndex(null)}
@@ -260,9 +276,11 @@ export const EditorTabs = memo(function EditorTabs({
                 groupIndex={groupIndex}
                 href={item.href}
                 index={index}
+                isDragging={isDragging}
                 onClose={() => onCloseTab(item.href)}
                 onDragEnd={handleDragEnd}
                 onDragOver={handleDragOver}
+                onDragStart={handleDragStart}
                 onTabClick={onTabClick}
               />
             </div>
@@ -315,7 +333,7 @@ export const EditorTabs = memo(function EditorTabs({
       {/* Drop zone after last tab - allows moving to end */}
       <div
         className={cn(
-          "min-w-[12px] flex-1 shrink-0 transition-colors",
+          "min-w-[12px] flex-1 shrink-0 cursor-default transition-colors",
           dragOverIndex === orderedItems.length && "bg-primary/20"
         )}
         onDragLeave={() => setDragOverIndex(null)}

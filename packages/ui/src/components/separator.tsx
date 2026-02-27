@@ -1,6 +1,8 @@
 "use client";
 
-import { Separator as SeparatorPrimitive } from "@radix-ui/react-separator";
+import { Separator as SeparatorNamespace } from "radix-ui";
+
+const SeparatorPrimitive = SeparatorNamespace.Separator;
 import type * as React from "react";
 
 import { cn } from "../utils";

@@ -4,9 +4,9 @@ import { cn } from "@portfolio/ui";
 import { GripVertical } from "lucide-react";
 import { useTranslations } from "next-intl";
 import React, { useCallback, useRef, useState } from "react";
-import { EditorPane } from "./editor-pane";
-import type { EditorGroup } from "./split-editor-types";
-import type { ViewMode } from "./view-mode";
+import { EditorPane } from "@/components/ide/editor-pane";
+import type { EditorGroup } from "@/components/ide/split-editor-types";
+import type { ViewMode } from "@/components/ide/view-mode";
 
 interface SplitEditorViewProps {
   activeGroupIndex: number;

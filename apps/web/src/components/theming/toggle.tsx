@@ -6,7 +6,7 @@ import { Moon, Sun } from "lucide-react";
 import { useTranslations } from "next-intl";
 import { useTheme } from "next-themes";
 import { useCallback, useEffect, useRef, useState } from "react";
-import { useThemeTransition } from "./use-theme-transition";
+import { useThemeTransition } from "@/components/theming/use-theme-transition";
 
 interface ThemeToggleProps extends React.ComponentPropsWithoutRef<"button"> {
   duration?: number;
