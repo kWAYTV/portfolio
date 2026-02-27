@@ -163,25 +163,24 @@ export const SourceControlView = memo(function SourceControlView({
           </CollapsibleSection>
         </div>
 
-        {/* Branch + View on GitHub */}
-        <div className="flex flex-col gap-1 border-border border-t px-2 py-2">
-          <div className="flex items-center gap-1.5 rounded px-2 py-1.5 text-[11px] text-muted-foreground">
-            <GitBranch className="size-3.5 shrink-0" />
+        {/* Branch + View on GitHub - compact single row */}
+        <div className="flex items-center justify-between gap-2 border-border border-t px-2 py-1.5">
+          <div className="flex min-w-0 items-center gap-1.5 text-[11px] text-muted-foreground">
+            <GitBranch className="size-3.5 shrink-0 opacity-70" />
             <span className="truncate font-medium">main</span>
           </div>
           <Tooltip>
             <TooltipTrigger asChild>
               <a
                 className={cn(
-                  "flex w-full items-center justify-center gap-2 rounded-md px-2 py-2",
-                  "text-[11px] text-muted-foreground transition-colors",
-                  "hover:bg-sidebar-accent/50 hover:text-sidebar-foreground"
+                  "flex shrink-0 items-center gap-1 rounded px-1.5 py-0.5 text-[10px] transition-colors",
+                  "text-muted-foreground/70 hover:bg-sidebar-accent/50 hover:text-sidebar-foreground"
                 )}
                 href={PORTFOLIO_REPO_URL}
                 rel="noopener noreferrer"
                 target="_blank"
               >
-                <ExternalLink className="size-3.5" />
+                <ExternalLink className="size-3" />
                 {t("viewOnGitHub")}
               </a>
             </TooltipTrigger>
@@ -189,7 +188,7 @@ export const SourceControlView = memo(function SourceControlView({
           </Tooltip>
         </div>
 
-        {/* Commit History - at very bottom, separate from changes */}
+        {/* Commit History - at very bottom */}
         <div className="border-border border-t px-2 py-1">
           <CollapsibleSection defaultOpen={true} title={t("commitHistory")}>
             <div className="max-h-32 space-y-0.5 overflow-y-auto py-1">
