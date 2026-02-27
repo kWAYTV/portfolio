@@ -84,6 +84,7 @@ export function EditorTabItem({
         </Link>
       </div>
       <button
+        aria-label={`Close ${fileName}`}
         className={cn(
           "flex size-5 shrink-0 touch-manipulation items-center justify-center rounded-sm transition-colors",
           "opacity-100 md:opacity-0 md:group-hover:opacity-100",

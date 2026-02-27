@@ -78,6 +78,7 @@ export function ActivityBarSettingsMenu({
         <TooltipTrigger asChild>
           <DropdownMenuTrigger asChild>
             <button
+              aria-label={t("settings")}
               className="flex size-10 cursor-pointer items-center justify-center text-sidebar-foreground/60 transition-colors hover:text-sidebar-primary"
               ref={settingsTriggerRef}
               type="button"

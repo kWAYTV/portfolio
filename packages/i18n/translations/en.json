@@ -124,6 +124,8 @@
 		"themePreset_mono": "Mono",
 		"language": "Language",
 		"close": "Close",
+		"minimize": "Minimize",
+		"maximize": "Maximize",
 		"closeOthers": "Close Others",
 		"closeAll": "Close All",
 		"closeToRight": "Close to the Right",
