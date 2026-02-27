@@ -31,8 +31,10 @@ interface SourceControlViewProps {
   fullWidth?: boolean;
   hasStagedChanges?: boolean;
   isRefreshing?: boolean;
+  isSyncing?: boolean;
   onClose?: () => void;
   onRefresh?: () => void;
+  onSync?: () => void;
 }
 
 export const SourceControlView = memo(function SourceControlView({
@@ -40,8 +42,10 @@ export const SourceControlView = memo(function SourceControlView({
   fullWidth = false,
   hasStagedChanges = false,
   isRefreshing = false,
+  isSyncing = false,
   onClose,
   onRefresh,
+  onSync,
 }: SourceControlViewProps) {
   const t = useTranslations("ide");
   const displayCommits = commits.length > 0 ? commits : MOCK_COMMITS;
@@ -87,6 +91,23 @@ export const SourceControlView = memo(function SourceControlView({
             </TooltipTrigger>
             <TooltipContent side="bottom">Refresh</TooltipContent>
           </Tooltip>
+          <Tooltip>
+            <TooltipTrigger asChild>
+              <Button
+                aria-label={t("syncChanges")}
+                className="size-6 rounded p-0"
+                onClick={onSync}
+                size="icon-sm"
+                type="button"
+                variant="ghost"
+              >
+                <RefreshCw
+                  className={cn("size-3.5", isSyncing && "animate-spin")}
+                />
+              </Button>
+            </TooltipTrigger>
+            <TooltipContent side="bottom">{t("syncChanges")}</TooltipContent>
+          </Tooltip>
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
               <Button
@@ -120,30 +141,19 @@ export const SourceControlView = memo(function SourceControlView({
       </div>
 
       <div className="flex flex-1 flex-col overflow-hidden">
-        {/* Commit message + buttons - VS Code style */}
+        {/* Commit message + button - VS Code style (sync is in header) */}
         <div className="flex flex-col gap-2 border-border border-b px-2 py-2">
-          <div className="flex items-center gap-1.5">
-            <div
-              className={cn(
-                "flex min-h-[28px] min-w-0 flex-1 items-center gap-1.5 rounded px-2 py-1.5 text-[13px] ring-1 ring-border/50 ring-inset",
-                "cursor-not-allowed bg-muted/30 text-muted-foreground/80"
-              )}
-            >
-              <GitCommit
-                aria-hidden
-                className="size-4 shrink-0 text-muted-foreground/60"
-              />
-              <span className="truncate">{t("commitMessagePlaceholder")}</span>
-            </div>
-            <Button
-              className="h-7 shrink-0 text-[11px]"
-              disabled
-              size="sm"
-              variant="outline"
-            >
-              <RefreshCw className="size-3.5" />
-              {t("syncChanges")}
-            </Button>
+          <div
+            className={cn(
+              "flex min-h-[72px] min-w-0 items-start gap-1.5 rounded px-2 py-2 text-[13px] ring-1 ring-border/50 ring-inset",
+              "cursor-not-allowed bg-muted/30 text-muted-foreground/80"
+            )}
+          >
+            <GitCommit
+              aria-hidden
+              className="mt-0.5 size-4 shrink-0 text-muted-foreground/60"
+            />
+            <span className="truncate">{t("commitMessagePlaceholder")}</span>
           </div>
           <Button
             className="h-7 w-full text-[11px]"
