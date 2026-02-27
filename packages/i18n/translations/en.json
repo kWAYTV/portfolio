@@ -1,170 +1,170 @@
 {
-	"common": {
-		"welcome": "Welcome",
-		"siteDescription": "welcome to my personal space.",
-		"siteTitle": "Martin Vila — Portfolio"
-	},
-	"nav": {
-		"home": "home",
-		"about": "about",
-		"projects": "projects",
-		"blog": "blog",
-		"language": "language",
-		"menu": "Menu"
-	},
-	"footer": {
-		"rss": "rss",
-		"byVersend": "by versend.io"
-	},
-	"hero": {
-		"tagline": "developer · gamer · self-taught",
-		"bio": "Building minimal, thoughtful software. Currently exploring the intersection of design and engineering."
-	},
-	"about": {
-		"title": "About",
-		"subtitle": "A bit about me",
-		"bio": "I'm a software engineer with a passion for building backend & web applications. Currently actively seeking new opportunities.",
-		"experience": "Experience"
-	},
-	"experience": {
-		"freelancing": {
-			"period": "2019 - Present",
-			"role": "Freelance Developer / Open Source Contributor",
-			"company": "Freelance"
-		},
-		"tokyoSchool": {
-			"period": "2024 - Present",
-			"role": "PCAP Python, Computer Programming",
-			"company": "Tokyo School"
-		},
-		"insergalSales": {
-			"period": "2018 - 2019",
-			"role": "Sales Assistant, Marketing",
-			"company": "Insergal"
-		},
-		"insergalMechanic": {
-			"period": "2018 - 2019",
-			"role": "Automotive Mechanic",
-			"company": "Insergal"
-		}
-	},
-	"projects": {
-		"title": "Projects",
-		"subtitle": "Open source work",
-		"featured": "Featured",
-		"viewAll": "View all →",
-		"searchPlaceholder": "Search...",
-		"noProjects": "No projects found",
-		"projectCount": "{count, plural, one {# project} other {# projects}}",
-		"matching": "matching \"{query}\"",
-		"sort": {
-			"stars": "Stars",
-			"updated": "Updated",
-			"created": "Created",
-			"name": "Name"
-		}
-	},
-	"blog": {
-		"title": "Blog",
-		"subtitle": "Quiet notes from current work. More entries will fall in here as they are published—kept chronologically, nothing fancy.",
-		"backToBlog": "← Back to blog",
-		"noPosts": "No posts yet.",
-		"postCount": "{count, plural, one {# post} other {# posts}}",
-		"prev": "prev",
-		"next": "next",
-		"soon": "Soon"
-	},
-	"error": {
-		"title": "Something went wrong",
-		"description": "An unexpected error occurred. Please try again.",
-		"retry": "Try again",
-		"home": "Home"
-	},
-	"notFound": {
-		"title": "404",
-		"subtitle": "Page not found",
-		"description": "The page you're looking for doesn't exist or has been moved.",
-		"home": "Home"
-	},
-	"theme": {
-		"dark": "dark",
-		"light": "light"
-	},
-	"ide": {
-		"explorer": "Explorer",
-		"openRepo": "Open portfolio repo",
-		"terminal": "Terminal",
-		"settings": "Settings",
-		"copyContent": "Copy content",
-		"preview": "Preview",
-		"source": "Source",
-		"noOpenEditors": "No open editors",
-		"openFileFromSidebar": "Open a file from the sidebar to start editing",
-		"commandPalette": "Command palette",
-		"commandPaletteShortcut": "⌘K",
-		"openPreview": "Open preview in new window",
-		"resizeTerminal": "Resize terminal",
-		"closePanel": "Close panel",
-		"commandPlaceholder": "Type a command or search...",
-		"noResults": "No results found.",
-		"navigation": "Navigation",
-		"view": "View",
-		"hideSidebar": "Hide sidebar",
-		"showSidebar": "Show sidebar",
-		"hideTerminal": "Hide terminal",
-		"showTerminal": "Show terminal",
-		"openPreviewWindow": "Open preview in new window",
-		"lightTheme": "Light theme",
-		"darkTheme": "Dark theme",
-		"themePreset": "Theme",
-		"themePreset_default": "Vercel",
-		"themePreset_catppuccin": "Catppuccin",
-		"themePreset_violet-bloom": "Violet Bloom",
-		"themePreset_caffeine": "Caffeine",
-		"themePreset_mono": "Mono",
-		"language": "Language",
-		"close": "Close",
-		"minimize": "Minimize",
-		"maximize": "Maximize",
-		"closeOthers": "Close Others",
-		"closeAll": "Close All",
-		"closeToRight": "Close to the Right",
-		"copyPath": "Copy Path",
-		"open": "Open",
-		"openInNewWindow": "Open in New Window",
-		"expandAll": "Expand All",
-		"collapseAll": "Collapse All",
-		"splitRight": "Split Right",
-		"splitLeft": "Split Left",
-		"openToRight": "Open to the Right",
-		"openToLeft": "Open to the Left",
-		"closeGroup": "Close Editor Group",
-		"dragToResize": "Drag to resize",
-		"sourceControl": "Source Control",
-		"commitMessagePlaceholder": "Message (Ctrl+Enter to commit)",
-		"commit": "Commit",
-		"noChanges": "No changes",
-		"noChangesHint": "Working tree clean",
-		"viewOnGitHub": "View on GitHub",
-		"changes": "Changes",
-		"stagedChanges": "Staged Changes",
-		"commitHistory": "Commit History",
-		"syncChanges": "Sync Changes",
-		"moreActions": "More Actions"
-	},
-	"terminal": {
-		"welcome": "Welcome to the portfolio terminal. Type 'help' for available commands.",
-		"helpIntro": "Available commands:",
-		"helpLs": "  ls, ls -la    List files",
-		"helpPwd": "  pwd           Print working directory",
-		"helpCd": "  cd '<'dir'>'      Change directory",
-		"helpCat": "  cat '<'file'>'   Display file (package.json, tsconfig.json, README.md,",
-		"helpCat2": "               .env, about.md, src/welcome.tsx, src/projects.ts, etc.)",
-		"helpEcho": "  echo '<'text'>'   Echo text",
-		"helpClear": "  clear         Clear terminal",
-		"helpWhoami": "  whoami        Current user",
-		"helpDate": "  date          Current date/time",
-		"helpHelp": "  help, ?       Show this help",
-		"helpEasterEggs": "Easter eggs: pnpm run dev, git status"
-	}
+  "common": {
+    "welcome": "Welcome",
+    "siteDescription": "welcome to my personal space.",
+    "siteTitle": "Martin Vila — Portfolio"
+  },
+  "nav": {
+    "home": "home",
+    "about": "about",
+    "projects": "projects",
+    "blog": "blog",
+    "language": "language",
+    "menu": "Menu"
+  },
+  "footer": {
+    "rss": "rss",
+    "byVersend": "by versend.io"
+  },
+  "hero": {
+    "tagline": "developer · gamer · self-taught",
+    "bio": "Building minimal, thoughtful software. Currently exploring the intersection of design and engineering."
+  },
+  "about": {
+    "title": "About",
+    "subtitle": "A bit about me",
+    "bio": "I'm a software engineer with a passion for building backend & web applications. Currently actively seeking new opportunities.",
+    "experience": "Experience"
+  },
+  "experience": {
+    "freelancing": {
+      "period": "2019 - Present",
+      "role": "Freelance Developer / Open Source Contributor",
+      "company": "Freelance"
+    },
+    "tokyoSchool": {
+      "period": "2024 - Present",
+      "role": "PCAP Python, Computer Programming",
+      "company": "Tokyo School"
+    },
+    "insergalSales": {
+      "period": "2018 - 2019",
+      "role": "Sales Assistant, Marketing",
+      "company": "Insergal"
+    },
+    "insergalMechanic": {
+      "period": "2018 - 2019",
+      "role": "Automotive Mechanic",
+      "company": "Insergal"
+    }
+  },
+  "projects": {
+    "title": "Projects",
+    "subtitle": "Open source work",
+    "featured": "Featured",
+    "viewAll": "View all →",
+    "searchPlaceholder": "Search...",
+    "noProjects": "No projects found",
+    "projectCount": "{count, plural, one {# project} other {# projects}}",
+    "matching": "matching \"{query}\"",
+    "sort": {
+      "stars": "Stars",
+      "updated": "Updated",
+      "created": "Created",
+      "name": "Name"
+    }
+  },
+  "blog": {
+    "title": "Blog",
+    "subtitle": "Quiet notes from current work. More entries will fall in here as they are published—kept chronologically, nothing fancy.",
+    "backToBlog": "← Back to blog",
+    "noPosts": "No posts yet.",
+    "postCount": "{count, plural, one {# post} other {# posts}}",
+    "prev": "prev",
+    "next": "next",
+    "soon": "Soon"
+  },
+  "error": {
+    "title": "Something went wrong",
+    "description": "An unexpected error occurred. Please try again.",
+    "retry": "Try again",
+    "home": "Home"
+  },
+  "notFound": {
+    "title": "404",
+    "subtitle": "Page not found",
+    "description": "The page you're looking for doesn't exist or has been moved.",
+    "home": "Home"
+  },
+  "theme": {
+    "dark": "dark",
+    "light": "light"
+  },
+  "ide": {
+    "explorer": "Explorer",
+    "openRepo": "Open portfolio repo",
+    "terminal": "Terminal",
+    "settings": "Settings",
+    "copyContent": "Copy content",
+    "preview": "Preview",
+    "source": "Source",
+    "noOpenEditors": "No open editors",
+    "openFileFromSidebar": "Open a file from the sidebar to start editing",
+    "commandPalette": "Command palette",
+    "commandPaletteShortcut": "⌘K",
+    "openPreview": "Open preview in new window",
+    "resizeTerminal": "Resize terminal",
+    "closePanel": "Close panel",
+    "commandPlaceholder": "Type a command or search...",
+    "noResults": "No results found.",
+    "navigation": "Navigation",
+    "view": "View",
+    "hideSidebar": "Hide sidebar",
+    "showSidebar": "Show sidebar",
+    "hideTerminal": "Hide terminal",
+    "showTerminal": "Show terminal",
+    "openPreviewWindow": "Open preview in new window",
+    "lightTheme": "Light theme",
+    "darkTheme": "Dark theme",
+    "themePreset": "Theme",
+    "themePreset_default": "Vercel",
+    "themePreset_catppuccin": "Catppuccin",
+    "themePreset_violet-bloom": "Violet Bloom",
+    "themePreset_caffeine": "Caffeine",
+    "themePreset_mono": "Mono",
+    "language": "Language",
+    "close": "Close",
+    "minimize": "Minimize",
+    "maximize": "Maximize",
+    "closeOthers": "Close Others",
+    "closeAll": "Close All",
+    "closeToRight": "Close to the Right",
+    "copyPath": "Copy Path",
+    "open": "Open",
+    "openInNewWindow": "Open in New Window",
+    "expandAll": "Expand All",
+    "collapseAll": "Collapse All",
+    "splitRight": "Split Right",
+    "splitLeft": "Split Left",
+    "openToRight": "Open to the Right",
+    "openToLeft": "Open to the Left",
+    "closeGroup": "Close Editor Group",
+    "dragToResize": "Drag to resize",
+    "sourceControl": "Source Control",
+    "commitMessagePlaceholder": "Message (Ctrl+Enter to commit)",
+    "commit": "Commit",
+    "noChanges": "No changes",
+    "noChangesHint": "Working tree clean",
+    "viewOnGitHub": "View on GitHub",
+    "changes": "Changes",
+    "stagedChanges": "Staged Changes",
+    "commitHistory": "Commit History",
+    "syncChanges": "Sync Changes",
+    "moreActions": "More Actions"
+  },
+  "terminal": {
+    "welcome": "Welcome to the portfolio terminal. Type 'help' for available commands.",
+    "helpIntro": "Available commands:",
+    "helpLs": "  ls, ls -la    List files",
+    "helpPwd": "  pwd           Print working directory",
+    "helpCd": "  cd '<'dir'>'      Change directory",
+    "helpCat": "  cat '<'file'>'   Display file (package.json, tsconfig.json, README.md,",
+    "helpCat2": "               .env, about.md, src/welcome.tsx, src/projects.ts, etc.)",
+    "helpEcho": "  echo '<'text'>'   Echo text",
+    "helpClear": "  clear         Clear terminal",
+    "helpWhoami": "  whoami        Current user",
+    "helpDate": "  date          Current date/time",
+    "helpHelp": "  help, ?       Show this help",
+    "helpEasterEggs": "Easter eggs: pnpm run dev, git status"
+  }
 }

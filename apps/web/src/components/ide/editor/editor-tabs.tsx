@@ -9,7 +9,7 @@ import { EditorTabItem } from "@/components/ide/editor/editor-tab-item";
 import { EditorTabsEmpty } from "@/components/ide/editor/editor-tabs-empty";
 import { navItems } from "@/consts/nav-items";
 
-interface EditorTabsProps {
+export interface EditorTabsProps {
   activeGroupIndex?: number;
   groupIndex?: number;
   onCloseAll: () => void;
@@ -116,7 +116,7 @@ export const EditorTabs = memo(function EditorTabs({
   }
 
   return (
-    <div className="relative flex h-[35px] shrink-0 cursor-default items-stretch overflow-x-auto border-border border-b bg-muted/80 shadow-[var(--shadow-elevation-sm)]">
+    <div className="relative flex h-[35px] shrink-0 cursor-default items-stretch overflow-x-auto border-border border-b bg-muted/80 shadow-elevation-sm">
       {/* Drop zone before first tab - absolute so it doesn't create a gap */}
       <div
         className={cn(

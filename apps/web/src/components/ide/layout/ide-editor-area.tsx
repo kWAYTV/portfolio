@@ -4,6 +4,7 @@ import { cn } from "@portfolio/ui";
 import { Breadcrumbs } from "@/components/ide/editor/breadcrumbs";
 import { EditorContentContextMenu } from "@/components/ide/editor/editor-content-context-menu";
 import { EditorTabs } from "@/components/ide/editor/editor-tabs";
+import { getEditorTabsPropsFromCallbacks } from "@/components/ide/editor/editor-tabs-props";
 import { SplitEditorView } from "@/components/ide/editor/split-editor-view";
 import type { EditorGroup } from "@/components/ide/shared/split-editor-types";
 import type { ViewMode } from "@/components/ide/shared/view-mode";
@@ -37,6 +38,60 @@ interface IdeEditorAreaProps {
   viewMode: ViewMode;
 }
 
+function EditorContentArea({
+  children,
+  contentRef,
+  copyContent,
+  mainRef,
+  onViewModeChange,
+  pageTitle,
+  pathname,
+  viewMode,
+}: {
+  children: React.ReactNode;
+  contentRef: React.RefObject<HTMLDivElement | null>;
+  copyContent: () => void;
+  mainRef: React.RefObject<HTMLElement | null>;
+  onViewModeChange: (mode: ViewMode) => void;
+  pageTitle: string;
+  pathname: string;
+  viewMode: ViewMode;
+}) {
+  return (
+    <div
+      className="flex w-full min-w-0 flex-1 flex-col overflow-hidden outline-none"
+      ref={contentRef}
+      tabIndex={-1}
+    >
+      <span aria-hidden className="sr-only">
+        {pageTitle}
+      </span>
+      <Breadcrumbs
+        onViewModeChange={onViewModeChange}
+        pathname={pathname}
+        viewMode={viewMode}
+      />
+      <EditorContentContextMenu
+        onCopy={copyContent}
+        onViewModeChange={onViewModeChange}
+        viewMode={viewMode}
+      >
+        <main
+          className={cn(
+            "min-h-0 w-full min-w-0 flex-1 overflow-y-auto",
+            viewMode === "preview" && "min-h-full"
+          )}
+          data-ide-main
+          ref={mainRef}
+          {...(viewMode === "preview" && { "data-preview": "" })}
+        >
+          {children}
+        </main>
+      </EditorContentContextMenu>
+    </div>
+  );
+}
+
 export function IdeEditorArea({
   activeGroupIndex,
   children,
@@ -65,60 +120,44 @@ export function IdeEditorArea({
   const hasSplit = editorGroups.length > 1;
   const activeGroup = editorGroups[activeGroupIndex] ?? editorGroups[0];
 
+  const callbacks = {
+    closeAllTabs,
+    closeGroup,
+    closeOtherTabs,
+    closeTab,
+    closeTabsToRight,
+    focusGroup,
+    moveTabToGroup,
+    reorderTabs,
+    splitLeft,
+    splitRight,
+  };
+
   if (hasOpenTabs && hasSplit) {
     return (
       <>
-        {/* Mobile: single-pane with active group (split hidden on mobile) */}
         <div className="flex min-h-0 min-w-0 flex-1 flex-col md:hidden">
           <EditorTabs
-            activeGroupIndex={activeGroupIndex}
-            groupIndex={activeGroupIndex}
-            onCloseAll={closeAllTabs}
-            onCloseOtherTabs={(href) => closeOtherTabs(activeGroupIndex, href)}
-            onCloseTab={(href) => closeTab(activeGroupIndex, href)}
-            onCloseTabsToRight={(href) =>
-              closeTabsToRight(activeGroupIndex, href)
-            }
-            onReorder={(order) => reorderTabs(activeGroupIndex, order)}
-            onTabClick={(href) => focusGroup(activeGroupIndex, href)}
-            openTabs={activeGroup?.tabs ?? []}
-            pathname={pathname}
-            showSplitButtons={false}
-            totalGroups={editorGroups.length}
+            {...getEditorTabsPropsFromCallbacks(
+              pathname,
+              activeGroupIndex,
+              callbacks,
+              editorGroups,
+              { hasSplit, hasOpenTabs, activeGroupIndex }
+            )}
           />
-          <div
-            className="flex min-w-0 flex-1 flex-col overflow-hidden outline-none"
-            ref={contentRef}
-            tabIndex={-1}
+          <EditorContentArea
+            contentRef={contentRef}
+            copyContent={copyContent}
+            mainRef={mainRef}
+            onViewModeChange={onViewModeChange}
+            pageTitle={pageTitle}
+            pathname={pathname}
+            viewMode={viewMode}
           >
-            <span aria-hidden className="sr-only">
-              {pageTitle}
-            </span>
-            <Breadcrumbs
-              onViewModeChange={onViewModeChange}
-              pathname={pathname}
-              viewMode={viewMode}
-            />
-            <EditorContentContextMenu
-              onCopy={copyContent}
-              onViewModeChange={onViewModeChange}
-              viewMode={viewMode}
-            >
-              <main
-                className={cn(
-                  "min-h-0 w-full min-w-0 flex-1 overflow-y-auto",
-                  viewMode === "preview" && "min-h-full"
-                )}
-                data-ide-main
-                ref={mainRef}
-                {...(viewMode === "preview" && { "data-preview": "" })}
-              >
-                {children}
-              </main>
-            </EditorContentContextMenu>
-          </div>
+            {children}
+          </EditorContentArea>
         </div>
-        {/* Desktop: split view */}
         <SplitEditorView
           activeGroupIndex={activeGroupIndex}
           closeAllTabs={closeAllTabs}
@@ -149,54 +188,25 @@ export function IdeEditorArea({
     return (
       <div className="flex min-h-0 min-w-0 flex-1 flex-col overflow-hidden">
         <EditorTabs
-          groupIndex={0}
-          onCloseAll={closeAllTabs}
-          onCloseOtherTabs={(href) => closeOtherTabs(0, href)}
-          onCloseTab={(href) => closeTab(0, href)}
-          onCloseTabsToRight={(href) => closeTabsToRight(0, href)}
-          onDropFromOtherGroup={(href, src) => moveTabToGroup(0, href, src)}
-          onReorder={(order) => reorderTabs(0, order)}
-          onSplitLeft={(href) => splitLeft(0, href)}
-          onSplitRight={(href) => splitRight(0, href)}
-          onTabClick={(href) => focusGroup(0, href)}
-          openTabs={editorGroups[0]?.tabs ?? []}
-          pathname={pathname}
-          showSplitButtons={true}
-          totalGroups={1}
+          {...getEditorTabsPropsFromCallbacks(
+            pathname,
+            0,
+            callbacks,
+            editorGroups,
+            { hasSplit, hasOpenTabs }
+          )}
         />
-        <div
-          className="flex w-full min-w-0 flex-1 flex-col overflow-hidden outline-none"
-          ref={contentRef}
-          tabIndex={-1}
+        <EditorContentArea
+          contentRef={contentRef}
+          copyContent={copyContent}
+          mainRef={mainRef}
+          onViewModeChange={onViewModeChange}
+          pageTitle={pageTitle}
+          pathname={pathname}
+          viewMode={viewMode}
         >
-          <span aria-hidden className="sr-only">
-            {pageTitle}
-          </span>
-          <Breadcrumbs
-            onViewModeChange={onViewModeChange}
-            pathname={pathname}
-            viewMode={viewMode}
-          />
-          <EditorContentContextMenu
-            onCopy={copyContent}
-            onViewModeChange={onViewModeChange}
-            viewMode={viewMode}
-          >
-            <main
-              className={cn(
-                "min-h-0 w-full min-w-0 flex-1 overflow-y-auto",
-                viewMode === "preview" && "min-h-full"
-              )}
-              data-ide-main
-              ref={mainRef}
-              {...(viewMode === "preview" && {
-                "data-preview": "",
-              })}
-            >
-              {children}
-            </main>
-          </EditorContentContextMenu>
-        </div>
+          {children}
+        </EditorContentArea>
       </div>
     );
   }
@@ -204,16 +214,13 @@ export function IdeEditorArea({
   return (
     <div className="flex min-h-0 min-w-0 flex-1 flex-col overflow-hidden">
       <EditorTabs
-        onCloseAll={closeAllTabs}
-        onCloseGroup={
-          editorGroups.length > 1 ? (i) => closeGroup(i) : undefined
-        }
-        onCloseOtherTabs={(href) => closeOtherTabs(0, href)}
-        onCloseTab={(href) => closeTab(0, href)}
-        onCloseTabsToRight={(href) => closeTabsToRight(0, href)}
-        onReorder={(order) => reorderTabs(0, order)}
-        openTabs={[]}
-        pathname={pathname}
+        {...getEditorTabsPropsFromCallbacks(
+          pathname,
+          0,
+          callbacks,
+          editorGroups,
+          { hasSplit, hasOpenTabs }
+        )}
       />
     </div>
   );

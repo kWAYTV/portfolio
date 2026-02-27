@@ -1,7 +1,11 @@
 import { getTranslations } from "next-intl/server";
 
-export async function ProjectsHeader() {
-  const t = await getTranslations("projects");
+interface ProjectsHeaderProps {
+  locale: string;
+}
+
+export async function ProjectsHeader({ locale }: ProjectsHeaderProps) {
+  const t = await getTranslations({ locale, namespace: "projects" });
 
   return (
     <header className="space-y-1.5">

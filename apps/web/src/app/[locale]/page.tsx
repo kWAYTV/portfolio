@@ -32,8 +32,8 @@ export default async function Home({ params }: Props) {
     <EditorContent
       preview={
         <PageContent>
-          <HeroHeader />
-          <HeroBio />
+          <HeroHeader locale={locale} />
+          <HeroBio locale={locale} />
           <Separator className="bg-border/50" />
           <SocialNav />
           <Separator className="bg-border/50" />

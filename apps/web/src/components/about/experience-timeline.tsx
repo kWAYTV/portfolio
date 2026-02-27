@@ -19,9 +19,13 @@ const experienceKeys = {
   "insergal-mechanic": "insergalMechanic",
 } as const;
 
-export async function ExperienceTimeline() {
-  const t = await getTranslations("about");
-  const tExp = await getTranslations("experience");
+interface ExperienceTimelineProps {
+  locale: string;
+}
+
+export async function ExperienceTimeline({ locale }: ExperienceTimelineProps) {
+  const t = await getTranslations({ locale, namespace: "about" });
+  const tExp = await getTranslations({ locale, namespace: "experience" });
 
   return (
     <section className="space-y-3">

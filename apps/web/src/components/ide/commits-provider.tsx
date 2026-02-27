@@ -1,8 +1,8 @@
 "use client";
 
-import type { GitCommitItem } from "@/lib/github";
-import { getCommits } from "@/lib/actions";
 import { createContext, useCallback, useContext, useState } from "react";
+import { getCommits } from "@/lib/actions";
+import type { GitCommitItem } from "@/lib/github";
 
 const CommitsContext = createContext<{
   commits: GitCommitItem[];

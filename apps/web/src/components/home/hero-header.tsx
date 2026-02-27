@@ -1,7 +1,11 @@
 import { getTranslations } from "next-intl/server";
 
-export async function HeroHeader() {
-  const t = await getTranslations("hero");
+interface HeroHeaderProps {
+  locale: string;
+}
+
+export async function HeroHeader({ locale }: HeroHeaderProps) {
+  const t = await getTranslations({ locale, namespace: "hero" });
 
   return (
     <header className="space-y-1.5">

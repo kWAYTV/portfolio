@@ -7,6 +7,7 @@
 import { Slot as SlotNamespace } from "radix-ui";
 
 const Slot = SlotNamespace.Slot;
+
 import { cva } from "class-variance-authority";
 import * as React from "react";
 

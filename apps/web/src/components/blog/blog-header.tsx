@@ -1,7 +1,11 @@
 import { getTranslations } from "next-intl/server";
 
-export async function BlogHeader() {
-  const t = await getTranslations("blog");
+interface BlogHeaderProps {
+  locale: string;
+}
+
+export async function BlogHeader({ locale }: BlogHeaderProps) {
+  const t = await getTranslations({ locale, namespace: "blog" });
 
   return (
     <header className="space-y-1.5">

@@ -8,7 +8,13 @@
   },
   "files": {
     "ignoreUnknown": true,
-    "includes": ["apps/**", "packages/**", "!**/.next", "!**/components/ui", "!**/.source"]
+    "includes": [
+      "apps/**",
+      "packages/**",
+      "!**/.next",
+      "!**/components/ui",
+      "!**/.source"
+    ]
   },
   "formatter": {
     "enabled": true,

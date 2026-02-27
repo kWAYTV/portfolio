@@ -1,6 +1,7 @@
 import { Slot as SlotPrimitive } from "radix-ui";
 
 const Slot = SlotPrimitive.Slot;
+
 import { cva, type VariantProps } from "class-variance-authority";
 import type * as React from "react";
 

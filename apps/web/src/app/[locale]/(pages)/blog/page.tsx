@@ -34,7 +34,7 @@ export default async function Blog({ params }: Props) {
     <EditorContent
       preview={
         <PageContent>
-          <BlogHeader />
+          <BlogHeader locale={locale} />
           <Suspense fallback={<BlogListSkeleton />}>
             <BlogListLoader locale={locale} />
           </Suspense>

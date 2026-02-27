@@ -33,9 +33,9 @@ export default async function About({ params }: Props) {
     <EditorContent
       preview={
         <PageContent>
-          <AboutHeader />
-          <AboutBio />
-          <ExperienceTimeline />
+          <AboutHeader locale={locale} />
+          <AboutBio locale={locale} />
+          <ExperienceTimeline locale={locale} />
         </PageContent>
       }
       source={<CodeView code={aboutCode} lang="markdown" />}

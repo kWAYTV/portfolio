@@ -1,8 +1,9 @@
 import { Toaster } from "@portfolio/ui";
 import Script from "next/script";
 import { UmamiScript } from "@/components/analytics/umami-script";
+import { CommitsProvider } from "@/components/ide/commits-provider";
 import { IdeLayoutSkeleton } from "@/components/ide/layout/ide-layout-skeleton";
-import { IdeLayoutWithCommits } from "@/components/ide/layout/ide-layout-with-commits";
+import { IdeLayoutStructure } from "@/components/ide/layout/ide-layout-structure";
 import { ThemeProvider } from "@/components/theming/provider";
 import { ThemePresetProvider } from "@/components/theming/theme-preset-context";
 import "@/styles/globals.css";
@@ -11,10 +12,11 @@ import { defineI18nUI } from "fumadocs-ui/i18n";
 import { RootProvider } from "fumadocs-ui/provider/next";
 import { notFound } from "next/navigation";
 import { hasLocale, NextIntlClientProvider } from "next-intl";
-import { getMessages, setRequestLocale } from "next-intl/server";
+import { setRequestLocale } from "next-intl/server";
 import { NuqsAdapter } from "nuqs/adapters/next/app";
 import { Suspense } from "react";
 import { fumadocsI18n } from "@/lib/i18n";
+import { getCachedMessages } from "@/lib/i18n-messages";
 import { baseUrl, createMetadata, siteName } from "@/lib/metadata";
 
 const { provider } = defineI18nUI(fumadocsI18n, {
@@ -66,7 +68,7 @@ export default async function LocaleLayout({ children, params }: Props) {
 
   setRequestLocale(locale);
 
-  const messages = await getMessages();
+  const messages = await getCachedMessages(locale);
 
   return (
     <>
@@ -87,7 +89,9 @@ export default async function LocaleLayout({ children, params }: Props) {
                 <Suspense
                   fallback={<IdeLayoutSkeleton>{null}</IdeLayoutSkeleton>}
                 >
-                  <IdeLayoutWithCommits>{children}</IdeLayoutWithCommits>
+                  <CommitsProvider>
+                    <IdeLayoutStructure>{children}</IdeLayoutStructure>
+                  </CommitsProvider>
                 </Suspense>
                 <Toaster richColors />
               </ThemePresetProvider>

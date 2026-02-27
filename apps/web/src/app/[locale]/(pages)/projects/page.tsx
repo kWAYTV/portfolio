@@ -34,7 +34,7 @@ export default async function Projects({ params }: Props) {
     <EditorContent
       preview={
         <PageContent>
-          <ProjectsHeader />
+          <ProjectsHeader locale={locale} />
           <Suspense fallback={<ProjectListSkeleton />}>
             <ProjectListLoader />
           </Suspense>

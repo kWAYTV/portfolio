@@ -1,7 +1,11 @@
 import { getTranslations } from "next-intl/server";
 
-export async function HeroBio() {
-  const t = await getTranslations("hero");
+interface HeroBioProps {
+  locale: string;
+}
+
+export async function HeroBio({ locale }: HeroBioProps) {
+  const t = await getTranslations({ locale, namespace: "hero" });
 
   return (
     <p className="text-muted-foreground/80 text-xs leading-relaxed sm:text-sm">

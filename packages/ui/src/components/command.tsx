@@ -1,8 +1,8 @@
 "use client";
 
-import { Dialog } from "radix-ui";
 import { Command as CommandPrimitive } from "cmdk";
 import { Search } from "lucide-react";
+import { Dialog } from "radix-ui";
 import type * as React from "react";
 
 import { cn } from "../utils";
