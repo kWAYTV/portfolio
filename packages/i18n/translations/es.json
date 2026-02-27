@@ -1,0 +1,171 @@
+{
+  "common": {
+    "welcome": "Bienvenido",
+    "siteDescription": "Bienvenido a mi espacio personal.",
+    "siteTitle": "Martin Vila — Portafolio"
+  },
+  "nav": {
+    "home": "inicio",
+    "about": "sobre mí",
+    "projects": "proyectos",
+    "blog": "blog",
+    "language": "idioma",
+    "menu": "Menú"
+  },
+  "footer": {
+    "rss": "rss",
+    "byVersend": "por versend.io"
+  },
+  "hero": {
+    "tagline": "desarrollador · gamer · autodidacta",
+    "bio": "Construyendo software minimalista y reflexivo. Explorando la intersección entre diseño e ingeniería."
+  },
+  "about": {
+    "title": "Sobre mí",
+    "subtitle": "Un poco sobre mí",
+    "bio": "Soy ingeniero de software con pasión por construir aplicaciones backend y web. Actualmente buscando nuevas oportunidades.",
+    "experience": "Experiencia"
+  },
+  "experience": {
+    "freelancing": {
+      "period": "2019 - Presente",
+      "role": "Desarrollador Freelance / Contribuidor Open Source",
+      "company": "Freelance"
+    },
+    "tokyoSchool": {
+      "period": "2024 - Presente",
+      "role": "PCAP Python, Programación Informática",
+      "company": "Tokyo School"
+    },
+    "insergalSales": {
+      "period": "2018 - 2019",
+      "role": "Asistente de Ventas, Marketing",
+      "company": "Insergal"
+    },
+    "insergalMechanic": {
+      "period": "2018 - 2019",
+      "role": "Mecánico Automotriz",
+      "company": "Insergal"
+    }
+  },
+  "projects": {
+    "title": "Proyectos",
+    "subtitle": "Trabajo open source",
+    "featured": "Destacados",
+    "viewAll": "Ver todo →",
+    "searchPlaceholder": "Buscar...",
+    "noProjects": "No se encontraron proyectos",
+    "projectCount": "{count, plural, one {# proyecto} other {# proyectos}}",
+    "matching": "que coinciden con \"{query}\"",
+    "sort": {
+      "stars": "Estrellas",
+      "updated": "Actualizado",
+      "created": "Creado",
+      "name": "Nombre"
+    }
+  },
+  "blog": {
+    "title": "Blog",
+    "subtitle": "Notas breves del trabajo actual. Más posts aparecerán aquí conforme se publiquen—ordenadas cronológicamente, sin complicaciones.",
+    "backToBlog": "← Volver al blog",
+    "noPosts": "Aún no hay posts.",
+    "postCount": "{count, plural, one {# publicación} other {# publicaciones}}",
+    "prev": "ant.",
+    "next": "sig.",
+    "soon": "Pronto"
+  },
+  "error": {
+    "title": "Algo salió mal",
+    "description": "Ocurrió un error inesperado. Por favor, inténtalo de nuevo.",
+    "retry": "Reintentar",
+    "home": "Inicio"
+  },
+  "notFound": {
+    "title": "404",
+    "subtitle": "Página no encontrada",
+    "description": "La página que buscas no existe o ha sido movida.",
+    "home": "Inicio"
+  },
+  "theme": {
+    "dark": "oscuro",
+    "light": "claro"
+  },
+  "ide": {
+    "explorer": "Explorador",
+    "openRepo": "Abrir repositorio del portafolio",
+    "terminal": "Terminal",
+    "settings": "Configuración",
+    "copyContent": "Copiar contenido",
+    "preview": "Vista previa",
+    "source": "Código",
+    "noOpenEditors": "Sin editores abiertos",
+    "openFileFromSidebar": "Abre un archivo desde la barra lateral para editar",
+    "commandPalette": "Paleta de comandos",
+    "commandPaletteShortcut": "⌘K",
+    "openPreview": "Abrir vista previa en nueva ventana",
+    "resizeTerminal": "Redimensionar terminal",
+    "closePanel": "Cerrar panel",
+    "commandPlaceholder": "Escribe un comando o busca...",
+    "noResults": "No se encontraron resultados.",
+    "navigation": "Navegación",
+    "view": "Vista",
+    "hideSidebar": "Ocultar barra lateral",
+    "showSidebar": "Mostrar barra lateral",
+    "hideTerminal": "Ocultar terminal",
+    "showTerminal": "Mostrar terminal",
+    "openPreviewWindow": "Abrir vista previa en nueva ventana",
+    "lightTheme": "Tema claro",
+    "darkTheme": "Tema oscuro",
+    "themePreset": "Tema",
+    "themePreset_default": "Vercel",
+    "themePreset_catppuccin": "Catppuccin",
+    "themePreset_violet-bloom": "Violet Bloom",
+    "themePreset_caffeine": "Caffeine",
+    "themePreset_mono": "Mono",
+    "themePreset_deep-purple": "Deep Purple",
+    "language": "Idioma",
+    "close": "Cerrar",
+    "minimize": "Minimizar",
+    "maximize": "Maximizar",
+    "closeOthers": "Cerrar otros",
+    "closeAll": "Cerrar todo",
+    "closeToRight": "Cerrar a la derecha",
+    "copyPath": "Copiar ruta",
+    "open": "Abrir",
+    "openInNewWindow": "Abrir en nueva ventana",
+    "expandAll": "Expandir todo",
+    "collapseAll": "Colapsar todo",
+    "splitRight": "Dividir a la derecha",
+    "splitLeft": "Dividir a la izquierda",
+    "openToRight": "Abrir a la derecha",
+    "openToLeft": "Abrir a la izquierda",
+    "closeGroup": "Cerrar grupo de editor",
+    "dragToResize": "Arrastrar para redimensionar",
+    "sourceControl": "Control de código fuente",
+    "commitMessagePlaceholder": "Mensaje (Ctrl+Enter para confirmar)",
+    "commit": "Confirmar",
+    "noChanges": "Sin cambios",
+    "noChangesHint": "Árbol de trabajo limpio",
+    "viewOnGitHub": "Ver en GitHub",
+    "changes": "Cambios",
+    "stagedChanges": "Cambios preparados",
+    "commitHistory": "Historial de commits",
+    "syncChanges": "Sincronizar cambios",
+    "moreActions": "Más acciones"
+  },
+  "terminal": {
+    "welcome": "Bienvenido al terminal del portafolio. Escribe 'help' para ver los comandos disponibles.",
+    "helpIntro": "Comandos disponibles:",
+    "helpLs": "  ls, ls -la    Listar archivos",
+    "helpPwd": "  pwd           Mostrar directorio actual",
+    "helpCd": "  cd '<'dir'>'      Cambiar directorio",
+    "helpCat": "  cat '<'archivo'>' Mostrar contenido (package.json, tsconfig.json, README.md,",
+    "helpCat2": "               .env, about.md, src/welcome.tsx, src/projects.ts, etc.)",
+    "helpEcho": "  echo '<'texto'>'  Repetir texto",
+    "helpClear": "  clear         Limpiar terminal",
+    "helpWhoami": "  whoami        Usuario actual",
+    "helpDate": "  date          Fecha y hora actual",
+    "helpHelp": "  help, ?       Mostrar esta ayuda",
+    "helpEasterEggs": "Huevos de Pascua: pnpm run dev, git status"
+  }
+}
