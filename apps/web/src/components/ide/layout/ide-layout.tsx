@@ -38,7 +38,7 @@ interface IdeLayoutProps {
 }
 
 export function IdeLayout({ children }: IdeLayoutProps) {
-  const { commits, fetchCommits } = useCommits();
+  const { commits, fetchCommits, isLoading: isRefreshing } = useCommits();
   const pathname = usePathname();
   const router = useRouter();
   const isMobile = useIsMobile();
@@ -154,6 +154,7 @@ export function IdeLayout({ children }: IdeLayoutProps) {
                 {layout.sidebarView === "sourceControl" ? (
                   <SourceControlView
                     commits={commits}
+                    isRefreshing={isRefreshing}
                     onRefresh={fetchCommits}
                   />
                 ) : (
@@ -230,6 +231,7 @@ export function IdeLayout({ children }: IdeLayoutProps) {
                   <SourceControlView
                     commits={commits}
                     fullWidth
+                    isRefreshing={isRefreshing}
                     onClose={() => layout.setMobileSidebarView(null)}
                     onRefresh={fetchCommits}
                   />
