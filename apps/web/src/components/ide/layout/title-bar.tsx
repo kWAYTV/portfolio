@@ -18,7 +18,7 @@ export function TitleBar({
   onClose,
   onMinimize,
   onMaximize,
-  title = "Portfolio",
+  title = "Martín Vila — Portfolio",
 }: TitleBarProps) {
   return (
     <div className="flex h-9 shrink-0 select-none items-center border-border border-b bg-secondary px-2 shadow-(--shadow-elevation-sm) sm:px-4">
