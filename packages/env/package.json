@@ -1,6 +1,6 @@
 {
   "name": "@repo/env",
-  "version": "0.1.1",
+  "version": "0.1.2",
   "private": true,
   "type": "module",
   "exports": {
@@ -8,7 +8,7 @@
   },
   "dependencies": {
     "@t3-oss/env-core": "^0.13.10",
-    "@t3-oss/env-nextjs": "^0.13.1",
+    "@t3-oss/env-nextjs": "^0.13.10",
     "dotenv": "catalog:",
     "zod": "catalog:"
   },
