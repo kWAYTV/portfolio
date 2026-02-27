@@ -227,7 +227,6 @@ export function IdeLayout({ children }: IdeLayoutProps) {
                         {pageTitle}
                       </span>
                       <Breadcrumbs
-                        onCopy={copyContent}
                         onViewModeChange={setViewMode}
                         pathname={pathname}
                         viewMode={viewMode}
