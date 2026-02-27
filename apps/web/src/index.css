@@ -47,6 +47,11 @@
   --syntax-tag: oklch(0.55 0.2 25);
   --syntax-attribute: oklch(0.55 0.22 300);
   --syntax-punctuation: var(--muted-foreground);
+  --terminal-user: var(--syntax-string);
+  --terminal-host: var(--syntax-type);
+  --terminal-path: var(--syntax-keyword);
+  --terminal-output: var(--muted-foreground);
+  --terminal-error: var(--destructive);
 }
 
 .dark {
@@ -91,6 +96,11 @@
   --syntax-tag: oklch(0.7 0.18 25);
   --syntax-attribute: oklch(0.75 0.15 300);
   --syntax-punctuation: var(--muted-foreground);
+  --terminal-user: var(--syntax-string);
+  --terminal-host: var(--syntax-type);
+  --terminal-path: var(--syntax-keyword);
+  --terminal-output: var(--muted-foreground);
+  --terminal-error: var(--destructive);
 }
 
 @theme inline {
