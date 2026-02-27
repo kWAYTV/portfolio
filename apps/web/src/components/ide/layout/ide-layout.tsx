@@ -246,14 +246,23 @@ export function IdeLayout({ children, commits = [] }: IdeLayoutProps) {
             <SheetContent
               className="flex h-full w-full max-w-full flex-col gap-0 overflow-hidden p-0 md:hidden"
               onOpenAutoFocus={(e) => e.preventDefault()}
-              showCloseButton={true}
+              showCloseButton={false}
               side="left"
             >
-              <div className="flex min-h-0 flex-1 flex-col overflow-hidden pr-12">
+              <div className="flex min-h-0 flex-1 flex-col overflow-hidden">
                 {mobileSidebarView === "sourceControl" ? (
-                  <SourceControlView commits={commits} />
+                  <SourceControlView
+                    commits={commits}
+                    fullWidth
+                    onClose={() => setMobileSidebarView(null)}
+                  />
                 ) : mobileSidebarView === "explorer" ? (
-                  <Sidebar onOpenTab={openTab} pathname={pathname} />
+                  <Sidebar
+                    fullWidth
+                    onClose={() => setMobileSidebarView(null)}
+                    onOpenTab={openTab}
+                    pathname={pathname}
+                  />
                 ) : null}
               </div>
             </SheetContent>
