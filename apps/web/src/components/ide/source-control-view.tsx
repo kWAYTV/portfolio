@@ -36,6 +36,7 @@ const MOCK_COMMITS: GitCommitItem[] = [
 
 interface SourceControlViewProps {
   commits?: GitCommitItem[];
+  hasStagedChanges?: boolean;
 }
 
 function CollapsibleSection({
@@ -67,6 +68,7 @@ function CollapsibleSection({
 
 export const SourceControlView = memo(function SourceControlView({
   commits = MOCK_COMMITS,
+  hasStagedChanges = false,
 }: SourceControlViewProps) {
   const t = useTranslations("ide");
   const displayCommits = commits.length > 0 ? commits : MOCK_COMMITS;
@@ -128,7 +130,12 @@ export const SourceControlView = memo(function SourceControlView({
       <div className="flex flex-1 flex-col overflow-hidden">
         {/* Commit message + buttons - VS Code style */}
         <div className="flex flex-col gap-2 border-border border-b px-2 py-2">
-          <div className="flex min-h-[28px] items-center gap-1.5 rounded px-2 py-1.5 text-[13px] text-muted-foreground ring-1 ring-inset ring-border/50">
+          <div
+            className={cn(
+              "flex min-h-[28px] items-center gap-1.5 rounded px-2 py-1.5 text-[13px] ring-1 ring-inset ring-border/50",
+              "cursor-not-allowed bg-muted/30 text-muted-foreground/80"
+            )}
+          >
             <GitCommit className="size-4 shrink-0 opacity-60" />
             <span className="truncate">{t("commitMessagePlaceholder")}</span>
           </div>
@@ -154,8 +161,18 @@ export const SourceControlView = memo(function SourceControlView({
           </div>
         </div>
 
-        {/* Scrollable sections - CHANGES, STAGED, HISTORY */}
+        {/* Scrollable sections - STAGED (when present), CHANGES */}
         <div className="flex-1 overflow-y-auto px-2 py-1">
+          {hasStagedChanges && (
+            <CollapsibleSection defaultOpen={true} title={t("stagedChanges")}>
+              <div className="rounded-md border border-border/60 bg-muted/20 px-2 py-2.5">
+                <p className="text-[11px] text-muted-foreground">
+                  {t("noChanges")}
+                </p>
+              </div>
+            </CollapsibleSection>
+          )}
+
           <CollapsibleSection defaultOpen={true} title={t("changes")}>
             <div className="rounded-md border border-border/60 bg-muted/20 px-2 py-2.5">
               <p className="text-[11px] text-muted-foreground">
@@ -164,41 +181,6 @@ export const SourceControlView = memo(function SourceControlView({
               <p className="mt-0.5 text-[10px] text-muted-foreground/70">
                 {t("noChangesHint")}
               </p>
-            </div>
-          </CollapsibleSection>
-
-          <CollapsibleSection defaultOpen={true} title={t("stagedChanges")}>
-            <div className="rounded-md border border-border/60 bg-muted/20 px-2 py-2.5">
-              <p className="text-[11px] text-muted-foreground">
-                {t("noChanges")}
-              </p>
-            </div>
-          </CollapsibleSection>
-
-          <CollapsibleSection
-            defaultOpen={true}
-            title={t("commitHistory")}
-          >
-            <div className="space-y-0.5 py-1">
-              {displayCommits.map((commit) => (
-                <a
-                  className={cn(
-                    "block rounded px-2 py-1.5 text-left transition-colors",
-                    "hover:bg-sidebar-accent/50"
-                  )}
-                  href={`${PORTFOLIO_REPO_URL}/commit/${commit.sha}`}
-                  key={commit.sha}
-                  rel="noopener noreferrer"
-                  target="_blank"
-                >
-                  <p className="truncate text-[11px] text-sidebar-foreground">
-                    {commit.message}
-                  </p>
-                  <p className="mt-0.5 truncate text-[10px] text-muted-foreground">
-                    {commit.sha} · {commit.author} · {commit.date}
-                  </p>
-                </a>
-              ))}
             </div>
           </CollapsibleSection>
         </div>
@@ -227,6 +209,33 @@ export const SourceControlView = memo(function SourceControlView({
             </TooltipTrigger>
             <TooltipContent side="top">{t("openRepo")}</TooltipContent>
           </Tooltip>
+        </div>
+
+        {/* Commit History - at very bottom, separate from changes */}
+        <div className="border-border border-t px-2 py-1">
+          <CollapsibleSection defaultOpen={true} title={t("commitHistory")}>
+            <div className="max-h-32 space-y-0.5 overflow-y-auto py-1">
+              {displayCommits.map((commit) => (
+                <a
+                  className={cn(
+                    "block rounded px-2 py-1.5 text-left transition-colors",
+                    "hover:bg-sidebar-accent/50"
+                  )}
+                  href={`${PORTFOLIO_REPO_URL}/commit/${commit.sha}`}
+                  key={commit.sha}
+                  rel="noopener noreferrer"
+                  target="_blank"
+                >
+                  <p className="truncate text-[11px] text-sidebar-foreground">
+                    {commit.message}
+                  </p>
+                  <p className="mt-0.5 truncate text-[10px] text-muted-foreground">
+                    {commit.sha} · {commit.author} · {commit.date}
+                  </p>
+                </a>
+              ))}
+            </div>
+          </CollapsibleSection>
         </div>
       </div>
     </div>
