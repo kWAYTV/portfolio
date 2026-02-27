@@ -118,7 +118,6 @@ export function IdeEditorArea({
 }: IdeEditorAreaProps) {
   const hasOpenTabs = editorGroups.some((g) => g.tabs.length > 0);
   const hasSplit = editorGroups.length > 1;
-  const activeGroup = editorGroups[activeGroupIndex] ?? editorGroups[0];
 
   const callbacks = {
     closeAllTabs,

@@ -10,7 +10,9 @@ const CommitsContext = createContext<{
   isLoading: boolean;
 }>({
   commits: [],
-  fetchCommits: async () => {},
+  fetchCommits: async () => {
+    /* no-op default */
+  },
   isLoading: false,
 });
 
