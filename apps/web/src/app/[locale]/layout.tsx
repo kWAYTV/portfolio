@@ -1,8 +1,6 @@
 import { Toaster } from "@portfolio/ui";
 import Script from "next/script";
 import { UmamiScript } from "@/components/analytics/umami-script";
-import { IdeLayoutSkeleton } from "@/components/ide/layout/ide-layout-skeleton";
-import { IdeLayoutWithCommits } from "@/components/ide/layout/ide-layout-with-commits";
 import { ThemeProvider } from "@/components/theming/provider";
 import { ThemePresetProvider } from "@/components/theming/theme-preset-context";
 import "@/styles/globals.css";
@@ -13,7 +11,6 @@ import { notFound } from "next/navigation";
 import { hasLocale, NextIntlClientProvider } from "next-intl";
 import { getMessages, setRequestLocale } from "next-intl/server";
 import { NuqsAdapter } from "nuqs/adapters/next/app";
-import { Suspense } from "react";
 import { fumadocsI18n } from "@/lib/i18n";
 import { baseUrl, createMetadata, siteName } from "@/lib/metadata";
 
@@ -84,11 +81,7 @@ export default async function LocaleLayout({ children, params }: Props) {
               enableSystem
             >
               <ThemePresetProvider>
-                <Suspense
-                  fallback={<IdeLayoutSkeleton>{null}</IdeLayoutSkeleton>}
-                >
-                  <IdeLayoutWithCommits>{children}</IdeLayoutWithCommits>
-                </Suspense>
+                {children}
                 <Toaster richColors />
               </ThemePresetProvider>
             </ThemeProvider>
