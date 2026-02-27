@@ -87,7 +87,7 @@ export function ExplorerTreeItem({
       } ${item.href ? "" : "cursor-default opacity-50"}`}
       style={{ paddingLeft: `${depth * 12 + 24}px` }}
     >
-      <FileIcon className="size-4" type={item.fileType} />
+      <FileIcon className="size-4" name={item.name} type={item.fileType} />
       <span className="ml-1 truncate">{item.name}</span>
     </div>
   );

@@ -1,7 +1,7 @@
 /** Static nav items for the IDE (file tabs). */
 export const navItems = [
   { href: "/", label: "home", fileName: "page.tsx", fileType: "tsx" },
-  { href: "/about", label: "about", fileName: "about.md", fileType: "md" },
+  { href: "/about", label: "about", fileName: "about.mdx", fileType: "mdx" },
   {
     href: "/projects",
     label: "projects",
@@ -23,7 +23,7 @@ export const explorerTree: TreeItem[] = [
     name: "src",
     children: [
       { type: "file", name: "page.tsx", href: "/", fileType: "tsx" },
-      { type: "file", name: "about.md", href: "/about", fileType: "md" },
+      { type: "file", name: "about.mdx", href: "/about", fileType: "mdx" },
       { type: "file", name: "projects.ts", href: "/projects", fileType: "ts" },
       {
         type: "folder",

@@ -40,7 +40,11 @@ export function EditorTabItem({
           href={href}
           onClick={() => onTabClick?.(href)}
         >
-          <FileIcon className="size-4 shrink-0" type={fileType} />
+          <FileIcon
+            className="size-4 shrink-0"
+            name={fileName}
+            type={fileType}
+          />
           <span className="truncate">{fileName}</span>
         </LocaleLink>
       </div>
