@@ -1,7 +1,7 @@
-import { getUserLocale } from "@i18n/lib/locale-cookie";
-import { routing } from "@i18n/routing";
 import { getMessagesForLocale } from "@repo/i18n";
 import { getRequestConfig } from "next-intl/server";
+import { getUserLocale } from "@/i18n/lib/locale-cookie";
+import { routing } from "@/i18n/routing";
 
 export default getRequestConfig(async ({ requestLocale }) => {
   let locale = await requestLocale;
