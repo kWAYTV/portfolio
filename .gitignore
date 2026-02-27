@@ -24,8 +24,8 @@ build
 *~
 .DS_Store
 
-# Logs
-logs
+# Logs (root only; packages/logs is our logger package)
+/logs
 *.log
 npm-debug.log*
 yarn-debug.log*
