@@ -3,7 +3,7 @@ import "server-only";
 import { Octokit } from "@octokit/rest";
 import { env } from "@portfolio/env";
 import { getGitHubRepos as getRepos } from "@portfolio/github";
-import { cacheLife, unstable_cache } from "next/cache";
+import { cacheLife, cacheTag } from "next/cache";
 
 export interface GitCommitItem {
   author: string;
@@ -54,22 +54,21 @@ function formatRelativeDate(dateStr: string): string {
 export async function getRepoCommits(): Promise<GitCommitItem[]> {
   "use cache";
   cacheLife("hours");
+  cacheTag("commits");
   return await fetchRepoCommits();
 }
 
 export async function getGitHubRepos(): Promise<
   Awaited<ReturnType<typeof getRepos>>
 > {
-  return await unstable_cache(
-    async () => {
-      const octokit = new Octokit({ auth: env.GITHUB_TOKEN });
-      return await getRepos({
-        octokit,
-        username: "kWAYTV",
-        extraRepos: [{ owner: "vercord", repo: "core" }],
-      });
-    },
-    ["github-repos"],
-    { revalidate: 3600 }
-  )();
+  "use cache";
+  cacheLife("hours");
+  cacheTag("github-repos");
+
+  const octokit = new Octokit({ auth: env.GITHUB_TOKEN });
+  return await getRepos({
+    octokit,
+    username: "kWAYTV",
+    extraRepos: [{ owner: "vercord", repo: "core" }],
+  });
 }

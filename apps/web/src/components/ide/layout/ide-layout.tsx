@@ -4,7 +4,8 @@ import { usePathname, useRouter } from "@i18n/routing";
 import { Sheet, SheetContent, TooltipProvider } from "@portfolio/ui";
 import dynamic from "next/dynamic";
 import { parseAsBoolean, useQueryState } from "nuqs";
-import { useEffect, useMemo, useRef } from "react";
+import { Suspense, useEffect, useMemo, useRef } from "react";
+import { PageContentSkeleton } from "@/components/ide/layout/page-content-skeleton";
 import { ActivityBar } from "@/components/ide/layout/activity-bar";
 import { IdeEditorArea } from "@/components/ide/layout/ide-editor-area";
 import { IdeLayoutEmbed } from "@/components/ide/layout/ide-layout-embed";
@@ -37,7 +38,7 @@ interface IdeLayoutProps {
 }
 
 export function IdeLayout({ children }: IdeLayoutProps) {
-  const { commits } = useCommits();
+  const { commits, fetchCommits } = useCommits();
   const pathname = usePathname();
   const router = useRouter();
   const isMobile = useIsMobile();
@@ -151,7 +152,10 @@ export function IdeLayout({ children }: IdeLayoutProps) {
             {layout.sidebarOpen && (
               <div className="hidden md:block">
                 {layout.sidebarView === "sourceControl" ? (
-                  <SourceControlView commits={commits} />
+                  <SourceControlView
+                    commits={commits}
+                    onRefresh={fetchCommits}
+                  />
                 ) : (
                   <Sidebar onOpenTab={editor.openTab} pathname={pathname} />
                 )}
@@ -186,7 +190,9 @@ export function IdeLayout({ children }: IdeLayoutProps) {
                 splitRight={editor.splitRight}
                 viewMode={layout.viewMode}
               >
-                {children}
+                <Suspense fallback={<PageContentSkeleton />}>
+                  {children}
+                </Suspense>
               </IdeEditorArea>
               <TerminalPanel
                 isOpen={layout.terminalOpen}
@@ -225,6 +231,7 @@ export function IdeLayout({ children }: IdeLayoutProps) {
                     commits={commits}
                     fullWidth
                     onClose={() => layout.setMobileSidebarView(null)}
+                    onRefresh={fetchCommits}
                   />
                 ) : layout.mobileSidebarView === "explorer" ? (
                   <Sidebar
