@@ -37,6 +37,16 @@
   --sidebar-accent-foreground: oklch(0.205 0 0);
   --sidebar-border: oklch(0.922 0 0);
   --sidebar-ring: oklch(0.708 0 0);
+  /* Syntax highlighting (code view) */
+  --syntax-comment: var(--muted-foreground);
+  --syntax-keyword: oklch(0.55 0.22 285);
+  --syntax-string: oklch(0.55 0.18 145);
+  --syntax-number: oklch(0.65 0.18 45);
+  --syntax-type: oklch(0.55 0.14 230);
+  --syntax-function: oklch(0.55 0.2 250);
+  --syntax-tag: oklch(0.55 0.2 25);
+  --syntax-attribute: oklch(0.55 0.22 300);
+  --syntax-punctuation: var(--muted-foreground);
 }
 
 .dark {
@@ -71,10 +81,21 @@
   --sidebar-accent-foreground: oklch(0.985 0 0);
   --sidebar-border: oklch(1 0 0 / 10%);
   --sidebar-ring: oklch(0.556 0 0);
+  /* Syntax highlighting (code view) */
+  --syntax-comment: var(--muted-foreground);
+  --syntax-keyword: oklch(0.75 0.15 300);
+  --syntax-string: oklch(0.75 0.18 145);
+  --syntax-number: oklch(0.75 0.15 70);
+  --syntax-type: oklch(0.75 0.15 200);
+  --syntax-function: oklch(0.7 0.18 250);
+  --syntax-tag: oklch(0.7 0.18 25);
+  --syntax-attribute: oklch(0.75 0.15 300);
+  --syntax-punctuation: var(--muted-foreground);
 }
 
 @theme inline {
   --font-sans: "Inter Variable", sans-serif;
+  --font-mono: var(--font-geist-mono), ui-monospace, monospace;
   --color-sidebar-ring: var(--sidebar-ring);
   --color-sidebar-border: var(--sidebar-border);
   --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
@@ -113,6 +134,81 @@
   --radius-2xl: calc(var(--radius) + 8px);
   --radius-3xl: calc(var(--radius) + 12px);
   --radius-4xl: calc(var(--radius) + 16px);
+}
+
+/* IDE elevation shadows */
+:root {
+  --shadow-elevation-sm:
+    inset 0 1px 0 0 oklch(1 0 0 / 0.06), 0 1px 3px 0 oklch(0.145 0 0 / 0.08),
+    0 2px 6px -1px oklch(0.145 0 0 / 0.12);
+  --shadow-elevation-md:
+    inset 0 1px 0 0 oklch(1 0 0 / 0.08), 0 2px 4px -1px oklch(0.145 0 0 / 0.1),
+    0 4px 8px -2px oklch(0.145 0 0 / 0.14);
+  --shadow-elevation-lg:
+    inset 0 1px 0 0 oklch(1 0 0 / 0.1), 0 4px 6px -1px oklch(0.145 0 0 / 0.12),
+    0 8px 16px -4px oklch(0.145 0 0 / 0.18);
+  --shadow-inset-recess:
+    inset 0 2px 4px 0 oklch(0.145 0 0 / 0.06),
+    inset 0 -1px 0 0 oklch(1 0 0 / 0.04);
+}
+
+.dark {
+  --shadow-elevation-sm:
+    inset 0 1px 0 0 oklch(1 0 0 / 0.1), 0 1px 2px 0 oklch(0 0 0 / 0.5),
+    0 2px 4px -1px oklch(0 0 0 / 0.6);
+  --shadow-elevation-md:
+    inset 0 1px 0 0 oklch(1 0 0 / 0.12), 0 2px 4px -1px oklch(0 0 0 / 0.55),
+    0 4px 8px -2px oklch(0 0 0 / 0.65);
+  --shadow-elevation-lg:
+    inset 0 1px 0 0 oklch(1 0 0 / 0.14), 0 4px 6px -1px oklch(0 0 0 / 0.6),
+    0 8px 16px -4px oklch(0 0 0 / 0.7);
+  --shadow-inset-recess:
+    inset 0 2px 4px 0 oklch(0 0 0 / 0.35), inset 0 -1px 0 0 oklch(1 0 0 / 0.06);
+}
+
+/* macOS traffic-light dot glow */
+.dot-close:hover {
+  box-shadow: 0 0 6px 1px rgba(255, 95, 87, 0.5);
+}
+.dot-minimize:hover {
+  box-shadow: 0 0 6px 1px rgba(254, 188, 46, 0.45);
+}
+.dot-maximize:hover {
+  box-shadow: 0 0 6px 1px rgba(40, 200, 64, 0.45);
+}
+
+.terminal-viewport .terminal-input {
+  color: var(--foreground);
+  caret-color: var(--foreground);
+}
+.terminal-root {
+  color: var(--muted-foreground);
+}
+
+/* IDE: content fills pane, no max-width gap on right (code view only) */
+[data-ide-main] {
+  width: 100%;
+}
+[data-ide-main]:not([data-preview]) [class*="max-w-"],
+[data-ide-main]:not([data-preview]) .max-w-2xl,
+[data-ide-main]:not([data-preview]) .max-w-4xl,
+[data-ide-main]:not([data-preview]) .max-w-lg,
+[data-ide-main]:not([data-preview]) .max-w-xl,
+[data-ide-main]:not([data-preview]) .max-w-md {
+  max-width: none !important;
+}
+[data-ide-main]:not([data-preview]) .mx-auto {
+  margin-right: 0 !important;
+  margin-left: 0 !important;
+}
+/* IDE preview: center content horizontally, align to top for scrollable content */
+[data-ide-main][data-preview] {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start;
+  min-height: 100%;
+  padding-bottom: 2rem;
 }
 
 @layer base {

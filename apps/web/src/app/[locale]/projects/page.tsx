@@ -1,9 +1,9 @@
 import { setRequestLocale } from "next-intl/server";
 import { CodeView } from "@/components/ide/editor/code-view";
 import { EditorContent } from "@/components/ide/editor/editor-content";
-import { welcomeCode } from "@/consts/code-content";
+import { projectsCode } from "@/consts/code-content";
 
-export default async function HomePage({
+export default async function ProjectsPage({
   params,
 }: {
   params: Promise<{ locale: string }>;
@@ -15,10 +15,10 @@ export default async function HomePage({
     <EditorContent
       preview={
         <main className="flex min-h-full items-center justify-center p-8">
-          <p>Home</p>
+          <p>Projects</p>
         </main>
       }
-      source={<CodeView code={welcomeCode} lang="typescript" />}
+      source={<CodeView code={projectsCode} lang="typescript" />}
     />
   );
 }
