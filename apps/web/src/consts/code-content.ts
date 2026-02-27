@@ -1,6 +1,6 @@
 export const welcomeCode = `import { Separator } from "@portfolio/ui";
-import { FeaturedProjects } from "@/components/home/featured-projects";
-import { SocialNav } from "@/components/home/social-nav";
+import { FeaturedProjects } from "@/components/content/home/featured-projects";
+import { SocialNav } from "@/components/content/home/social-nav";
 import { getFeaturedRepos, getGitHubRepos } from "@/lib/data";
 
 export const metadata = {
@@ -131,7 +131,7 @@ title: Blog
 description: Quiet notes from current work
 ---
 
-import { BlogList } from "@/components/blog/blog-list"
+import { BlogList } from "@/components/content/blog/blog-list"
 import { getPosts } from "@/lib/source"
 
 # Blog

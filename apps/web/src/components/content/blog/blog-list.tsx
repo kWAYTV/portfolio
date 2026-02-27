@@ -3,7 +3,7 @@
 import { useTranslations } from "next-intl";
 import { parseAsInteger, useQueryState } from "nuqs";
 import { useMemo } from "react";
-import { BlogCard } from "@/components/blog/blog-card";
+import { BlogCard } from "@/components/content/blog/blog-card";
 import { Pagination } from "@/components/shared/pagination";
 
 const POSTS_PER_PAGE = 3;

@@ -1,10 +1,10 @@
 import { Separator } from "@portfolio/ui";
 import { setRequestLocale } from "next-intl/server";
-import { FeaturedProjects } from "@/components/home/featured-projects";
-import { HeroBio } from "@/components/home/hero-bio";
-import { HeroHeader } from "@/components/home/hero-header";
-import { HeroQuote } from "@/components/home/hero-quote";
-import { SocialNav } from "@/components/home/social-nav";
+import { FeaturedProjects } from "@/components/content/home/featured-projects";
+import { HeroBio } from "@/components/content/home/hero-bio";
+import { HeroHeader } from "@/components/content/home/hero-header";
+import { HeroQuote } from "@/components/content/home/hero-quote";
+import { SocialNav } from "@/components/content/home/social-nav";
 import { CodeView } from "@/components/ide/editor/code-view";
 import { EditorContent } from "@/components/ide/editor/editor-content";
 import { PageContent } from "@/components/shared/page-content";

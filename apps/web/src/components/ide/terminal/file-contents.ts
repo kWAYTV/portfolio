@@ -89,8 +89,8 @@ export const FILE_CONTENTS: Record<string, string[]> = {
   ],
   "src/welcome.tsx": [
     'import { Separator } from "@portfolio/ui";',
-    'import { FeaturedProjects } from "@/components/home/featured-projects";',
-    'import { SocialNav } from "@/components/home/social-nav";',
+    'import { FeaturedProjects } from "@/components/content/home/featured-projects";',
+    'import { SocialNav } from "@/components/content/home/social-nav";',
     'import { getGitHubRepos } from "@/lib/github";',
     "",
     "export const metadata = {",

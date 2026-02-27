@@ -1,11 +1,11 @@
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { setRequestLocale } from "next-intl/server";
-import { BlogArticle } from "@/components/blog/blog-article";
-import { BlogBackLink } from "@/components/blog/blog-back-link";
-import { BlogPostHeader } from "@/components/blog/blog-post-header";
-import { BlogPostViewTracker } from "@/components/blog/blog-post-view-tracker";
-import { getMDXComponents } from "@/components/blog/mdx-components";
+import { BlogArticle } from "@/components/content/blog/blog-article";
+import { BlogBackLink } from "@/components/content/blog/blog-back-link";
+import { BlogPostHeader } from "@/components/content/blog/blog-post-header";
+import { BlogPostViewTracker } from "@/components/content/blog/blog-post-view-tracker";
+import { getMDXComponents } from "@/components/content/blog/mdx-components";
 import { PageContent } from "@/components/shared/page-content";
 import { blogSource, getCachedBlogPage } from "@/lib/data";
 import { createMetadata } from "@/lib/metadata";

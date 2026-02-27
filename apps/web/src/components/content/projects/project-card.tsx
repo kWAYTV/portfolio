@@ -14,7 +14,7 @@ import {
 import { GitFork, Star } from "lucide-react";
 import Link from "next/link";
 import { memo, useCallback } from "react";
-import { ProjectCardDetails } from "@/components/projects/project-card-details";
+import { ProjectCardDetails } from "@/components/content/projects/project-card-details";
 import { languageColors } from "@/consts/language-colors";
 
 interface ProjectCardProps {

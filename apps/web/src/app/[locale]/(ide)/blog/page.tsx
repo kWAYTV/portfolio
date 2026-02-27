@@ -1,7 +1,7 @@
 import { locales } from "@portfolio/i18n/config";
 import { getTranslations, setRequestLocale } from "next-intl/server";
-import { BlogHeader } from "@/components/blog/blog-header";
-import { BlogList } from "@/components/blog/blog-list";
+import { BlogHeader } from "@/components/content/blog/blog-header";
+import { BlogList } from "@/components/content/blog/blog-list";
 import { CodeView } from "@/components/ide/editor/code-view";
 import { EditorContent } from "@/components/ide/editor/editor-content";
 import { PageContent } from "@/components/shared/page-content";

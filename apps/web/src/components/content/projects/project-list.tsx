@@ -9,12 +9,12 @@ import {
   useQueryStates,
 } from "nuqs";
 import { memo, useCallback, useMemo } from "react";
-import { ProjectCard } from "@/components/projects/project-card";
+import { ProjectCard } from "@/components/content/projects/project-card";
 import {
   ProjectFilters,
   type SortOption,
   sortOptions,
-} from "@/components/projects/project-filters";
+} from "@/components/content/projects/project-filters";
 import { Pagination } from "@/components/shared/pagination";
 import { useCanHover } from "@/hooks/use-can-hover";
 

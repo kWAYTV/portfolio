@@ -1,8 +1,8 @@
 import { getTranslations, setRequestLocale } from "next-intl/server";
 import { CodeView } from "@/components/ide/editor/code-view";
 import { EditorContent } from "@/components/ide/editor/editor-content";
-import { ProjectList } from "@/components/projects/project-list";
-import { ProjectsHeader } from "@/components/projects/projects-header";
+import { ProjectList } from "@/components/content/projects/project-list";
+import { ProjectsHeader } from "@/components/content/projects/projects-header";
 import { PageContent } from "@/components/shared/page-content";
 import { projectsCode } from "@/consts/code-content";
 import { getGitHubRepos } from "@/lib/data";

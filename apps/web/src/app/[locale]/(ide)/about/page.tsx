@@ -1,7 +1,7 @@
 import { getTranslations, setRequestLocale } from "next-intl/server";
-import { AboutBio } from "@/components/about/about-bio";
-import { AboutHeader } from "@/components/about/about-header";
-import { ExperienceTimeline } from "@/components/about/experience-timeline";
+import { AboutBio } from "@/components/content/about/about-bio";
+import { AboutHeader } from "@/components/content/about/about-header";
+import { ExperienceTimeline } from "@/components/content/about/experience-timeline";
 import { CodeView } from "@/components/ide/editor/code-view";
 import { EditorContent } from "@/components/ide/editor/editor-content";
 import { PageContent } from "@/components/shared/page-content";

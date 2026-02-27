@@ -13,7 +13,7 @@ import {
 } from "@portfolio/ui";
 import { ExternalLink } from "lucide-react";
 import { useTranslations } from "next-intl";
-import { ProjectCardDetails } from "@/components/projects/project-card-details";
+import { ProjectCardDetails } from "@/components/content/projects/project-card-details";
 import { useCanHover } from "@/hooks/use-can-hover";
 
 interface FeaturedProjectsProps {
