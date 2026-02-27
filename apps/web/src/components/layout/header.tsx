@@ -1,7 +1,7 @@
 "use client";
 import Link from "next/link";
 
-import { ModeToggle } from "./mode-toggle";
+import { ModeToggle } from "../shared/mode-toggle";
 
 export default function Header() {
   const links = [{ to: "/", label: "Home" }] as const;
