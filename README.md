@@ -47,4 +47,7 @@ GITHUB_TOKEN=
 # Umami Analytics (self-hosted or cloud)
 NEXT_PUBLIC_UMAMI_URL=https://your-umami-instance.com/script.js
 NEXT_PUBLIC_UMAMI_WEBSITE_ID=your-website-id
+
+# Site URL
+NEXT_PUBLIC_SITE_URL=
 ```
