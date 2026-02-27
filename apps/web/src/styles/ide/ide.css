@@ -73,10 +73,11 @@
 
 /* Theme presets: tweakcn-compatible. Add themes from tweakcn.com:
  * 1. Export theme (oklch) from tweakcn.com/editor/theme
- * 2. Add [data-theme="name"] { ... } for light, .dark[data-theme="name"] { ... } for dark
+ * 2. Add :root:not(.dark)[data-theme="name"] for light, .dark[data-theme="name"] for dark
+ *    (:root:not(.dark) needed so light preset overrides :root vars in globals.css)
  * 3. Add --syntax-* vars for code view. Add preset to THEME_PRESETS in theme-preset-context.tsx
  */
-[data-theme="catppuccin"] {
+:root:not(.dark)[data-theme="catppuccin"] {
   --background: oklch(0.98 0.01 265);
   --foreground: oklch(0.25 0.02 265);
   --card: oklch(1 0 0);
@@ -151,7 +152,7 @@
   --terminal-path: oklch(0.78 0.15 300);
 }
 
-[data-theme="violet-bloom"] {
+:root:not(.dark)[data-theme="violet-bloom"] {
   --background: oklch(0.994 0 0);
   --foreground: oklch(0 0 0);
   --card: oklch(0.994 0 0);
@@ -240,7 +241,7 @@
   --syntax-punctuation: var(--muted-foreground);
 }
 
-[data-theme="caffeine"] {
+:root:not(.dark)[data-theme="caffeine"] {
   --background: oklch(0.9821 0 0);
   --foreground: oklch(0.2435 0 0);
   --card: oklch(0.9911 0 0);
@@ -328,7 +329,7 @@
   --syntax-punctuation: var(--muted-foreground);
 }
 
-[data-theme="mono"] {
+:root:not(.dark)[data-theme="mono"] {
   --background: oklch(1 0 0);
   --foreground: oklch(0.1448 0 0);
   --card: oklch(1 0 0);

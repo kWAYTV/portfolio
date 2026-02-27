@@ -30,6 +30,7 @@ interface SourceControlViewProps {
   commits?: GitCommitItem[];
   fullWidth?: boolean;
   hasStagedChanges?: boolean;
+  isRefreshing?: boolean;
   onClose?: () => void;
   onRefresh?: () => void;
 }
@@ -38,6 +39,7 @@ export const SourceControlView = memo(function SourceControlView({
   commits = MOCK_COMMITS,
   fullWidth = false,
   hasStagedChanges = false,
+  isRefreshing = false,
   onClose,
   onRefresh,
 }: SourceControlViewProps) {
@@ -78,7 +80,9 @@ export const SourceControlView = memo(function SourceControlView({
                 type="button"
                 variant="ghost"
               >
-                <RefreshCw className="size-3.5" />
+                <RefreshCw
+                  className={cn("size-3.5", isRefreshing && "animate-spin")}
+                />
               </Button>
             </TooltipTrigger>
             <TooltipContent side="bottom">Refresh</TooltipContent>
