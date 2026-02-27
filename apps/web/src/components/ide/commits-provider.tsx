@@ -1,6 +1,7 @@
 "use client";
 
 import type { GitCommitItem } from "@/lib/github";
+import { getCommits } from "@/lib/actions";
 import {
   createContext,
   useCallback,
@@ -25,11 +26,8 @@ export function CommitsProvider({ children }: { children: React.ReactNode }) {
   const fetchCommits = useCallback(async () => {
     setIsLoading(true);
     try {
-      const res = await fetch("/api/github/commits");
-      if (res.ok) {
-        const data = await res.json();
-        setCommits(data);
-      }
+      const data = await getCommits();
+      setCommits(data);
     } finally {
       setIsLoading(false);
     }
