@@ -3,10 +3,6 @@
 import {
   Button,
   cn,
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuTrigger,
   Tooltip,
   TooltipContent,
   TooltipTrigger,
@@ -15,7 +11,6 @@ import {
   ExternalLink,
   GitBranch,
   GitCommit,
-  MoreHorizontal,
   RefreshCw,
   X,
 } from "lucide-react";
@@ -87,35 +82,6 @@ export const SourceControlView = memo(function SourceControlView({
             </TooltipTrigger>
             <TooltipContent side="bottom">{t("syncChanges")}</TooltipContent>
           </Tooltip>
-          <DropdownMenu>
-            <DropdownMenuTrigger asChild>
-              <Button
-                aria-label={t("moreActions")}
-                className="size-6 rounded p-0"
-                size="icon-sm"
-                type="button"
-                variant="ghost"
-              >
-                <MoreHorizontal className="size-3.5" />
-              </Button>
-            </DropdownMenuTrigger>
-            <DropdownMenuContent
-              align="end"
-              className="ide-dropdown w-48 rounded-sm border border-border bg-popover p-0.5"
-              side="right"
-            >
-              <DropdownMenuItem asChild>
-                <a
-                  href={`${PORTFOLIO_REPO_URL}/commits/main`}
-                  rel="noopener noreferrer"
-                  target="_blank"
-                >
-                  <ExternalLink className="size-3.5" />
-                  {t("viewOnGitHub")}
-                </a>
-              </DropdownMenuItem>
-            </DropdownMenuContent>
-          </DropdownMenu>
         </div>
       </div>
 
