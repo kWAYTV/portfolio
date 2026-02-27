@@ -1,11 +1,10 @@
 /** ISO 3166-1 alpha-2 country codes for flag emoji (ISO 639-1 locale → region). */
 export const config = {
   locales: {
-    en: { label: "English", currency: "USD", region: "US" },
-    es: { label: "Español", currency: "USD", region: "ES" },
+    en: { label: "English", region: "US" },
+    es: { label: "Español", region: "ES" },
   } as const,
   defaultLocale: "en" as const,
-  defaultCurrency: "USD" as const,
   localeCookieName: "NEXT_LOCALE",
 };
 
