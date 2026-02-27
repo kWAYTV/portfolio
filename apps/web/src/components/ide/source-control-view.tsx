@@ -8,6 +8,9 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
   cn,
+  HoverCard,
+  HoverCardContent,
+  HoverCardTrigger,
   Tooltip,
   TooltipContent,
   TooltipTrigger,
@@ -18,6 +21,7 @@ import {
   ExternalLink,
   GitBranch,
   GitCommit,
+  Github,
   MoreHorizontal,
   RefreshCw,
 } from "lucide-react";
@@ -26,12 +30,17 @@ import { memo, useState } from "react";
 
 const PORTFOLIO_REPO_URL = "https://github.com/kWAYTV/portfolio";
 
-const MOCK_COMMITS: GitCommitItem[] = [
-  { sha: "a1b2c3d", message: "feat(ide): add VS Code-style source control panel", author: "kWAYTV", date: "2 hours ago" },
-  { sha: "e4f5g6h", message: "chore: update dependencies", author: "kWAYTV", date: "1 day ago" },
-  { sha: "i7j8k9l", message: "fix: resolve layout issues on mobile", author: "kWAYTV", date: "2 days ago" },
-  { sha: "m0n1o2p", message: "feat: add blog section", author: "kWAYTV", date: "1 week ago" },
-  { sha: "q3r4s5t", message: "style: improve theme consistency", author: "kWAYTV", date: "2 weeks ago" },
+interface CommitWithStats extends GitCommitItem {
+  filesChanged?: number;
+  insertions?: number;
+}
+
+const MOCK_COMMITS: CommitWithStats[] = [
+  { sha: "a1b2c3d", message: "feat(ide): add VS Code-style source control panel", author: "kWAYTV", date: "2 hours ago", filesChanged: 3, insertions: 42 },
+  { sha: "e4f5g6h", message: "chore: update dependencies", author: "kWAYTV", date: "1 day ago", filesChanged: 2, insertions: 6 },
+  { sha: "i7j8k9l", message: "fix: resolve layout issues on mobile", author: "kWAYTV", date: "2 days ago", filesChanged: 5, insertions: 12 },
+  { sha: "m0n1o2p", message: "feat: add blog section", author: "kWAYTV", date: "1 week ago", filesChanged: 8, insertions: 120 },
+  { sha: "q3r4s5t", message: "style: improve theme consistency", author: "kWAYTV", date: "2 weeks ago", filesChanged: 4, insertions: 18 },
 ];
 
 interface SourceControlViewProps {
@@ -215,25 +224,71 @@ export const SourceControlView = memo(function SourceControlView({
         <div className="border-border border-t px-2 py-1">
           <CollapsibleSection defaultOpen={true} title={t("commitHistory")}>
             <div className="max-h-32 space-y-0.5 overflow-y-auto py-1">
-              {displayCommits.map((commit) => (
-                <a
-                  className={cn(
-                    "block rounded px-2 py-1.5 text-left transition-colors",
-                    "hover:bg-sidebar-accent/50"
-                  )}
-                  href={`${PORTFOLIO_REPO_URL}/commit/${commit.sha}`}
-                  key={commit.sha}
-                  rel="noopener noreferrer"
-                  target="_blank"
-                >
-                  <p className="truncate text-[11px] text-sidebar-foreground">
-                    {commit.message}
-                  </p>
-                  <p className="mt-0.5 truncate text-[10px] text-muted-foreground">
-                    {commit.sha} · {commit.author} · {commit.date}
-                  </p>
-                </a>
-              ))}
+              {displayCommits.map((commit) => {
+                const commitWithStats = commit as CommitWithStats;
+                return (
+                  <HoverCard closeDelay={100} key={commit.sha} openDelay={150}>
+                    <HoverCardTrigger asChild>
+                      <a
+                        className={cn(
+                          "block rounded px-2 py-1.5 text-left transition-colors",
+                          "hover:bg-sidebar-accent/50"
+                        )}
+                        href={`${PORTFOLIO_REPO_URL}/commit/${commit.sha}`}
+                        rel="noopener noreferrer"
+                        target="_blank"
+                      >
+                        <p className="truncate text-[11px] text-sidebar-foreground">
+                          {commit.message}
+                        </p>
+                        <p className="mt-0.5 truncate text-[10px] text-muted-foreground">
+                          {commit.sha} · {commit.author} · {commit.date}
+                        </p>
+                      </a>
+                    </HoverCardTrigger>
+                    <HoverCardContent
+                      align="start"
+                      className="ide-dropdown w-72 rounded-sm border border-border bg-popover p-3 shadow-lg"
+                      side="right"
+                    >
+                      <div className="space-y-2.5">
+                        <p className="text-[11px] text-muted-foreground">
+                          {commit.author} · {commit.date}
+                        </p>
+                        <p className="text-[13px] leading-snug text-popover-foreground">
+                          {commit.message}
+                        </p>
+                        {commitWithStats.filesChanged != null &&
+                          commitWithStats.insertions != null && (
+                            <p className="text-[11px] text-muted-foreground">
+                              {commitWithStats.filesChanged} files changed,{" "}
+                              {commitWithStats.insertions} insertions(+)
+                            </p>
+                          )}
+                        <div className="flex flex-wrap items-center gap-1.5">
+                          <span className="inline-flex items-center gap-1 rounded px-1.5 py-0.5 text-[10px] font-medium text-blue-600 dark:text-blue-400">
+                            <GitBranch className="size-3" />
+                            main
+                          </span>
+                          <span className="inline-flex items-center gap-1 rounded px-1.5 py-0.5 text-[10px] font-medium text-muted-foreground">
+                            <GitBranch className="size-3" />
+                            origin/main
+                          </span>
+                        </div>
+                        <a
+                          className="flex w-full items-center justify-center gap-2 rounded-md border border-border bg-muted/30 px-2 py-2 text-[11px] text-muted-foreground transition-colors hover:bg-muted/50 hover:text-foreground"
+                          href={`${PORTFOLIO_REPO_URL}/commit/${commit.sha}`}
+                          rel="noopener noreferrer"
+                          target="_blank"
+                        >
+                          <Github className="size-3.5" />
+                          {commit.sha} · {t("viewOnGitHub")}
+                        </a>
+                      </div>
+                    </HoverCardContent>
+                  </HoverCard>
+                );
+              })}
             </div>
           </CollapsibleSection>
         </div>
