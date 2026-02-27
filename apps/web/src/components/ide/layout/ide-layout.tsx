@@ -253,11 +253,12 @@ export function IdeLayout({ children, commits = [] }: IdeLayoutProps) {
             open={mobileSidebarView !== null}
           >
             <SheetContent
-              className="flex h-full w-72 max-w-[85vw] flex-col gap-0 overflow-hidden p-0 md:hidden"
+              className="flex h-full w-full max-w-full flex-col gap-0 overflow-hidden p-0 md:hidden"
+              onOpenAutoFocus={(e) => e.preventDefault()}
               showCloseButton={true}
               side="left"
             >
-              <div className="flex min-h-0 flex-1 flex-col overflow-hidden">
+              <div className="flex min-h-0 flex-1 flex-col overflow-hidden pr-12">
                 {mobileSidebarView === "sourceControl" ? (
                   <SourceControlView commits={commits} />
                 ) : mobileSidebarView === "explorer" ? (
