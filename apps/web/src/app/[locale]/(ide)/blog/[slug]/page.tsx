@@ -7,8 +7,8 @@ import { BlogPostHeader } from "@/components/blog/blog-post-header";
 import { BlogPostViewTracker } from "@/components/blog/blog-post-view-tracker";
 import { getMDXComponents } from "@/components/blog/mdx-components";
 import { PageContent } from "@/components/shared/page-content";
+import { blogSource, getCachedBlogPage } from "@/lib/data";
 import { createMetadata } from "@/lib/metadata";
-import { blogSource, getCachedBlogPage } from "@/lib/source";
 
 interface Props {
   params: Promise<{ locale: string; slug: string }>;

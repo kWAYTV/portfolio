@@ -1,4 +1,4 @@
-import { getRepoCommits } from "@/lib/github";
+import { getRepoCommits } from "@/lib/data";
 import { CommitsProvider } from "@/components/ide/commits-provider";
 import { IdeLayout } from "@/components/ide/layout/ide-layout";
 

@@ -1,6 +1,6 @@
 import { ImageResponse } from "next/og";
 import { siteName } from "@/lib/metadata";
-import { getCachedBlogPage } from "@/lib/source";
+import { getCachedBlogPage } from "@/lib/data";
 
 export const alt = "Blog post";
 export const size = { width: 1200, height: 630 };

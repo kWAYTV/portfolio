@@ -1,7 +1,7 @@
 export const welcomeCode = `import { Separator } from "@portfolio/ui";
 import { FeaturedProjects } from "@/components/home/featured-projects";
 import { SocialNav } from "@/components/home/social-nav";
-import { getGitHubRepos } from "@/lib/github";
+import { getFeaturedRepos, getGitHubRepos } from "@/lib/data";
 
 export const metadata = {
   title: "Martin Vila",
@@ -19,7 +19,7 @@ const featuredRepos = ["portfolio", "versend/core", "lichess-bot"];
 
 export default async function Home() {
   const repos = await getGitHubRepos();
-  const featured = repos.filter((r) => featuredRepos.includes(r.name));
+  const featured = getFeaturedRepos(repos);
 
   return (
     <main className="space-y-6">

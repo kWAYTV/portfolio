@@ -1,6 +1,6 @@
 import { Separator } from "@portfolio/ui";
 import { setRequestLocale } from "next-intl/server";
-import { FeaturedProjectsLoader } from "@/components/home/featured-projects-loader";
+import { FeaturedProjects } from "@/components/home/featured-projects";
 import { HeroBio } from "@/components/home/hero-bio";
 import { HeroHeader } from "@/components/home/hero-header";
 import { HeroQuote } from "@/components/home/hero-quote";
@@ -9,6 +9,7 @@ import { CodeView } from "@/components/ide/editor/code-view";
 import { EditorContent } from "@/components/ide/editor/editor-content";
 import { PageContent } from "@/components/shared/page-content";
 import { welcomeCode } from "@/consts/code-content";
+import { getFeaturedRepos, getGitHubRepos } from "@/lib/data";
 import { createMetadata } from "@/lib/metadata";
 
 export async function generateMetadata() {
@@ -26,6 +27,9 @@ export default async function Home({ params }: Props) {
   const { locale } = await params;
   setRequestLocale(locale);
 
+  const repos = await getGitHubRepos();
+  const featured = getFeaturedRepos(repos);
+
   return (
     <EditorContent
       preview={
@@ -35,7 +39,7 @@ export default async function Home({ params }: Props) {
           <Separator className="bg-border/50" />
           <SocialNav />
           <Separator className="bg-border/50" />
-          <FeaturedProjectsLoader />
+          <FeaturedProjects repos={featured} />
           <HeroQuote />
         </PageContent>
       }
