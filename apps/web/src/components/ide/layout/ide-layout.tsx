@@ -8,11 +8,13 @@ import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { navItems } from "@/consts/nav-items";
 import { useEditorGroups } from "@/hooks/use-editor-groups";
 import { useIdeKeyboardShortcuts } from "@/hooks/use-ide-keyboard-shortcuts";
+import { useIsMobile } from "@/hooks/use-is-mobile";
 import { getBreadcrumbPath } from "@/lib/ide/breadcrumb";
 import { ActivityBar } from "@/components/ide/layout/activity-bar";
 import { CommandPalette } from "@/components/ide/command/command-palette";
 import { IdeEditorArea } from "@/components/ide/layout/ide-editor-area";
 import { IdeLayoutEmbed } from "@/components/ide/layout/ide-layout-embed";
+import { MobileActivityBar } from "@/components/ide/layout/mobile-activity-bar";
 import { MobileMenu } from "@/components/ide/layout/mobile-menu";
 import { Sidebar } from "@/components/ide/sidebar/sidebar";
 import { SourceControlView } from "@/components/ide/sidebar/source-control-view";
@@ -30,6 +32,7 @@ interface IdeLayoutProps {
 
 export function IdeLayout({ children, commits = [] }: IdeLayoutProps) {
   const pathname = usePathname();
+  const isMobile = useIsMobile();
   const [embed] = useQueryState("embed", parseAsBoolean.withDefault(false));
   const isEmbed = embed;
   const [sidebarOpen, setSidebarOpen] = useState(true);
@@ -152,6 +155,7 @@ export function IdeLayout({ children, commits = [] }: IdeLayoutProps) {
           <TitleBar
             leftSlot={
               <MobileMenu
+                onOpenCommand={() => setCommandOpen(true)}
                 onOpenExplorer={openMobileExplorer}
                 onOpenSourceControl={openMobileSourceControl}
                 onToggleTerminal={toggleTerminal}
@@ -222,17 +226,26 @@ export function IdeLayout({ children, commits = [] }: IdeLayoutProps) {
             </div>
           </div>
 
-          <div className="hidden md:block">
-            <StatusBar
-              onFocusSourceControl={() => {
+          <MobileActivityBar
+            onOpenExplorer={openMobileExplorer}
+            onOpenSourceControl={openMobileSourceControl}
+            onToggleTerminal={toggleTerminal}
+            terminalOpen={terminalOpen}
+          />
+
+          <StatusBar
+            onFocusSourceControl={() => {
+              if (isMobile) {
+                setMobileSidebarView("sourceControl");
+              } else {
                 setSidebarView("sourceControl");
                 setSidebarOpen(true);
-              }}
-              onToggleTerminal={toggleTerminal}
-              pathname={pathname}
-              terminalOpen={terminalOpen}
-            />
-          </div>
+              }
+            }}
+            onToggleTerminal={toggleTerminal}
+            pathname={pathname}
+            terminalOpen={terminalOpen}
+          />
 
           {/* Mobile: sidebar views in Sheet (Explorer / Source Control) */}
           <Sheet

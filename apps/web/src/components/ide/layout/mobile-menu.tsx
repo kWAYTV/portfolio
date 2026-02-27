@@ -11,6 +11,7 @@ import {
 import {
   BookOpen,
   Code2,
+  Command,
   ExternalLink,
   FolderGit2,
   GitBranch,
@@ -36,6 +37,7 @@ const navIcons: Record<string, typeof Code2> = {
 const PORTFOLIO_REPO_URL = "https://github.com/kWAYTV/portfolio";
 
 interface MobileMenuProps {
+  onOpenCommand: () => void;
   onOpenExplorer: () => void;
   onOpenSourceControl: () => void;
   onToggleTerminal: () => void;
@@ -49,6 +51,7 @@ export const MobileMenu = memo(function MobileMenu({
   onToggleTerminal,
   onOpenExplorer,
   onOpenSourceControl,
+  onOpenCommand,
 }: MobileMenuProps) {
   const t = useTranslations("nav");
   const tIde = useTranslations("ide");
@@ -146,6 +149,17 @@ export const MobileMenu = memo(function MobileMenu({
           >
             <Terminal className="size-4 shrink-0" />
             Terminal
+          </button>
+          <button
+            className="flex w-full items-center gap-3 px-4 py-3 text-left text-foreground text-sm transition-colors hover:bg-muted/50"
+            onClick={() => {
+              onOpenCommand();
+              setOpen(false);
+            }}
+            type="button"
+          >
+            <Command className="size-4 shrink-0" />
+            {tIde("commandPalette")}
           </button>
           <div className="flex items-center justify-between gap-2 px-4 py-3">
             <span className="text-muted-foreground text-sm">Language</span>

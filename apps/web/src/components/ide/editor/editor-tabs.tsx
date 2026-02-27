@@ -197,7 +197,7 @@ export const EditorTabs = memo(function EditorTabs({
       />
       {showSplitButtons && totalGroups !== undefined && totalGroups < 2 && (
         <button
-          className="flex shrink-0 items-center justify-center px-2 text-muted-foreground transition-colors hover:bg-muted/60 hover:text-foreground"
+          className="hidden shrink-0 items-center justify-center px-2 text-muted-foreground transition-colors hover:bg-muted/60 hover:text-foreground md:flex"
           onClick={() => {
             const activeItem =
               orderedItems.find((i) => isActive(i.href)) ?? orderedItems[0];

@@ -108,9 +108,11 @@ export const StatusBar = memo(function StatusBar({
           <Rss className="size-3.5 shrink-0" />
           <span className="hidden sm:inline">RSS</span>
         </Link>
-        <LanguageSelector />
-        <ThemeSelector />
-        <ThemeToggle />
+        <div className="hidden sm:flex sm:items-center sm:gap-3">
+          <LanguageSelector />
+          <ThemeSelector />
+          <ThemeToggle />
+        </div>
       </div>
     </div>
   );

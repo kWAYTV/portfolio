@@ -85,9 +85,9 @@ export function EditorTabItem({
       </div>
       <button
         className={cn(
-          "flex size-5 shrink-0 items-center justify-center rounded-sm transition-colors",
-          "opacity-0 group-hover:opacity-100",
-          active && "opacity-100",
+          "flex size-5 shrink-0 items-center justify-center rounded-sm transition-colors touch-manipulation",
+          "opacity-100 md:opacity-0 md:group-hover:opacity-100",
+          active && "md:opacity-100",
           active
             ? "text-foreground hover:bg-foreground/5"
             : "text-muted-foreground hover:bg-foreground/5"
