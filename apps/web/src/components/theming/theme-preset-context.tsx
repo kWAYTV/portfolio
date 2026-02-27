@@ -27,7 +27,9 @@ interface ThemePresetContextValue {
 const ThemePresetContext = createContext<ThemePresetContextValue | null>(null);
 
 function getStoredPreset(): ThemePreset {
-  if (typeof window === "undefined") return "default";
+  if (typeof window === "undefined") {
+    return "default";
+  }
   const stored = localStorage.getItem(STORAGE_KEY);
   return THEME_PRESETS.includes(stored as ThemePreset)
     ? (stored as ThemePreset)
@@ -43,7 +45,11 @@ function syncToDom(preset: ThemePreset) {
   }
 }
 
-export function ThemePresetProvider({ children }: { children: React.ReactNode }) {
+export function ThemePresetProvider({
+  children,
+}: {
+  children: React.ReactNode;
+}) {
   const [preset, setPresetState] = useState<ThemePreset>("default");
 
   useEffect(() => {
@@ -70,7 +76,9 @@ export function useThemePreset() {
   if (!ctx) {
     return {
       preset: "default" as ThemePreset,
-      setPreset: () => {},
+      setPreset: () => {
+        /* no-op when outside provider */
+      },
     };
   }
   return ctx;

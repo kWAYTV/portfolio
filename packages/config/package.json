@@ -1,8 +1,0 @@
-{
-  "name": "@portfolio/config",
-  "version": "0.0.1",
-  "private": true,
-  "exports": {
-    "./tsconfig.base": "./tsconfig.base.json"
-  }
-}
