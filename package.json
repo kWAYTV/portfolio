@@ -12,6 +12,8 @@
     "check-types": "turbo check-types",
     "dev:native": "turbo -F native dev",
     "dev:web": "turbo -F web dev",
+    "format": "turbo run format",
+    "lint": "turbo run lint",
     "check": "ultracite check",
     "fix": "ultracite fix",
     "prepare": "husky"
