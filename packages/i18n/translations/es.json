@@ -12,6 +12,9 @@
     "language": "idioma",
     "menu": "Menú"
   },
+  "localeSwitcher": {
+    "selectLanguage": "Seleccionar idioma"
+  },
   "footer": {
     "rss": "rss",
     "byVersend": "por versend.io"

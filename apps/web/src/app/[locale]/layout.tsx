@@ -7,6 +7,7 @@ import type { PropsWithChildren } from "react";
 
 import "../../index.css";
 import { config as i18nConfig } from "@repo/i18n/config";
+import { LocaleSwitcher } from "@/components/internationalization/locale-switcher";
 import Providers from "@/components/providers";
 import { ModeToggle } from "@/components/shared/mode-toggle";
 
@@ -53,7 +54,8 @@ export default async function LocaleLayout({
         <Providers>
           <NextIntlClientProvider locale={locale} messages={messages}>
             <div className="relative h-svh">
-              <div className="absolute top-2 right-2">
+              <div className="absolute top-2 right-2 flex items-center gap-2">
+                <LocaleSwitcher />
                 <ModeToggle />
               </div>
               {children}

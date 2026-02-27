@@ -17,8 +17,7 @@
     "plugins": [{ "name": "next" }],
     "paths": {
       "@/*": ["./src/*"],
-      "@i18n": ["./src/i18n"],
-      "@i18n/*": ["./src/modules/i18n/*"]
+      "@i18n/*": ["./src/i18n/*"]
     }
   },
   "include": [
