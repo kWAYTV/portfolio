@@ -59,7 +59,7 @@ export function CommitHistoryItem({ commit }: CommitHistoryItemProps) {
             </p>
           )}
           <div className="flex flex-wrap items-center gap-1.5">
-            <span className="inline-flex items-center gap-1 rounded px-1.5 py-0.5 font-medium text-[10px] text-blue-600 dark:text-blue-400">
+            <span className="inline-flex items-center gap-1 rounded px-1.5 py-0.5 font-medium text-[10px] text-primary">
               <GitBranch className="size-3" />
               main
             </span>

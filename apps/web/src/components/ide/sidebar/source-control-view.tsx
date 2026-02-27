@@ -128,7 +128,10 @@ export const SourceControlView = memo(function SourceControlView({
               "cursor-not-allowed bg-muted/30 text-muted-foreground/80"
             )}
           >
-            <GitCommit className="size-4 shrink-0 opacity-60" />
+            <GitCommit
+                aria-hidden
+                className="size-4 shrink-0 text-muted-foreground/60"
+              />
             <span className="truncate">{t("commitMessagePlaceholder")}</span>
           </div>
           <div className="flex items-center gap-1">
@@ -180,7 +183,10 @@ export const SourceControlView = memo(function SourceControlView({
         {/* Branch + View on GitHub - compact single row */}
         <div className="flex items-center justify-between gap-2 border-border border-t px-2 py-1.5">
           <div className="flex min-w-0 items-center gap-1.5 text-[11px] text-muted-foreground">
-            <GitBranch className="size-3.5 shrink-0 opacity-70" />
+            <GitBranch
+                aria-hidden
+                className="size-3.5 shrink-0 text-muted-foreground/70"
+              />
             <span className="truncate font-medium">main</span>
           </div>
           <Tooltip>

@@ -29,7 +29,12 @@ export const Breadcrumbs = memo(function Breadcrumbs({
           const key = parts.slice(0, i + 1).join("/");
           return (
             <span className="flex items-center gap-1" key={key}>
-              {i > 0 && <ChevronRight className="size-3 opacity-50" />}
+              {i > 0 && (
+                <ChevronRight
+                  aria-hidden
+                  className="size-3 shrink-0 text-muted-foreground/50"
+                />
+              )}
               <span
                 className={cn(
                   "truncate",

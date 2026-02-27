@@ -69,7 +69,10 @@ export function ExplorerTreeItem({
               style={{ paddingLeft: `${depth * 12 + 4}px` }}
               type="button"
             >
-              <Chevron className="size-4 shrink-0 opacity-70" />
+              <Chevron
+                aria-hidden
+                className="size-4 shrink-0 text-muted-foreground/70"
+              />
               <FolderIcon className="size-4 shrink-0 text-muted-foreground" />
               <span className="ml-1 truncate">{item.name}</span>
             </button>
