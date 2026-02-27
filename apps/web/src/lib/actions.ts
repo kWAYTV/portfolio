@@ -2,6 +2,6 @@
 
 import { getRepoCommits } from "@/lib/github";
 
-export function getCommits() {
-  return getRepoCommits();
+export async function getCommits() {
+  return await getRepoCommits();
 }
