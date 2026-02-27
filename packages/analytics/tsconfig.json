@@ -1,0 +1,9 @@
+{
+  "extends": "@repo/config/tsconfig.base.json",
+  "compilerOptions": {
+    "outDir": "dist",
+    "lib": ["dom", "dom.iterable", "ESNext"],
+    "types": ["node"]
+  },
+  "include": ["src"]
+}

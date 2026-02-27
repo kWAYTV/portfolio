@@ -155,6 +155,18 @@ importers:
         specifier: 'catalog:'
         version: 5.9.3
 
+  packages/analytics:
+    devDependencies:
+      '@repo/config':
+        specifier: workspace:*
+        version: link:../config
+      '@types/node':
+        specifier: ^20.19.35
+        version: 20.19.35
+      typescript:
+        specifier: 'catalog:'
+        version: 5.9.3
+
   packages/config: {}
 
   packages/env:
