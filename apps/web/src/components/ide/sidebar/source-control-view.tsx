@@ -122,30 +122,21 @@ export const SourceControlView = memo(function SourceControlView({
       <div className="flex flex-1 flex-col overflow-hidden">
         {/* Commit message + buttons - VS Code style */}
         <div className="flex flex-col gap-2 border-border border-b px-2 py-2">
-          <div
-            className={cn(
-              "flex min-h-[28px] items-center gap-1.5 rounded px-2 py-1.5 text-[13px] ring-1 ring-border/50 ring-inset",
-              "cursor-not-allowed bg-muted/30 text-muted-foreground/80"
-            )}
-          >
-            <GitCommit
+          <div className="flex items-center gap-1.5">
+            <div
+              className={cn(
+                "flex min-h-[28px] min-w-0 flex-1 items-center gap-1.5 rounded px-2 py-1.5 text-[13px] ring-1 ring-border/50 ring-inset",
+                "cursor-not-allowed bg-muted/30 text-muted-foreground/80"
+              )}
+            >
+              <GitCommit
                 aria-hidden
                 className="size-4 shrink-0 text-muted-foreground/60"
               />
-            <span className="truncate">{t("commitMessagePlaceholder")}</span>
-          </div>
-          <div className="flex items-center gap-1">
+              <span className="truncate">{t("commitMessagePlaceholder")}</span>
+            </div>
             <Button
-              className="h-7 flex-1 text-[11px]"
-              disabled
-              size="sm"
-              variant="secondary"
-            >
-              <GitCommit className="size-3.5" />
-              {t("commit")}
-            </Button>
-            <Button
-              className="h-7 flex-1 text-[11px]"
+              className="h-7 shrink-0 text-[11px]"
               disabled
               size="sm"
               variant="outline"
@@ -154,6 +145,15 @@ export const SourceControlView = memo(function SourceControlView({
               {t("syncChanges")}
             </Button>
           </div>
+          <Button
+            className="h-7 w-full text-[11px]"
+            disabled
+            size="sm"
+            variant="secondary"
+          >
+            <GitCommit className="size-3.5" />
+            {t("commit")}
+          </Button>
         </div>
 
         {/* Scrollable sections - STAGED (when present), CHANGES */}
