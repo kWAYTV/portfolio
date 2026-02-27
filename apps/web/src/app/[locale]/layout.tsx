@@ -3,8 +3,8 @@ import Script from "next/script";
 import { UmamiScript } from "@/components/analytics/umami-script";
 import { IdeLayout } from "@/components/ide/layout/ide-layout";
 import { IdeLayoutSkeleton } from "@/components/ide/layout/ide-layout-skeleton";
-import { ThemePresetProvider } from "@/components/theming/theme-preset-context";
 import { ThemeProvider } from "@/components/theming/provider";
+import { ThemePresetProvider } from "@/components/theming/theme-preset-context";
 import "@/styles/globals.css";
 import { routing } from "@i18n/routing";
 import { defineI18nUI } from "fumadocs-ui/i18n";
@@ -14,8 +14,8 @@ import { hasLocale, NextIntlClientProvider } from "next-intl";
 import { getMessages, setRequestLocale } from "next-intl/server";
 import { NuqsAdapter } from "nuqs/adapters/next/app";
 import { Suspense } from "react";
-import { fumadocsI18n } from "@/lib/i18n";
 import { getRepoCommits } from "@/lib/github";
+import { fumadocsI18n } from "@/lib/i18n";
 import { baseUrl, createMetadata, siteName } from "@/lib/metadata";
 
 const { provider } = defineI18nUI(fumadocsI18n, {
