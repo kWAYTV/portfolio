@@ -38,6 +38,9 @@ bun dev
 Copy `apps/web/.env.example` to `apps/web/.env.local`. All variables are optional:
 
 ```env
+# Disable Next.js telemetry
+NEXT_TELEMETRY_DISABLED=1
+
 # Disable Turborepo telemetry
 TURBO_TELEMETRY_DISABLED=1
 
