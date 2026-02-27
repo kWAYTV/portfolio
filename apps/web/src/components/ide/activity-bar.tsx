@@ -122,21 +122,6 @@ export const ActivityBar = memo(function ActivityBar({
           <button
             className={cn(
               "flex size-10 cursor-pointer items-center justify-center text-sidebar-foreground/60 transition-colors hover:text-sidebar-primary",
-              terminalOpen && "text-sidebar-primary"
-            )}
-            onClick={onToggleTerminal}
-            type="button"
-          >
-            <Terminal className="size-5" />
-          </button>
-        </TooltipTrigger>
-        <TooltipContent side="right">{t("terminal")}</TooltipContent>
-      </Tooltip>
-      <Tooltip>
-        <TooltipTrigger asChild>
-          <button
-            className={cn(
-              "flex size-10 cursor-pointer items-center justify-center text-sidebar-foreground/60 transition-colors hover:text-sidebar-primary",
               sidebarOpen && sidebarView === "sourceControl" && "text-sidebar-primary"
             )}
             onClick={() => {
@@ -149,6 +134,21 @@ export const ActivityBar = memo(function ActivityBar({
           </button>
         </TooltipTrigger>
         <TooltipContent side="right">{t("sourceControl")}</TooltipContent>
+      </Tooltip>
+      <Tooltip>
+        <TooltipTrigger asChild>
+          <button
+            className={cn(
+              "flex size-10 cursor-pointer items-center justify-center text-sidebar-foreground/60 transition-colors hover:text-sidebar-primary",
+              terminalOpen && "text-sidebar-primary"
+            )}
+            onClick={onToggleTerminal}
+            type="button"
+          >
+            <Terminal className="size-5" />
+          </button>
+        </TooltipTrigger>
+        <TooltipContent side="right">{t("terminal")}</TooltipContent>
       </Tooltip>
 
       <div className="mt-auto">

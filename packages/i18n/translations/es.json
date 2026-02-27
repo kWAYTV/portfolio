@@ -143,7 +143,12 @@
 		"commit": "Confirmar",
 		"noChanges": "Sin cambios",
 		"noChangesHint": "Árbol de trabajo limpio",
-		"viewOnGitHub": "Ver en GitHub"
+		"viewOnGitHub": "Ver en GitHub",
+		"changes": "Cambios",
+		"stagedChanges": "Cambios preparados",
+		"commitHistory": "Historial de commits",
+		"syncChanges": "Sincronizar cambios",
+		"moreActions": "Más acciones"
 	},
 	"terminal": {
 		"welcome": "Bienvenido al terminal del portafolio. Escribe 'help' para ver los comandos disponibles.",
