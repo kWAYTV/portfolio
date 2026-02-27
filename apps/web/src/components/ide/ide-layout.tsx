@@ -22,13 +22,15 @@ import { StatusBar } from "./status-bar";
 import { TerminalPanel } from "./terminal-panel";
 import { TitleBar } from "./title-bar";
 import { type ViewMode, ViewModeProvider } from "./view-mode";
+import type { GitCommitItem } from "@/lib/github";
 import type { SidebarView } from "./ide-types";
 
 interface IdeLayoutProps {
   children: React.ReactNode;
+  commits?: GitCommitItem[];
 }
 
-export function IdeLayout({ children }: IdeLayoutProps) {
+export function IdeLayout({ children, commits = [] }: IdeLayoutProps) {
   const pathname = usePathname();
   const [embed] = useQueryState("embed", parseAsBoolean.withDefault(false));
   const isEmbed = embed;
@@ -173,7 +175,7 @@ export function IdeLayout({ children }: IdeLayoutProps) {
             {sidebarOpen && (
               <div className="hidden md:block">
                 {sidebarView === "sourceControl" ? (
-                  <SourceControlView />
+                  <SourceControlView commits={commits} />
                 ) : (
                   <Sidebar onOpenTab={openTab} pathname={pathname} />
                 )}

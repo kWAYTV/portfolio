@@ -1,5 +1,6 @@
 "use client";
 
+import type { GitCommitItem } from "@/lib/github";
 import {
   Button,
   DropdownMenu,
@@ -21,17 +22,9 @@ import {
   RefreshCw,
 } from "lucide-react";
 import { useTranslations } from "next-intl";
-import { memo, useEffect, useState } from "react";
+import { memo, useState } from "react";
 
 const PORTFOLIO_REPO_URL = "https://github.com/kWAYTV/portfolio";
-const GITHUB_COMMITS_API = "https://api.github.com/repos/kWAYTV/portfolio/commits?per_page=8";
-
-interface GitCommitItem {
-  sha: string;
-  message: string;
-  author: string;
-  date: string;
-}
 
 const MOCK_COMMITS: GitCommitItem[] = [
   { sha: "a1b2c3d", message: "feat(ide): add VS Code-style source control panel", author: "kWAYTV", date: "2 hours ago" },
@@ -40,6 +33,10 @@ const MOCK_COMMITS: GitCommitItem[] = [
   { sha: "m0n1o2p", message: "feat: add blog section", author: "kWAYTV", date: "1 week ago" },
   { sha: "q3r4s5t", message: "style: improve theme consistency", author: "kWAYTV", date: "2 weeks ago" },
 ];
+
+interface SourceControlViewProps {
+  commits?: GitCommitItem[];
+}
 
 function CollapsibleSection({
   children,
@@ -68,27 +65,11 @@ function CollapsibleSection({
   );
 }
 
-export const SourceControlView = memo(function SourceControlView() {
+export const SourceControlView = memo(function SourceControlView({
+  commits = MOCK_COMMITS,
+}: SourceControlViewProps) {
   const t = useTranslations("ide");
-  const [commits, setCommits] = useState<GitCommitItem[]>(MOCK_COMMITS);
-
-  useEffect(() => {
-    fetch(GITHUB_COMMITS_API)
-      .then((res) => (res.ok ? res.json() : Promise.reject()))
-      .then((data: Array<{ sha: string; commit: { message: string; author: { name: string }; author: { date: string } } }) => {
-        setCommits(
-          data.slice(0, 8).map((c) => ({
-            sha: c.sha.slice(0, 7),
-            message: c.commit.message.split("\n")[0],
-            author: c.commit.author.name,
-            date: formatRelativeDate(c.commit.author.date),
-          }))
-        );
-      })
-      .catch(() => {
-        // Keep mock commits on fetch failure
-      });
-  }, []);
+  const displayCommits = commits.length > 0 ? commits : MOCK_COMMITS;
 
   return (
     <div className="flex h-full w-56 shrink-0 select-none flex-col overflow-hidden border-border border-r bg-sidebar shadow-[var(--shadow-elevation-sm)]">
@@ -199,7 +180,7 @@ export const SourceControlView = memo(function SourceControlView() {
             title={t("commitHistory")}
           >
             <div className="space-y-0.5 py-1">
-              {commits.map((commit) => (
+              {displayCommits.map((commit) => (
                 <a
                   className={cn(
                     "block rounded px-2 py-1.5 text-left transition-colors",
@@ -251,17 +232,3 @@ export const SourceControlView = memo(function SourceControlView() {
     </div>
   );
 });
-
-function formatRelativeDate(dateStr: string): string {
-  const date = new Date(dateStr);
-  const now = new Date();
-  const diffMs = now.getTime() - date.getTime();
-  const diffMins = Math.floor(diffMs / 60000);
-  const diffHours = Math.floor(diffMs / 3600000);
-  const diffDays = Math.floor(diffMs / 86400000);
-
-  if (diffMins < 60) return `${diffMins} min ago`;
-  if (diffHours < 24) return `${diffHours} hours ago`;
-  if (diffDays < 7) return `${diffDays} days ago`;
-  return date.toLocaleDateString();
-}
