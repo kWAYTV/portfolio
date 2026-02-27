@@ -41,7 +41,7 @@ export function EditorTabContextMenu({
   const t = useTranslations("ide");
 
   return (
-    <ContextMenuContent className="ide-dropdown w-44 rounded-sm border border-border bg-popover p-0.5 shadow-lg">
+    <ContextMenuContent className="ide-dropdown w-44 rounded-sm border border-border bg-popover p-0.5">
       <ContextMenuItem onClick={() => onCloseTab(itemHref)}>
         {t("close")}
       </ContextMenuItem>

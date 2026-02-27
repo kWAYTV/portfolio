@@ -56,7 +56,7 @@ export function LanguageSelector() {
       </DropdownMenuTrigger>
       <DropdownMenuContent
         align="end"
-        className="ide-dropdown min-w-[8rem] rounded-sm border border-border bg-popover p-0.5 shadow-lg"
+        className="ide-dropdown min-w-[8rem] rounded-sm border border-border bg-popover p-0.5"
         sideOffset={4}
       >
         <DropdownMenuRadioGroup onValueChange={handleChange} value={locale}>

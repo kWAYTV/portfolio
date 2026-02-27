@@ -9,7 +9,6 @@ import {
 } from "@portfolio/ui";
 import { Palette } from "lucide-react";
 import { useTranslations } from "next-intl";
-import { useTheme } from "next-themes";
 import {
   THEME_PRESETS,
   type ThemePreset,
@@ -18,14 +17,9 @@ import {
 
 export function ThemeSelector() {
   const { preset, setPreset } = useThemePreset();
-  const { resolvedTheme } = useTheme();
   const t = useTranslations("ide");
-  const tTheme = useTranslations("theme");
 
-  const isDark = resolvedTheme === "dark";
-  const variantLabel =
-    preset === "default" ? "" : ` ${isDark ? tTheme("dark") : tTheme("light")}`;
-  const displayName = `${t(`themePreset_${preset}`)}${variantLabel}`;
+  const displayName = t(`themePreset_${preset}`);
 
   return (
     <DropdownMenu>
@@ -41,7 +35,7 @@ export function ThemeSelector() {
       </DropdownMenuTrigger>
       <DropdownMenuContent
         align="end"
-        className="ide-dropdown min-w-[8rem] rounded-sm border border-border bg-popover p-0.5 shadow-lg"
+        className="ide-dropdown min-w-[8rem] rounded-sm border border-border bg-popover p-0.5"
         sideOffset={4}
       >
         <DropdownMenuRadioGroup
