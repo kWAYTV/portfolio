@@ -69,7 +69,10 @@ export function ExplorerTreeItem({
               style={{ paddingLeft: `${depth * 12 + 4}px` }}
               type="button"
             >
-              <Chevron className="size-4 shrink-0 opacity-70" />
+              <Chevron
+                aria-hidden
+                className="size-4 shrink-0 text-muted-foreground/70"
+              />
               <FolderIcon className="size-4 shrink-0 text-muted-foreground" />
               <span className="ml-1 truncate">{item.name}</span>
             </button>
@@ -95,7 +98,7 @@ export function ExplorerTreeItem({
             </div>
           )}
         </div>
-        <ContextMenuContent className="ide-dropdown w-44 rounded-sm border border-border bg-popover p-0.5 shadow-lg">
+        <ContextMenuContent className="ide-dropdown w-44 rounded-sm border border-border bg-popover p-0.5">
           <ContextMenuItem onClick={() => onExpandAll(item)}>
             {t("expandAll")}
           </ContextMenuItem>
@@ -138,7 +141,7 @@ export function ExplorerTreeItem({
             {content}
           </Link>
         </ContextMenuTrigger>
-        <ContextMenuContent className="ide-dropdown w-44 rounded-sm border border-border bg-popover p-0.5 shadow-lg">
+        <ContextMenuContent className="ide-dropdown w-44 rounded-sm border border-border bg-popover p-0.5">
           <ContextMenuItem onClick={() => onOpenTab?.(item.href!)}>
             {t("open")}
           </ContextMenuItem>
@@ -159,7 +162,7 @@ export function ExplorerTreeItem({
       <ContextMenuTrigger asChild>
         <div>{content}</div>
       </ContextMenuTrigger>
-      <ContextMenuContent className="ide-dropdown w-44 rounded-sm border border-border bg-popover p-0.5 shadow-lg">
+      <ContextMenuContent className="ide-dropdown w-44 rounded-sm border border-border bg-popover p-0.5">
         <ContextMenuItem onClick={() => copyPath(key)}>
           {t("copyPath")}
         </ContextMenuItem>

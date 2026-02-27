@@ -110,9 +110,15 @@ export const Sidebar = memo(function Sidebar({
             type="button"
           >
             {expanded.has("portfolio") ? (
-              <ChevronDown className="size-4 shrink-0 opacity-70" />
+              <ChevronDown
+                aria-hidden
+                className="size-4 shrink-0 text-muted-foreground/70"
+              />
             ) : (
-              <ChevronRight className="size-4 shrink-0 opacity-70" />
+              <ChevronRight
+                aria-hidden
+                className="size-4 shrink-0 text-muted-foreground/70"
+              />
             )}
             <span className="font-semibold text-[11px] uppercase tracking-wide">
               portfolio

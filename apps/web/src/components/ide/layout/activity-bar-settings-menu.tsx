@@ -91,7 +91,7 @@ export function ActivityBarSettingsMenu({
       </Tooltip>
       <DropdownMenuContent
         align="start"
-        className="ide-dropdown w-44 rounded-sm border border-border bg-popover p-0.5 shadow-lg"
+        className="ide-dropdown w-44 rounded-sm border border-border bg-popover p-0.5"
         side="right"
       >
         <DropdownMenuItem onClick={handleThemeToggle}>
@@ -114,7 +114,7 @@ export function ActivityBarSettingsMenu({
             {t("themePreset")}
           </DropdownMenuSubTrigger>
           <DropdownMenuSubContent
-            className="ide-dropdown w-44 rounded-sm border border-border bg-popover p-0.5 shadow-lg"
+            className="ide-dropdown w-44 rounded-sm border border-border bg-popover p-0.5"
             sideOffset={4}
           >
             <DropdownMenuRadioGroup
@@ -140,7 +140,7 @@ export function ActivityBarSettingsMenu({
             {t("language")}
           </DropdownMenuSubTrigger>
           <DropdownMenuSubContent
-            className="ide-dropdown w-44 rounded-sm border border-border bg-popover p-0.5 shadow-lg"
+            className="ide-dropdown w-44 rounded-sm border border-border bg-popover p-0.5"
             sideOffset={4}
           >
             <DropdownMenuRadioGroup

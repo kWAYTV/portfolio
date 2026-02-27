@@ -74,6 +74,8 @@
   --shadow-opacity: var(--shadow-opacity);
   --color-shadow-color: var(--shadow-color);
   --color-destructive-foreground: var(--destructive-foreground);
+  --color-overlay: var(--overlay);
+  --color-overlay-strong: var(--overlay-strong);
 }
 
 /* Default theme: Vercel */
@@ -140,6 +142,8 @@
   --spacing: 0.25rem;
   --scrollbar-thumb: oklch(0.5 0 0 / 0.2);
   --scrollbar-thumb-hover: oklch(0.4 0 0 / 0.4);
+  --overlay: oklch(0 0 0 / 0.5);
+  --overlay-strong: oklch(0 0 0 / 0.8);
 
   /* Depth: light glow top + dark shadow bottom (raised elements) */
   --shadow-elevation-sm:
@@ -219,6 +223,8 @@
   --spacing: 0.25rem;
   --scrollbar-thumb: oklch(0.6 0 0 / 0.3);
   --scrollbar-thumb-hover: oklch(0.7 0 0 / 0.5);
+  --overlay: oklch(0 0 0 / 0.6);
+  --overlay-strong: oklch(0 0 0 / 0.85);
 
   /* Depth: stronger for dark mode - brighter top highlight, visible shadow */
   --shadow-elevation-sm:
