@@ -22,6 +22,7 @@ import {
 import { useTranslations } from "next-intl";
 import { memo, useState } from "react";
 import { LanguageSelector } from "@/components/shared/language-selector";
+import { ThemeSelector } from "@/components/shared/theme-selector";
 import { ThemeToggle } from "@/components/theming/toggle";
 import { navItems } from "@/consts/nav-items";
 
@@ -153,6 +154,10 @@ export const MobileMenu = memo(function MobileMenu({
           <div className="flex items-center justify-between gap-2 px-4 py-3">
             <span className="text-muted-foreground text-sm">Theme</span>
             <ThemeToggle />
+          </div>
+          <div className="flex items-center justify-between gap-2 px-4 py-3">
+            <span className="text-muted-foreground text-sm">{tIde("themePreset")}</span>
+            <ThemeSelector />
           </div>
         </div>
       </SheetContent>
