@@ -59,6 +59,7 @@ function ProjectCardInner({ canHover, repo }: ProjectCardProps) {
     <Popover>
       <PopoverTrigger asChild>
         <button
+          aria-label={`View ${repo.name} details`}
           className={cn(cardClassName, "w-full cursor-pointer text-left")}
           type="button"
         >

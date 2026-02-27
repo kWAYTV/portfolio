@@ -21,6 +21,8 @@ export function SplitDivider({
 
   return (
     <div
+      aria-label={t("dragToResize")}
+      aria-orientation="vertical"
       className={cn(
         "z-10 -mx-2 flex w-2 shrink-0 items-center justify-center transition-colors duration-150",
         isActive

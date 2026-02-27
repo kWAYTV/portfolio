@@ -52,6 +52,7 @@ export const ThemeToggle = ({
 
   return (
     <button
+      aria-label={isDark ? t("light") : t("dark")}
       className={cn(
         "flex cursor-pointer items-center gap-1 text-muted-foreground/50 text-xs transition-colors duration-200 hover:text-foreground sm:text-sm",
         className

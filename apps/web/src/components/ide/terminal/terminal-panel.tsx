@@ -71,6 +71,7 @@ export function TerminalPanel({ onClose, isOpen }: TerminalPanelProps) {
     >
       <div
         aria-label={t("resizeTerminal")}
+        aria-orientation="horizontal"
         className={cn(
           "z-10 -my-2 flex min-h-[8px] items-center justify-center py-0.5 transition-colors duration-150",
           showResizeHandle
@@ -101,6 +102,7 @@ export function TerminalPanel({ onClose, isOpen }: TerminalPanelProps) {
           <Tooltip>
             <TooltipTrigger asChild>
               <button
+                aria-label={t("openPreview")}
                 className="flex size-6 cursor-pointer items-center justify-center rounded text-muted-foreground transition-colors hover:bg-muted hover:text-foreground"
                 onClick={() => {
                   const w = window.open(
@@ -120,6 +122,7 @@ export function TerminalPanel({ onClose, isOpen }: TerminalPanelProps) {
           <Tooltip>
             <TooltipTrigger asChild>
               <button
+                aria-label={t("closePanel")}
                 className="flex size-6 cursor-pointer items-center justify-center rounded text-muted-foreground transition-colors hover:bg-muted hover:text-foreground"
                 onClick={onClose}
                 type="button"
