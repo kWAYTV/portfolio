@@ -12,6 +12,7 @@ Personal portfolio site built with Next.js 16, React 19, and Tailwind CSS v4.
 - **Blog**: [Fumadocs](https://fumadocs.vercel.app/) (MDX)
 - **Theming**: [next-themes](https://github.com/pacocoursey/next-themes)
 - **URL state**: [nuqs](https://nuqs.47ng.com/)
+- **State**: [Zustand](https://zustand.docs.pmnd.rs/)
 - **Analytics**: [Umami](https://umami.is/) (optional)
 - **Linting**: [Biome](https://biomejs.dev/) + [Ultracite](https://ultracite.ai/)
 
