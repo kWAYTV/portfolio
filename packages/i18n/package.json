@@ -1,15 +1,16 @@
 {
-	"name": "@portfolio/i18n",
-	"version": "0.2.1",
-	"private": true,
-	"type": "module",
-	"exports": {
-		".": "./src/index.ts",
-		"./config": "./src/config.ts"
-	},
-	"dependencies": {},
-	"devDependencies": {
-		"@portfolio/typescript-config": "workspace:*",
-		"typescript": "catalog:"
-	}
+  "name": "@portfolio/i18n",
+  "version": "0.2.1",
+  "private": true,
+  "type": "module",
+  "exports": {
+    "./config": "./src/config.ts",
+    "./messages": "./src/lib/messages.ts",
+    "./types": "./src/types.ts"
+  },
+  "dependencies": {},
+  "devDependencies": {
+    "@portfolio/typescript-config": "workspace:*",
+    "typescript": "catalog:"
+  }
 }

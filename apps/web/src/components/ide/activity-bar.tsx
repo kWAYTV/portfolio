@@ -2,7 +2,7 @@
 
 import { updateLocale } from "@i18n/lib/update-locale";
 import { getPathname, routing } from "@i18n/routing";
-import type { Locale } from "@portfolio/i18n";
+import type { Locale } from "@portfolio/i18n/config";
 import { localeNames, localeToFlagEmoji } from "@portfolio/i18n/config";
 import {
   cn,
@@ -112,19 +112,6 @@ export const ActivityBar = memo(function ActivityBar({
 
       <Tooltip>
         <TooltipTrigger asChild>
-          <a
-            className="flex size-10 cursor-pointer items-center justify-center text-sidebar-foreground/60 transition-colors hover:text-sidebar-primary"
-            href={PORTFOLIO_REPO_URL}
-            rel="noopener noreferrer"
-            target="_blank"
-          >
-            <GitBranch className="size-5" />
-          </a>
-        </TooltipTrigger>
-        <TooltipContent side="right">{t("openRepo")}</TooltipContent>
-      </Tooltip>
-      <Tooltip>
-        <TooltipTrigger asChild>
           <button
             className={cn(
               "flex size-10 cursor-pointer items-center justify-center text-sidebar-foreground/60 transition-colors hover:text-sidebar-primary",
@@ -137,6 +124,19 @@ export const ActivityBar = memo(function ActivityBar({
           </button>
         </TooltipTrigger>
         <TooltipContent side="right">{t("terminal")}</TooltipContent>
+      </Tooltip>
+      <Tooltip>
+        <TooltipTrigger asChild>
+          <a
+            className="flex size-10 cursor-pointer items-center justify-center text-sidebar-foreground/60 transition-colors hover:text-sidebar-primary"
+            href={PORTFOLIO_REPO_URL}
+            rel="noopener noreferrer"
+            target="_blank"
+          >
+            <GitBranch className="size-5" />
+          </a>
+        </TooltipTrigger>
+        <TooltipContent side="right">{t("openRepo")}</TooltipContent>
       </Tooltip>
 
       <div className="mt-auto">

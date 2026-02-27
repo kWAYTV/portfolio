@@ -1,6 +1,6 @@
 import { getUserLocale } from "@i18n/lib/locale-cookie";
 import { routing } from "@i18n/routing";
-import { getMessagesForLocale } from "@portfolio/i18n";
+import { getMessagesForLocale } from "@portfolio/i18n/messages";
 import { getRequestConfig } from "next-intl/server";
 
 export default getRequestConfig(async ({ requestLocale }) => {
