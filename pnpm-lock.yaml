@@ -173,6 +173,22 @@ importers:
         specifier: 'catalog:'
         version: 5.9.3
 
+  packages/logs:
+    dependencies:
+      consola:
+        specifier: ^3.4.2
+        version: 3.4.2
+    devDependencies:
+      '@repo/config':
+        specifier: workspace:*
+        version: link:../config
+      '@types/node':
+        specifier: ^20
+        version: 20.19.35
+      typescript:
+        specifier: 'catalog:'
+        version: 5.9.3
+
 packages:
 
   '@alloc/quick-lru@5.2.0':
