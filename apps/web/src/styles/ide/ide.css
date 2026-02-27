@@ -110,6 +110,11 @@
   --syntax-tag: oklch(0.5 0.2 25);
   --syntax-attribute: oklch(0.45 0.22 300);
   --syntax-punctuation: var(--muted-foreground);
+  --terminal-user: oklch(0.45 0.18 145);
+  --terminal-host: oklch(0.45 0.2 250);
+  --terminal-path: oklch(0.45 0.22 300);
+  --terminal-output: var(--muted-foreground);
+  --terminal-error: var(--destructive);
 }
 
 .dark[data-theme="catppuccin"] {
@@ -195,6 +200,11 @@
   --syntax-tag: oklch(0.629 0.1902 23.0704);
   --syntax-attribute: oklch(0.5445 0.1903 259.4848);
   --syntax-punctuation: var(--muted-foreground);
+  --terminal-user: oklch(0.7459 0.1483 156.4499);
+  --terminal-host: oklch(0.5828 0.1809 259.7276);
+  --terminal-path: oklch(0.5393 0.2713 286.7462);
+  --terminal-output: var(--muted-foreground);
+  --terminal-error: var(--destructive);
 }
 
 .dark[data-theme="violet-bloom"] {
@@ -239,6 +249,11 @@
   --syntax-tag: oklch(0.7106 0.1661 22.2162);
   --syntax-attribute: oklch(0.6132 0.2294 291.7437);
   --syntax-punctuation: var(--muted-foreground);
+  --terminal-user: oklch(0.8003 0.1821 151.711);
+  --terminal-host: oklch(0.6691 0.1569 260.1063);
+  --terminal-path: oklch(0.6132 0.2294 291.7437);
+  --terminal-output: var(--muted-foreground);
+  --terminal-error: var(--destructive);
 }
 
 :root:not(.dark)[data-theme="caffeine"] {
@@ -283,6 +298,11 @@
   --syntax-tag: oklch(0.6271 0.1936 33.339);
   --syntax-attribute: oklch(0.3499 0.0685 40.8288);
   --syntax-punctuation: var(--muted-foreground);
+  --terminal-user: oklch(0.5828 0.1809 259.7276);
+  --terminal-host: oklch(0.4341 0.0392 41.9938);
+  --terminal-path: oklch(0.4338 0.0437 41.6746);
+  --terminal-output: var(--muted-foreground);
+  --terminal-error: var(--destructive);
 }
 
 .dark[data-theme="caffeine"] {
@@ -327,6 +347,11 @@
   --syntax-tag: oklch(0.6271 0.1936 33.339);
   --syntax-attribute: oklch(0.4882 0.2172 264.3763);
   --syntax-punctuation: var(--muted-foreground);
+  --terminal-user: oklch(0.9247 0.0524 66.1732);
+  --terminal-host: oklch(0.4882 0.2172 264.3763);
+  --terminal-path: oklch(0.9245 0.0533 67.0855);
+  --terminal-output: var(--muted-foreground);
+  --terminal-error: var(--destructive);
 }
 
 :root:not(.dark)[data-theme="mono"] {
@@ -395,6 +420,11 @@
   --syntax-tag: oklch(0.583 0.2387 28.4765);
   --syntax-attribute: oklch(0.5486 0 0);
   --syntax-punctuation: var(--muted-foreground);
+  --terminal-user: oklch(0.5486 0 0);
+  --terminal-host: oklch(0.2046 0 0);
+  --terminal-path: oklch(0.5555 0 0);
+  --terminal-output: var(--muted-foreground);
+  --terminal-error: var(--destructive);
 }
 
 .dark[data-theme="mono"] {
@@ -463,6 +493,11 @@
   --syntax-tag: oklch(0.7022 0.1892 22.2279);
   --syntax-attribute: oklch(0.709 0 0);
   --syntax-punctuation: var(--muted-foreground);
+  --terminal-user: oklch(0.709 0 0);
+  --terminal-host: oklch(0.9851 0 0);
+  --terminal-path: oklch(0.5555 0 0);
+  --terminal-output: var(--muted-foreground);
+  --terminal-error: var(--destructive);
 }
 
 /* Terminal panel - uses theme background, text colors adapt */
