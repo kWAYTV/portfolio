@@ -104,7 +104,6 @@ export function EditorPane({
         {isActiveGroup && children ? (
           <>
             <Breadcrumbs
-              onCopy={onCopy}
               onViewModeChange={onViewModeChange}
               pathname={activeHref}
               viewMode={viewMode}
