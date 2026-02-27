@@ -14,13 +14,11 @@
     "verbatimModuleSyntax": true,
     "jsx": "react-jsx",
     "incremental": true,
-    "plugins": [
-      {
-        "name": "next"
-      }
-    ],
+    "plugins": [{ "name": "next" }],
     "paths": {
-      "@/*": ["./src/*"]
+      "@/*": ["./src/*"],
+      "@i18n": ["./src/modules/i18n"],
+      "@i18n/*": ["./src/modules/i18n/*"]
     }
   },
   "include": [
@@ -31,5 +29,5 @@
     ".next/types/**/*.ts",
     ".next/dev/types/**/*.ts"
   ],
-  "exclude": ["./node_modules"]
+  "exclude": ["node_modules"]
 }

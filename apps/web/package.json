@@ -12,6 +12,8 @@
   "dependencies": {
     "@base-ui/react": "^1.0.0",
     "@repo/env": "workspace:*",
+    "@repo/i18n": "workspace:*",
+    "next-intl": "^4.8.0",
     "babel-plugin-react-compiler": "^1.0.0",
     "class-variance-authority": "^0.7.1",
     "clsx": "^2.1.1",
