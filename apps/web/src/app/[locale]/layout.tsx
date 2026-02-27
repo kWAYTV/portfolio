@@ -85,7 +85,7 @@ export default async function LocaleLayout({ children, params }: Props) {
             >
               <ThemePresetProvider>
                 <Suspense
-                  fallback={<IdeLayoutSkeleton>{children}</IdeLayoutSkeleton>}
+                  fallback={<IdeLayoutSkeleton>{null}</IdeLayoutSkeleton>}
                 >
                   <IdeLayoutWithCommits>{children}</IdeLayoutWithCommits>
                 </Suspense>
