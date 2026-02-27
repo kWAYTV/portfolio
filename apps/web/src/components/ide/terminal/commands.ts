@@ -6,6 +6,7 @@ const COMMANDS = [
   "cat",
   "echo",
   "whoami",
+  "git",
   "help",
   "?",
 ];
@@ -16,7 +17,7 @@ const MOCK_FILES = [
   "README.md",
   ".env",
   "page.tsx",
-  "about.md",
+  "about.mdx",
   "projects.ts",
   "index.mdx",
 ];
@@ -37,6 +38,11 @@ export function getTabCompletions(input: string): string[] {
   }
 
   const cmd = parts[0]?.toLowerCase();
+  if (cmd === "git") {
+    return ["status", "commit", "log", "diff"].filter(
+      (g) => g.startsWith(prefix) || g.startsWith(lastPart)
+    );
+  }
   if (cmd === "cat") {
     return MOCK_FILES.filter(
       (f) =>

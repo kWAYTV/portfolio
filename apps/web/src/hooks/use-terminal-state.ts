@@ -3,6 +3,7 @@
 import { useTranslations } from "next-intl";
 import type { KeyboardEvent } from "react";
 import { useCallback, useEffect, useRef, useState } from "react";
+import { executeCommand } from "@/components/ide/terminal/command-handlers";
 import {
   applyTabCompletion,
   getTabCompletions,
@@ -15,49 +16,6 @@ export interface TerminalLine {
   type: "input" | "output" | "error";
 }
 
-function executeCommand(cmd: string): { lines: TerminalLine[] } {
-  const trimmed = cmd.trim().toLowerCase();
-  const out = (s: string): TerminalLine => ({ type: "output", content: s });
-  const err = (s: string): TerminalLine => ({ type: "error", content: s });
-
-  switch (trimmed) {
-    case "clear":
-      return { lines: [] };
-    case "pwd":
-      return { lines: [out("~")] };
-    case "ls":
-    case "ls -la":
-    case "ls -l":
-    case "ls -a":
-      return {
-        lines: [out("package.json  tsconfig.json  README.md  src  .env")],
-      };
-    case "whoami":
-      return { lines: [out("visitor")] };
-    case "help":
-    case "?":
-      return {
-        lines: [
-          out("Available commands:"),
-          out("  ls, ls -la    List files"),
-          out("  pwd           Print working directory"),
-          out("  cd <dir>      Change directory"),
-          out("  cat <file>    Display file"),
-          out("  echo <text>   Echo text"),
-          out("  clear         Clear terminal"),
-          out("  help, ?       Show this help"),
-        ],
-      };
-    default:
-      if (!trimmed) {
-        return { lines: [] };
-      }
-      return {
-        lines: [err(`${cmd.split(" ")[0]}: command not found`)],
-      };
-  }
-}
-
 export function useTerminalState() {
   const t = useTranslations("terminal");
   const [lines, setLines] = useState<TerminalLine[]>(() => [
@@ -67,10 +25,11 @@ export function useTerminalState() {
   const [inputValue, setInputValue] = useState("");
   const [history, setHistory] = useState<string[]>([]);
   const [historyIndex, setHistoryIndex] = useState(-1);
+  const [cwd, setCwd] = useState(MOCK_CWD);
   const scrollRef = useRef<HTMLDivElement>(null);
   const inputRef = useRef<HTMLInputElement>(null);
 
-  const pathDisplay = MOCK_CWD.replace("/workspace/portfolio", "~");
+  const pathDisplay = cwd.replace("/workspace/portfolio", "~");
   const prompt = `visitor@portfolio ${pathDisplay} %`;
 
   const scrollToBottom = useCallback(() => {
@@ -99,8 +58,11 @@ export function useTerminalState() {
 
     const cmd = inputValue.trim();
     const fullLine = `${prompt} ${inputValue}`;
-    const { lines: outputLines } = executeCommand(inputValue);
+    const result = executeCommand(cmd, cwd);
 
+    if (result.cwd !== undefined) {
+      setCwd(result.cwd);
+    }
     if (cmd.toLowerCase() !== "clear") {
       setHistory((prev) => {
         const next = [...prev];
@@ -121,12 +83,12 @@ export function useTerminalState() {
       setLines((prev) => [
         ...prev.slice(0, -1),
         { type: "input", content: fullLine },
-        ...outputLines,
+        ...result.lines,
         { type: "input", content: "" },
       ]);
     }
     setInputValue("");
-  }, [inputValue, prompt, t]);
+  }, [inputValue, prompt, cwd, t]);
 
   const handleArrowUp = useCallback(() => {
     if (history.length === 0) {
