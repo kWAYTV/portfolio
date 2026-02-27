@@ -19,6 +19,28 @@ interface SidebarProps {
   pathname: string;
 }
 
+function collectExpandableKeys(
+  items: typeof explorerTree,
+  prefix: string
+): Set<string> {
+  const keys = new Set<string>();
+  for (const item of items) {
+    if (item.type === "folder") {
+      const key = `${prefix}/${item.name}`;
+      keys.add(key);
+      for (const k of collectExpandableKeys(item.children, key)) {
+        keys.add(k);
+      }
+    }
+  }
+  return keys;
+}
+
+const ALL_EXPANDABLE_KEYS = new Set([
+  "portfolio",
+  ...collectExpandableKeys(explorerTree, "portfolio"),
+]);
+
 function useExplorerState() {
   const [expanded, setExpanded] = useState<Set<string>>(
     new Set(["portfolio", "portfolio/src", "portfolio/src/blog"])
@@ -36,29 +58,18 @@ function useExplorerState() {
     });
   }, []);
 
-  const expandAll = useCallback(() => {
-    const collect = (
-      items: typeof explorerTree,
-      prefix: string
-    ): Set<string> => {
-      const keys = new Set<string>();
-      for (const item of items) {
-        if (item.type === "folder") {
-          const key = `${prefix}/${item.name}`;
-          keys.add(key);
-          for (const k of collect(item.children, key)) {
-            keys.add(k);
-          }
-        }
-      }
-      return keys;
-    };
-    setExpanded(new Set(["portfolio", ...collect(explorerTree, "portfolio")]));
-  }, []);
+  const expandAll = useCallback(
+    () => setExpanded(new Set(["portfolio", ...ALL_EXPANDABLE_KEYS])),
+    []
+  );
 
   const collapseAll = useCallback(() => setExpanded(new Set()), []);
 
-  return { expanded, toggle, expandAll, collapseAll };
+  const isFullyExpanded =
+    expanded.has("portfolio") &&
+    [...ALL_EXPANDABLE_KEYS].every((k) => expanded.has(k));
+
+  return { expanded, toggle, expandAll, collapseAll, isFullyExpanded };
 }
 
 export function Sidebar({
@@ -67,7 +78,8 @@ export function Sidebar({
   onOpenTab,
   pathname,
 }: SidebarProps) {
-  const { expanded, toggle, expandAll, collapseAll } = useExplorerState();
+  const { expanded, toggle, expandAll, collapseAll, isFullyExpanded } =
+    useExplorerState();
 
   return (
     <div
@@ -92,17 +104,19 @@ export function Sidebar({
               <X className="size-4" />
             </Button>
           )}
-          <Button
-            aria-label="Expand all"
-            className="size-6 rounded p-0"
-            onClick={expandAll}
-            size="icon"
-            title="Expand all"
-            type="button"
-            variant="ghost"
-          >
-            <ChevronsUpDown className="size-3.5" />
-          </Button>
+          {!isFullyExpanded && (
+            <Button
+              aria-label="Expand all"
+              className="size-6 rounded p-0"
+              onClick={expandAll}
+              size="icon"
+              title="Expand all"
+              type="button"
+              variant="ghost"
+            >
+              <ChevronsUpDown className="size-3.5" />
+            </Button>
+          )}
           <Button
             aria-label="Collapse all"
             className="size-6 rounded p-0"
