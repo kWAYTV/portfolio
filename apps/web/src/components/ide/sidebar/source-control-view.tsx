@@ -18,6 +18,7 @@ import {
   GitCommit,
   MoreHorizontal,
   RefreshCw,
+  X,
 } from "lucide-react";
 import { useTranslations } from "next-intl";
 import { memo } from "react";
@@ -41,24 +42,44 @@ const MOCK_COMMITS: CommitWithStats[] = [
 
 interface SourceControlViewProps {
   commits?: GitCommitItem[];
+  fullWidth?: boolean;
   hasStagedChanges?: boolean;
+  onClose?: () => void;
 }
 
 export const SourceControlView = memo(function SourceControlView({
   commits = MOCK_COMMITS,
+  fullWidth = false,
   hasStagedChanges = false,
+  onClose,
 }: SourceControlViewProps) {
   const t = useTranslations("ide");
   const displayCommits = commits.length > 0 ? commits : MOCK_COMMITS;
 
   return (
-    <div className="flex h-full w-56 shrink-0 select-none flex-col overflow-hidden border-border border-r bg-sidebar shadow-[var(--shadow-elevation-sm)]">
+    <div
+      className={`flex h-full select-none flex-col overflow-hidden bg-sidebar shadow-[var(--shadow-elevation-sm)] ${
+        fullWidth ? "min-w-0 w-full" : "w-56 shrink-0 border-border border-r"
+      }`}
+    >
       {/* Header - matches VS Code */}
       <div className="flex items-center justify-between gap-1 border-border border-b px-2 py-2">
         <span className="flex-1 px-2 font-medium text-[11px] text-muted-foreground uppercase tracking-wider">
           {t("sourceControl")}
         </span>
         <div className="flex items-center gap-0.5">
+          {onClose && (
+            <Button
+              aria-label="Close"
+              className="size-6 rounded p-0"
+              onClick={onClose}
+              size="icon-sm"
+              type="button"
+              variant="ghost"
+            >
+              <X className="size-4" />
+            </Button>
+          )}
           <Tooltip>
             <TooltipTrigger asChild>
               <Button

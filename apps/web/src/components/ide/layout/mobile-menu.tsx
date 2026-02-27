@@ -8,19 +8,11 @@ import {
   SheetTitle,
   SheetTrigger,
 } from "@portfolio/ui";
-import {
-  BookOpen,
-  Code2,
-  FolderGit2,
-  GitBranch,
-  Menu,
-  Terminal,
-  User,
-} from "lucide-react";
+import { BookOpen, Code2, ExternalLink, FolderGit2, Menu, User } from "lucide-react";
 import { useTranslations } from "next-intl";
 import { memo, useState } from "react";
 import { LanguageSelector } from "@/components/shared/language-selector";
-import { ThemeToggle } from "@/components/theming/toggle";
+import { MobileThemeMenu } from "@/components/ide/layout/mobile-theme-menu";
 import { navItems } from "@/consts/nav-items";
 
 const navIcons: Record<string, typeof Code2> = {
@@ -33,17 +25,12 @@ const navIcons: Record<string, typeof Code2> = {
 const PORTFOLIO_REPO_URL = "https://github.com/kWAYTV/portfolio";
 
 interface MobileMenuProps {
-  onToggleTerminal: () => void;
   pathname: string;
-  terminalOpen: boolean;
 }
 
-export const MobileMenu = memo(function MobileMenu({
-  pathname,
-  terminalOpen,
-  onToggleTerminal,
-}: MobileMenuProps) {
+export const MobileMenu = memo(function MobileMenu({ pathname }: MobileMenuProps) {
   const t = useTranslations("nav");
+  const tIde = useTranslations("ide");
   const [open, setOpen] = useState(false);
 
   const isActive = (href: string) => {
@@ -101,30 +88,14 @@ export const MobileMenu = memo(function MobileMenu({
             rel="noopener noreferrer"
             target="_blank"
           >
-            <GitBranch className="size-4 shrink-0" />
-            Repository
+            <ExternalLink className="size-4 shrink-0" />
+            {tIde("viewOnGitHub")}
           </a>
-          <button
-            className={`flex w-full items-center gap-3 px-4 py-3 text-left text-sm transition-colors hover:bg-muted/50 ${
-              terminalOpen ? "bg-muted/60 text-foreground" : "text-foreground"
-            }`}
-            onClick={() => {
-              onToggleTerminal();
-              setOpen(false);
-            }}
-            type="button"
-          >
-            <Terminal className="size-4 shrink-0" />
-            Terminal
-          </button>
           <div className="flex items-center justify-between gap-2 px-4 py-3">
             <span className="text-muted-foreground text-sm">Language</span>
             <LanguageSelector />
           </div>
-          <div className="flex items-center justify-between gap-2 px-4 py-3">
-            <span className="text-muted-foreground text-sm">Theme</span>
-            <ThemeToggle />
-          </div>
+          <MobileThemeMenu />
         </div>
       </SheetContent>
     </Sheet>

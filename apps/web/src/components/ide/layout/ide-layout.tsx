@@ -1,18 +1,20 @@
 "use client";
 
 import { usePathname } from "@i18n/routing";
-import { TooltipProvider } from "@portfolio/ui";
+import { Sheet, SheetContent, TooltipProvider } from "@portfolio/ui";
 import { parseAsBoolean, useQueryState } from "nuqs";
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 
 import { navItems } from "@/consts/nav-items";
 import { useEditorGroups } from "@/hooks/use-editor-groups";
 import { useIdeKeyboardShortcuts } from "@/hooks/use-ide-keyboard-shortcuts";
+import { useIsMobile } from "@/hooks/use-is-mobile";
 import { getBreadcrumbPath } from "@/lib/ide/breadcrumb";
 import { ActivityBar } from "@/components/ide/layout/activity-bar";
 import { CommandPalette } from "@/components/ide/command/command-palette";
 import { IdeEditorArea } from "@/components/ide/layout/ide-editor-area";
 import { IdeLayoutEmbed } from "@/components/ide/layout/ide-layout-embed";
+import { MobileActivityBar } from "@/components/ide/layout/mobile-activity-bar";
 import { MobileMenu } from "@/components/ide/layout/mobile-menu";
 import { Sidebar } from "@/components/ide/sidebar/sidebar";
 import { SourceControlView } from "@/components/ide/sidebar/source-control-view";
@@ -30,10 +32,14 @@ interface IdeLayoutProps {
 
 export function IdeLayout({ children, commits = [] }: IdeLayoutProps) {
   const pathname = usePathname();
+  const isMobile = useIsMobile();
   const [embed] = useQueryState("embed", parseAsBoolean.withDefault(false));
   const isEmbed = embed;
   const [sidebarOpen, setSidebarOpen] = useState(true);
   const [sidebarView, setSidebarView] = useState<SidebarView>("explorer");
+  const [mobileSidebarView, setMobileSidebarView] = useState<
+    SidebarView | null
+  >(null);
   const [terminalOpen, setTerminalOpen] = useState(false);
   const [commandOpen, setCommandOpen] = useState(false);
   const [isFullscreen, setIsFullscreen] = useState(false);
@@ -70,6 +76,14 @@ export function IdeLayout({ children, commits = [] }: IdeLayoutProps) {
     setTerminalOpen((prev) => !prev);
   }, []);
 
+  const openMobileExplorer = useCallback(() => {
+    setMobileSidebarView("explorer");
+  }, []);
+
+  const openMobileSourceControl = useCallback(() => {
+    setMobileSidebarView("sourceControl");
+  }, []);
+
   useIdeKeyboardShortcuts({
     contentRef,
     onToggleSidebar: toggleSidebar,
@@ -79,6 +93,10 @@ export function IdeLayout({ children, commits = [] }: IdeLayoutProps) {
   useEffect(() => {
     setPageTitle(typeof document !== "undefined" ? document.title : "");
   }, []);
+
+  useEffect(() => {
+    setMobileSidebarView(null);
+  }, [pathname]);
 
   useEffect(() => {
     const onFullscreenChange = () => {
@@ -135,13 +153,7 @@ export function IdeLayout({ children, commits = [] }: IdeLayoutProps) {
         />
         <div className="flex h-dvh flex-col overflow-hidden bg-background">
           <TitleBar
-            leftSlot={
-              <MobileMenu
-                onToggleTerminal={toggleTerminal}
-                pathname={pathname}
-                terminalOpen={terminalOpen}
-              />
-            }
+            leftSlot={<MobileMenu pathname={pathname} />}
             maximized={isFullscreen}
             onClose={() => closeAllTabs()}
             onMaximize={toggleFullscreen}
@@ -205,17 +217,56 @@ export function IdeLayout({ children, commits = [] }: IdeLayoutProps) {
             </div>
           </div>
 
-          <div className="hidden md:block">
-            <StatusBar
-              onFocusSourceControl={() => {
+          <MobileActivityBar
+            onOpenExplorer={openMobileExplorer}
+            onOpenSourceControl={openMobileSourceControl}
+            onToggleTerminal={toggleTerminal}
+            terminalOpen={terminalOpen}
+          />
+
+          <StatusBar
+            onFocusSourceControl={() => {
+              if (isMobile) {
+                setMobileSidebarView("sourceControl");
+              } else {
                 setSidebarView("sourceControl");
                 setSidebarOpen(true);
-              }}
-              onToggleTerminal={toggleTerminal}
-              pathname={pathname}
-              terminalOpen={terminalOpen}
-            />
-          </div>
+              }
+            }}
+            onToggleTerminal={toggleTerminal}
+            pathname={pathname}
+            terminalOpen={terminalOpen}
+          />
+
+          {/* Mobile: sidebar views in Sheet (Explorer / Source Control) */}
+          <Sheet
+            onOpenChange={(open) => !open && setMobileSidebarView(null)}
+            open={mobileSidebarView !== null}
+          >
+            <SheetContent
+              className="flex h-full w-full max-w-full flex-col gap-0 overflow-hidden p-0 md:hidden"
+              onOpenAutoFocus={(e) => e.preventDefault()}
+              showCloseButton={false}
+              side="left"
+            >
+              <div className="flex min-h-0 flex-1 flex-col overflow-hidden">
+                {mobileSidebarView === "sourceControl" ? (
+                  <SourceControlView
+                    commits={commits}
+                    fullWidth
+                    onClose={() => setMobileSidebarView(null)}
+                  />
+                ) : mobileSidebarView === "explorer" ? (
+                  <Sidebar
+                    fullWidth
+                    onClose={() => setMobileSidebarView(null)}
+                    onOpenTab={openTab}
+                    pathname={pathname}
+                  />
+                ) : null}
+              </div>
+            </SheetContent>
+          </Sheet>
         </div>
       </TooltipProvider>
     </ViewModeProvider>

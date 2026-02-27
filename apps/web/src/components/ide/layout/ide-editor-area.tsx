@@ -63,39 +63,92 @@ export function IdeEditorArea({
 }: IdeEditorAreaProps) {
   const hasOpenTabs = editorGroups.some((g) => g.tabs.length > 0);
   const hasSplit = editorGroups.length > 1;
+  const activeGroup = editorGroups[activeGroupIndex] ?? editorGroups[0];
 
   if (hasOpenTabs && hasSplit) {
     return (
-      <SplitEditorView
-        activeGroupIndex={activeGroupIndex}
-        closeAllTabs={closeAllTabs}
-        closeGroup={closeGroup}
-        closeOtherTabs={closeOtherTabs}
-        closeTab={closeTab}
-        closeTabsToRight={closeTabsToRight}
-        copyContent={copyContent}
-        editorGroups={editorGroups}
-        focusGroup={focusGroup}
-        mainRef={mainRef}
-        moveTabToGroup={moveTabToGroup}
-        onViewModeChange={onViewModeChange}
-        reorderTabs={reorderTabs}
-        setSplitRatio={setSplitRatio}
-        splitLeft={splitLeft}
-        splitRatio={splitRatio}
-        splitRight={splitRight}
-        viewMode={viewMode}
-      >
-        {children}
-      </SplitEditorView>
+      <>
+        {/* Mobile: single-pane with active group (split hidden on mobile) */}
+        <div className="flex min-h-0 min-w-0 flex-1 flex-col md:hidden">
+          <EditorTabs
+            activeGroupIndex={activeGroupIndex}
+            groupIndex={activeGroupIndex}
+            onCloseAll={closeAllTabs}
+            onCloseOtherTabs={(href) => closeOtherTabs(activeGroupIndex, href)}
+            onCloseTab={(href) => closeTab(activeGroupIndex, href)}
+            onCloseTabsToRight={(href) =>
+              closeTabsToRight(activeGroupIndex, href)
+            }
+            onReorder={(order) => reorderTabs(activeGroupIndex, order)}
+            onTabClick={(href) => focusGroup(activeGroupIndex, href)}
+            openTabs={activeGroup?.tabs ?? []}
+            pathname={pathname}
+            showSplitButtons={false}
+            totalGroups={editorGroups.length}
+          />
+          <div
+            className="flex min-w-0 flex-1 flex-col overflow-hidden outline-none"
+            ref={contentRef}
+            tabIndex={-1}
+          >
+            <span aria-hidden className="sr-only">
+              {pageTitle}
+            </span>
+            <Breadcrumbs
+              onViewModeChange={onViewModeChange}
+              pathname={pathname}
+              viewMode={viewMode}
+            />
+            <EditorContentContextMenu
+              onCopy={copyContent}
+              onViewModeChange={onViewModeChange}
+              viewMode={viewMode}
+            >
+              <main
+                className={cn(
+                  "min-h-0 w-full min-w-0 flex-1 overflow-y-auto",
+                  viewMode === "preview" && "min-h-full"
+                )}
+                data-ide-main
+                ref={mainRef}
+                {...(viewMode === "preview" && { "data-preview": "" })}
+              >
+                {children}
+              </main>
+            </EditorContentContextMenu>
+          </div>
+        </div>
+        {/* Desktop: split view */}
+        <SplitEditorView
+            activeGroupIndex={activeGroupIndex}
+            closeAllTabs={closeAllTabs}
+            closeGroup={closeGroup}
+            closeOtherTabs={closeOtherTabs}
+            closeTab={closeTab}
+            closeTabsToRight={closeTabsToRight}
+            copyContent={copyContent}
+            editorGroups={editorGroups}
+            focusGroup={focusGroup}
+            mainRef={mainRef}
+            moveTabToGroup={moveTabToGroup}
+            onViewModeChange={onViewModeChange}
+            reorderTabs={reorderTabs}
+            setSplitRatio={setSplitRatio}
+            splitLeft={splitLeft}
+            splitRatio={splitRatio}
+            splitRight={splitRight}
+            viewMode={viewMode}
+          >
+            {children}
+          </SplitEditorView>
+      </>
     );
   }
 
   if (hasOpenTabs) {
     return (
-      <>
-        <div className="hidden md:block">
-          <EditorTabs
+      <div className="flex min-h-0 min-w-0 flex-1 flex-col overflow-hidden">
+        <EditorTabs
             groupIndex={0}
             onCloseAll={closeAllTabs}
             onCloseOtherTabs={(href) => closeOtherTabs(0, href)}
@@ -113,7 +166,6 @@ export function IdeEditorArea({
             showSplitButtons={true}
             totalGroups={1}
           />
-        </div>
         <div
           className="flex w-full min-w-0 flex-1 flex-col overflow-hidden outline-none"
           ref={contentRef}
@@ -147,12 +199,12 @@ export function IdeEditorArea({
             </main>
           </EditorContentContextMenu>
         </div>
-      </>
+      </div>
     );
   }
 
   return (
-    <div className="hidden flex-1 md:flex">
+    <div className="flex min-h-0 min-w-0 flex-1 flex-col overflow-hidden">
       <EditorTabs
         onCloseAll={closeAllTabs}
         onCloseGroup={
