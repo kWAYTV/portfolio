@@ -11,9 +11,11 @@ import {
 import {
   BookOpen,
   Code2,
+  ExternalLink,
   FolderGit2,
   GitBranch,
   Menu,
+  PanelLeft,
   Terminal,
   User,
 } from "lucide-react";
@@ -33,6 +35,8 @@ const navIcons: Record<string, typeof Code2> = {
 const PORTFOLIO_REPO_URL = "https://github.com/kWAYTV/portfolio";
 
 interface MobileMenuProps {
+  onOpenExplorer: () => void;
+  onOpenSourceControl: () => void;
   onToggleTerminal: () => void;
   pathname: string;
   terminalOpen: boolean;
@@ -42,8 +46,11 @@ export const MobileMenu = memo(function MobileMenu({
   pathname,
   terminalOpen,
   onToggleTerminal,
+  onOpenExplorer,
+  onOpenSourceControl,
 }: MobileMenuProps) {
   const t = useTranslations("nav");
+  const tIde = useTranslations("ide");
   const [open, setOpen] = useState(false);
 
   const isActive = (href: string) => {
@@ -94,6 +101,28 @@ export const MobileMenu = memo(function MobileMenu({
           })}
         </nav>
         <div className="flex flex-col gap-0 border-border border-t py-2">
+          <button
+            className="flex w-full items-center gap-3 px-4 py-3 text-left text-sm transition-colors hover:bg-muted/50 text-foreground"
+            onClick={() => {
+              onOpenExplorer();
+              setOpen(false);
+            }}
+            type="button"
+          >
+            <PanelLeft className="size-4 shrink-0" />
+            {tIde("explorer")}
+          </button>
+          <button
+            className="flex w-full items-center gap-3 px-4 py-3 text-left text-sm transition-colors hover:bg-muted/50 text-foreground"
+            onClick={() => {
+              onOpenSourceControl();
+              setOpen(false);
+            }}
+            type="button"
+          >
+            <GitBranch className="size-4 shrink-0" />
+            {tIde("sourceControl")}
+          </button>
           <a
             className="flex items-center gap-3 px-4 py-3 text-foreground text-sm transition-colors hover:bg-muted/50"
             href={PORTFOLIO_REPO_URL}
@@ -101,8 +130,8 @@ export const MobileMenu = memo(function MobileMenu({
             rel="noopener noreferrer"
             target="_blank"
           >
-            <GitBranch className="size-4 shrink-0" />
-            Repository
+            <ExternalLink className="size-4 shrink-0" />
+            {tIde("viewOnGitHub")}
           </a>
           <button
             className={`flex w-full items-center gap-3 px-4 py-3 text-left text-sm transition-colors hover:bg-muted/50 ${

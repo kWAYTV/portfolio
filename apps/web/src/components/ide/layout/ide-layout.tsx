@@ -1,7 +1,7 @@
 "use client";
 
 import { usePathname } from "@i18n/routing";
-import { TooltipProvider } from "@portfolio/ui";
+import { Sheet, SheetContent, TooltipProvider } from "@portfolio/ui";
 import { parseAsBoolean, useQueryState } from "nuqs";
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 
@@ -34,6 +34,9 @@ export function IdeLayout({ children, commits = [] }: IdeLayoutProps) {
   const isEmbed = embed;
   const [sidebarOpen, setSidebarOpen] = useState(true);
   const [sidebarView, setSidebarView] = useState<SidebarView>("explorer");
+  const [mobileSidebarView, setMobileSidebarView] = useState<
+    SidebarView | null
+  >(null);
   const [terminalOpen, setTerminalOpen] = useState(false);
   const [commandOpen, setCommandOpen] = useState(false);
   const [isFullscreen, setIsFullscreen] = useState(false);
@@ -70,6 +73,14 @@ export function IdeLayout({ children, commits = [] }: IdeLayoutProps) {
     setTerminalOpen((prev) => !prev);
   }, []);
 
+  const openMobileExplorer = useCallback(() => {
+    setMobileSidebarView("explorer");
+  }, []);
+
+  const openMobileSourceControl = useCallback(() => {
+    setMobileSidebarView("sourceControl");
+  }, []);
+
   useIdeKeyboardShortcuts({
     contentRef,
     onToggleSidebar: toggleSidebar,
@@ -79,6 +90,10 @@ export function IdeLayout({ children, commits = [] }: IdeLayoutProps) {
   useEffect(() => {
     setPageTitle(typeof document !== "undefined" ? document.title : "");
   }, []);
+
+  useEffect(() => {
+    setMobileSidebarView(null);
+  }, [pathname]);
 
   useEffect(() => {
     const onFullscreenChange = () => {
@@ -137,6 +152,8 @@ export function IdeLayout({ children, commits = [] }: IdeLayoutProps) {
           <TitleBar
             leftSlot={
               <MobileMenu
+                onOpenExplorer={openMobileExplorer}
+                onOpenSourceControl={openMobileSourceControl}
                 onToggleTerminal={toggleTerminal}
                 pathname={pathname}
                 terminalOpen={terminalOpen}
@@ -216,6 +233,26 @@ export function IdeLayout({ children, commits = [] }: IdeLayoutProps) {
               terminalOpen={terminalOpen}
             />
           </div>
+
+          {/* Mobile: sidebar views in Sheet (Explorer / Source Control) */}
+          <Sheet
+            onOpenChange={(open) => !open && setMobileSidebarView(null)}
+            open={mobileSidebarView !== null}
+          >
+            <SheetContent
+              className="flex h-full w-72 max-w-[85vw] flex-col gap-0 overflow-hidden p-0 md:hidden"
+              showCloseButton={true}
+              side="left"
+            >
+              <div className="flex min-h-0 flex-1 flex-col overflow-hidden">
+                {mobileSidebarView === "sourceControl" ? (
+                  <SourceControlView commits={commits} />
+                ) : mobileSidebarView === "explorer" ? (
+                  <Sidebar onOpenTab={openTab} pathname={pathname} />
+                ) : null}
+              </div>
+            </SheetContent>
+          </Sheet>
         </div>
       </TooltipProvider>
     </ViewModeProvider>
