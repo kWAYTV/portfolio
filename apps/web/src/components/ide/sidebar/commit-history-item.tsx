@@ -8,14 +8,10 @@ import {
 } from "@portfolio/ui";
 import { GitBranch, Github } from "lucide-react";
 import { useTranslations } from "next-intl";
-import type { GitCommitItem } from "@/lib/github";
-
-const PORTFOLIO_REPO_URL = "https://github.com/kWAYTV/portfolio";
-
-interface CommitWithStats extends GitCommitItem {
-  filesChanged?: number;
-  insertions?: number;
-}
+import {
+  type CommitWithStats,
+  PORTFOLIO_REPO_URL,
+} from "@/consts/ide-constants";
 
 interface CommitHistoryItemProps {
   commit: CommitWithStats;
