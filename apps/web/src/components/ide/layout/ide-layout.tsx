@@ -19,7 +19,7 @@ import { TerminalPanel } from "@/components/ide/terminal/terminal-panel";
 import { navItems } from "@/consts/nav-items";
 import { useIdeKeyboardShortcuts } from "@/hooks/use-ide-keyboard-shortcuts";
 import { useIsMobile } from "@/hooks/use-is-mobile";
-import type { GitCommitItem } from "@/lib/github";
+import { useCommits } from "@/components/ide/commits-provider";
 import { copyContentToClipboard } from "@/lib/ide/breadcrumb";
 import { useEditorGroupsStore } from "@/stores/editor-groups-store";
 import { useIdeLayoutStore } from "@/stores/ide-layout-store";
@@ -34,10 +34,10 @@ const CommandPalette = dynamic(
 
 interface IdeLayoutProps {
   children: React.ReactNode;
-  commits?: GitCommitItem[];
 }
 
-export function IdeLayout({ children, commits = [] }: IdeLayoutProps) {
+export function IdeLayout({ children }: IdeLayoutProps) {
+  const { commits } = useCommits();
   const pathname = usePathname();
   const router = useRouter();
   const isMobile = useIsMobile();
