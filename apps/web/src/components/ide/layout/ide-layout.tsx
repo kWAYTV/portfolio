@@ -1,19 +1,10 @@
 "use client";
 
-import { usePathname } from "@i18n/routing";
+import { usePathname, useRouter } from "@i18n/routing";
 import { Sheet, SheetContent, TooltipProvider } from "@portfolio/ui";
 import dynamic from "next/dynamic";
 import { parseAsBoolean, useQueryState } from "nuqs";
-import { useMemo, useRef } from "react";
-
-const CommandPalette = dynamic(
-  () =>
-    import("@/components/ide/command/command-palette").then((m) => ({
-      default: m.CommandPalette,
-    })),
-  { ssr: false }
-);
-
+import { useEffect, useMemo, useRef } from "react";
 import { ActivityBar } from "@/components/ide/layout/activity-bar";
 import { IdeEditorArea } from "@/components/ide/layout/ide-editor-area";
 import { IdeLayoutEmbed } from "@/components/ide/layout/ide-layout-embed";
@@ -25,10 +16,21 @@ import { ViewModeProvider } from "@/components/ide/shared/view-mode";
 import { Sidebar } from "@/components/ide/sidebar/sidebar";
 import { SourceControlView } from "@/components/ide/sidebar/source-control-view";
 import { TerminalPanel } from "@/components/ide/terminal/terminal-panel";
-import { useEditorGroups } from "@/hooks/use-editor-groups";
+import { navItems } from "@/consts/nav-items";
 import { useIdeKeyboardShortcuts } from "@/hooks/use-ide-keyboard-shortcuts";
-import { useIdeLayoutState } from "@/hooks/use-ide-layout-state";
+import { useIsMobile } from "@/hooks/use-is-mobile";
 import type { GitCommitItem } from "@/lib/github";
+import { copyContentToClipboard } from "@/lib/ide/breadcrumb";
+import { useEditorGroupsStore } from "@/stores/editor-groups-store";
+import { useIdeLayoutStore } from "@/stores/ide-layout-store";
+
+const CommandPalette = dynamic(
+  () =>
+    import("@/components/ide/command/command-palette").then((m) => ({
+      default: m.CommandPalette,
+    })),
+  { ssr: false }
+);
 
 interface IdeLayoutProps {
   children: React.ReactNode;
@@ -37,62 +39,72 @@ interface IdeLayoutProps {
 
 export function IdeLayout({ children, commits = [] }: IdeLayoutProps) {
   const pathname = usePathname();
+  const router = useRouter();
+  const isMobile = useIsMobile();
   const [embed] = useQueryState("embed", parseAsBoolean.withDefault(false));
   const isEmbed = embed;
   const contentRef = useRef<HTMLDivElement>(null);
+  const mainRef = useRef<HTMLElement>(null);
 
-  const {
-    activeGroupIndex,
-    activeHref,
-    closeAllTabs,
-    closeGroup,
-    closeOtherTabs,
-    closeTab,
-    closeTabsToRight,
-    editorGroups,
-    focusGroup,
-    moveTabToGroup,
-    openTab,
-    reorderTabs,
-    setSplitRatio,
-    splitLeft,
-    splitRatio,
-    splitRight,
-  } = useEditorGroups(pathname);
+  const layout = useIdeLayoutStore();
+  const editor = useEditorGroupsStore();
 
-  const layoutState = useIdeLayoutState(activeHref);
+  const activeHref = useEditorGroupsStore((s) => {
+    const g = s.editorGroups[s.activeGroupIndex];
+    return g?.tabs[g.activeIndex] ?? g?.tabs[0];
+  });
 
-  const {
-    commandOpen,
-    copyContent,
-    focusSourceControl,
-    mainRef,
-    mobileSidebarView,
-    openMobileExplorer,
-    openMobileSourceControl,
-    pageTitle,
-    setCommandOpen,
-    setMobileSidebarView,
-    setSidebarView,
-    setTerminalOpen,
-    setViewMode,
-    sidebarOpen,
-    sidebarView,
-    terminalOpen,
-    toggleFullscreen,
-    toggleSidebar,
-    toggleTerminal,
-    viewMode,
-    isFullscreen,
-  } = layoutState;
+  useEffect(() => {
+    useEditorGroupsStore.getState().setRouter(router);
+    return () => useEditorGroupsStore.getState().setRouter(null);
+  }, [router]);
+
+  useEffect(() => {
+    useEditorGroupsStore.getState().syncFromPathname(pathname);
+  }, [pathname]);
+
+  useEffect(() => {
+    useIdeLayoutStore
+      .getState()
+      .setPageTitle(typeof document !== "undefined" ? document.title : "");
+  }, []);
+
+  useEffect(() => {
+    useIdeLayoutStore.getState().setMobileSidebarView(null);
+  }, [pathname]);
+
+  useEffect(() => {
+    const onFullscreenChange = () => {
+      useIdeLayoutStore
+        .getState()
+        .setIsFullscreen(!!document.fullscreenElement);
+    };
+    document.addEventListener("fullscreenchange", onFullscreenChange);
+    return () =>
+      document.removeEventListener("fullscreenchange", onFullscreenChange);
+  }, []);
 
   useIdeKeyboardShortcuts({
     contentRef,
-    onToggleSidebar: toggleSidebar,
-    onToggleTerminal: toggleTerminal,
+    onToggleSidebar: layout.toggleSidebar,
+    onToggleTerminal: layout.toggleTerminal,
   });
 
-  const viewModeValue = useMemo(() => ({ viewMode, setViewMode }), [viewMode]);
+  const copyContent = () =>
+    copyContentToClipboard(
+      mainRef,
+      pathname,
+      activeHref,
+      layout.pageTitle,
+      navItems
+    );
+
+  const viewModeValue = useMemo(
+    () => ({ viewMode: layout.viewMode, setViewMode: layout.setViewMode }),
+    [layout.viewMode, layout.setViewMode]
+  );
+
+  const handleFocusSourceControl = () => layout.focusSourceControl(isMobile);
 
   if (isEmbed) {
     return <IdeLayoutEmbed>{children}</IdeLayoutEmbed>;
@@ -102,97 +114,104 @@ export function IdeLayout({ children, commits = [] }: IdeLayoutProps) {
     <ViewModeProvider value={viewModeValue}>
       <TooltipProvider delayDuration={300}>
         <CommandPalette
-          onOpenChange={setCommandOpen}
-          onToggleSidebar={toggleSidebar}
-          onToggleTerminal={toggleTerminal}
-          open={commandOpen}
-          sidebarOpen={sidebarOpen}
-          terminalOpen={terminalOpen}
+          onOpenChange={layout.setCommandOpen}
+          onToggleSidebar={layout.toggleSidebar}
+          onToggleTerminal={layout.toggleTerminal}
+          open={layout.commandOpen}
+          sidebarOpen={layout.sidebarOpen}
+          terminalOpen={layout.terminalOpen}
         />
         <div className="flex h-dvh flex-col overflow-hidden bg-background">
           <TitleBar
             leftSlot={<MobileMenu pathname={pathname} />}
-            maximized={isFullscreen}
-            onClose={() => closeAllTabs()}
-            onMaximize={toggleFullscreen}
-            onMinimize={isFullscreen ? toggleFullscreen : toggleSidebar}
+            maximized={layout.isFullscreen}
+            onClose={() => editor.closeAllTabs()}
+            onMaximize={layout.toggleFullscreen}
+            onMinimize={
+              layout.isFullscreen
+                ? layout.toggleFullscreen
+                : layout.toggleSidebar
+            }
           />
 
           <div className="flex min-h-0 flex-1">
             <div className="hidden md:block">
               <ActivityBar
-                onOpenCommand={() => setCommandOpen(true)}
-                onToggleSidebar={toggleSidebar}
-                onToggleSidebarView={setSidebarView}
-                onToggleTerminal={toggleTerminal}
+                onOpenCommand={() => layout.setCommandOpen(true)}
+                onToggleSidebar={layout.toggleSidebar}
+                onToggleSidebarView={layout.setSidebarView}
+                onToggleTerminal={layout.toggleTerminal}
                 pathname={pathname}
-                sidebarOpen={sidebarOpen}
-                sidebarView={sidebarView}
-                terminalOpen={terminalOpen}
+                sidebarOpen={layout.sidebarOpen}
+                sidebarView={layout.sidebarView}
+                terminalOpen={layout.terminalOpen}
               />
             </div>
 
-            {sidebarOpen && (
+            {layout.sidebarOpen && (
               <div className="hidden md:block">
-                {sidebarView === "sourceControl" ? (
+                {layout.sidebarView === "sourceControl" ? (
                   <SourceControlView commits={commits} />
                 ) : (
-                  <Sidebar onOpenTab={openTab} pathname={pathname} />
+                  <Sidebar onOpenTab={editor.openTab} pathname={pathname} />
                 )}
               </div>
             )}
 
             <div className="flex w-full min-w-0 flex-1 flex-col overflow-hidden">
               <IdeEditorArea
-                activeGroupIndex={activeGroupIndex}
-                closeAllTabs={closeAllTabs}
-                closeGroup={closeGroup}
-                closeOtherTabs={closeOtherTabs}
-                closeTab={closeTab}
-                closeTabsToRight={closeTabsToRight}
+                activeGroupIndex={editor.activeGroupIndex}
+                closeAllTabs={editor.closeAllTabs}
+                closeGroup={editor.closeGroup}
+                closeOtherTabs={(gi, href) =>
+                  editor.closeOtherTabs(pathname, gi, href)
+                }
+                closeTab={(gi, href) => editor.closeTab(pathname, gi, href)}
+                closeTabsToRight={(gi, href) =>
+                  editor.closeTabsToRight(gi, href)
+                }
                 contentRef={contentRef}
                 copyContent={copyContent}
-                editorGroups={editorGroups}
-                focusGroup={focusGroup}
+                editorGroups={editor.editorGroups}
+                focusGroup={editor.focusGroup}
                 mainRef={mainRef}
-                moveTabToGroup={moveTabToGroup}
-                onViewModeChange={setViewMode}
-                pageTitle={pageTitle}
+                moveTabToGroup={editor.moveTabToGroup}
+                onViewModeChange={layout.setViewMode}
+                pageTitle={layout.pageTitle}
                 pathname={pathname}
-                reorderTabs={reorderTabs}
-                setSplitRatio={setSplitRatio}
-                splitLeft={splitLeft}
-                splitRatio={splitRatio}
-                splitRight={splitRight}
-                viewMode={viewMode}
+                reorderTabs={editor.reorderTabs}
+                setSplitRatio={editor.setSplitRatio}
+                splitLeft={editor.splitLeft}
+                splitRatio={editor.splitRatio}
+                splitRight={editor.splitRight}
+                viewMode={layout.viewMode}
               >
                 {children}
               </IdeEditorArea>
               <TerminalPanel
-                isOpen={terminalOpen}
-                onClose={() => setTerminalOpen(false)}
+                isOpen={layout.terminalOpen}
+                onClose={() => layout.setTerminalOpen(false)}
               />
             </div>
           </div>
 
           <MobileActivityBar
-            onOpenExplorer={openMobileExplorer}
-            onOpenSourceControl={openMobileSourceControl}
-            onToggleTerminal={toggleTerminal}
-            terminalOpen={terminalOpen}
+            onOpenExplorer={layout.openMobileExplorer}
+            onOpenSourceControl={layout.openMobileSourceControl}
+            onToggleTerminal={layout.toggleTerminal}
+            terminalOpen={layout.terminalOpen}
           />
 
           <StatusBar
-            onFocusSourceControl={focusSourceControl}
-            onToggleTerminal={toggleTerminal}
+            onFocusSourceControl={handleFocusSourceControl}
+            onToggleTerminal={layout.toggleTerminal}
             pathname={pathname}
-            terminalOpen={terminalOpen}
+            terminalOpen={layout.terminalOpen}
           />
 
-          {/* Mobile: sidebar views in Sheet (Explorer / Source Control) */}
           <Sheet
-            onOpenChange={(open) => !open && setMobileSidebarView(null)}
-            open={mobileSidebarView !== null}
+            onOpenChange={(open) => !open && layout.setMobileSidebarView(null)}
+            open={layout.mobileSidebarView !== null}
           >
             <SheetContent
               className="flex h-full w-full max-w-full flex-col gap-0 overflow-hidden p-0 md:hidden"
@@ -201,17 +220,17 @@ export function IdeLayout({ children, commits = [] }: IdeLayoutProps) {
               side="left"
             >
               <div className="flex min-h-0 flex-1 flex-col overflow-hidden">
-                {mobileSidebarView === "sourceControl" ? (
+                {layout.mobileSidebarView === "sourceControl" ? (
                   <SourceControlView
                     commits={commits}
                     fullWidth
-                    onClose={() => setMobileSidebarView(null)}
+                    onClose={() => layout.setMobileSidebarView(null)}
                   />
-                ) : mobileSidebarView === "explorer" ? (
+                ) : layout.mobileSidebarView === "explorer" ? (
                   <Sidebar
                     fullWidth
-                    onClose={() => setMobileSidebarView(null)}
-                    onOpenTab={openTab}
+                    onClose={() => layout.setMobileSidebarView(null)}
+                    onOpenTab={editor.openTab}
                     pathname={pathname}
                   />
                 ) : null}
