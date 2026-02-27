@@ -27,8 +27,8 @@ export function generateStaticParams() {
 }
 
 export const metadata: Metadata = {
-  title: "ide-portfolio",
-  description: "ide-portfolio",
+  title: "Martín Vila — Portfolio",
+  description: "welcome to my personal space.",
 };
 
 export default async function LocaleLayout({
