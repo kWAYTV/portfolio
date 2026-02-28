@@ -1,24 +1,25 @@
 "use client";
 
 import { config, type Locale, localeToFlagEmoji } from "@repo/i18n/config";
-import { ExternalLink, Languages, Palette, Settings } from "lucide-react";
+import { Command, ExternalLink, Languages, Settings } from "lucide-react";
 import { useLocale, useTranslations } from "next-intl";
-import { ThemeSelector } from "@/components/theming/theme-selector";
-import { ThemeToggle } from "@/components/theming/theme-toggle";
 import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuGroup,
+  DropdownMenuItem,
   DropdownMenuLabel,
   DropdownMenuRadioGroup,
   DropdownMenuRadioItem,
   DropdownMenuSeparator,
+  DropdownMenuShortcut,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { REPO_URL } from "@/consts/ide-constants";
 import { IDE_DROPDOWN_CONTENT_CLASS } from "@/lib/ide-dropdown";
 import { cn } from "@/lib/utils";
 import { updateLocale } from "@/modules/i18n/lib/update-locale";
+import { useIdeStore } from "@/stores/ide-store";
 
 const locales = Object.keys(config.locales) as Locale[];
 
@@ -26,6 +27,7 @@ export function SettingsMenu() {
   const t = useTranslations("ide");
   const tLocale = useTranslations("localeSwitcher");
   const locale = useLocale() as Locale;
+  const setCommandPaletteOpen = useIdeStore((s) => s.setCommandPaletteOpen);
 
   return (
     <DropdownMenu>
@@ -43,20 +45,16 @@ export function SettingsMenu() {
         sideOffset={4}
       >
         <DropdownMenuGroup>
-          <DropdownMenuLabel>{t("appearance")}</DropdownMenuLabel>
-          <div className="flex items-center justify-between gap-2 px-2 py-1">
-            <ThemeToggle className="text-xs" />
-          </div>
-        </DropdownMenuGroup>
-        <DropdownMenuSeparator />
-        <DropdownMenuGroup>
-          <DropdownMenuLabel className="flex items-center gap-2">
-            <Palette className="size-3.5" />
-            {t("themePreset")}
-          </DropdownMenuLabel>
-          <div className="px-2 py-1">
-            <ThemeSelector />
-          </div>
+          <DropdownMenuItem
+            className="cursor-pointer"
+            onSelect={() => setCommandPaletteOpen(true)}
+          >
+            <Command className="size-3.5 shrink-0" />
+            <span>{t("commandPalette")}</span>
+            <DropdownMenuShortcut>
+              {t("commandPaletteShortcut")}
+            </DropdownMenuShortcut>
+          </DropdownMenuItem>
         </DropdownMenuGroup>
         <DropdownMenuSeparator />
         <DropdownMenuGroup>
