@@ -74,11 +74,16 @@ export function CommandPalette() {
   const handleThemeToggle = useCallback(async () => {
     const next = resolvedTheme === "dark" ? "light" : "dark";
     await setThemeWithTransition(next);
-  }, [resolvedTheme, setThemeWithTransition]);
+    setOpen(false);
+  }, [resolvedTheme, setThemeWithTransition, setOpen]);
 
-  const handleSetLocale = useCallback((loc: Locale) => {
-    updateLocale(loc);
-  }, []);
+  const handleSetLocale = useCallback(
+    (loc: Locale) => {
+      updateLocale(loc);
+      setOpen(false);
+    },
+    [setOpen]
+  );
 
   const isDark = resolvedTheme === "dark";
 
