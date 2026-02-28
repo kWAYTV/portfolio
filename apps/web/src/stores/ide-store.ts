@@ -74,7 +74,7 @@ export const useIdeStore = create<IdeState>((set) => ({
   isFullscreen: false,
   mobileSidebarView: null,
 
-  openTabs: ["/"],
+  openTabs: ["/", "/about", "/projects", "/blog"],
 
   viewMode: "preview",
 
