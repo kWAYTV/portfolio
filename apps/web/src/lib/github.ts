@@ -3,11 +3,15 @@ import "server-only";
 import { Octokit } from "@octokit/rest";
 import { env } from "@repo/env/web";
 import { getGitHubRepos as getRepos } from "@repo/github";
-import { unstable_cache } from "next/cache";
+import { cacheLife, cacheTag } from "next/cache";
 
-async function fetchGitHubRepos(): Promise<
+export async function getGitHubRepos(): Promise<
   Awaited<ReturnType<typeof getRepos>>
 > {
+  "use cache";
+  cacheLife("hours");
+  cacheTag("github-repos");
+
   const token = env.GITHUB_TOKEN;
   if (!token) {
     return [];
@@ -19,9 +23,3 @@ async function fetchGitHubRepos(): Promise<
     username: "kWAYTV",
   });
 }
-
-export const getGitHubRepos = unstable_cache(
-  fetchGitHubRepos,
-  ["github-repos"],
-  { revalidate: 3600, tags: ["github-repos"] }
-);

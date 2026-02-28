@@ -3,7 +3,19 @@
 import type { GitHubRepo } from "@repo/github";
 import { GitFork, Star } from "lucide-react";
 import { memo } from "react";
+import { ProjectCardDetails } from "@/components/projects/project-card-details";
+import {
+  HoverCard,
+  HoverCardContent,
+  HoverCardTrigger,
+} from "@/components/ui/hover-card";
+import {
+  Popover,
+  PopoverContent,
+  PopoverTrigger,
+} from "@/components/ui/popover";
 import { languageColors } from "@/consts/language-colors";
+import { useCanHover } from "@/hooks/use-can-hover";
 import { cn } from "@/lib/utils";
 
 interface ProjectCardProps {
@@ -17,16 +29,50 @@ function ProjectCardInner({ repo }: ProjectCardProps) {
   const languageColor = repo.language
     ? (languageColors[repo.language] ?? "bg-muted-foreground/50")
     : null;
+  const canHover = useCanHover();
+
+  if (canHover) {
+    return (
+      <HoverCard closeDelay={100} openDelay={150}>
+        <HoverCardTrigger asChild>
+          <a
+            className={cn(cardClassName, "w-full cursor-pointer text-left")}
+            href={repo.html_url}
+            rel="noopener noreferrer"
+            target="_blank"
+          >
+            <ProjectCardSummary languageColor={languageColor} repo={repo} />
+          </a>
+        </HoverCardTrigger>
+        <HoverCardContent align="start" className="w-80" side="top">
+          <ProjectCardDetails repo={repo} />
+        </HoverCardContent>
+      </HoverCard>
+    );
+  }
 
   return (
-    <a
-      className={cn(cardClassName, "w-full cursor-pointer text-left")}
-      href={repo.html_url}
-      rel="noopener noreferrer"
-      target="_blank"
-    >
-      <ProjectCardSummary languageColor={languageColor} repo={repo} />
-    </a>
+    <Popover>
+      <PopoverTrigger
+        render={(props) => (
+          <button
+            {...props}
+            aria-label={`View ${repo.name} details`}
+            className={cn(cardClassName, "w-full cursor-pointer text-left")}
+            type="button"
+          >
+            <ProjectCardSummary languageColor={languageColor} repo={repo} />
+          </button>
+        )}
+      />
+      <PopoverContent
+        align="start"
+        className="w-[min(320px,calc(100vw-2rem))]"
+        side="top"
+      >
+        <ProjectCardDetails repo={repo} showOpenLink />
+      </PopoverContent>
+    </Popover>
   );
 }
 

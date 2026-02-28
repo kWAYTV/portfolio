@@ -1,53 +1,34 @@
-/** Placeholder source code for IDE code view. Copied from portfolio. */
+/** Placeholder source code for IDE code view. Matches home page structure. */
 
-export const welcomeCode = `import { Separator } from "@portfolio/ui";
-import { FeaturedProjects } from "@/components/home/featured-projects";
+export const welcomeCode = `import { Separator } from "@/components/ui/separator";
+import { FeaturedProjectsLoader } from "@/components/home/featured-projects-loader";
+import { FeaturedProjectsSkeleton } from "@/components/home/featured-projects-skeleton";
+import { HeroBio } from "@/components/home/hero-bio";
+import { HeroHeader } from "@/components/home/hero-header";
+import { HeroQuote } from "@/components/home/hero-quote";
 import { SocialNav } from "@/components/home/social-nav";
-import { getGitHubRepos } from "@/lib/github";
+import { PageContent } from "@/components/shared/page-content";
+import { getTranslations } from "next-intl/server";
+import { Suspense } from "react";
 
-export const metadata = {
-  title: "Martin Vila",
-  description: "developer · gamer · self-taught",
-};
-
-const socials = [
-  { name: "github", href: "https://github.com/kWAYTV", icon: Github },
-  { name: "twitter", href: "https://twitter.com/ogeperc", icon: Twitter },
-  { name: "linkedin", href: "https://linkedin.com/in/mvnieto", icon: Linkedin },
-  { name: "resume", href: "https://gitroll.io/profile/uezq54oxIk4V", icon: FileText },
-] as const;
-
-const featuredRepos = ["portfolio", "versend/core", "lichess-bot"];
+export async function generateMetadata() {
+  const t = await getTranslations("common");
+  return { title: t("siteTitle"), description: t("siteDescription") };
+}
 
 export default async function Home() {
-  const repos = await getGitHubRepos();
-  const featured = repos.filter((r) => featuredRepos.includes(r.name));
-
   return (
-    <main className="space-y-6">
-      <p className="text-muted-foreground text-sm">Welcome</p>
-
-      <header className="space-y-1.5">
-        <h1 className="font-medium text-lg tracking-tight">Martin Vila</h1>
-        <p className="text-muted-foreground/60 text-sm">
-          developer · gamer · self-taught
-        </p>
-      </header>
-
-      <p className="text-muted-foreground/80 text-sm leading-relaxed">
-        Building minimal, thoughtful software. Currently exploring
-        the intersection of design and engineering.
-      </p>
-
-      <Separator />
-      <SocialNav links={socials} />
-      <Separator />
-
-      <section>
-        <h2 className="font-medium text-sm">Featured</h2>
-        <FeaturedProjects repos={featured} />
-      </section>
-    </main>
+    <PageContent>
+      <HeroHeader />
+      <HeroBio />
+      <Separator className="bg-border/50" />
+      <SocialNav />
+      <Separator className="bg-border/50" />
+      <Suspense fallback={<FeaturedProjectsSkeleton />}>
+        <FeaturedProjectsLoader />
+      </Suspense>
+      <HeroQuote />
+    </PageContent>
   );
 }`;
 

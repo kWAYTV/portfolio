@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { getTranslations, setRequestLocale } from "next-intl/server";
+import { Suspense } from "react";
 import { BlogCard } from "@/components/blog/blog-card";
 import { BlogHeader } from "@/components/blog/blog-header";
 import { CodeView } from "@/components/ide/editor/code-view";
@@ -23,7 +24,7 @@ export async function generateMetadata({
   };
 }
 
-export default async function BlogPage({
+async function BlogPosts({
   params,
   searchParams,
 }: {
@@ -51,46 +52,77 @@ export default async function BlogPage({
 
   const t = await getTranslations({ locale, namespace: "blog" });
 
+  if (allPosts.length === 0) {
+    return (
+      <p className="text-muted-foreground/60 text-xs sm:text-sm">
+        {t("noPosts")}
+      </p>
+    );
+  }
+
+  return (
+    <>
+      <p className="text-[11px] text-muted-foreground/60">
+        {t("postCount", { count: allPosts.length })}
+      </p>
+
+      <div className="space-y-1">
+        {posts.map((post) => {
+          const data = post.data as unknown as {
+            title: string;
+            description?: string;
+            author: string;
+            date: string;
+          };
+          return (
+            <BlogCard
+              date={data.date}
+              description={data.description}
+              key={post.url}
+              locale={locale}
+              title={data.title}
+              url={post.url}
+            />
+          );
+        })}
+      </div>
+
+      <Pagination currentPage={page} totalPages={totalPages} />
+    </>
+  );
+}
+
+function BlogFallback() {
+  return (
+    <div className="space-y-3">
+      <div className="h-3 w-24 animate-pulse rounded bg-muted/50" />
+      <div className="space-y-1">
+        {[1, 2, 3].map((i) => (
+          <div className="h-14 animate-pulse rounded-md bg-muted/30" key={i} />
+        ))}
+      </div>
+    </div>
+  );
+}
+
+export default async function BlogPage({
+  params,
+  searchParams,
+}: {
+  params: Promise<{ locale: string }>;
+  searchParams: Promise<{ page?: string }>;
+}) {
+  const { locale } = await params;
+  setRequestLocale(locale);
+
   return (
     <EditorContent
       preview={
         <PageContent>
           <BlogHeader />
-
-          {allPosts.length === 0 ? (
-            <p className="text-muted-foreground/60 text-xs sm:text-sm">
-              {t("noPosts")}
-            </p>
-          ) : (
-            <div className="space-y-3">
-              <p className="text-[11px] text-muted-foreground/60">
-                {t("postCount", { count: allPosts.length })}
-              </p>
-
-              <div className="space-y-1">
-                {posts.map((post) => {
-                  const data = post.data as unknown as {
-                    title: string;
-                    description?: string;
-                    author: string;
-                    date: string;
-                  };
-                  return (
-                    <BlogCard
-                      date={data.date}
-                      description={data.description}
-                      key={post.url}
-                      locale={locale}
-                      title={data.title}
-                      url={post.url}
-                    />
-                  );
-                })}
-              </div>
-
-              <Pagination currentPage={page} totalPages={totalPages} />
-            </div>
-          )}
+          <Suspense fallback={<BlogFallback />}>
+            <BlogPosts params={params} searchParams={searchParams} />
+          </Suspense>
         </PageContent>
       }
       source={<CodeView code={blogCode} lang="tsx" />}
