@@ -5,15 +5,18 @@ import { useTranslations } from "next-intl";
 import { CollapsibleSection } from "@/components/ide/sidebar/collapsible-section";
 import { CommitHistoryItem } from "@/components/ide/sidebar/commit-history-item";
 import { Button } from "@/components/ui/button";
-import { MOCK_COMMITS, REPO_URL } from "@/consts/ide-constants";
+import type { Commit } from "@/consts/ide-constants";
+import { REPO_URL } from "@/consts/ide-constants";
 import { cn } from "@/lib/utils";
 
 interface SourceControlViewProps {
+  commits: Commit[];
   fullWidth?: boolean;
   onClose?: () => void;
 }
 
 export function SourceControlView({
+  commits,
   fullWidth = false,
   onClose,
 }: SourceControlViewProps) {
@@ -125,9 +128,15 @@ export function SourceControlView({
         <div className="border-border border-t px-2 py-1">
           <CollapsibleSection defaultOpen title={t("commitHistory")}>
             <div className="max-h-32 space-y-0.5 overflow-y-auto py-1">
-              {MOCK_COMMITS.map((commit) => (
-                <CommitHistoryItem commit={commit} key={commit.sha} />
-              ))}
+              {commits.length === 0 ? (
+                <p className="px-2 py-1.5 text-[11px] text-muted-foreground">
+                  {t("noChanges")}
+                </p>
+              ) : (
+                commits.map((commit) => (
+                  <CommitHistoryItem commit={commit} key={commit.sha} />
+                ))
+              )}
             </div>
           </CollapsibleSection>
         </div>

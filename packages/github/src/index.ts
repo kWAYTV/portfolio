@@ -1,28 +1,43 @@
-import type { Octokit } from "@octokit/rest";
+import type {
+  GetGitHubCommitsOptions,
+  GetGitHubReposOptions,
+  GitHubCommit,
+  GitHubRepo,
+} from "./types.js";
 
-export type { Octokit } from "@octokit/rest";
+export type {
+  GetGitHubCommitsOptions,
+  GetGitHubReposOptions,
+  GitHubCommit,
+  GitHubRepo,
+  Octokit,
+} from "./types.js";
 
-export interface GitHubRepo {
-  archived: boolean;
-  created_at: string;
-  description: string | null;
-  fork: boolean;
-  forks_count: number;
-  full_name: string;
-  homepage: string | null;
-  html_url: string;
-  id: number;
-  language: string | null;
-  name: string;
-  pushed_at: string;
-  stargazers_count: number;
-  topics: string[];
-}
+export async function getGitHubCommits({
+  octokit,
+  owner,
+  repo,
+  perPage = 10,
+}: GetGitHubCommitsOptions): Promise<GitHubCommit[]> {
+  const { data } = await octokit.repos.listCommits({
+    owner,
+    page: 1,
+    per_page: perPage,
+    repo,
+  });
 
-export interface GetGitHubReposOptions {
-  extraRepos?: ReadonlyArray<{ owner: string; repo: string }>;
-  octokit: Octokit;
-  username: string;
+  return data.map((c) => {
+    const author = c.commit?.author?.name ?? c.author?.login ?? "Unknown";
+    const date = c.commit?.author?.date
+      ? new Date(c.commit.author.date).toISOString()
+      : "";
+    return {
+      author,
+      date,
+      message: (c.commit?.message ?? "").split("\n")[0] ?? "",
+      sha: c.sha ?? "",
+    };
+  });
 }
 
 export async function getGitHubRepos({

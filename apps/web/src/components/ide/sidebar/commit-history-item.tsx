@@ -1,21 +1,25 @@
 "use client";
 
 import { GitBranch, Github } from "lucide-react";
-import { useTranslations } from "next-intl";
+import { useLocale, useTranslations } from "next-intl";
 import {
   HoverCard,
   HoverCardContent,
   HoverCardTrigger,
 } from "@/components/ui/hover-card";
-import { type MockCommit, REPO_URL } from "@/consts/ide-constants";
-import { cn } from "@/lib/utils";
+import type { Commit } from "@/consts/ide-constants";
+import { REPO_URL } from "@/consts/ide-constants";
+import { cn, formatRelativeDate } from "@/lib/utils";
 
 interface CommitHistoryItemProps {
-  commit: MockCommit;
+  commit: Commit;
 }
 
 export function CommitHistoryItem({ commit }: CommitHistoryItemProps) {
   const t = useTranslations("ide");
+  const locale = useLocale();
+  const dateRelative = formatRelativeDate(commit.date, locale);
+  const shaShort = commit.sha.slice(0, 7);
 
   return (
     <HoverCard closeDelay={100} openDelay={150}>
@@ -33,7 +37,7 @@ export function CommitHistoryItem({ commit }: CommitHistoryItemProps) {
             {commit.message}
           </p>
           <p className="mt-0.5 truncate text-[10px] text-muted-foreground">
-            {commit.sha} · {commit.author} · {commit.date}
+            {shaShort} · {commit.author} · {dateRelative}
           </p>
         </a>
       </HoverCardTrigger>
@@ -44,7 +48,7 @@ export function CommitHistoryItem({ commit }: CommitHistoryItemProps) {
       >
         <div className="space-y-2.5">
           <p className="text-[11px] text-muted-foreground">
-            {commit.author} · {commit.date}
+            {commit.author} · {dateRelative}
           </p>
           <p className="text-[13px] text-popover-foreground leading-snug">
             {commit.message}
@@ -72,7 +76,7 @@ export function CommitHistoryItem({ commit }: CommitHistoryItemProps) {
             target="_blank"
           >
             <Github className="size-3.5" />
-            {commit.sha} · {t("viewOnGitHub")}
+            {shaShort} · {t("viewOnGitHub")}
           </a>
         </div>
       </HoverCardContent>
