@@ -29,6 +29,7 @@ export const StatusBar = memo(function StatusBar({
   onFocusSourceControl,
 }: StatusBarProps) {
   const t = useTranslations("ide");
+  const tTheme = useTranslations("theme");
   const terminalOpen = useIdeStore((s) => s.terminalOpen);
   const toggleTerminal = useIdeStore((s) => s.toggleTerminal);
   const { resolvedTheme } = useTheme();
@@ -153,7 +154,7 @@ export const StatusBar = memo(function StatusBar({
                   <Moon className="size-3.5 shrink-0" />
                 )}
                 <span className="hidden sm:inline">
-                  {isDark ? t("darkTheme") : t("lightTheme")}
+                  {isDark ? tTheme("dark") : tTheme("light")}
                 </span>
               </button>
             </TooltipTrigger>
