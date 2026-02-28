@@ -21,11 +21,13 @@ import {
 import { IDE_DROPDOWN_CONTENT_CLASS } from "@/lib/ide-dropdown";
 import { cn } from "@/lib/utils";
 import { updateLocale } from "@/modules/i18n/lib/update-locale";
+import { useLocalePathname } from "@/modules/i18n/routing";
 
 const locales = Object.keys(config.locales) as Locale[];
 
 export function LocaleSwitcher() {
   const locale = useLocale() as Locale;
+  const pathname = useLocalePathname();
   const t = useTranslations("localeSwitcher");
 
   return (
@@ -54,7 +56,7 @@ export function LocaleSwitcher() {
           <DropdownMenuLabel>{t("selectLanguage")}</DropdownMenuLabel>
           <DropdownMenuSeparator />
           <DropdownMenuRadioGroup
-            onValueChange={(value) => updateLocale(value as Locale)}
+            onValueChange={(value) => updateLocale(value as Locale, pathname)}
             value={locale}
           >
             {locales.map((loc) => (
