@@ -223,7 +223,7 @@ export function SourceControlView({
               </a>
             </TooltipTrigger>
             <TooltipContent>
-              <p>{t("openRepo")}</p>
+              <p>{t("viewOnGitHub")}</p>
             </TooltipContent>
           </Tooltip>
         </div>

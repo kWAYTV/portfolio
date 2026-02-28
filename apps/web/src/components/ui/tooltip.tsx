@@ -30,8 +30,7 @@ function TooltipContent({
     <TooltipPrimitive.Portal>
       <TooltipPrimitive.Content
         className={cn(
-          "z-50 overflow-hidden rounded-none border border-border bg-popover px-2 py-1.5 text-popover-foreground text-xs shadow-md",
-          "data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0 data-[state=closed]:zoom-out-95 data-[state=open]:zoom-in-95 duration-100",
+          "z-50 overflow-hidden rounded-md border border-border bg-popover px-3 py-1.5 text-sm text-popover-foreground shadow-md",
           className
         )}
         data-slot="tooltip-content"

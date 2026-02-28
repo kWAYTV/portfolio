@@ -152,6 +152,9 @@ export const StatusBar = memo(function StatusBar({
                 ) : (
                   <Moon className="size-3.5 shrink-0" />
                 )}
+                <span className="hidden sm:inline">
+                  {isDark ? t("darkTheme") : t("lightTheme")}
+                </span>
               </button>
             </TooltipTrigger>
             <TooltipContent>
