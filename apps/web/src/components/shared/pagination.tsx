@@ -5,20 +5,29 @@ import { useTranslations } from "next-intl";
 import { LocaleLink } from "@/modules/i18n/routing";
 
 interface PaginationProps {
+  basePath?: string;
   currentPage: number;
   totalPages: number;
 }
 
-export function Pagination({ currentPage, totalPages }: PaginationProps) {
+function pageHref(basePath: string, page: number): string {
+  return page === 1 ? basePath : `${basePath}/page/${page}`;
+}
+
+export function Pagination({
+  basePath = "/blog",
+  currentPage,
+  totalPages,
+}: PaginationProps) {
   const t = useTranslations("blog");
 
   if (totalPages <= 1) {
     return null;
   }
 
-  const prevHref = currentPage > 1 ? `/blog?page=${currentPage - 1}` : null;
+  const prevHref = currentPage > 1 ? pageHref(basePath, currentPage - 1) : null;
   const nextHref =
-    currentPage < totalPages ? `/blog?page=${currentPage + 1}` : null;
+    currentPage < totalPages ? pageHref(basePath, currentPage + 1) : null;
 
   return (
     <div className="flex items-center justify-center gap-3 pt-2 sm:gap-4">

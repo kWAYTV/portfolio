@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { notFound } from "next/navigation";
 import { getTranslations, setRequestLocale } from "next-intl/server";
 import { BlogCard } from "@/components/blog/blog-card";
 import { BlogHeader } from "@/components/blog/blog-header";
@@ -14,7 +15,7 @@ const POSTS_PER_PAGE = 12;
 export async function generateMetadata({
   params,
 }: {
-  params: Promise<{ locale: string }>;
+  params: Promise<{ locale: string; num: string }>;
 }): Promise<Metadata> {
   const { locale } = await params;
   const t = await getTranslations({ locale, namespace: "blog" });
@@ -23,13 +24,32 @@ export async function generateMetadata({
   };
 }
 
-export default async function BlogPage({
+export function generateStaticParams(): { locale: string; num: string }[] {
+  const locales = ["en", "es"] as const;
+  const params: { locale: string; num: string }[] = [];
+  for (const locale of locales) {
+    const blog = getBlog(locale);
+    const allPosts = blog.getPages();
+    const totalPages = Math.max(1, Math.ceil(allPosts.length / POSTS_PER_PAGE));
+    for (let page = 2; page <= totalPages; page++) {
+      params.push({ locale, num: String(page) });
+    }
+  }
+  return params;
+}
+
+export default async function BlogPageNum({
   params,
 }: {
-  params: Promise<{ locale: string }>;
+  params: Promise<{ locale: string; num: string }>;
 }) {
-  const { locale } = await params;
+  const { locale, num } = await params;
   setRequestLocale(locale);
+
+  const page = Math.max(1, Number.parseInt(num, 10) || 1);
+  if (page === 1) {
+    notFound();
+  }
 
   const blog = getBlog(locale);
   const allPosts = blog.getPages().sort((a, b) => {
@@ -39,25 +59,13 @@ export default async function BlogPage({
   });
 
   const totalPages = Math.max(1, Math.ceil(allPosts.length / POSTS_PER_PAGE));
-  const start = 0;
+  if (page > totalPages) {
+    notFound();
+  }
+
+  const start = (page - 1) * POSTS_PER_PAGE;
   const posts = allPosts.slice(start, start + POSTS_PER_PAGE);
   const t = await getTranslations({ locale, namespace: "blog" });
-
-  if (allPosts.length === 0) {
-    return (
-      <EditorContent
-        preview={
-          <PageContent>
-            <BlogHeader />
-            <p className="text-muted-foreground/60 text-xs sm:text-sm">
-              {t("noPosts")}
-            </p>
-          </PageContent>
-        }
-        source={<CodeView code={blogCode} lang="tsx" />}
-      />
-    );
-  }
 
   return (
     <EditorContent
@@ -89,7 +97,7 @@ export default async function BlogPage({
           </div>
           <Pagination
             basePath="/blog"
-            currentPage={1}
+            currentPage={page}
             totalPages={totalPages}
           />
         </PageContent>
