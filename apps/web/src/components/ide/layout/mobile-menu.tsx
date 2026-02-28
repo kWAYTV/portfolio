@@ -11,7 +11,7 @@ import {
 import { useState } from "react";
 import { navItems } from "@/components/ide/config";
 import { LocaleSwitcher } from "@/components/internationalization/locale-switcher";
-import { ModeToggle } from "@/components/shared/mode-toggle";
+import { ThemeToggle } from "@/components/theming/theme-toggle";
 import {
   Sheet,
   SheetContent,
@@ -97,7 +97,7 @@ export function MobileMenu({ pathname }: MobileMenuProps) {
             <LocaleSwitcher />
           </div>
           <div className="px-4 py-3">
-            <ModeToggle />
+            <ThemeToggle />
           </div>
         </div>
       </SheetContent>
