@@ -7,12 +7,12 @@ export const env = createEnv({
 
   server: {
     GITHUB_TOKEN: z.string().optional(),
-    UMAMI_WEBSITE_ID: z.string().optional(),
   },
 
   client: {
     NEXT_PUBLIC_SITE_URL: z.string().url(),
     NEXT_PUBLIC_UMAMI_URL: z.string().url().optional(),
+    NEXT_PUBLIC_UMAMI_WEBSITE_ID: z.string().optional(),
   },
 
   shared: {
@@ -22,7 +22,7 @@ export const env = createEnv({
 
   runtimeEnv: {
     GITHUB_TOKEN: process.env.GITHUB_TOKEN,
-    UMAMI_WEBSITE_ID: process.env.UMAMI_WEBSITE_ID,
+    NEXT_PUBLIC_UMAMI_WEBSITE_ID: process.env.UMAMI_WEBSITE_ID,
     NEXT_PUBLIC_SITE_URL: process.env.NEXT_PUBLIC_SITE_URL,
     NEXT_PUBLIC_UMAMI_URL: process.env.NEXT_PUBLIC_UMAMI_URL,
     NEXT_TELEMETRY_DISABLED: process.env.NEXT_TELEMETRY_DISABLED,

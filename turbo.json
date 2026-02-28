@@ -2,7 +2,7 @@
   "$schema": "https://turbo.build/schema.json",
   "globalPassThroughEnv": [
     "TURBO_TELEMETRY_DISABLED",
-    "UMAMI_WEBSITE_ID",
+    "NEXT_PUBLIC_UMAMI_WEBSITE_ID",
     "GITHUB_TOKEN"
   ],
   "ui": "tui",
