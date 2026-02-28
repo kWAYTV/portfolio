@@ -40,8 +40,7 @@ export function IdeLayout({ children }: IdeLayoutProps) {
   const handleMinimize = () => {
     if (isFullscreen) {
       exitFullscreen();
-    }
-    if (sidebarOpen) {
+    } else if (sidebarOpen) {
       toggleSidebar();
     }
   };
