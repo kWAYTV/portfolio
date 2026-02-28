@@ -5,6 +5,11 @@ import { CSS } from "@dnd-kit/utilities";
 import { X } from "lucide-react";
 import { useTranslations } from "next-intl";
 import { FileIcon } from "@/components/ide/sidebar/file-icon";
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipTrigger,
+} from "@/components/ui/tooltip";
 import { cn } from "@/lib/utils";
 import { LocaleLink } from "@/modules/i18n/routing";
 
@@ -77,24 +82,31 @@ export function EditorTabItem({
           <span className="truncate">{fileName}</span>
         </LocaleLink>
       </div>
-      <button
-        aria-label={t("closeTab", { fileName })}
-        className={cn(
-          "flex size-5 shrink-0 touch-manipulation items-center justify-center rounded-sm transition-colors",
-          "opacity-100 md:opacity-0 md:group-hover:opacity-100",
-          active && "md:opacity-100",
-          active
-            ? "text-foreground hover:bg-foreground/5"
-            : "text-muted-foreground hover:bg-foreground/5"
-        )}
-        onClick={(e) => {
-          e.stopPropagation();
-          onClose();
-        }}
-        type="button"
-      >
-        <X className="size-3.5" />
-      </button>
+      <Tooltip>
+        <TooltipTrigger asChild>
+          <button
+            aria-label={t("closeTab", { fileName })}
+            className={cn(
+              "flex size-5 shrink-0 touch-manipulation items-center justify-center rounded-sm transition-colors",
+              "opacity-100 md:opacity-0 md:group-hover:opacity-100",
+              active && "md:opacity-100",
+              active
+                ? "text-foreground hover:bg-foreground/5"
+                : "text-muted-foreground hover:bg-foreground/5"
+            )}
+            onClick={(e) => {
+              e.stopPropagation();
+              onClose();
+            }}
+            type="button"
+          >
+            <X className="size-3.5" />
+          </button>
+        </TooltipTrigger>
+        <TooltipContent>
+          <p>{t("closeTab", { fileName })}</p>
+        </TooltipContent>
+      </Tooltip>
     </div>
   );
 }
@@ -136,24 +148,31 @@ export function EditorTabItemStatic({
           <span className="truncate">{fileName}</span>
         </LocaleLink>
       </div>
-      <button
-        aria-label={t("closeTab", { fileName })}
-        className={cn(
-          "flex size-5 shrink-0 touch-manipulation items-center justify-center rounded-sm transition-colors",
-          "opacity-100 md:opacity-0 md:group-hover:opacity-100",
-          active && "md:opacity-100",
-          active
-            ? "text-foreground hover:bg-foreground/5"
-            : "text-muted-foreground hover:bg-foreground/5"
-        )}
-        onClick={(e) => {
-          e.stopPropagation();
-          onClose();
-        }}
-        type="button"
-      >
-        <X className="size-3.5" />
-      </button>
+      <Tooltip>
+        <TooltipTrigger asChild>
+          <button
+            aria-label={t("closeTab", { fileName })}
+            className={cn(
+              "flex size-5 shrink-0 touch-manipulation items-center justify-center rounded-sm transition-colors",
+              "opacity-100 md:opacity-0 md:group-hover:opacity-100",
+              active && "md:opacity-100",
+              active
+                ? "text-foreground hover:bg-foreground/5"
+                : "text-muted-foreground hover:bg-foreground/5"
+            )}
+            onClick={(e) => {
+              e.stopPropagation();
+              onClose();
+            }}
+            type="button"
+          >
+            <X className="size-3.5" />
+          </button>
+        </TooltipTrigger>
+        <TooltipContent>
+          <p>{t("closeTab", { fileName })}</p>
+        </TooltipContent>
+      </Tooltip>
     </div>
   );
 }

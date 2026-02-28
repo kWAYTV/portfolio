@@ -4,6 +4,11 @@ import { GripHorizontal, PanelBottomClose, Play, Terminal } from "lucide-react";
 import { useTranslations } from "next-intl";
 import { useCallback, useEffect, useRef, useState } from "react";
 import { MockTerminal } from "@/components/ide/terminal/mock-terminal";
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipTrigger,
+} from "@/components/ui/tooltip";
 import { cn } from "@/lib/utils";
 import { useIdeStore } from "@/stores/ide-store";
 
@@ -68,33 +73,40 @@ export function TerminalPanel() {
       ref={panelRef}
       style={{ height: `${height}px`, minHeight: MIN_HEIGHT }}
     >
-      {/* biome-ignore lint/a11y/useSemanticElements: resize handle needs div for grip icon */}
-      <div
-        aria-label={t("resizeTerminal")}
-        aria-orientation="horizontal"
-        aria-valuemax={MAX_HEIGHT}
-        aria-valuemin={MIN_HEIGHT}
-        aria-valuenow={height}
-        className={cn(
-          "z-10 -my-2 flex min-h-[8px] items-center justify-center py-0.5 transition-colors duration-150",
-          showResizeHandle
-            ? "cursor-ns-resize border-border border-y bg-muted/60"
-            : "cursor-default border-transparent bg-transparent",
-          isDragging && "bg-muted/80"
-        )}
-        onMouseDown={handleMouseDown}
-        onMouseEnter={() => setIsHoveringResize(true)}
-        onMouseLeave={() => setIsHoveringResize(false)}
-        role="separator"
-        tabIndex={0}
-      >
-        <GripHorizontal
-          className={cn(
-            "size-3.5 text-muted-foreground transition-opacity duration-150",
-            showResizeHandle ? "opacity-100" : "opacity-0"
-          )}
-        />
-      </div>
+      <Tooltip>
+        <TooltipTrigger asChild>
+          {/* biome-ignore lint/a11y/useSemanticElements: resize handle needs div for grip icon */}
+          <div
+            aria-label={t("resizeTerminal")}
+            aria-orientation="horizontal"
+            aria-valuemax={MAX_HEIGHT}
+            aria-valuemin={MIN_HEIGHT}
+            aria-valuenow={height}
+            className={cn(
+              "z-10 -my-2 flex min-h-[8px] items-center justify-center py-0.5 transition-colors duration-150",
+              showResizeHandle
+                ? "cursor-ns-resize border-border border-y bg-muted/60"
+                : "cursor-default border-transparent bg-transparent",
+              isDragging && "bg-muted/80"
+            )}
+            onMouseDown={handleMouseDown}
+            onMouseEnter={() => setIsHoveringResize(true)}
+            onMouseLeave={() => setIsHoveringResize(false)}
+            role="separator"
+            tabIndex={0}
+          >
+            <GripHorizontal
+              className={cn(
+                "size-3.5 text-muted-foreground transition-opacity duration-150",
+                showResizeHandle ? "opacity-100" : "opacity-0"
+              )}
+            />
+          </div>
+        </TooltipTrigger>
+        <TooltipContent>
+          <p>{t("resizeTerminal")}</p>
+        </TooltipContent>
+      </Tooltip>
       <div className="flex h-8 shrink-0 items-center justify-between border-border border-b bg-muted/50 px-2 shadow-(--shadow-elevation-sm)">
         <div className="flex items-center gap-2">
           <Terminal className="size-4 text-muted-foreground" />
@@ -103,32 +115,44 @@ export function TerminalPanel() {
           </span>
         </div>
         <div className="flex items-center gap-0.5">
-          <button
-            aria-label={t("openPreview")}
-            className="flex size-6 cursor-pointer items-center justify-center rounded text-muted-foreground transition-colors hover:bg-muted hover:text-foreground"
-            onClick={() =>
-              window
-                .open(
-                  window.location.href,
-                  "_blank",
-                  "noopener,noreferrer,width=1200,height=800"
-                )
-                ?.focus()
-            }
-            title={t("openPreview")}
-            type="button"
-          >
-            <Play className="size-4" />
-          </button>
-          <button
-            aria-label={t("closePanel")}
-            className="flex size-6 cursor-pointer items-center justify-center rounded text-muted-foreground transition-colors hover:bg-muted hover:text-foreground"
-            onClick={toggleTerminal}
-            title={t("closePanel")}
-            type="button"
-          >
-            <PanelBottomClose className="size-4" />
-          </button>
+          <Tooltip>
+            <TooltipTrigger asChild>
+              <button
+                aria-label={t("openPreview")}
+                className="flex size-6 cursor-pointer items-center justify-center rounded text-muted-foreground transition-colors hover:bg-muted hover:text-foreground"
+                onClick={() =>
+                  window
+                    .open(
+                      window.location.href,
+                      "_blank",
+                      "noopener,noreferrer,width=1200,height=800"
+                    )
+                    ?.focus()
+                }
+                type="button"
+              >
+                <Play className="size-4" />
+              </button>
+            </TooltipTrigger>
+            <TooltipContent>
+              <p>{t("openPreview")}</p>
+            </TooltipContent>
+          </Tooltip>
+          <Tooltip>
+            <TooltipTrigger asChild>
+              <button
+                aria-label={t("closePanel")}
+                className="flex size-6 cursor-pointer items-center justify-center rounded text-muted-foreground transition-colors hover:bg-muted hover:text-foreground"
+                onClick={toggleTerminal}
+                type="button"
+              >
+                <PanelBottomClose className="size-4" />
+              </button>
+            </TooltipTrigger>
+            <TooltipContent>
+              <p>{t("closePanel")}</p>
+            </TooltipContent>
+          </Tooltip>
         </div>
       </div>
       <div className="terminal-viewport min-h-0 flex-1 overflow-hidden bg-muted/30 shadow-(--shadow-inset-recess)">

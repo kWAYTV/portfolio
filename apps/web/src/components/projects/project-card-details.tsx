@@ -4,6 +4,11 @@ import type { GitHubRepo } from "@repo/github";
 import { ExternalLink, GitFork, Star } from "lucide-react";
 import { useTranslations } from "next-intl";
 import { memo } from "react";
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipTrigger,
+} from "@/components/ui/tooltip";
 import { languageColors } from "@/consts/language-colors";
 import { cn } from "@/lib/utils";
 
@@ -24,15 +29,22 @@ function ProjectCardDetailsInner({
         <h4 className="min-w-0 flex-1 font-medium text-foreground text-sm leading-tight">
           {repo.name}
         </h4>
-        <a
-          aria-label={t("openRepoOnGitHub", { name: repo.name })}
-          className="shrink-0 rounded p-1 text-muted-foreground/60 transition-colors hover:bg-muted/50 hover:text-foreground"
-          href={repo.html_url}
-          rel="noopener noreferrer"
-          target="_blank"
-        >
-          <ExternalLink className="size-3.5" />
-        </a>
+        <Tooltip>
+          <TooltipTrigger asChild>
+            <a
+              aria-label={t("openRepoOnGitHub", { name: repo.name })}
+              className="shrink-0 rounded p-1 text-muted-foreground/60 transition-colors hover:bg-muted/50 hover:text-foreground"
+              href={repo.html_url}
+              rel="noopener noreferrer"
+              target="_blank"
+            >
+              <ExternalLink className="size-3.5" />
+            </a>
+          </TooltipTrigger>
+          <TooltipContent>
+            <p>{t("openRepoOnGitHub", { name: repo.name })}</p>
+          </TooltipContent>
+        </Tooltip>
       </div>
       {/* Description */}
       <div className="border-border border-b px-3 py-2">
