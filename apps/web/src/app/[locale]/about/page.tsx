@@ -1,7 +1,25 @@
-import { setRequestLocale } from "next-intl/server";
+import type { Metadata } from "next";
+import { getTranslations, setRequestLocale } from "next-intl/server";
+import { AboutBio } from "@/components/about/about-bio";
+import { AboutHeader } from "@/components/about/about-header";
+import { ExperienceTimeline } from "@/components/about/experience-timeline";
 import { CodeView } from "@/components/ide/editor/code-view";
 import { EditorContent } from "@/components/ide/editor/editor-content";
+import { PageContent } from "@/components/shared/page-content";
 import { aboutCode } from "@/consts/code-content";
+
+export async function generateMetadata({
+  params,
+}: {
+  params: Promise<{ locale: string }>;
+}): Promise<Metadata> {
+  const { locale } = await params;
+  const t = await getTranslations({ locale, namespace: "about" });
+  return {
+    title: `${t("title")} | Martin Vila`,
+    description: t("subtitle"),
+  };
+}
 
 export default async function AboutPage({
   params,
@@ -14,9 +32,11 @@ export default async function AboutPage({
   return (
     <EditorContent
       preview={
-        <main className="flex min-h-full items-center justify-center p-8">
-          <p>About</p>
-        </main>
+        <PageContent>
+          <AboutHeader />
+          <AboutBio />
+          <ExperienceTimeline />
+        </PageContent>
       }
       source={<CodeView code={aboutCode} lang="markdown" />}
     />
