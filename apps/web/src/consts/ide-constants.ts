@@ -1,4 +1,4 @@
-export const REPO_URL = "https://github.com/kWAYTV/ide-portfolio";
+export const REPO_URL = "https://github.com/kWAYTV/portfolio";
 
 /** Commit from GitHub API (matches GitHubCommit from @repo/github) */
 export interface Commit {

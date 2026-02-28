@@ -9,7 +9,7 @@ import {
 import { unstable_cache } from "next/cache";
 
 const REPO_OWNER = "kWAYTV";
-const REPO_NAME = "ide-portfolio";
+const REPO_NAME = "portfolio";
 
 async function fetchGitHubRepos(): Promise<
   Awaited<ReturnType<typeof getRepos>>
