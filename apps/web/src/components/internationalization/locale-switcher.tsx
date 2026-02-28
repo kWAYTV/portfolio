@@ -3,6 +3,7 @@
 import { config, type Locale, localeToFlagEmoji } from "@repo/i18n/config";
 import { Languages } from "lucide-react";
 import { useLocale, useTranslations } from "next-intl";
+import { useState } from "react";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -29,9 +30,15 @@ export function LocaleSwitcher() {
   const locale = useLocale() as Locale;
   const pathname = useLocalePathname();
   const t = useTranslations("localeSwitcher");
+  const [open, setOpen] = useState(false);
+
+  const handleLocaleChange = (value: Locale) => {
+    setOpen(false);
+    updateLocale(value, pathname);
+  };
 
   return (
-    <DropdownMenu>
+    <DropdownMenu open={open} onOpenChange={setOpen}>
       <Tooltip>
         <TooltipTrigger asChild>
           <DropdownMenuTrigger
@@ -56,7 +63,7 @@ export function LocaleSwitcher() {
           <DropdownMenuLabel>{t("selectLanguage")}</DropdownMenuLabel>
           <DropdownMenuSeparator />
           <DropdownMenuRadioGroup
-            onValueChange={(value) => updateLocale(value as Locale, pathname)}
+            onValueChange={(value) => handleLocaleChange(value as Locale)}
             value={locale}
           >
             {locales.map((loc) => (
