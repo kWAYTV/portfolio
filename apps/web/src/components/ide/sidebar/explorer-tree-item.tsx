@@ -74,7 +74,7 @@ export function ExplorerTreeItem({
               <span className="ml-1 truncate">{item.name}</span>
             </button>
           </ContextMenuTrigger>
-          <ContextMenuContent className="w-44 rounded-sm border border-border bg-popover p-0.5">
+          <ContextMenuContent className="w-36 rounded-sm border border-border bg-popover p-0.5">
             <ContextMenuItem onClick={expandAll}>
               {t("expandAll")}
             </ContextMenuItem>
@@ -136,7 +136,7 @@ export function ExplorerTreeItem({
             {content}
           </LocaleLink>
         </ContextMenuTrigger>
-        <ContextMenuContent className="w-44 rounded-sm border border-border bg-popover p-0.5">
+        <ContextMenuContent className="w-36 rounded-sm border border-border bg-popover p-0.5">
           <ContextMenuItem onClick={() => onOpenTab?.(href)}>
             {t("open")}
           </ContextMenuItem>
@@ -157,7 +157,7 @@ export function ExplorerTreeItem({
       <ContextMenuTrigger asChild>
         <div>{content}</div>
       </ContextMenuTrigger>
-      <ContextMenuContent className="w-44 rounded-sm border border-border bg-popover p-0.5">
+      <ContextMenuContent className="w-36 rounded-sm border border-border bg-popover p-0.5">
         <ContextMenuItem onClick={() => copyPath(key)}>
           {t("copyPath")}
         </ContextMenuItem>

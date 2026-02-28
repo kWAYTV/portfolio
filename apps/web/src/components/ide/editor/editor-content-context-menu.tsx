@@ -29,11 +29,11 @@ export function EditorContentContextMenu({
   return (
     <ContextMenu>
       <ContextMenuTrigger asChild>{children}</ContextMenuTrigger>
-      <ContextMenuContent className="w-44 rounded-sm border border-border bg-popover p-0.5">
+      <ContextMenuContent className="w-36 rounded-sm border border-border bg-popover p-0.5">
         {onCopy && (
           <>
             <ContextMenuItem onClick={onCopy}>
-              <Copy className="mr-2 size-3.5" />
+              <Copy className="mr-1.5 size-3.5" />
               {t("copyContent")}
             </ContextMenuItem>
             <ContextMenuSeparator />
@@ -43,14 +43,14 @@ export function EditorContentContextMenu({
           className={viewMode === "preview" ? "bg-muted/50" : undefined}
           onClick={() => onViewModeChange("preview")}
         >
-          <Eye className="size-4" />
+          <Eye className="size-3.5" />
           {t("preview")}
         </ContextMenuItem>
         <ContextMenuItem
           className={viewMode === "code" ? "bg-muted/50" : undefined}
           onClick={() => onViewModeChange("code")}
         >
-          <Code className="size-4" />
+          <Code className="size-3.5" />
           {t("source")}
         </ContextMenuItem>
       </ContextMenuContent>

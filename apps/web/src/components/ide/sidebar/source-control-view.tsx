@@ -25,6 +25,7 @@ import {
 } from "@/components/ui/dropdown-menu";
 import type { Commit } from "@/consts/ide-constants";
 import { REPO_URL } from "@/consts/ide-constants";
+import { IDE_DROPDOWN_CONTENT_CLASS } from "@/lib/ide-dropdown";
 import { cn } from "@/lib/utils";
 
 interface SourceControlViewProps {
@@ -63,9 +64,12 @@ export function SourceControlView({
             >
               <MoreHorizontal className="size-3.5" />
             </DropdownMenuTrigger>
-            <DropdownMenuContent align="end" className="w-48">
+            <DropdownMenuContent
+              align="end"
+              className={cn(IDE_DROPDOWN_CONTENT_CLASS, "w-36")}
+            >
               <a
-                className="flex cursor-pointer items-center gap-2 px-2 py-2 text-xs outline-hidden hover:bg-accent hover:text-accent-foreground focus:bg-accent focus:text-accent-foreground [&_svg]:size-3.5 [&_svg]:shrink-0"
+                className="flex cursor-pointer items-center gap-1.5 px-2 py-1 text-xs outline-hidden hover:bg-sidebar-accent hover:text-sidebar-accent-foreground focus:bg-sidebar-accent focus:text-sidebar-accent-foreground [&_svg]:size-3.5 [&_svg]:shrink-0"
                 href={REPO_URL}
                 onClick={() => setMenuOpen(false)}
                 rel="noopener noreferrer"

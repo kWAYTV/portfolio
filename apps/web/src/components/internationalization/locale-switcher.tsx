@@ -13,6 +13,8 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
+import { IDE_DROPDOWN_CONTENT_CLASS } from "@/lib/ide-dropdown";
+import { cn } from "@/lib/utils";
 import { updateLocale } from "@/modules/i18n/lib/update-locale";
 
 const locales = Object.keys(config.locales) as Locale[];
@@ -30,7 +32,10 @@ export function LocaleSwitcher() {
         <Languages className="size-3.5 shrink-0" />
         <span className="hidden sm:inline">{config.locales[locale].label}</span>
       </DropdownMenuTrigger>
-      <DropdownMenuContent align="end" className="w-40">
+      <DropdownMenuContent
+        align="end"
+        className={cn(IDE_DROPDOWN_CONTENT_CLASS, "w-32")}
+      >
         <DropdownMenuGroup>
           <DropdownMenuLabel>{t("selectLanguage")}</DropdownMenuLabel>
           <DropdownMenuSeparator />

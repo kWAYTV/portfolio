@@ -1,14 +1,11 @@
 "use client";
 
-import { GitBranch, PanelLeft, Settings, Terminal } from "lucide-react";
+import { GitBranch, PanelLeft, Terminal } from "lucide-react";
 import { ActivityBarButton } from "@/components/ide/layout/activity-bar-button";
+import { SettingsMenu } from "@/components/ide/layout/settings-menu";
 import { useIdeStore } from "@/stores/ide-store";
 
-interface ActivityBarProps {
-  onOpenSettings?: () => void;
-}
-
-export function ActivityBar({ onOpenSettings }: ActivityBarProps) {
+export function ActivityBar() {
   const sidebarOpen = useIdeStore((s) => s.sidebarOpen);
   const sidebarView = useIdeStore((s) => s.sidebarView);
   const terminalOpen = useIdeStore((s) => s.terminalOpen);
@@ -47,11 +44,7 @@ export function ActivityBar({ onOpenSettings }: ActivityBarProps) {
         tooltip="Terminal"
       />
       <div className="mt-auto">
-        <ActivityBarButton
-          icon={Settings}
-          onClick={() => onOpenSettings?.()}
-          tooltip="Settings"
-        />
+        <SettingsMenu />
       </div>
     </div>
   );
