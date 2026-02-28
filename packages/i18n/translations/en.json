@@ -2,6 +2,7 @@
   "common": {
     "welcome": "Welcome",
     "siteDescription": "welcome to my personal space.",
+    "siteName": "Martin Vila",
     "siteTitle": "Martin Vila — Portfolio"
   },
   "nav": {
@@ -117,6 +118,7 @@
     "noResults": "No results found.",
     "navigation": "Navigation",
     "view": "View",
+    "viewMode": "View mode",
     "hideSidebar": "Hide sidebar",
     "showSidebar": "Show sidebar",
     "hideTerminal": "Hide terminal",

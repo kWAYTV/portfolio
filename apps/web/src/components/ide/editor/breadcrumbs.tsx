@@ -51,7 +51,7 @@ export function Breadcrumbs({ pathname }: BreadcrumbsProps) {
         })}
       </div>
       <fieldset className="flex items-center gap-1 border-0 p-0">
-        <legend className="sr-only">View mode</legend>
+        <legend className="sr-only">{t("viewMode")}</legend>
         <button
           className={cn(
             "flex cursor-pointer items-center gap-1 px-1 py-0.5 text-[11px] transition-colors",
