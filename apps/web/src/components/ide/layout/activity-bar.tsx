@@ -1,11 +1,13 @@
 "use client";
 
 import { GitBranch, PanelLeft, Terminal } from "lucide-react";
+import { useTranslations } from "next-intl";
 import { ActivityBarButton } from "@/components/ide/layout/activity-bar-button";
 import { SettingsMenu } from "@/components/ide/layout/settings-menu";
 import { useIdeStore } from "@/stores/ide-store";
 
 export function ActivityBar() {
+  const t = useTranslations("ide");
   const sidebarOpen = useIdeStore((s) => s.sidebarOpen);
   const sidebarView = useIdeStore((s) => s.sidebarView);
   const terminalOpen = useIdeStore((s) => s.terminalOpen);
@@ -24,7 +26,7 @@ export function ActivityBar() {
             toggleSidebar();
           }
         }}
-        tooltip="Explorer"
+        tooltip={t("explorer")}
       />
       <ActivityBarButton
         active={sidebarOpen && sidebarView === "sourceControl"}
@@ -35,13 +37,13 @@ export function ActivityBar() {
             toggleSidebar();
           }
         }}
-        tooltip="Source Control"
+        tooltip={t("sourceControl")}
       />
       <ActivityBarButton
         active={terminalOpen}
         icon={Terminal}
         onClick={toggleTerminal}
-        tooltip="Terminal"
+        tooltip={t("terminal")}
       />
       <div className="mt-auto">
         <SettingsMenu />

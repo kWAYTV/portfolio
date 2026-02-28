@@ -2,11 +2,12 @@ import { getTranslations } from "next-intl/server";
 
 export async function HeroHeader() {
   const t = await getTranslations("hero");
+  const tCommon = await getTranslations("common");
 
   return (
     <header className="space-y-1.5">
       <h1 className="font-medium text-base tracking-tight sm:text-lg">
-        Martin Vila
+        {tCommon("siteName")}
       </h1>
       <p className="text-muted-foreground/80 text-xs sm:text-sm">
         {t("tagline")}

@@ -55,7 +55,7 @@ export default async function LocaleLayout({
       <body
         className={`${geistSans.variable} ${geistMono.variable} flex min-h-screen flex-col antialiased`}
       >
-        <RootProvider>
+        <RootProvider search={{ enabled: false }}>
           <Providers>
             <NextIntlClientProvider locale={locale} messages={messages}>
               <IdeLayout commits={commits}>{children}</IdeLayout>

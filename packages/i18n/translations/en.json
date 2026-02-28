@@ -2,6 +2,7 @@
   "common": {
     "welcome": "Welcome",
     "siteDescription": "welcome to my personal space.",
+    "siteName": "Martin Vila",
     "siteTitle": "Martin Vila — Portfolio"
   },
   "nav": {
@@ -117,14 +118,16 @@
     "noResults": "No results found.",
     "navigation": "Navigation",
     "view": "View",
+    "viewMode": "View mode",
     "hideSidebar": "Hide sidebar",
     "showSidebar": "Show sidebar",
     "hideTerminal": "Hide terminal",
     "showTerminal": "Show terminal",
     "openPreviewWindow": "Open preview in new window",
+    "appearance": "Appearance",
     "lightTheme": "Light theme",
     "darkTheme": "Dark theme",
-    "themePreset": "Theme",
+    "themePreset": "Color preset",
     "themePreset_default": "Vercel",
     "themePreset_catppuccin": "Catppuccin",
     "themePreset_violet-bloom": "Violet Bloom",

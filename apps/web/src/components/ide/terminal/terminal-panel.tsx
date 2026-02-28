@@ -70,7 +70,7 @@ export function TerminalPanel() {
     >
       {/* biome-ignore lint/a11y/useSemanticElements: resize handle needs div for grip icon */}
       <div
-        aria-label="Resize terminal"
+        aria-label={t("resizeTerminal")}
         aria-orientation="horizontal"
         aria-valuemax={MAX_HEIGHT}
         aria-valuemin={MIN_HEIGHT}
@@ -104,7 +104,7 @@ export function TerminalPanel() {
         </div>
         <div className="flex items-center gap-0.5">
           <button
-            aria-label="Open preview"
+            aria-label={t("openPreview")}
             className="flex size-6 cursor-pointer items-center justify-center rounded text-muted-foreground transition-colors hover:bg-muted hover:text-foreground"
             onClick={() =>
               window
@@ -115,16 +115,16 @@ export function TerminalPanel() {
                 )
                 ?.focus()
             }
-            title="Open preview"
+            title={t("openPreview")}
             type="button"
           >
             <Play className="size-4" />
           </button>
           <button
-            aria-label="Close panel"
+            aria-label={t("closePanel")}
             className="flex size-6 cursor-pointer items-center justify-center rounded text-muted-foreground transition-colors hover:bg-muted hover:text-foreground"
             onClick={toggleTerminal}
-            title="Close panel"
+            title={t("closePanel")}
             type="button"
           >
             <PanelBottomClose className="size-4" />

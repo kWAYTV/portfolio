@@ -1,50 +1,33 @@
 "use client";
 
 import { config, type Locale, localeToFlagEmoji } from "@repo/i18n/config";
-import { ExternalLink, Languages, Moon, Settings, Sun } from "lucide-react";
+import { Command, ExternalLink, Languages, Settings } from "lucide-react";
 import { useLocale, useTranslations } from "next-intl";
-import { useTheme } from "next-themes";
-import { useCallback, useEffect, useState } from "react";
 import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuGroup,
+  DropdownMenuItem,
   DropdownMenuLabel,
   DropdownMenuRadioGroup,
   DropdownMenuRadioItem,
   DropdownMenuSeparator,
+  DropdownMenuShortcut,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { REPO_URL } from "@/consts/ide-constants";
-import { useThemeTransition } from "@/hooks/use-theme-transition";
 import { IDE_DROPDOWN_CONTENT_CLASS } from "@/lib/ide-dropdown";
 import { cn } from "@/lib/utils";
 import { updateLocale } from "@/modules/i18n/lib/update-locale";
+import { useIdeStore } from "@/stores/ide-store";
 
 const locales = Object.keys(config.locales) as Locale[];
 
 export function SettingsMenu() {
   const t = useTranslations("ide");
   const tLocale = useTranslations("localeSwitcher");
-  const { theme, resolvedTheme } = useTheme();
-  const setThemeWithTransition = useThemeTransition(280);
   const locale = useLocale() as Locale;
-  const [themeValue, setThemeValue] = useState<string>("light");
-
-  useEffect(() => {
-    const display = theme === "system" ? resolvedTheme : theme;
-    setThemeValue(display ?? "light");
-  }, [theme, resolvedTheme]);
-
-  const handleThemeChange = useCallback(
-    async (value: string) => {
-      setThemeValue(value);
-      if (value === "light" || value === "dark") {
-        await setThemeWithTransition(value);
-      }
-    },
-    [setThemeWithTransition]
-  );
+  const setCommandPaletteOpen = useIdeStore((s) => s.setCommandPaletteOpen);
 
   return (
     <DropdownMenu>
@@ -62,23 +45,16 @@ export function SettingsMenu() {
         sideOffset={4}
       >
         <DropdownMenuGroup>
-          <DropdownMenuLabel className="flex items-center gap-2">
-            <Sun className="size-3.5" />
-            {t("themePreset")}
-          </DropdownMenuLabel>
-          <DropdownMenuRadioGroup
-            onValueChange={handleThemeChange}
-            value={themeValue}
+          <DropdownMenuItem
+            className="cursor-pointer"
+            onSelect={() => setCommandPaletteOpen(true)}
           >
-            <DropdownMenuRadioItem value="light">
-              <Sun className="size-3.5" />
-              {t("lightTheme")}
-            </DropdownMenuRadioItem>
-            <DropdownMenuRadioItem value="dark">
-              <Moon className="size-3.5" />
-              {t("darkTheme")}
-            </DropdownMenuRadioItem>
-          </DropdownMenuRadioGroup>
+            <Command className="size-3.5 shrink-0" />
+            <span>{t("commandPalette")}</span>
+            <DropdownMenuShortcut>
+              {t("commandPaletteShortcut")}
+            </DropdownMenuShortcut>
+          </DropdownMenuItem>
         </DropdownMenuGroup>
         <DropdownMenuSeparator />
         <DropdownMenuGroup>

@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect } from "react";
+import { CommandPalette } from "@/components/ide/command-palette";
 import { ActivityBar } from "@/components/ide/layout/activity-bar";
 import { IdeEditorArea } from "@/components/ide/layout/ide-editor-area";
 import { MobileActivityBar } from "@/components/ide/layout/mobile-activity-bar";
@@ -63,6 +64,7 @@ export function IdeLayout({ children, commits }: IdeLayoutProps) {
 
   return (
     <div className="flex h-dvh flex-col overflow-hidden bg-background">
+      <CommandPalette />
       <TitleBar
         leftSlot={<MobileMenu pathname={pathname} />}
         maximized={isFullscreen}
