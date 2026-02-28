@@ -8,7 +8,6 @@ const withMDX = createMDX();
 
 const nextConfig: NextConfig = {
   devIndicators: false,
-  cacheComponents: true,
   typedRoutes: true,
   reactCompiler: true,
 };

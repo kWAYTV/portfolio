@@ -2,23 +2,12 @@ import "server-only";
 
 import { Octokit } from "@octokit/rest";
 import { env } from "@repo/env/web";
-import {
-  type GitHubCommit,
-  getGitHubCommits as getCommits,
-  getGitHubRepos as getRepos,
-} from "@repo/github";
-import { cacheLife, cacheTag } from "next/cache";
+import { getGitHubRepos as getRepos } from "@repo/github";
+import { unstable_cache } from "next/cache";
 
-const REPO_OWNER = "kWAYTV";
-const REPO_NAME = "ide-portfolio";
-
-export async function getGitHubRepos(): Promise<
+async function fetchGitHubRepos(): Promise<
   Awaited<ReturnType<typeof getRepos>>
 > {
-  "use cache";
-  cacheLife("hours");
-  cacheTag("github-repos");
-
   const token = env.GITHUB_TOKEN;
   if (!token) {
     return [];
@@ -31,21 +20,8 @@ export async function getGitHubRepos(): Promise<
   });
 }
 
-export async function getGitHubCommits(): Promise<GitHubCommit[]> {
-  "use cache";
-  cacheLife("minutes");
-  cacheTag("github-commits");
-
-  const token = env.GITHUB_TOKEN;
-  if (!token) {
-    return [];
-  }
-
-  const octokit = new Octokit({ auth: token });
-  return await getCommits({
-    octokit,
-    owner: REPO_OWNER,
-    repo: REPO_NAME,
-    perPage: 15,
-  });
-}
+export const getGitHubRepos = unstable_cache(
+  fetchGitHubRepos,
+  ["github-repos"],
+  { revalidate: 3600, tags: ["github-repos"] }
+);

@@ -10,13 +10,13 @@ import { REPO_URL } from "@/consts/ide-constants";
 import { cn } from "@/lib/utils";
 
 interface SourceControlViewProps {
-  commits: Commit[];
+  commits?: Commit[];
   fullWidth?: boolean;
   onClose?: () => void;
 }
 
 export function SourceControlView({
-  commits,
+  commits = [],
   fullWidth = false,
   onClose,
 }: SourceControlViewProps) {
