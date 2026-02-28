@@ -12,7 +12,8 @@ import { SourceControlView } from "@/components/ide/sidebar/source-control-view"
 import { TerminalPanel } from "@/components/ide/terminal/terminal-panel";
 import { Sheet, SheetContent } from "@/components/ui/sheet";
 import type { Commit } from "@/consts/ide-constants";
-import { useLocalePathname } from "@/modules/i18n/routing";
+import { useLocalePathname, useLocaleRouter } from "@/modules/i18n/routing";
+import { useEditorGroupsStore } from "@/stores/editor-groups-store";
 import { useIdeStore } from "@/stores/ide-store";
 
 interface IdeLayoutProps {
@@ -22,6 +23,9 @@ interface IdeLayoutProps {
 
 export function IdeLayout({ children, commits }: IdeLayoutProps) {
   const pathname = useLocalePathname();
+  const router = useLocaleRouter();
+  const setRouter = useEditorGroupsStore((s) => s.setRouter);
+  const syncFromPathname = useEditorGroupsStore((s) => s.syncFromPathname);
 
   const sidebarOpen = useIdeStore((s) => s.sidebarOpen);
   const isFullscreen = useIdeStore((s) => s.isFullscreen);
@@ -29,9 +33,18 @@ export function IdeLayout({ children, commits }: IdeLayoutProps) {
   const toggleFullscreen = useIdeStore((s) => s.toggleFullscreen);
   const exitFullscreen = useIdeStore((s) => s.exitFullscreen);
   const setFullscreen = useIdeStore((s) => s.setFullscreen);
-  const closeAllTabs = useIdeStore((s) => s.closeAllTabs);
+  const closeAllTabs = useEditorGroupsStore((s) => s.closeAllTabs);
   const mobileSidebarView = useIdeStore((s) => s.mobileSidebarView);
   const setMobileSidebarView = useIdeStore((s) => s.setMobileSidebarView);
+
+  useEffect(() => {
+    setRouter((path: string) => router.push(path));
+    return () => setRouter(null);
+  }, [router, setRouter]);
+
+  useEffect(() => {
+    syncFromPathname(pathname);
+  }, [pathname, syncFromPathname]);
 
   useEffect(() => {
     const handler = () => setFullscreen(document.fullscreenElement !== null);
@@ -69,7 +82,9 @@ export function IdeLayout({ children, commits }: IdeLayoutProps) {
         )}
 
         <div className="flex w-full min-w-0 flex-1 flex-col overflow-hidden">
-          <IdeEditorArea pathname={pathname}>{children}</IdeEditorArea>
+          <IdeEditorArea pageTitle="" pathname={pathname}>
+            {children}
+          </IdeEditorArea>
           <TerminalPanel />
         </div>
       </div>

@@ -11,7 +11,8 @@ import { toast } from "sonner";
 import { explorerTree } from "@/components/ide/config";
 import { ExplorerTreeItem } from "@/components/ide/sidebar/explorer-tree-item";
 import { Button } from "@/components/ui/button";
-import { useExplorerExpanded, useIdeStore } from "@/stores/ide-store";
+import { useEditorGroupsStore } from "@/stores/editor-groups-store";
+import { useExplorerExpanded } from "@/stores/ide-store";
 
 interface SidebarProps {
   fullWidth?: boolean;
@@ -24,7 +25,7 @@ export function Sidebar({
   onClose,
   pathname,
 }: SidebarProps) {
-  const openTab = useIdeStore((s) => s.openTab);
+  const openTab = useEditorGroupsStore((s) => s.openTab);
   const { expanded, toggle, expandAll, collapseAll, isFullyExpanded } =
     useExplorerExpanded();
 

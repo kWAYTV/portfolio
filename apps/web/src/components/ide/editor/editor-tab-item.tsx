@@ -1,7 +1,5 @@
 "use client";
 
-import { useSortable } from "@dnd-kit/sortable";
-import { CSS } from "@dnd-kit/utilities";
 import { X } from "lucide-react";
 import { FileIcon } from "@/components/ide/sidebar/file-icon";
 import { cn } from "@/lib/utils";
@@ -9,34 +7,36 @@ import { LocaleLink } from "@/modules/i18n/routing";
 
 interface EditorTabItemProps {
   active: boolean;
+  dragOverIndex: number | null;
   fileName: string;
   fileType: string;
+  groupIndex: number;
   href: string;
+  index: number;
+  isDragging: boolean;
   onClose: () => void;
+  onDragEnd: () => void;
+  onDragOver: (index: number) => void;
+  onDragStart: () => void;
   onTabClick?: (href: string) => void;
 }
 
 export function EditorTabItem({
   active,
+  dragOverIndex,
   fileName,
   fileType,
+  groupIndex,
   href,
+  index,
+  isDragging,
   onClose,
+  onDragEnd,
+  onDragOver,
+  onDragStart,
   onTabClick,
 }: EditorTabItemProps) {
-  const {
-    attributes,
-    listeners,
-    setNodeRef,
-    transform,
-    transition,
-    isDragging,
-  } = useSortable({ id: href });
-
-  const style = {
-    transform: CSS.Transform.toString(transform),
-    transition,
-  };
+  const isDropTarget = dragOverIndex === index;
 
   return (
     <div
@@ -45,21 +45,35 @@ export function EditorTabItem({
         active
           ? "bg-background text-foreground shadow-(--shadow-elevation-sm)"
           : "bg-muted/40 text-muted-foreground hover:bg-muted/70",
-        isDragging && "opacity-50 shadow-md"
+        isDropTarget && "border-l-2 border-l-primary"
       )}
-      ref={setNodeRef}
-      style={style}
     >
       {active && (
         <span className="absolute inset-x-0 bottom-0 h-[2px] bg-primary" />
       )}
+      {/* biome-ignore lint/a11y/noNoninteractiveElementInteractions: draggable div for tab reorder */}
+      {/* biome-ignore lint/a11y/noStaticElementInteractions: HTML5 drag-and-drop requires draggable on element */}
       <div
-        {...attributes}
-        {...listeners}
         className={cn(
           "flex min-w-0 flex-1 items-center gap-2 overflow-hidden px-3 py-1.5",
-          isDragging && "cursor-grabbing"
+          isDragging ? "cursor-grabbing" : "cursor-default"
         )}
+        draggable
+        onDragEnd={onDragEnd}
+        onDragOver={(e) => {
+          e.preventDefault();
+          e.dataTransfer.dropEffect = "move";
+          onDragOver(index);
+        }}
+        onDragStart={(e) => {
+          e.dataTransfer.effectAllowed = "move";
+          e.dataTransfer.setData("text/plain", href);
+          e.dataTransfer.setData(
+            "application/json",
+            JSON.stringify({ href, index, groupIndex })
+          );
+          onDragStart();
+        }}
       >
         <LocaleLink
           className="flex min-w-0 flex-1 items-center gap-2 truncate"
@@ -97,7 +111,7 @@ export function EditorTabItem({
   );
 }
 
-/** Static tab item for SSR/initial render to avoid dnd-kit hydration mismatch. */
+/** Static tab item for SSR/initial render to avoid hydration mismatch. */
 export function EditorTabItemStatic({
   active,
   fileName,
@@ -105,7 +119,16 @@ export function EditorTabItemStatic({
   href,
   onClose,
   onTabClick,
-}: EditorTabItemProps) {
+}: Omit<
+  EditorTabItemProps,
+  | "dragOverIndex"
+  | "groupIndex"
+  | "index"
+  | "isDragging"
+  | "onDragEnd"
+  | "onDragOver"
+  | "onDragStart"
+>) {
   return (
     <div
       className={cn(

@@ -2,14 +2,12 @@
 
 import { ChevronRight } from "lucide-react";
 import { navItems } from "@/components/ide/config";
+import { matchNavItem } from "@/lib/ide/breadcrumb";
 import { cn } from "@/lib/utils";
 import { useIdeStore } from "@/stores/ide-store";
 
 function getBreadcrumbParts(pathname: string): string[] {
-  if (pathname === "/") {
-    return ["portfolio", "src", "page.tsx"];
-  }
-  const item = navItems.find((n) => pathname.startsWith(n.href));
+  const item = matchNavItem(pathname, navItems);
   if (item) {
     return ["portfolio", "src", item.fileName];
   }
