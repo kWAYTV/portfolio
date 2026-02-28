@@ -45,7 +45,6 @@ export function IdeEditorArea({
     return (
       <div className="flex min-h-0 min-w-0 flex-1 flex-col overflow-hidden">
         <EditorTabs
-          groupIndex={0}
           onCloseAll={closeAllTabs}
           onCloseOtherTabs={(href) => closeOtherTabs(pathname, 0, href)}
           onCloseTab={(href) => closeTab(pathname, 0, href)}
@@ -88,7 +87,6 @@ export function IdeEditorArea({
   return (
     <div className="flex min-h-0 min-w-0 flex-1 flex-col overflow-hidden">
       <EditorTabs
-        groupIndex={0}
         onCloseAll={closeAllTabs}
         onCloseOtherTabs={(href) => closeOtherTabs(pathname, 0, href)}
         onCloseTab={(href) => closeTab(pathname, 0, href)}
