@@ -3,7 +3,7 @@
 import { Moon, Sun } from "lucide-react";
 import { useTranslations } from "next-intl";
 import { useTheme } from "next-themes";
-import { useCallback, useEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { useThemeTransition } from "@/hooks/use-theme-transition";
 import { cn } from "@/lib/utils";
 
@@ -13,14 +13,13 @@ interface ThemeToggleProps extends React.ComponentPropsWithoutRef<"button"> {
 
 export function ThemeToggle({
   className,
-  duration = 400,
+  duration = 300,
   ...props
 }: ThemeToggleProps) {
   const t = useTranslations("theme");
   const { resolvedTheme } = useTheme();
   const setThemeWithTransition = useThemeTransition(duration);
   const [isDark, setIsDark] = useState(false);
-  const buttonRef = useRef<HTMLButtonElement>(null);
 
   useEffect(() => {
     setIsDark(resolvedTheme === "dark");
@@ -39,12 +38,7 @@ export function ThemeToggle({
   }, []);
 
   const handleClick = useCallback(async () => {
-    const newTheme = isDark ? "light" : "dark";
-    const rect = buttonRef.current?.getBoundingClientRect();
-    const origin = rect
-      ? { x: rect.left + rect.width / 2, y: rect.top + rect.height / 2 }
-      : undefined;
-    await setThemeWithTransition(newTheme, origin);
+    await setThemeWithTransition(isDark ? "light" : "dark");
   }, [isDark, setThemeWithTransition]);
 
   return (
@@ -55,7 +49,6 @@ export function ThemeToggle({
         className
       )}
       onClick={handleClick}
-      ref={buttonRef}
       type="button"
       {...props}
     >

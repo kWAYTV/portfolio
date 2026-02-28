@@ -2,15 +2,16 @@
 
 import { useTheme } from "next-themes";
 import { useCallback } from "react";
-import { flushSync } from "react-dom";
 
-export function useThemeTransition(duration = 400) {
+export function useThemeTransition(duration = 300) {
   const { setTheme } = useTheme();
 
   const setThemeWithTransition = useCallback(
-    async (theme: "light" | "dark", origin?: { x: number; y: number }) => {
-      const runTransition = () => {
-        flushSync(() => setTheme(theme));
+    async (theme: "light" | "dark") => {
+      const applyTheme = () => {
+        document.documentElement.classList.remove("light", "dark");
+        document.documentElement.classList.add(theme);
+        setTheme(theme);
       };
 
       const svt = (
@@ -18,33 +19,23 @@ export function useThemeTransition(duration = 400) {
           startViewTransition?: (cb: () => void) => { ready: Promise<void> };
         }
       ).startViewTransition;
+
       if (typeof svt === "function") {
-        const transition = svt.call(document, runTransition);
+        const transition = svt.call(document, applyTheme);
         await transition.ready;
 
-        if (origin) {
-          const { x, y } = origin;
-          const maxRadius = Math.hypot(
-            Math.max(x, window.innerWidth - x),
-            Math.max(y, window.innerHeight - y)
-          );
+        const easing = "cubic-bezier(0.32, 0.72, 0, 1)";
 
-          document.documentElement.animate(
-            {
-              clipPath: [
-                `circle(0px at ${x}px ${y}px)`,
-                `circle(${maxRadius}px at ${x}px ${y}px)`,
-              ],
-            },
-            {
-              duration,
-              easing: "ease-in-out",
-              pseudoElement: "::view-transition-new(root)",
-            }
-          );
-        }
+        document.documentElement.animate(
+          { opacity: [0, 1] },
+          { duration, easing, pseudoElement: "::view-transition-new(root)" }
+        );
+        document.documentElement.animate(
+          { opacity: [1, 0] },
+          { duration, easing, pseudoElement: "::view-transition-old(root)" }
+        );
       } else {
-        runTransition();
+        applyTheme();
       }
     },
     [setTheme, duration]

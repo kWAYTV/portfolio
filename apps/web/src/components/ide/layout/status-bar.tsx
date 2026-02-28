@@ -99,7 +99,7 @@ export const StatusBar = memo(function StatusBar({
         </button>
         <span className="hidden tabular-nums sm:inline">Ln 1, Col 1</span>
         <span className="hidden sm:inline">{fileType}</span>
-        <div className="hidden sm:flex sm:items-center sm:gap-3">
+        <div className="hidden md:flex md:items-center md:gap-3">
           <LocaleSwitcher />
           <ThemeToggle />
         </div>
