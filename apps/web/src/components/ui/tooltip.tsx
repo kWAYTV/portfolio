@@ -1,25 +1,11 @@
 "use client";
 
-/** biome-ignore lint/performance/noNamespaceImport: shadcn/radix pattern */
 import { Tooltip as TooltipPrimitive } from "radix-ui";
 import { cn } from "@/lib/utils";
 
-function Tooltip({
-  ...props
-}: React.ComponentProps<typeof TooltipPrimitive.Root>) {
-  return <TooltipPrimitive.Root data-slot="tooltip" {...props} />;
-}
-
-function TooltipTrigger({
-  ...props
-}: React.ComponentProps<typeof TooltipPrimitive.Trigger>) {
-  return (
-    <TooltipPrimitive.Trigger
-      data-slot="tooltip-trigger"
-      {...props}
-    />
-  );
-}
+const Tooltip = TooltipPrimitive.Root;
+const TooltipTrigger = TooltipPrimitive.Trigger;
+const TooltipPortal = TooltipPrimitive.Portal;
 
 function TooltipContent({
   className,
@@ -27,17 +13,16 @@ function TooltipContent({
   ...props
 }: React.ComponentProps<typeof TooltipPrimitive.Content>) {
   return (
-    <TooltipPrimitive.Portal>
+    <TooltipPortal>
       <TooltipPrimitive.Content
         className={cn(
           "z-50 overflow-hidden rounded-md border border-border bg-popover px-3 py-1.5 text-sm text-popover-foreground shadow-md",
           className
         )}
-        data-slot="tooltip-content"
         sideOffset={sideOffset}
         {...props}
       />
-    </TooltipPrimitive.Portal>
+    </TooltipPortal>
   );
 }
 
