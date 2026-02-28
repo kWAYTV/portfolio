@@ -1,47 +1,25 @@
 # ide-portfolio
 
-This project was created with [Better-T-Stack](https://github.com/AmanVarshney01/create-better-t-stack), a modern TypeScript stack that combines Next.js, and more.
+A portfolio site built with a modern TypeScript stack.
 
-## Features
+## Stack
 
-- **TypeScript** - For type safety and improved developer experience
-- **Next.js** - Full-stack React framework
-- **TailwindCSS** - Utility-first CSS for rapid UI development
-- **shadcn/ui** - Reusable UI components
-- **Husky** - Git hooks for code quality
-- **Turborepo** - Optimized monorepo build system
+| Layer | Technologies |
+|-------|---------------|
+| **Framework** | [Next.js](https://nextjs.org) 16, [React](https://react.dev) 19 |
+| **Language** | [TypeScript](https://www.typescriptlang.org) |
+| **Styling** | [Tailwind CSS](https://tailwindcss.com) 4 |
+| **UI** | [shadcn/ui](https://ui.shadcn.com), [Radix](https://www.radix-ui.com), [Base UI](https://base-ui.com), [fumadocs](https://fumadocs.dev), [cmdk](https://cmdk.paco.me), [sonner](https://sonner.emilkowal.ski), [lucide-react](https://lucide.dev) |
+| **State & URL** | [Zustand](https://zustand-demo.pmnd.rs), [nuqs](https://nuqs.47ng.com) |
+| **i18n & themes** | [next-intl](https://next-intl-docs.vercel.app), [next-themes](https://github.com/pacocoursey/next-themes) |
+| **Monorepo** | [Turborepo](https://turbo.build), [pnpm](https://pnpm.io) workspaces |
+| **DX** | [Ultracite](https://ultracite.run) (Biome), [Husky](https://typicode.github.io/husky), [Zod](https://zod.dev) |
 
 ## Getting Started
 
-First, install the dependencies:
-
 ```bash
 pnpm install
+pnpm dev
 ```
 
-Then, run the development server:
-
-```bash
-pnpm run dev
-```
-
-Open [http://localhost:3000](http://localhost:3000) in your browser to see the web application.
-
-## Git Hooks and Formatting
-
-- Initialize hooks: `pnpm run prepare`
-
-## Project Structure
-
-```
-ide-portfolio/
-├── apps/
-│   ├── web/         # Frontend application (Next.js)
-```
-
-## Available Scripts
-
-- `pnpm run dev`: Start all applications in development mode
-- `pnpm run build`: Build all applications
-- `pnpm run dev:web`: Start only the web application
-- `pnpm run check-types`: Check TypeScript types across all apps
+Open [http://localhost:3000](http://localhost:3000).
