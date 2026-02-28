@@ -34,6 +34,7 @@ interface IdeState {
   closeAllTabs: () => void;
   closeTab: (href: string) => void;
   collapseAll: () => void;
+  exitFullscreen: () => void;
   expandAll: () => void;
 
   // Explorer
@@ -45,6 +46,7 @@ interface IdeState {
 
   // Tabs
   openTabs: string[];
+  setFullscreen: (fullscreen: boolean) => void;
   setMobileSidebarView: (view: SidebarView | null) => void;
   setSidebarView: (view: SidebarView) => void;
 
@@ -84,7 +86,21 @@ export const useIdeStore = create<IdeState>((set) => ({
 
   toggleTerminal: () => set((s) => ({ terminalOpen: !s.terminalOpen })),
 
-  toggleFullscreen: () => set((s) => ({ isFullscreen: !s.isFullscreen })),
+  toggleFullscreen: () => {
+    if (document.fullscreenElement) {
+      document.exitFullscreen();
+    } else {
+      document.documentElement.requestFullscreen();
+    }
+  },
+
+  exitFullscreen: () => {
+    if (document.fullscreenElement) {
+      document.exitFullscreen();
+    }
+  },
+
+  setFullscreen: (isFullscreen) => set({ isFullscreen }),
 
   setMobileSidebarView: (mobileSidebarView) => set({ mobileSidebarView }),
 

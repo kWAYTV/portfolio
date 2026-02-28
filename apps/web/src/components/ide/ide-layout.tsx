@@ -1,5 +1,6 @@
 "use client";
 
+import { useEffect } from "react";
 import { ActivityBar } from "@/components/ide/layout/activity-bar";
 import { IdeEditorArea } from "@/components/ide/layout/ide-editor-area";
 import { MobileActivityBar } from "@/components/ide/layout/mobile-activity-bar";
@@ -24,9 +25,26 @@ export function IdeLayout({ children }: IdeLayoutProps) {
   const isFullscreen = useIdeStore((s) => s.isFullscreen);
   const toggleSidebar = useIdeStore((s) => s.toggleSidebar);
   const toggleFullscreen = useIdeStore((s) => s.toggleFullscreen);
+  const exitFullscreen = useIdeStore((s) => s.exitFullscreen);
+  const setFullscreen = useIdeStore((s) => s.setFullscreen);
   const closeAllTabs = useIdeStore((s) => s.closeAllTabs);
   const mobileSidebarView = useIdeStore((s) => s.mobileSidebarView);
   const setMobileSidebarView = useIdeStore((s) => s.setMobileSidebarView);
+
+  useEffect(() => {
+    const handler = () => setFullscreen(document.fullscreenElement !== null);
+    document.addEventListener("fullscreenchange", handler);
+    return () => document.removeEventListener("fullscreenchange", handler);
+  }, [setFullscreen]);
+
+  const handleMinimize = () => {
+    if (isFullscreen) {
+      exitFullscreen();
+    }
+    if (sidebarOpen) {
+      toggleSidebar();
+    }
+  };
 
   return (
     <div className="flex h-dvh flex-col overflow-hidden bg-background">
@@ -35,7 +53,7 @@ export function IdeLayout({ children }: IdeLayoutProps) {
         maximized={isFullscreen}
         onClose={closeAllTabs}
         onMaximize={toggleFullscreen}
-        onMinimize={isFullscreen ? toggleFullscreen : toggleSidebar}
+        onMinimize={handleMinimize}
       />
 
       <div className="flex min-h-0 flex-1">
