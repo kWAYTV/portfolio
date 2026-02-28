@@ -3,6 +3,7 @@
 import { useSortable } from "@dnd-kit/sortable";
 import { CSS } from "@dnd-kit/utilities";
 import { X } from "lucide-react";
+import { useTranslations } from "next-intl";
 import { FileIcon } from "@/components/ide/sidebar/file-icon";
 import { cn } from "@/lib/utils";
 import { LocaleLink } from "@/modules/i18n/routing";
@@ -24,6 +25,7 @@ export function EditorTabItem({
   onClose,
   onTabClick,
 }: EditorTabItemProps) {
+  const t = useTranslations("ide");
   const {
     attributes,
     listeners,
@@ -76,7 +78,7 @@ export function EditorTabItem({
         </LocaleLink>
       </div>
       <button
-        aria-label={`Close ${fileName}`}
+        aria-label={t("closeTab", { fileName })}
         className={cn(
           "flex size-5 shrink-0 touch-manipulation items-center justify-center rounded-sm transition-colors",
           "opacity-100 md:opacity-0 md:group-hover:opacity-100",
@@ -106,6 +108,7 @@ export function EditorTabItemStatic({
   onClose,
   onTabClick,
 }: EditorTabItemProps) {
+  const t = useTranslations("ide");
   return (
     <div
       className={cn(
@@ -134,7 +137,7 @@ export function EditorTabItemStatic({
         </LocaleLink>
       </div>
       <button
-        aria-label={`Close ${fileName}`}
+        aria-label={t("closeTab", { fileName })}
         className={cn(
           "flex size-5 shrink-0 touch-manipulation items-center justify-center rounded-sm transition-colors",
           "opacity-100 md:opacity-0 md:group-hover:opacity-100",

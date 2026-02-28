@@ -67,7 +67,10 @@
       "name": "Nombre"
     },
     "prev": "ant.",
-    "next": "sig."
+    "next": "sig.",
+    "openOnGitHub": "Abrir en GitHub",
+    "openRepoOnGitHub": "Abrir {name} en GitHub",
+    "noDescription": "Sin descripción"
   },
   "blog": {
     "title": "Blog",
@@ -158,7 +161,21 @@
     "fetch": "Obtener",
     "publishBranch": "Publicar rama",
     "createBranch": "Crear rama...",
-    "switchBranch": "Cambiar rama..."
+    "switchBranch": "Cambiar rama...",
+    "openMenu": "Abrir menú",
+    "pathCopied": "Ruta copiada al portapapeles",
+    "pathCopyFailed": "Error al copiar la ruta",
+    "closeTab": "Cerrar {fileName}",
+    "sourceShort": "Código",
+    "fileType_tsx": "TypeScript React",
+    "fileType_ts": "TypeScript",
+    "fileType_md": "Markdown",
+    "fileType_mdx": "MDX",
+    "fileType_json": "JSON",
+    "fileType_env": "Env",
+    "plainText": "Texto plano",
+    "lnCol": "Ln 1, Col 1",
+    "terminalInput": "Entrada de terminal"
   },
   "terminal": {
     "welcome": "Bienvenido al terminal del portafolio. Escribe 'help' para ver los comandos disponibles.",

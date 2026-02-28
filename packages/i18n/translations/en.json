@@ -67,7 +67,10 @@
       "name": "Name"
     },
     "prev": "prev",
-    "next": "next"
+    "next": "next",
+    "openOnGitHub": "Open on GitHub",
+    "openRepoOnGitHub": "Open {name} on GitHub",
+    "noDescription": "No description"
   },
   "blog": {
     "title": "Blog",
@@ -158,7 +161,21 @@
     "fetch": "Fetch",
     "publishBranch": "Publish Branch",
     "createBranch": "Create Branch...",
-    "switchBranch": "Switch Branch..."
+    "switchBranch": "Switch Branch...",
+    "openMenu": "Open menu",
+    "pathCopied": "Path copied to clipboard",
+    "pathCopyFailed": "Failed to copy path",
+    "closeTab": "Close {fileName}",
+    "sourceShort": "Source",
+    "fileType_tsx": "TypeScript React",
+    "fileType_ts": "TypeScript",
+    "fileType_md": "Markdown",
+    "fileType_mdx": "MDX",
+    "fileType_json": "JSON",
+    "fileType_env": "Env",
+    "plainText": "Plain Text",
+    "lnCol": "Ln 1, Col 1",
+    "terminalInput": "Terminal input"
   },
   "terminal": {
     "welcome": "Welcome to the portfolio terminal. Type 'help' for available commands.",

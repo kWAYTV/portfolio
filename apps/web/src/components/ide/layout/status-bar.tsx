@@ -11,14 +11,7 @@ import { matchNavItem } from "@/lib/ide/breadcrumb";
 import { cn } from "@/lib/utils";
 import { useIdeStore } from "@/stores/ide-store";
 
-const fileTypeLabels: Record<string, string> = {
-  tsx: "TypeScript React",
-  ts: "TypeScript",
-  md: "Markdown",
-  mdx: "MDX",
-  json: "JSON",
-  env: "Env",
-};
+const FILE_TYPE_KEYS = ["tsx", "ts", "md", "mdx", "json", "env"] as const;
 
 interface StatusBarProps {
   onFocusSourceControl?: () => void;
@@ -34,9 +27,14 @@ export const StatusBar = memo(function StatusBar({
   const toggleTerminal = useIdeStore((s) => s.toggleTerminal);
 
   const navItem = matchNavItem(pathname, navItems);
-  const fileType = navItem
-    ? (fileTypeLabels[navItem.fileType] ?? "Plain Text")
-    : "Plain Text";
+  const isKnownFileType =
+    navItem &&
+    FILE_TYPE_KEYS.includes(
+      navItem.fileType as (typeof FILE_TYPE_KEYS)[number]
+    );
+  const fileType = isKnownFileType
+    ? t(`fileType_${navItem?.fileType}` as keyof IntlMessages["ide"])
+    : t("plainText");
 
   return (
     <div className="flex h-11 shrink-0 select-none items-center justify-between gap-2 overflow-hidden border-border border-t bg-secondary px-2 py-1 text-[11px] text-muted-foreground shadow-(--shadow-elevation-sm) sm:h-6 sm:px-3 sm:py-0">
@@ -97,7 +95,7 @@ export const StatusBar = memo(function StatusBar({
           <Terminal className="size-3.5 shrink-0" />
           <span className="hidden sm:inline">{t("terminal")}</span>
         </button>
-        <span className="hidden tabular-nums sm:inline">Ln 1, Col 1</span>
+        <span className="hidden tabular-nums sm:inline">{t("lnCol")}</span>
         <span className="hidden sm:inline">{fileType}</span>
         <div className="hidden md:flex md:items-center md:gap-3">
           <LocaleSwitcher />

@@ -2,6 +2,7 @@
 
 import type { GitHubRepo } from "@repo/github";
 import { ExternalLink, GitFork, Star } from "lucide-react";
+import { useTranslations } from "next-intl";
 import { memo } from "react";
 import { languageColors } from "@/consts/language-colors";
 import { cn } from "@/lib/utils";
@@ -15,6 +16,7 @@ function ProjectCardDetailsInner({
   repo,
   showOpenLink = false,
 }: ProjectCardDetailsProps) {
+  const t = useTranslations("projects");
   return (
     <div className="flex flex-col">
       {/* Header */}
@@ -23,7 +25,7 @@ function ProjectCardDetailsInner({
           {repo.name}
         </h4>
         <a
-          aria-label={`Open ${repo.name} on GitHub`}
+          aria-label={t("openRepoOnGitHub", { name: repo.name })}
           className="shrink-0 rounded p-1 text-muted-foreground/60 transition-colors hover:bg-muted/50 hover:text-foreground"
           href={repo.html_url}
           rel="noopener noreferrer"
@@ -40,7 +42,7 @@ function ProjectCardDetailsInner({
           </p>
         ) : (
           <p className="text-muted-foreground/60 text-xs italic">
-            No description
+            {t("noDescription")}
           </p>
         )}
       </div>
@@ -79,7 +81,7 @@ function ProjectCardDetailsInner({
           target="_blank"
         >
           <ExternalLink className="size-3.5" />
-          Open on GitHub
+          {t("openOnGitHub")}
         </a>
       )}
     </div>
