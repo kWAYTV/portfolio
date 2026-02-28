@@ -13,7 +13,7 @@ interface ThemeToggleProps extends React.ComponentPropsWithoutRef<"button"> {
 
 export function ThemeToggle({
   className,
-  duration = 300,
+  duration = 280,
   ...props
 }: ThemeToggleProps) {
   const t = useTranslations("theme");

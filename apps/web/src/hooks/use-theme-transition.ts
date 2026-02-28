@@ -2,6 +2,7 @@
 
 import { useTheme } from "next-themes";
 import { useCallback } from "react";
+import { themeTransition } from "@/lib/theme-transitions";
 
 export function useThemeTransition(duration = 300) {
   const { setTheme } = useTheme();
@@ -24,16 +25,10 @@ export function useThemeTransition(duration = 300) {
         const transition = svt.call(document, applyTheme);
         await transition.ready;
 
-        const easing = "cubic-bezier(0.32, 0.72, 0, 1)";
-
-        document.documentElement.animate(
-          { opacity: [0, 1] },
-          { duration, easing, pseudoElement: "::view-transition-new(root)" }
-        );
-        document.documentElement.animate(
-          { opacity: [1, 0] },
-          { duration, easing, pseudoElement: "::view-transition-old(root)" }
-        );
+        themeTransition(duration, {
+          old: "::view-transition-old(root)",
+          newView: "::view-transition-new(root)",
+        });
       } else {
         applyTheme();
       }
