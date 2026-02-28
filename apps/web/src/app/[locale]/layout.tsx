@@ -8,9 +8,10 @@ import type { PropsWithChildren } from "react";
 
 import "../../index.css";
 import { env } from "@repo/env/web";
-import { config as i18nConfig } from "@repo/i18n/config";
 import { IdeLayout } from "@/components/ide/ide-layout";
 import Providers from "@/components/providers";
+import { routing } from "@/modules/i18n/routing";
+import { getStaticParams } from "@/modules/i18n/static";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -22,10 +23,8 @@ const geistMono = Geist_Mono({
   subsets: ["latin"],
 });
 
-const locales = Object.keys(i18nConfig.locales);
-
 export function generateStaticParams() {
-  return locales.map((locale) => ({ locale }));
+  return getStaticParams();
 }
 
 export const metadata: Metadata = {
@@ -42,7 +41,7 @@ export default async function LocaleLayout({
 
   setRequestLocale(locale);
 
-  if (!locales.includes(locale)) {
+  if (!routing.locales.includes(locale)) {
     notFound();
   }
 

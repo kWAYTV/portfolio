@@ -1,21 +1,24 @@
 import { getMessagesForLocale } from "@repo/i18n";
+import { cacheLife } from "next/cache";
 import { getRequestConfig } from "next-intl/server";
-import { getUserLocale } from "@/modules/i18n/lib/locale-cookie";
 import { routing } from "@/modules/i18n/routing";
 
+async function getCachedMessages(locale: string) {
+  "use cache";
+  cacheLife("max");
+  return await getMessagesForLocale(locale);
+}
+
+/** Cookie fallback removed to enable static prerendering. Locale always comes from [locale] segment. */
 export default getRequestConfig(async ({ requestLocale }) => {
-  let locale = await requestLocale;
-
-  if (!locale) {
-    locale = await getUserLocale();
-  }
-
-  if (!routing.locales.includes(locale)) {
-    locale = routing.defaultLocale;
-  }
+  const requested = await requestLocale;
+  const locale =
+    requested && routing.locales.includes(requested)
+      ? requested
+      : routing.defaultLocale;
 
   return {
     locale,
-    messages: await getMessagesForLocale(locale),
+    messages: await getCachedMessages(locale),
   };
 });
