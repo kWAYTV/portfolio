@@ -144,13 +144,21 @@
     "commitMessagePlaceholder": "Message (Ctrl+Enter to commit)",
     "commit": "Commit",
     "noChanges": "No changes",
+    "noChangesWorkingTree": "No changes in the working tree",
     "noChangesHint": "Working tree clean",
     "viewOnGitHub": "View on GitHub",
     "changes": "Changes",
     "stagedChanges": "Staged Changes",
     "commitHistory": "Commit History",
     "syncChanges": "Sync Changes",
-    "moreActions": "More Actions"
+    "moreActions": "More Actions",
+    "pull": "Pull",
+    "push": "Push",
+    "sync": "Sync",
+    "fetch": "Fetch",
+    "publishBranch": "Publish Branch",
+    "createBranch": "Create Branch...",
+    "switchBranch": "Switch Branch..."
   },
   "terminal": {
     "welcome": "Welcome to the portfolio terminal. Type 'help' for available commands.",
