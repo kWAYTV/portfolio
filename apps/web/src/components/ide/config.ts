@@ -16,9 +16,8 @@ export type TreeItem =
   | { type: "folder"; name: string; children: TreeItem[] }
   | { type: "file"; name: string; href?: string; fileType: string };
 
+/* Folders first, then files; each group sorted alphabetically (IDE default) */
 export const explorerTree: TreeItem[] = [
-  { type: "file", name: ".env", fileType: "env" },
-  { type: "file", name: "package.json", fileType: "json" },
   {
     type: "folder",
     name: "src",
@@ -35,6 +34,8 @@ export const explorerTree: TreeItem[] = [
       },
     ],
   },
-  { type: "file", name: "tsconfig.json", fileType: "json" },
+  { type: "file", name: ".env", fileType: "env" },
+  { type: "file", name: "package.json", fileType: "json" },
   { type: "file", name: "README.md", fileType: "md" },
+  { type: "file", name: "tsconfig.json", fileType: "json" },
 ];

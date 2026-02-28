@@ -86,27 +86,27 @@ const DIR_CONTENTS: Record<
   { short: string[]; long: { perm: string; name: string }[] }
 > = {
   "/workspace/portfolio": {
-    short: ["package.json", "tsconfig.json", "README.md", "src", ".env"],
+    short: ["src", ".env", "package.json", "README.md", "tsconfig.json"],
     long: [
       { perm: "drwxr-xr-x   8 visitor staff   256 Feb 27 14:32 .", name: "." },
       {
         perm: "drwxr-xr-x   3 visitor staff    96 Feb 26 09:15 ..",
         name: "..",
       },
+      { perm: "drwxr-xr-x   5 visitor staff   160 Feb 27 14:30", name: "src" },
+      { perm: "-rw-r--r--   1 visitor staff    42 Feb 24 11:05", name: ".env" },
       {
         perm: "-rw-r--r--   1 visitor staff  1523 Feb 27 10:12",
         name: "package.json",
       },
       {
-        perm: "-rw-r--r--   1 visitor staff   312 Feb 26 08:44",
-        name: "tsconfig.json",
-      },
-      {
         perm: "-rw-r--r--   1 visitor staff   156 Feb 25 16:20",
         name: "README.md",
       },
-      { perm: "drwxr-xr-x   5 visitor staff   160 Feb 27 14:30", name: "src" },
-      { perm: "-rw-r--r--   1 visitor staff    42 Feb 24 11:05", name: ".env" },
+      {
+        perm: "-rw-r--r--   1 visitor staff   312 Feb 26 08:44",
+        name: "tsconfig.json",
+      },
     ],
   },
   "/workspace/portfolio/src": {
