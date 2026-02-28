@@ -1,6 +1,6 @@
 "use client";
 
-import { ChevronRight } from "lucide-react";
+import { ChevronRight, Code, Eye } from "lucide-react";
 import { navItems } from "@/components/ide/config";
 import { matchNavItem } from "@/lib/ide/breadcrumb";
 import { cn } from "@/lib/utils";
@@ -24,7 +24,7 @@ export function Breadcrumbs({ pathname }: BreadcrumbsProps) {
   const parts = getBreadcrumbParts(pathname);
 
   return (
-    <div className="flex shrink-0 items-center justify-between gap-2 overflow-hidden border-border border-b bg-background px-2 py-1 text-[11px] text-muted-foreground sm:px-3">
+    <div className="flex h-[35px] shrink-0 items-center justify-between gap-2 overflow-hidden border-border border-b bg-background px-2 text-[11px] text-muted-foreground sm:px-3">
       <div className="flex min-w-0 flex-1 items-center gap-1 overflow-hidden">
         {parts.map((part, i) => {
           const key = parts.slice(0, i + 1).join("/");
@@ -48,32 +48,34 @@ export function Breadcrumbs({ pathname }: BreadcrumbsProps) {
           );
         })}
       </div>
-      <fieldset className="flex items-center rounded-sm border-0 p-0">
+      <fieldset className="flex items-center gap-1 border-0 p-0">
         <legend className="sr-only">View mode</legend>
         <button
           className={cn(
-            "cursor-pointer rounded px-1.5 py-0.5 text-[10px] transition-colors",
+            "flex cursor-pointer items-center gap-1 px-1 py-0.5 text-[11px] transition-colors",
             viewMode === "preview"
-              ? "bg-muted/80 text-foreground"
-              : "hover:text-foreground"
+              ? "text-foreground"
+              : "text-muted-foreground hover:text-foreground"
           )}
           onClick={() => setViewMode("preview")}
           title="Preview"
           type="button"
         >
+          <Eye className="size-3.5 shrink-0" />
           Preview
         </button>
         <button
           className={cn(
-            "cursor-pointer rounded px-1.5 py-0.5 text-[10px] transition-colors",
+            "flex cursor-pointer items-center gap-1 px-1 py-0.5 text-[11px] transition-colors",
             viewMode === "code"
-              ? "bg-muted/80 text-foreground"
-              : "hover:text-foreground"
+              ? "text-foreground"
+              : "text-muted-foreground hover:text-foreground"
           )}
           onClick={() => setViewMode("code")}
           title="Source"
           type="button"
         >
+          <Code className="size-3.5 shrink-0" />
           Source
         </button>
       </fieldset>
