@@ -1,10 +1,12 @@
 "use client";
 
 import { GitBranch, PanelLeft, Terminal } from "lucide-react";
+import { useTranslations } from "next-intl";
 import { cn } from "@/lib/utils";
 import { useIdeStore } from "@/stores/ide-store";
 
 export function MobileActivityBar() {
+  const t = useTranslations("ide");
   const terminalOpen = useIdeStore((s) => s.terminalOpen);
   const toggleTerminal = useIdeStore((s) => s.toggleTerminal);
   const setMobileSidebarView = useIdeStore((s) => s.setMobileSidebarView);
@@ -12,25 +14,25 @@ export function MobileActivityBar() {
   return (
     <div className="flex h-12 shrink-0 items-center justify-around gap-1 border-border border-t bg-sidebar px-2 md:hidden">
       <button
-        aria-label="Explorer"
+        aria-label={t("explorer")}
         className="flex min-h-[44px] min-w-[44px] flex-1 touch-manipulation items-center justify-center gap-2 rounded-md text-muted-foreground transition-colors hover:bg-sidebar-accent/50 hover:text-sidebar-foreground"
         onClick={() => setMobileSidebarView("explorer")}
         type="button"
       >
         <PanelLeft className="size-5 shrink-0" />
-        <span className="text-xs">Explorer</span>
+        <span className="text-xs">{t("explorer")}</span>
       </button>
       <button
-        aria-label="Source Control"
+        aria-label={t("sourceControl")}
         className="flex min-h-[44px] min-w-[44px] flex-1 touch-manipulation items-center justify-center gap-2 rounded-md text-muted-foreground transition-colors hover:bg-sidebar-accent/50 hover:text-sidebar-foreground"
         onClick={() => setMobileSidebarView("sourceControl")}
         type="button"
       >
         <GitBranch className="size-5 shrink-0" />
-        <span className="text-xs">Source</span>
+        <span className="text-xs">{t("sourceShort")}</span>
       </button>
       <button
-        aria-label="Terminal"
+        aria-label={t("terminal")}
         className={cn(
           "flex min-h-[44px] min-w-[44px] flex-1 touch-manipulation items-center justify-center gap-2 rounded-md transition-colors hover:bg-sidebar-accent/50",
           terminalOpen
@@ -41,7 +43,7 @@ export function MobileActivityBar() {
         type="button"
       >
         <Terminal className="size-5 shrink-0" />
-        <span className="text-xs">Terminal</span>
+        <span className="text-xs">{t("terminal")}</span>
       </button>
     </div>
   );

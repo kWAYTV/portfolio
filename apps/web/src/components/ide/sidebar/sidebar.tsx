@@ -7,6 +7,7 @@ import {
   ChevronsUpDown,
   X,
 } from "lucide-react";
+import { useTranslations } from "next-intl";
 import { toast } from "sonner";
 import { explorerTree } from "@/components/ide/config";
 import { ExplorerTreeItem } from "@/components/ide/sidebar/explorer-tree-item";
@@ -25,6 +26,7 @@ export function Sidebar({
   onClose,
   pathname,
 }: SidebarProps) {
+  const t = useTranslations("ide");
   const openTab = useEditorGroupsStore((s) => s.openTab);
   const { expanded, toggle, expandAll, collapseAll, isFullyExpanded } =
     useExplorerExpanded();
@@ -32,9 +34,9 @@ export function Sidebar({
   const copyPath = async (path: string) => {
     try {
       await navigator.clipboard.writeText(path);
-      toast.success("Path copied to clipboard");
+      toast.success(t("pathCopied"));
     } catch {
-      toast.error("Failed to copy path");
+      toast.error(t("pathCopyFailed"));
     }
   };
 
@@ -46,12 +48,12 @@ export function Sidebar({
     >
       <div className="flex items-center justify-between gap-1 px-2 py-2">
         <span className="flex-1 px-2 font-medium text-[11px] text-muted-foreground uppercase tracking-wider">
-          Explorer
+          {t("explorer")}
         </span>
         <div className="flex items-center gap-0.5">
           {onClose && (
             <Button
-              aria-label="Close"
+              aria-label={t("close")}
               className="size-6 rounded p-0"
               onClick={onClose}
               size="icon"
@@ -63,11 +65,11 @@ export function Sidebar({
           )}
           {!isFullyExpanded && (
             <Button
-              aria-label="Expand all"
+              aria-label={t("expandAll")}
               className="size-6 rounded p-0"
               onClick={expandAll}
               size="icon"
-              title="Expand all"
+              title={t("expandAll")}
               type="button"
               variant="ghost"
             >
@@ -75,11 +77,11 @@ export function Sidebar({
             </Button>
           )}
           <Button
-            aria-label="Collapse all"
+            aria-label={t("collapseAll")}
             className="size-6 rounded p-0"
             onClick={collapseAll}
             size="icon"
-            title="Collapse all"
+            title={t("collapseAll")}
             type="button"
             variant="ghost"
           >
