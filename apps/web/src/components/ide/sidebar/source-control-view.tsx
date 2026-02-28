@@ -2,6 +2,7 @@
 
 import { ExternalLink, GitBranch, GitCommit, RefreshCw, X } from "lucide-react";
 import { useTranslations } from "next-intl";
+import { useState } from "react";
 import { CollapsibleSection } from "@/components/ide/sidebar/collapsible-section";
 import { CommitHistoryItem } from "@/components/ide/sidebar/commit-history-item";
 import { Button } from "@/components/ui/button";
@@ -21,6 +22,7 @@ export function SourceControlView({
   onClose,
 }: SourceControlViewProps) {
   const t = useTranslations("ide");
+  const [spinKey, setSpinKey] = useState(0);
 
   return (
     <div
@@ -50,12 +52,19 @@ export function SourceControlView({
           <Button
             aria-label={t("syncChanges")}
             className="size-6 rounded p-0"
+            onClick={() => setSpinKey((k: number) => k + 1)}
             size="icon-sm"
             title={t("syncChanges")}
             type="button"
             variant="ghost"
           >
-            <RefreshCw className="size-3.5" />
+            <RefreshCw
+              className={cn(
+                "size-3.5",
+                spinKey > 0 && "animate-[spin_0.6s_linear_1]"
+              )}
+              key={spinKey}
+            />
           </Button>
         </div>
       </div>
