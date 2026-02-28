@@ -74,59 +74,28 @@ Sales Assistant, Marketing
 ### Insergal — *2018 - 2019*
 Automotive Mechanic`;
 
-export const projectsCode = `import { Octokit } from "@octokit/rest";
+export const projectsCode = `import "server-only";
 
-interface Repository {
-  name: string;
-  description: string | null;
-  language: string | null;
-  stargazers_count: number;
-  forks_count: number;
-  html_url: string;
-  pushed_at: string;
-  created_at: string;
-}
+import { Octokit } from "@octokit/rest";
+import { getGitHubRepos as getRepos } from "@repo/github";
+import { env } from "@repo/env/web";
+import { cacheLife, cacheTag } from "next/cache";
 
-const octokit = new Octokit({
-  auth: process.env.GITHUB_TOKEN,
-});
+export async function getGitHubRepos() {
+  "use cache";
+  cacheLife("hours");
+  cacheTag("github-repos");
 
-export async function getRepositories(): Promise<Repository[]> {
-  const { data } = await octokit.repos.listForUser({
+  const token = env.GITHUB_TOKEN;
+  if (!token) return [];
+
+  const octokit = new Octokit({ auth: token });
+  return getRepos({
+    octokit,
     username: "kWAYTV",
-    sort: "updated",
-    per_page: 100,
+    extraRepos: [{ owner: "vercel", repo: "core" }],
   });
-
-  return data.map(({
-    name, description, language, stargazers_count,
-    forks_count, html_url, pushed_at, created_at,
-  }) => ({
-    name, description, language, stargazers_count,
-    forks_count, html_url, pushed_at, created_at,
-  }));
-}
-
-export const sortOptions = ["stars", "updated", "created", "name"] as const;
-export type SortOption = (typeof sortOptions)[number];
-
-export function sortRepos(repos: Repository[], sort: SortOption) {
-  return [...repos].sort((a, b) => {
-    switch (sort) {
-      case "stars":
-        return b.stargazers_count - a.stargazers_count;
-      case "updated":
-        return +new Date(b.pushed_at) - +new Date(a.pushed_at);
-      case "created":
-        return +new Date(b.created_at) - +new Date(a.created_at);
-      case "name":
-        return a.name.localeCompare(b.name);
-    }
-  });
-}
-
-// Pinned on home page
-export const featured = ["portfolio", "versend/core", "lichess-bot"];`;
+}`;
 
 export const blogCode = `import { BlogCard } from "@/components/blog/blog-card";
 import { BlogHeader } from "@/components/blog/blog-header";

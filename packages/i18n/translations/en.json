@@ -65,7 +65,9 @@
       "updated": "Updated",
       "created": "Created",
       "name": "Name"
-    }
+    },
+    "prev": "prev",
+    "next": "next"
   },
   "blog": {
     "title": "Blog",

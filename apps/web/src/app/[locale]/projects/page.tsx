@@ -1,7 +1,25 @@
-import { setRequestLocale } from "next-intl/server";
+import { getTranslations, setRequestLocale } from "next-intl/server";
+import { Suspense } from "react";
 import { CodeView } from "@/components/ide/editor/code-view";
 import { EditorContent } from "@/components/ide/editor/editor-content";
+import { ProjectListLoader } from "@/components/projects/project-list-loader";
+import { ProjectListSkeleton } from "@/components/projects/project-list-skeleton";
+import { ProjectsHeader } from "@/components/projects/projects-header";
+import { PageContent } from "@/components/shared/page-content";
 import { projectsCode } from "@/consts/code-content";
+
+export async function generateMetadata({
+  params,
+}: {
+  params: Promise<{ locale: string }>;
+}) {
+  const { locale } = await params;
+  const t = await getTranslations({ locale, namespace: "projects" });
+  return {
+    title: `${t("title")} | Martin Vila`,
+    description: t("subtitle"),
+  };
+}
 
 export default async function ProjectsPage({
   params,
@@ -14,9 +32,12 @@ export default async function ProjectsPage({
   return (
     <EditorContent
       preview={
-        <main className="flex min-h-full items-center justify-center p-8">
-          <p>Projects</p>
-        </main>
+        <PageContent>
+          <ProjectsHeader />
+          <Suspense fallback={<ProjectListSkeleton />}>
+            <ProjectListLoader />
+          </Suspense>
+        </PageContent>
       }
       source={<CodeView code={projectsCode} lang="typescript" />}
     />

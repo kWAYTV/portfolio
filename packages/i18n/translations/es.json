@@ -65,7 +65,9 @@
       "updated": "Actualizado",
       "created": "Creado",
       "name": "Nombre"
-    }
+    },
+    "prev": "ant.",
+    "next": "sig."
   },
   "blog": {
     "title": "Blog",
