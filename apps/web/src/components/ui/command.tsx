@@ -58,6 +58,7 @@ function CommandDialog({
           "top-1/3 translate-y-0 overflow-hidden rounded-none p-0",
           className
         )}
+        finalFocus={false}
         showCloseButton={showCloseButton}
       >
         {children}

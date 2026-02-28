@@ -36,6 +36,7 @@ interface IdeState {
   closeTab: (href: string) => void;
   closeTabsToRight: (href: string) => void;
   collapseAll: () => void;
+  commandPaletteOpen: boolean;
   exitFullscreen: () => void;
   expandAll: () => void;
 
@@ -49,6 +50,7 @@ interface IdeState {
   // Tabs
   openTabs: string[];
   reorderTabs: (newOrder: string[]) => void;
+  setCommandPaletteOpen: (open: boolean) => void;
   setFullscreen: (fullscreen: boolean) => void;
   setMobileSidebarView: (view: SidebarView | null) => void;
   setSidebarView: (view: SidebarView) => void;
@@ -71,6 +73,8 @@ interface IdeState {
 }
 
 export const useIdeStore = create<IdeState>((set) => ({
+  commandPaletteOpen: false,
+  setCommandPaletteOpen: (commandPaletteOpen) => set({ commandPaletteOpen }),
   sidebarOpen: true,
   sidebarView: "explorer",
   terminalOpen: false,
