@@ -15,11 +15,6 @@ import {
   DropdownMenuShortcut,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import {
-  Tooltip,
-  TooltipContent,
-  TooltipTrigger,
-} from "@/components/ui/tooltip";
 import { REPO_URL } from "@/consts/ide-constants";
 import { IDE_DROPDOWN_CONTENT_CLASS } from "@/lib/ide-dropdown";
 import { cn } from "@/lib/utils";
@@ -36,19 +31,12 @@ export function SettingsMenu() {
 
   return (
     <DropdownMenu>
-      <Tooltip>
-        <TooltipTrigger asChild>
-          <DropdownMenuTrigger
-            aria-label={t("settings")}
-            className="flex size-10 cursor-pointer items-center justify-center text-sidebar-foreground/60 transition-colors hover:text-sidebar-primary"
-          >
-            <Settings className="size-5" />
-          </DropdownMenuTrigger>
-        </TooltipTrigger>
-        <TooltipContent>
-          <p>{t("settings")}</p>
-        </TooltipContent>
-      </Tooltip>
+      <DropdownMenuTrigger
+        aria-label={t("settings")}
+        className="flex size-10 cursor-pointer items-center justify-center text-sidebar-foreground/60 transition-colors hover:text-sidebar-primary"
+      >
+        <Settings className="size-5" />
+      </DropdownMenuTrigger>
       <DropdownMenuContent
         align="start"
         className={cn(IDE_DROPDOWN_CONTENT_CLASS, "w-36")}
