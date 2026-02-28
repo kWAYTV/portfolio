@@ -1,0 +1,88 @@
+/* Theme presets – override shadcn vars. Add new themes by extending .theme-{id} */
+
+/* default = Vercel (current :root/.dark) – no overrides needed */
+
+/* Catppuccin – Latte (light) / Mocha (dark) palette → shadcn vars */
+.theme-catppuccin {
+  --background: oklch(0.96 0.008 265);
+  --foreground: oklch(0.35 0.04 265);
+  --card: oklch(0.98 0.006 265);
+  --card-foreground: oklch(0.35 0.04 265);
+  --popover: oklch(0.96 0.008 265);
+  --popover-foreground: oklch(0.35 0.04 265);
+  --primary: oklch(0.55 0.22 265);
+  --primary-foreground: oklch(0.99 0 0);
+  --secondary: oklch(0.91 0.02 265);
+  --secondary-foreground: oklch(0.35 0.04 265);
+  --muted: oklch(0.93 0.02 265);
+  --muted-foreground: oklch(0.45 0.03 265);
+  --accent: oklch(0.91 0.02 265);
+  --accent-foreground: oklch(0.35 0.04 265);
+  --border: oklch(0.88 0.02 265);
+  --input: oklch(0.88 0.02 265);
+  --ring: oklch(0.55 0.22 265);
+  --destructive: oklch(0.55 0.2 25);
+  --destructive-foreground: oklch(0.99 0 0);
+  --sidebar: oklch(0.93 0.02 265);
+  --sidebar-foreground: oklch(0.35 0.04 265);
+  --sidebar-primary: oklch(0.55 0.22 265);
+  --sidebar-primary-foreground: oklch(0.99 0 0);
+  --sidebar-accent: oklch(0.88 0.02 265);
+  --sidebar-accent-foreground: oklch(0.35 0.04 265);
+  --sidebar-border: oklch(0.88 0.02 265);
+  --sidebar-ring: oklch(0.55 0.22 265);
+  --syntax-keyword: oklch(0.55 0.2 285);
+  --syntax-string: oklch(0.55 0.18 145);
+  --syntax-number: oklch(0.65 0.18 45);
+  --syntax-type: oklch(0.55 0.14 230);
+  --syntax-function: oklch(0.55 0.2 250);
+  --syntax-tag: oklch(0.55 0.2 25);
+  --syntax-attribute: oklch(0.55 0.22 300);
+  --chart-1: oklch(0.65 0.18 45);
+  --chart-2: oklch(0.55 0.22 265);
+  --chart-3: oklch(0.55 0.18 145);
+  --chart-4: oklch(0.6 0.2 330);
+  --chart-5: oklch(0.55 0.2 285);
+}
+
+.theme-catppuccin.dark {
+  --background: oklch(0.21 0.02 265);
+  --foreground: oklch(0.84 0.03 265);
+  --card: oklch(0.24 0.02 265);
+  --card-foreground: oklch(0.84 0.03 265);
+  --popover: oklch(0.24 0.02 265);
+  --popover-foreground: oklch(0.84 0.03 265);
+  --primary: oklch(0.77 0.12 265);
+  --primary-foreground: oklch(0.21 0.02 265);
+  --secondary: oklch(0.31 0.03 265);
+  --secondary-foreground: oklch(0.84 0.03 265);
+  --muted: oklch(0.29 0.02 265);
+  --muted-foreground: oklch(0.65 0.03 265);
+  --accent: oklch(0.35 0.03 265);
+  --accent-foreground: oklch(0.84 0.03 265);
+  --border: oklch(0.35 0.03 265);
+  --input: oklch(0.35 0.03 265);
+  --ring: oklch(0.77 0.12 265);
+  --destructive: oklch(0.65 0.2 25);
+  --destructive-foreground: oklch(0.21 0 0);
+  --sidebar: oklch(0.2 0.02 265);
+  --sidebar-foreground: oklch(0.84 0.03 265);
+  --sidebar-primary: oklch(0.77 0.12 265);
+  --sidebar-primary-foreground: oklch(0.21 0.02 265);
+  --sidebar-accent: oklch(0.31 0.03 265);
+  --sidebar-accent-foreground: oklch(0.84 0.03 265);
+  --sidebar-border: oklch(0.31 0.03 265);
+  --sidebar-ring: oklch(0.77 0.12 265);
+  --syntax-keyword: oklch(0.75 0.15 300);
+  --syntax-string: oklch(0.75 0.18 145);
+  --syntax-number: oklch(0.75 0.15 70);
+  --syntax-type: oklch(0.75 0.15 200);
+  --syntax-function: oklch(0.7 0.18 250);
+  --syntax-tag: oklch(0.7 0.18 25);
+  --syntax-attribute: oklch(0.75 0.15 300);
+  --chart-1: oklch(0.75 0.15 45);
+  --chart-2: oklch(0.77 0.12 265);
+  --chart-3: oklch(0.75 0.18 145);
+  --chart-4: oklch(0.72 0.18 330);
+  --chart-5: oklch(0.75 0.15 285);
+}

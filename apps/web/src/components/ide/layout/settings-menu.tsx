@@ -1,10 +1,10 @@
 "use client";
 
 import { config, type Locale, localeToFlagEmoji } from "@repo/i18n/config";
-import { ExternalLink, Languages, Moon, Settings, Sun } from "lucide-react";
+import { ExternalLink, Languages, Palette, Settings } from "lucide-react";
 import { useLocale, useTranslations } from "next-intl";
-import { useTheme } from "next-themes";
-import { useCallback, useEffect, useState } from "react";
+import { ThemeSelector } from "@/components/theming/theme-selector";
+import { ThemeToggle } from "@/components/theming/theme-toggle";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -16,7 +16,6 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { REPO_URL } from "@/consts/ide-constants";
-import { useThemeTransition } from "@/hooks/use-theme-transition";
 import { IDE_DROPDOWN_CONTENT_CLASS } from "@/lib/ide-dropdown";
 import { cn } from "@/lib/utils";
 import { updateLocale } from "@/modules/i18n/lib/update-locale";
@@ -26,25 +25,7 @@ const locales = Object.keys(config.locales) as Locale[];
 export function SettingsMenu() {
   const t = useTranslations("ide");
   const tLocale = useTranslations("localeSwitcher");
-  const { theme, resolvedTheme } = useTheme();
-  const setThemeWithTransition = useThemeTransition(280);
   const locale = useLocale() as Locale;
-  const [themeValue, setThemeValue] = useState<string>("light");
-
-  useEffect(() => {
-    const display = theme === "system" ? resolvedTheme : theme;
-    setThemeValue(display ?? "light");
-  }, [theme, resolvedTheme]);
-
-  const handleThemeChange = useCallback(
-    async (value: string) => {
-      setThemeValue(value);
-      if (value === "light" || value === "dark") {
-        await setThemeWithTransition(value);
-      }
-    },
-    [setThemeWithTransition]
-  );
 
   return (
     <DropdownMenu>
@@ -62,23 +43,20 @@ export function SettingsMenu() {
         sideOffset={4}
       >
         <DropdownMenuGroup>
+          <DropdownMenuLabel>{t("appearance")}</DropdownMenuLabel>
+          <div className="flex items-center justify-between gap-2 px-2 py-1">
+            <ThemeToggle className="text-xs" />
+          </div>
+        </DropdownMenuGroup>
+        <DropdownMenuSeparator />
+        <DropdownMenuGroup>
           <DropdownMenuLabel className="flex items-center gap-2">
-            <Sun className="size-3.5" />
+            <Palette className="size-3.5" />
             {t("themePreset")}
           </DropdownMenuLabel>
-          <DropdownMenuRadioGroup
-            onValueChange={handleThemeChange}
-            value={themeValue}
-          >
-            <DropdownMenuRadioItem value="light">
-              <Sun className="size-3.5" />
-              {t("lightTheme")}
-            </DropdownMenuRadioItem>
-            <DropdownMenuRadioItem value="dark">
-              <Moon className="size-3.5" />
-              {t("darkTheme")}
-            </DropdownMenuRadioItem>
-          </DropdownMenuRadioGroup>
+          <div className="px-2 py-1">
+            <ThemeSelector />
+          </div>
         </DropdownMenuGroup>
         <DropdownMenuSeparator />
         <DropdownMenuGroup>
