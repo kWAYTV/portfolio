@@ -12,11 +12,6 @@ import { toast } from "sonner";
 import { explorerTree } from "@/components/ide/config";
 import { ExplorerTreeItem } from "@/components/ide/sidebar/explorer-tree-item";
 import { Button } from "@/components/ui/button";
-import {
-  Tooltip,
-  TooltipContent,
-  TooltipTrigger,
-} from "@/components/ui/tooltip";
 import { useEditorGroupsStore } from "@/stores/editor-groups-store";
 import { useExplorerExpanded } from "@/stores/ide-store";
 
@@ -57,60 +52,39 @@ export function Sidebar({
         </span>
         <div className="flex items-center gap-0.5">
           {onClose && (
-            <Tooltip>
-              <TooltipTrigger asChild>
-                <Button
-                  aria-label={t("close")}
-                  className="size-6 rounded p-0"
-                  onClick={onClose}
-                  size="icon"
-                  type="button"
-                  variant="ghost"
-                >
-                  <X className="size-4" />
-                </Button>
-              </TooltipTrigger>
-              <TooltipContent>
-                <p>{t("close")}</p>
-              </TooltipContent>
-            </Tooltip>
+            <Button
+              aria-label={t("close")}
+              className="size-6 rounded p-0"
+              onClick={onClose}
+              size="icon"
+              type="button"
+              variant="ghost"
+            >
+              <X className="size-4" />
+            </Button>
           )}
           {!isFullyExpanded && (
-            <Tooltip>
-              <TooltipTrigger asChild>
-                <Button
-                  aria-label={t("expandAll")}
-                  className="size-6 rounded p-0"
-                  onClick={expandAll}
-                  size="icon"
-                  type="button"
-                  variant="ghost"
-                >
-                  <ChevronsUpDown className="size-3.5" />
-                </Button>
-              </TooltipTrigger>
-              <TooltipContent>
-                <p>{t("expandAll")}</p>
-              </TooltipContent>
-            </Tooltip>
+            <Button
+              aria-label={t("expandAll")}
+              className="size-6 rounded p-0"
+              onClick={expandAll}
+              size="icon"
+              type="button"
+              variant="ghost"
+            >
+              <ChevronsUpDown className="size-3.5" />
+            </Button>
           )}
-          <Tooltip>
-            <TooltipTrigger asChild>
-              <Button
-                aria-label={t("collapseAll")}
-                className="size-6 rounded p-0"
-                onClick={collapseAll}
-                size="icon"
-                type="button"
-                variant="ghost"
-              >
-                <ChevronsDownUp className="size-3.5" />
-              </Button>
-            </TooltipTrigger>
-            <TooltipContent>
-              <p>{t("collapseAll")}</p>
-            </TooltipContent>
-          </Tooltip>
+          <Button
+            aria-label={t("collapseAll")}
+            className="size-6 rounded p-0"
+            onClick={collapseAll}
+            size="icon"
+            type="button"
+            variant="ghost"
+          >
+            <ChevronsDownUp className="size-3.5" />
+          </Button>
         </div>
       </div>
       <div className="flex-1 overflow-y-auto pb-4">

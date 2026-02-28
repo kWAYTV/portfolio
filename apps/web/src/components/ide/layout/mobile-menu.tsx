@@ -18,11 +18,6 @@ import {
   SheetHeader,
   SheetTitle,
 } from "@/components/ui/sheet";
-import {
-  Tooltip,
-  TooltipContent,
-  TooltipTrigger,
-} from "@/components/ui/tooltip";
 import { REPO_URL } from "@/consts/ide-constants";
 import { LocaleLink } from "@/modules/i18n/routing";
 
@@ -52,21 +47,14 @@ export function MobileMenu({ pathname }: MobileMenuProps) {
   return (
     <Sheet onOpenChange={setOpen} open={open}>
       <div className="md:hidden">
-        <Tooltip>
-          <TooltipTrigger asChild>
-            <button
-              aria-label={t("openMenu")}
-              className="flex size-10 shrink-0 items-center justify-center text-muted-foreground transition-colors hover:text-foreground"
-              onClick={() => setOpen(true)}
-              type="button"
-            >
-              <Menu className="size-5" />
-            </button>
-          </TooltipTrigger>
-          <TooltipContent>
-            <p>{t("openMenu")}</p>
-          </TooltipContent>
-        </Tooltip>
+        <button
+          aria-label={t("openMenu")}
+          className="flex size-10 shrink-0 items-center justify-center text-muted-foreground transition-colors hover:text-foreground"
+          onClick={() => setOpen(true)}
+          type="button"
+        >
+          <Menu className="size-5" />
+        </button>
       </div>
       <SheetContent
         className="flex w-72 flex-col gap-0 p-0 md:hidden"

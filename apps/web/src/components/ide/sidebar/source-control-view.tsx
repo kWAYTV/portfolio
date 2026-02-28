@@ -25,11 +25,6 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import {
-  Tooltip,
-  TooltipContent,
-  TooltipTrigger,
-} from "@/components/ui/tooltip";
 import type { Commit } from "@/consts/ide-constants";
 import { REPO_URL } from "@/consts/ide-constants";
 import { getCommitsAction } from "@/lib/actions/github";
@@ -67,19 +62,12 @@ export function SourceControlView({
         </span>
         <div className="flex shrink-0 items-center gap-0.5">
           <DropdownMenu onOpenChange={setMenuOpen} open={menuOpen}>
-            <Tooltip>
-              <TooltipTrigger asChild>
-                <DropdownMenuTrigger
-                  aria-label={t("moreActions")}
-                  className="flex size-6 shrink-0 items-center justify-center rounded p-0 transition-colors hover:bg-sidebar-accent/50"
-                >
-                  <MoreHorizontal className="size-3.5" />
-                </DropdownMenuTrigger>
-              </TooltipTrigger>
-              <TooltipContent>
-                <p>{t("moreActions")}</p>
-              </TooltipContent>
-            </Tooltip>
+            <DropdownMenuTrigger
+              aria-label={t("moreActions")}
+              className="flex size-6 shrink-0 items-center justify-center rounded p-0 transition-colors hover:bg-sidebar-accent/50"
+            >
+              <MoreHorizontal className="size-3.5" />
+            </DropdownMenuTrigger>
             <DropdownMenuContent
               align="end"
               className={cn(IDE_DROPDOWN_CONTENT_CLASS, "w-36")}
@@ -126,47 +114,33 @@ export function SourceControlView({
               </DropdownMenuItem>
             </DropdownMenuContent>
           </DropdownMenu>
-          <Tooltip>
-            <TooltipTrigger asChild>
-              <Button
-                aria-label={t("syncChanges")}
-                className="size-6 rounded p-0"
-                onClick={() => setSpinKey((k: number) => k + 1)}
-                size="icon-sm"
-                type="button"
-                variant="ghost"
-              >
-                <RefreshCw
-                  className={cn(
-                    "size-3.5",
-                    spinKey > 0 && "animate-[spin_0.6s_linear_1]"
-                  )}
-                  key={spinKey}
-                />
-              </Button>
-            </TooltipTrigger>
-            <TooltipContent>
-              <p>{t("syncChanges")}</p>
-            </TooltipContent>
-          </Tooltip>
+          <Button
+            aria-label={t("syncChanges")}
+            className="size-6 rounded p-0"
+            onClick={() => setSpinKey((k: number) => k + 1)}
+            size="icon-sm"
+            type="button"
+            variant="ghost"
+          >
+            <RefreshCw
+              className={cn(
+                "size-3.5",
+                spinKey > 0 && "animate-[spin_0.6s_linear_1]"
+              )}
+              key={spinKey}
+            />
+          </Button>
           {onClose && (
-            <Tooltip>
-              <TooltipTrigger asChild>
-                <Button
-                  aria-label={t("close")}
-                  className="size-6 rounded p-0"
-                  onClick={onClose}
-                  size="icon-sm"
-                  type="button"
-                  variant="ghost"
-                >
-                  <X className="size-4" />
-                </Button>
-              </TooltipTrigger>
-              <TooltipContent>
-                <p>{t("close")}</p>
-              </TooltipContent>
-            </Tooltip>
+            <Button
+              aria-label={t("close")}
+              className="size-6 rounded p-0"
+              onClick={onClose}
+              size="icon-sm"
+              type="button"
+              variant="ghost"
+            >
+              <X className="size-4" />
+            </Button>
           )}
         </div>
       </div>
@@ -212,25 +186,18 @@ export function SourceControlView({
             />
             <span className="truncate font-medium">main</span>
           </div>
-          <Tooltip>
-            <TooltipTrigger asChild>
-              <a
-                className={cn(
-                  "flex shrink-0 items-center gap-1 rounded px-1.5 py-0.5 text-[10px] transition-colors",
-                  "text-muted-foreground/70 hover:bg-sidebar-accent/50 hover:text-sidebar-foreground"
-                )}
-                href={REPO_URL}
-                rel="noopener noreferrer"
-                target="_blank"
-              >
-                <ExternalLink className="size-3" />
-                {t("viewOnGitHub")}
-              </a>
-            </TooltipTrigger>
-            <TooltipContent>
-              <p>{t("viewOnGitHub")}</p>
-            </TooltipContent>
-          </Tooltip>
+          <a
+            className={cn(
+              "flex shrink-0 items-center gap-1 rounded px-1.5 py-0.5 text-[10px] transition-colors",
+              "text-muted-foreground/70 hover:bg-sidebar-accent/50 hover:text-sidebar-foreground"
+            )}
+            href={REPO_URL}
+            rel="noopener noreferrer"
+            target="_blank"
+          >
+            <ExternalLink className="size-3" />
+            {t("viewOnGitHub")}
+          </a>
         </div>
 
         {/* Commit History – Outgoing / local history */}

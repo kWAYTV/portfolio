@@ -14,11 +14,6 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import {
-  Tooltip,
-  TooltipContent,
-  TooltipTrigger,
-} from "@/components/ui/tooltip";
 import { IDE_DROPDOWN_CONTENT_CLASS } from "@/lib/ide-dropdown";
 import { cn } from "@/lib/utils";
 import { updateLocale } from "@/modules/i18n/lib/update-locale";
@@ -38,23 +33,14 @@ export function LocaleSwitcher() {
   };
 
   return (
-    <DropdownMenu open={open} onOpenChange={setOpen}>
-      <Tooltip>
-        <TooltipTrigger asChild>
-          <DropdownMenuTrigger
-            aria-label={t("selectLanguage")}
-            className="flex cursor-pointer items-center gap-1 rounded px-1 py-0.5 text-muted-foreground/50 text-xs transition-colors duration-200 hover:text-foreground sm:text-sm [&_svg]:size-3.5"
-          >
-            <Languages className="size-3.5 shrink-0" />
-            <span className="hidden sm:inline">
-              {config.locales[locale].label}
-            </span>
-          </DropdownMenuTrigger>
-        </TooltipTrigger>
-        <TooltipContent>
-          <p>{t("selectLanguage")}</p>
-        </TooltipContent>
-      </Tooltip>
+    <DropdownMenu onOpenChange={setOpen} open={open}>
+      <DropdownMenuTrigger
+        aria-label={t("selectLanguage")}
+        className="flex cursor-pointer items-center gap-1 rounded px-1 py-0.5 text-muted-foreground/50 text-xs transition-colors duration-200 hover:text-foreground sm:text-sm [&_svg]:size-3.5"
+      >
+        <Languages className="size-3.5 shrink-0" />
+        <span className="hidden sm:inline">{config.locales[locale].label}</span>
+      </DropdownMenuTrigger>
       <DropdownMenuContent
         align="end"
         className={cn(IDE_DROPDOWN_CONTENT_CLASS, "w-32")}
