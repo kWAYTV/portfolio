@@ -33,5 +33,9 @@ export function pathToSegments(p: PagePath): string[] {
       return [p.locale, "projects"];
     case "about":
       return [p.locale, "about"];
+    default: {
+      const _: never = p;
+      return _;
+    }
   }
 }

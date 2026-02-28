@@ -1,9 +1,9 @@
-type OgImageProps = {
-  title: string;
+interface OgImageProps {
   description?: string;
   /** Optional subtitle below description (e.g. "Portfolio", "Blog") */
   subtitle?: string;
-};
+  title: string;
+}
 
 const BG = "linear-gradient(135deg, #0f0f0f 0%, #1a1a1a 100%)";
 
