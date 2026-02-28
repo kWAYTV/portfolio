@@ -13,14 +13,11 @@ interface EditorGroupsState {
   _closing: boolean;
   _openedFromSidebar: string | null;
   _router: RouterPush | null;
-  activeGroupIndex: number;
   editorGroups: EditorGroup[];
-  splitRatio: number;
 }
 
 interface EditorGroupsActions {
-  closeAllTabs: (groupIndex?: number) => void;
-  closeGroup: (groupIndex: number) => void;
+  closeAllTabs: () => void;
   closeOtherTabs: (
     pathname: string,
     groupIndex: number,
@@ -28,18 +25,9 @@ interface EditorGroupsActions {
   ) => void;
   closeTab: (pathname: string, groupIndex: number, href: string) => void;
   closeTabsToRight: (groupIndex: number, href: string) => void;
-  focusGroup: (groupIndex: number, href?: string) => void;
-  moveTabToGroup: (
-    targetGroupIndex: number,
-    href: string,
-    sourceGroupIndex: number
-  ) => void;
   openTab: (href: string) => void;
   reorderTabs: (groupIndex: number, newOrder: string[]) => void;
   setRouter: (router: RouterPush | null) => void;
-  setSplitRatio: (ratio: number) => void;
-  splitLeft: (groupIndex: number, href: string) => void;
-  splitRight: (groupIndex: number, href: string) => void;
   syncFromPathname: (pathname: string) => void;
 }
 
@@ -47,8 +35,6 @@ export const useEditorGroupsStore = create<
   EditorGroupsState & EditorGroupsActions
 >((set, get) => ({
   editorGroups: [{ tabs: initialTabs, activeIndex: 0 }],
-  activeGroupIndex: 0,
-  splitRatio: 0.5,
   _closing: false,
   _openedFromSidebar: null,
   _router: null,
@@ -56,8 +42,7 @@ export const useEditorGroupsStore = create<
   setRouter: (router) => set({ _router: router }),
 
   syncFromPathname: (pathname) => {
-    const { _closing, _openedFromSidebar, editorGroups, activeGroupIndex } =
-      get();
+    const { _closing, _openedFromSidebar, editorGroups } = get();
     if (_closing) {
       setTimeout(() => set({ _closing: false }), 0);
       return;
@@ -67,14 +52,14 @@ export const useEditorGroupsStore = create<
       set({ _openedFromSidebar: null });
       return;
     }
-    const group = editorGroups[activeGroupIndex];
+    const group = editorGroups[0];
     if (!group) {
       return;
     }
     if (group.tabs.length === 0) {
       set((s) => {
         const next = [...s.editorGroups];
-        next[activeGroupIndex] = { tabs: [navItem.href], activeIndex: 0 };
+        next[0] = { tabs: [navItem.href], activeIndex: 0 };
         return { editorGroups: next, _openedFromSidebar: null };
       });
       return;
@@ -84,7 +69,7 @@ export const useEditorGroupsStore = create<
       if (idx !== group.activeIndex) {
         set((s) => {
           const next = [...s.editorGroups];
-          next[activeGroupIndex] = { ...group, activeIndex: idx };
+          next[0] = { ...group, activeIndex: idx };
           return { editorGroups: next, _openedFromSidebar: null };
         });
       } else {
@@ -97,9 +82,9 @@ export const useEditorGroupsStore = create<
     }
     set((s) => {
       const next = [...s.editorGroups];
-      const g = next[activeGroupIndex];
+      const g = next[0];
       const newTabs = [...g.tabs, navItem.href];
-      next[activeGroupIndex] = {
+      next[0] = {
         tabs: newTabs,
         activeIndex: newTabs.length - 1,
       };
@@ -108,20 +93,19 @@ export const useEditorGroupsStore = create<
   },
 
   openTab: (href) => {
-    const { activeGroupIndex } = get();
     set({ _openedFromSidebar: href });
     set((s) => {
       const next = [...s.editorGroups];
-      const g = next[activeGroupIndex];
+      const g = next[0];
       if (!g) {
         return s;
       }
       if (g.tabs.includes(href)) {
         const i = g.tabs.indexOf(href);
-        next[activeGroupIndex] = { ...g, activeIndex: i };
+        next[0] = { ...g, activeIndex: i };
       } else {
         const newTabs = [...g.tabs, href];
-        next[activeGroupIndex] = {
+        next[0] = {
           tabs: newTabs,
           activeIndex: newTabs.length - 1,
         };
@@ -130,9 +114,8 @@ export const useEditorGroupsStore = create<
     });
   },
 
-  // biome-ignore lint/complexity/noExcessiveCognitiveComplexity: state machine for tab/group closure
   closeTab: (pathname, groupIndex, href) => {
-    const { editorGroups, activeGroupIndex, _router } = get();
+    const { editorGroups, _router } = get();
     const group = editorGroups[groupIndex];
     if (!group) {
       return;
@@ -147,89 +130,23 @@ export const useEditorGroupsStore = create<
 
     set((s) => {
       const next = [...s.editorGroups];
-      if (nextTabs.length === 0) {
-        next.splice(groupIndex, 1);
-        if (next.length === 0) {
-          return {
-            editorGroups: [{ tabs: [], activeIndex: 0 }],
-            activeGroupIndex: 0,
-            _closing: true,
-          };
-        }
-        return {
-          editorGroups: next,
-          activeGroupIndex:
-            activeGroupIndex >= next.length
-              ? next.length - 1
-              : activeGroupIndex,
-          _closing: isActive,
-        };
-      }
-      const newActiveIndex = Math.min(idx, nextTabs.length - 1);
-      next[groupIndex] = { tabs: nextTabs, activeIndex: newActiveIndex };
+      next[0] = {
+        tabs: nextTabs,
+        activeIndex: Math.min(idx, nextTabs.length - 1),
+      };
       return { editorGroups: next, _closing: isActive };
     });
 
-    if (isActive && _router) {
-      if (nextTabs.length > 0) {
-        _router(nextTabs[Math.min(idx, nextTabs.length - 1)]);
-      } else if (editorGroups.length > 1) {
-        const otherGroup = editorGroups[groupIndex === 0 ? 1 : 0];
-        const target =
-          otherGroup?.tabs[otherGroup.activeIndex] ?? otherGroup?.tabs[0];
-        if (target) {
-          _router(target);
-        }
-      }
+    if (isActive && _router && nextTabs.length > 0) {
+      _router(nextTabs[Math.min(idx, nextTabs.length - 1)]);
     }
   },
 
-  closeAllTabs: (groupIndex) => {
-    set({ _closing: true });
-    if (groupIndex !== undefined) {
-      set((s) => {
-        const next = s.editorGroups.filter((_, i) => i !== groupIndex);
-        return {
-          editorGroups: next.length > 0 ? next : [{ tabs: [], activeIndex: 0 }],
-          activeGroupIndex:
-            s.activeGroupIndex >= groupIndex && s.activeGroupIndex > 0
-              ? s.activeGroupIndex - 1
-              : s.activeGroupIndex,
-        };
-      });
-    } else {
-      set({
-        editorGroups: [{ tabs: [], activeIndex: 0 }],
-        activeGroupIndex: 0,
-      });
-    }
-  },
-
-  closeGroup: (groupIndex) => {
-    const { editorGroups, _router } = get();
-    const group = editorGroups[groupIndex];
-    if (!group || editorGroups.length <= 1) {
-      return;
-    }
-    const targetGroupIndex = groupIndex === 0 ? 1 : 0;
-    const targetGroup = editorGroups[targetGroupIndex];
-    if (!targetGroup) {
-      return;
-    }
-    const mergedTabs = [...new Set([...targetGroup.tabs, ...group.tabs])];
-    set((s) => {
-      const next = s.editorGroups.filter((_, i) => i !== groupIndex);
-      next[0] = {
-        tabs: mergedTabs,
-        activeIndex: Math.min(targetGroup.activeIndex, mergedTabs.length - 1),
-      };
-      return { editorGroups: next, activeGroupIndex: 0, _closing: true };
+  closeAllTabs: () => {
+    set({
+      editorGroups: [{ tabs: [], activeIndex: 0 }],
+      _closing: true,
     });
-    const targetHref =
-      targetGroup.tabs[targetGroup.activeIndex] ?? targetGroup.tabs[0];
-    if (targetHref && _router) {
-      _router(targetHref);
-    }
   },
 
   closeOtherTabs: (pathname, groupIndex, keepHref) => {
@@ -281,133 +198,12 @@ export const useEditorGroupsStore = create<
       return { editorGroups: next };
     });
   },
-
-  splitRight: (groupIndex, href) => {
-    const { _router } = get();
-    set((s) => {
-      const next = s.editorGroups.map((g) => ({ ...g }));
-      const rightIdx = groupIndex + 1;
-      if (rightIdx < next.length) {
-        const right = next[rightIdx];
-        if (right && !right.tabs.includes(href)) {
-          next[rightIdx] = {
-            tabs: [...right.tabs, href],
-            activeIndex: right.tabs.length,
-          };
-        }
-      } else {
-        next.splice(groupIndex + 1, 0, { tabs: [href], activeIndex: 0 });
-      }
-      return { editorGroups: next, activeGroupIndex: groupIndex + 1 };
-    });
-    if (_router) {
-      _router(href);
-    }
-  },
-
-  splitLeft: (groupIndex, href) => {
-    const { _router } = get();
-    set((s) => {
-      const next = s.editorGroups.map((g) => ({ ...g }));
-      if (groupIndex > 0) {
-        const left = next[groupIndex - 1];
-        if (left && !left.tabs.includes(href)) {
-          next[groupIndex - 1] = {
-            tabs: [...left.tabs, href],
-            activeIndex: left.tabs.length,
-          };
-        }
-      } else {
-        next.splice(0, 0, { tabs: [href], activeIndex: 0 });
-      }
-      return {
-        editorGroups: next,
-        activeGroupIndex: Math.max(0, groupIndex - 1),
-      };
-    });
-    if (_router) {
-      _router(href);
-    }
-  },
-
-  moveTabToGroup: (targetGroupIndex, href, sourceGroupIndex) => {
-    const { editorGroups, _router } = get();
-    if (targetGroupIndex === sourceGroupIndex) {
-      return;
-    }
-    const src = editorGroups[sourceGroupIndex];
-    const dst = editorGroups[targetGroupIndex];
-    if (!(src && dst)) {
-      return;
-    }
-    const tabIdx = src.tabs.indexOf(href);
-    if (tabIdx === -1) {
-      return;
-    }
-
-    const newSrcTabs = src.tabs.filter((h) => h !== href);
-    const newDstTabs = [...dst.tabs, href];
-    const willRemoveSource = newSrcTabs.length === 0;
-    const newTargetIdx =
-      willRemoveSource && targetGroupIndex > sourceGroupIndex
-        ? targetGroupIndex - 1
-        : targetGroupIndex;
-
-    set((s) => {
-      const next = s.editorGroups.map((g) => ({ ...g }));
-      if (newSrcTabs.length === 0) {
-        next.splice(sourceGroupIndex, 1);
-        next[newTargetIdx] = {
-          tabs: newDstTabs,
-          activeIndex: newDstTabs.length - 1,
-        };
-      } else {
-        next[sourceGroupIndex] = {
-          tabs: newSrcTabs,
-          activeIndex: Math.min(src.activeIndex, newSrcTabs.length - 1),
-        };
-        next[targetGroupIndex] = {
-          tabs: newDstTabs,
-          activeIndex: newDstTabs.length - 1,
-        };
-      }
-      return { editorGroups: next, activeGroupIndex: newTargetIdx };
-    });
-    if (_router) {
-      _router(href);
-    }
-  },
-
-  focusGroup: (groupIndex, href) => {
-    const { editorGroups, _router } = get();
-    set({ activeGroupIndex: groupIndex });
-    const group = editorGroups[groupIndex];
-    if (!group?.tabs.length) {
-      return;
-    }
-    const targetHref = href ?? group.tabs[group.activeIndex] ?? group.tabs[0];
-    const tabIdx = group.tabs.indexOf(targetHref);
-    if (tabIdx >= 0) {
-      set((s) => {
-        const next = [...s.editorGroups];
-        const g = next[groupIndex];
-        if (g) {
-          next[groupIndex] = { ...g, activeIndex: tabIdx };
-        }
-        return { editorGroups: next };
-      });
-    } else if (_router) {
-      _router(targetHref);
-    }
-  },
-
-  setSplitRatio: (ratio) => set({ splitRatio: ratio }),
 }));
 
 export const useActiveGroup = () =>
-  useEditorGroupsStore((s) => s.editorGroups[s.activeGroupIndex]);
+  useEditorGroupsStore((s) => s.editorGroups[0]);
 export const useActiveHref = () =>
   useEditorGroupsStore((s) => {
-    const g = s.editorGroups[s.activeGroupIndex];
+    const g = s.editorGroups[0];
     return g?.tabs[g.activeIndex] ?? g?.tabs[0];
   });
