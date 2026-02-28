@@ -6,14 +6,17 @@ import {
   getGitHubCommits as getCommits,
   getGitHubRepos as getRepos,
 } from "@repo/github";
-import { unstable_cache } from "next/cache";
+import { cacheLife, cacheTag } from "next/cache";
 
 const REPO_OWNER = "kWAYTV";
 const REPO_NAME = "portfolio";
+const EXTRA_REPOS = [{ owner: "versend", repo: "core" }];
 
-async function fetchGitHubRepos(): Promise<
-  Awaited<ReturnType<typeof getRepos>>
-> {
+export async function getGitHubRepos() {
+  "use cache";
+  cacheTag("github-repos");
+  cacheLife("hours");
+
   const token = env.GITHUB_TOKEN;
   if (!token) {
     return [];
@@ -22,14 +25,16 @@ async function fetchGitHubRepos(): Promise<
   const octokit = new Octokit({ auth: token });
   return await getRepos({
     octokit,
-    username: "kWAYTV",
-    extraRepos: [{ owner: "versend", repo: "core" }],
+    username: REPO_OWNER,
+    extraRepos: EXTRA_REPOS,
   });
 }
 
-async function fetchGitHubCommits(): Promise<
-  Awaited<ReturnType<typeof getCommits>>
-> {
+export async function getGitHubCommits() {
+  "use cache";
+  cacheTag("github-commits");
+  cacheLife({ revalidate: 300 });
+
   const token = env.GITHUB_TOKEN;
   if (!token) {
     return [];
@@ -43,15 +48,3 @@ async function fetchGitHubCommits(): Promise<
     repo: REPO_NAME,
   });
 }
-
-export const getGitHubCommits = unstable_cache(
-  fetchGitHubCommits,
-  ["github-commits"],
-  { revalidate: 300, tags: ["github-commits"] }
-);
-
-export const getGitHubRepos = unstable_cache(
-  fetchGitHubRepos,
-  ["github-repos"],
-  { revalidate: 3600, tags: ["github-repos"] }
-);

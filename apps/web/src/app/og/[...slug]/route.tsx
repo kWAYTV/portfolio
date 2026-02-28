@@ -1,12 +1,9 @@
-import { getBlog } from "@/lib/source";
-import { ImageResponse } from "next/og";
+import { cacheLife, cacheTag } from "next/cache";
 import { notFound } from "next/navigation";
+import { ImageResponse } from "next/og";
 import { OgImage } from "@/components/og/og-image";
-import {
-  getPageImageSegments,
-  pathToSegments,
-  type PagePath,
-} from "@/lib/og";
+import { getPageImageSegments, type PagePath, pathToSegments } from "@/lib/og";
+import { getBlog } from "@/lib/source";
 
 const IMAGE_FILE = "image.png";
 const SIZE = { width: 1200, height: 630 };
@@ -40,45 +37,79 @@ const PAGE_COPY: Record<
     },
   },
   projects: {
-    en: { title: "Projects", description: "Open source work", subtitle: "Martin Vila" },
-    es: { title: "Projects", description: "Trabajo open source", subtitle: "Martin Vila" },
+    en: {
+      title: "Projects",
+      description: "Open source work",
+      subtitle: "Martin Vila",
+    },
+    es: {
+      title: "Projects",
+      description: "Trabajo open source",
+      subtitle: "Martin Vila",
+    },
   },
   about: {
-    en: { title: "About", description: "A bit about me", subtitle: "Martin Vila" },
-    es: { title: "About", description: "Un poco sobre mí", subtitle: "Martin Vila" },
+    en: {
+      title: "About",
+      description: "A bit about me",
+      subtitle: "Martin Vila",
+    },
+    es: {
+      title: "About",
+      description: "Un poco sobre mí",
+      subtitle: "Martin Vila",
+    },
   },
 };
 
 function parsePath(slug: string[]): PagePath | null {
-  if (slug[slug.length - 1] !== IMAGE_FILE) return null;
+  if (slug.at(-1) !== IMAGE_FILE) {
+    return null;
+  }
   const path = slug.slice(0, -1);
-  if (path.length === 0) return null;
+  if (path.length === 0) {
+    return null;
+  }
 
   const [locale, ...rest] = path;
-  if (!locale || !["en", "es"].includes(locale)) return null;
+  if (!(locale && ["en", "es"].includes(locale))) {
+    return null;
+  }
 
-  if (rest.length === 0) return { type: "home", locale };
-  if (rest.length === 1 && rest[0] === "blog") return { type: "blog", locale };
-  if (rest.length === 1 && rest[0] === "projects") return { type: "projects", locale };
-  if (rest.length === 1 && rest[0] === "about") return { type: "about", locale };
-  if (rest.length === 2 && rest[0] === "blog" && rest[1] !== "page")
+  if (rest.length === 0) {
+    return { type: "home", locale };
+  }
+  if (rest.length === 1 && rest[0] === "blog") {
+    return { type: "blog", locale };
+  }
+  if (rest.length === 1 && rest[0] === "projects") {
+    return { type: "projects", locale };
+  }
+  if (rest.length === 1 && rest[0] === "about") {
+    return { type: "about", locale };
+  }
+  if (rest.length === 2 && rest[0] === "blog" && rest[1] !== "page") {
     return { type: "blog-post", locale, slug: rest[1] };
+  }
   if (rest.length === 3 && rest[0] === "blog" && rest[1] === "page") {
     const num = Number.parseInt(rest[2], 10);
-    if (Number.isFinite(num)) return { type: "blog-page", locale, num };
+    if (Number.isFinite(num)) {
+      return { type: "blog-page", locale, num };
+    }
   }
   return null;
 }
 
-export const revalidate = false;
+// biome-ignore lint/suspicious/useAwait: async required for "use cache" directive
+async function getOgImageData(slug: string[]) {
+  "use cache";
+  cacheTag("og-images");
+  cacheLife("max");
 
-export async function GET(
-  _req: Request,
-  { params }: { params: Promise<{ slug: string[] }> }
-) {
-  const { slug } = await params;
   const pagePath = parsePath(slug);
-  if (!pagePath) notFound();
+  if (!pagePath) {
+    return null;
+  }
 
   let title: string;
   let description: string | undefined;
@@ -103,7 +134,9 @@ export async function GET(
     case "blog-post": {
       const blog = getBlog(pagePath.locale);
       const page = blog.getPage([pagePath.slug]);
-      if (!page) notFound();
+      if (!page) {
+        return null;
+      }
       const data = page.data as { title: string; description?: string };
       title = data.title;
       description = data.description;
@@ -124,15 +157,36 @@ export async function GET(
       subtitle = copy.subtitle ?? "Martin Vila";
       break;
     }
+    default: {
+      const _: never = pagePath;
+      return null;
+    }
+  }
+
+  return { title, description, subtitle };
+}
+
+export async function GET(
+  _req: Request,
+  { params }: { params: Promise<{ slug: string[] }> }
+) {
+  const { slug } = await params;
+  const data = await getOgImageData(slug);
+  if (!data) {
+    notFound();
   }
 
   return new ImageResponse(
-    <OgImage description={description} subtitle={subtitle} title={title} />,
+    <OgImage
+      description={data.description}
+      subtitle={data.subtitle}
+      title={data.title}
+    />,
     SIZE
   );
 }
 
-export async function generateStaticParams() {
+export function generateStaticParams() {
   const params: { slug: string[] }[] = [];
   const locales = ["en", "es"] as const;
 
@@ -150,7 +204,10 @@ export async function generateStaticParams() {
     }
 
     const POSTS_PER_PAGE = 12;
-    const totalPages = Math.max(1, Math.ceil(blogPages.length / POSTS_PER_PAGE));
+    const totalPages = Math.max(
+      1,
+      Math.ceil(blogPages.length / POSTS_PER_PAGE)
+    );
     for (let n = 2; n <= totalPages; n++) {
       const p: PagePath = { type: "blog-page", locale, num: n };
       params.push({ slug: getPageImageSegments(pathToSegments(p)) });

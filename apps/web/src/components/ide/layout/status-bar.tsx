@@ -3,7 +3,7 @@
 import { GitBranch, Moon, Play, Sun, Terminal } from "lucide-react";
 import { useTranslations } from "next-intl";
 import { useTheme } from "next-themes";
-import { memo, useCallback } from "react";
+import { memo, useCallback, useEffect, useState } from "react";
 import { navItems } from "@/components/ide/config";
 import { LocaleSwitcher } from "@/components/internationalization/locale-switcher";
 import {
@@ -34,6 +34,8 @@ export const StatusBar = memo(function StatusBar({
   const toggleTerminal = useIdeStore((s) => s.toggleTerminal);
   const { resolvedTheme } = useTheme();
   const setThemeWithTransition = useThemeTransition(280);
+  const [mounted, setMounted] = useState(false);
+  useEffect(() => setMounted(true), []);
 
   const handleThemeToggle = useCallback(async () => {
     const next = resolvedTheme === "dark" ? "light" : "dark";
@@ -41,6 +43,32 @@ export const StatusBar = memo(function StatusBar({
   }, [resolvedTheme, setThemeWithTransition]);
 
   const isDark = resolvedTheme === "dark";
+
+  let themeLabel: string;
+  if (!mounted) {
+    themeLabel = t("toggleTheme");
+  } else if (isDark) {
+    themeLabel = t("lightTheme");
+  } else {
+    themeLabel = t("darkTheme");
+  }
+
+  const themeText = mounted && isDark ? tTheme("dark") : tTheme("light");
+
+  let themeIcon: React.ReactNode;
+  if (!mounted) {
+    themeIcon = (
+      <span
+        aria-hidden
+        className="size-3.5 shrink-0"
+        style={{ width: 14, height: 14 }}
+      />
+    );
+  } else if (isDark) {
+    themeIcon = <Sun className="size-3.5 shrink-0" />;
+  } else {
+    themeIcon = <Moon className="size-3.5 shrink-0" />;
+  }
 
   const navItem = matchNavItem(pathname, navItems);
   const isKnownFileType =
@@ -143,23 +171,17 @@ export const StatusBar = memo(function StatusBar({
           <Tooltip>
             <TooltipTrigger asChild>
               <button
-                aria-label={isDark ? t("lightTheme") : t("darkTheme")}
+                aria-label={themeLabel}
                 className="flex cursor-pointer items-center gap-1 transition-colors hover:text-foreground"
                 onClick={handleThemeToggle}
                 type="button"
               >
-                {isDark ? (
-                  <Sun className="size-3.5 shrink-0" />
-                ) : (
-                  <Moon className="size-3.5 shrink-0" />
-                )}
-                <span className="hidden sm:inline">
-                  {isDark ? tTheme("dark") : tTheme("light")}
-                </span>
+                {themeIcon}
+                <span className="hidden sm:inline">{themeText}</span>
               </button>
             </TooltipTrigger>
             <TooltipContent>
-              <p>{isDark ? t("lightTheme") : t("darkTheme")}</p>
+              <p>{themeLabel}</p>
             </TooltipContent>
           </Tooltip>
         </div>

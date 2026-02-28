@@ -1,6 +1,5 @@
 import defaultMdxComponents from "fumadocs-ui/mdx";
 import type { Metadata } from "next";
-import { getPageImageUrl } from "@/lib/og";
 import { notFound } from "next/navigation";
 import { setRequestLocale } from "next-intl/server";
 import { BlogBackLink } from "@/components/blog/blog-back-link";
@@ -8,6 +7,7 @@ import { BlogPostHeader } from "@/components/blog/blog-post-header";
 import { CodeView } from "@/components/ide/editor/code-view";
 import { EditorContent } from "@/components/ide/editor/editor-content";
 import { PageContent } from "@/components/shared/page-content";
+import { getPageImageUrl } from "@/lib/og";
 import { readMdxFile } from "@/lib/read-mdx-file";
 import { getBlog } from "@/lib/source";
 

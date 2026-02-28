@@ -12,17 +12,15 @@ import { Sidebar } from "@/components/ide/sidebar/sidebar";
 import { SourceControlView } from "@/components/ide/sidebar/source-control-view";
 import { TerminalPanel } from "@/components/ide/terminal/terminal-panel";
 import { Sheet, SheetContent } from "@/components/ui/sheet";
-import type { Commit } from "@/consts/ide-constants";
 import { useLocalePathname, useLocaleRouter } from "@/modules/i18n/routing";
 import { useEditorGroupsStore } from "@/stores/editor-groups-store";
 import { useIdeStore } from "@/stores/ide-store";
 
 interface IdeLayoutProps {
   children: React.ReactNode;
-  commits: Commit[];
 }
 
-export function IdeLayout({ children, commits }: IdeLayoutProps) {
+export function IdeLayout({ children }: IdeLayoutProps) {
   const pathname = useLocalePathname();
   const router = useLocaleRouter();
   const setRouter = useEditorGroupsStore((s) => s.setRouter);
@@ -80,7 +78,7 @@ export function IdeLayout({ children, commits }: IdeLayoutProps) {
 
         {sidebarOpen && (
           <div className="hidden md:block">
-            <IdeSidebarOrSourceControl commits={commits} pathname={pathname} />
+            <IdeSidebarOrSourceControl pathname={pathname} />
           </div>
         )}
 
@@ -115,7 +113,6 @@ export function IdeLayout({ children, commits }: IdeLayoutProps) {
           <div className="flex min-h-0 flex-1 flex-col overflow-hidden">
             {mobileSidebarView === "sourceControl" && (
               <SourceControlView
-                commits={commits}
                 fullWidth
                 onClose={() => setMobileSidebarView(null)}
               />
@@ -134,16 +131,10 @@ export function IdeLayout({ children, commits }: IdeLayoutProps) {
   );
 }
 
-function IdeSidebarOrSourceControl({
-  commits,
-  pathname,
-}: {
-  commits: Commit[];
-  pathname: string;
-}) {
+function IdeSidebarOrSourceControl({ pathname }: { pathname: string }) {
   const sidebarView = useIdeStore((s) => s.sidebarView);
   return sidebarView === "sourceControl" ? (
-    <SourceControlView commits={commits} />
+    <SourceControlView />
   ) : (
     <Sidebar pathname={pathname} />
   );
