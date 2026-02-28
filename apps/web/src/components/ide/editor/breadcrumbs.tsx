@@ -3,6 +3,11 @@
 import { ChevronRight, Code, Eye } from "lucide-react";
 import { useTranslations } from "next-intl";
 import { navItems } from "@/components/ide/config";
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipTrigger,
+} from "@/components/ui/tooltip";
 import { matchNavItem } from "@/lib/ide/breadcrumb";
 import { cn } from "@/lib/utils";
 import { useIdeStore } from "@/stores/ide-store";
@@ -52,34 +57,46 @@ export function Breadcrumbs({ pathname }: BreadcrumbsProps) {
       </div>
       <fieldset className="flex items-center gap-1 border-0 p-0">
         <legend className="sr-only">{t("viewMode")}</legend>
-        <button
-          className={cn(
-            "flex cursor-pointer items-center gap-1 px-1 py-0.5 text-[11px] transition-colors",
-            viewMode === "preview"
-              ? "text-foreground"
-              : "text-muted-foreground hover:text-foreground"
-          )}
-          onClick={() => setViewMode("preview")}
-          title={t("preview")}
-          type="button"
-        >
-          <Eye className="size-3.5 shrink-0" />
-          {t("preview")}
-        </button>
-        <button
-          className={cn(
-            "flex cursor-pointer items-center gap-1 px-1 py-0.5 text-[11px] transition-colors",
-            viewMode === "code"
-              ? "text-foreground"
-              : "text-muted-foreground hover:text-foreground"
-          )}
-          onClick={() => setViewMode("code")}
-          title={t("source")}
-          type="button"
-        >
-          <Code className="size-3.5 shrink-0" />
-          {t("source")}
-        </button>
+        <Tooltip>
+          <TooltipTrigger asChild>
+            <button
+              className={cn(
+                "flex cursor-pointer items-center gap-1 px-1 py-0.5 text-[11px] transition-colors",
+                viewMode === "preview"
+                  ? "text-foreground"
+                  : "text-muted-foreground hover:text-foreground"
+              )}
+              onClick={() => setViewMode("preview")}
+              type="button"
+            >
+              <Eye className="size-3.5 shrink-0" />
+              {t("preview")}
+            </button>
+          </TooltipTrigger>
+          <TooltipContent>
+            <p>{t("preview")}</p>
+          </TooltipContent>
+        </Tooltip>
+        <Tooltip>
+          <TooltipTrigger asChild>
+            <button
+              className={cn(
+                "flex cursor-pointer items-center gap-1 px-1 py-0.5 text-[11px] transition-colors",
+                viewMode === "code"
+                  ? "text-foreground"
+                  : "text-muted-foreground hover:text-foreground"
+              )}
+              onClick={() => setViewMode("code")}
+              type="button"
+            >
+              <Code className="size-3.5 shrink-0" />
+              {t("source")}
+            </button>
+          </TooltipTrigger>
+          <TooltipContent>
+            <p>{t("source")}</p>
+          </TooltipContent>
+        </Tooltip>
       </fieldset>
     </div>
   );
