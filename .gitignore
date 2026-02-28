@@ -39,6 +39,9 @@ lerna-debug.log*
 # Better-T-Stack
 .alchemy
 
+# Fumadocs
+.source/
+
 # Testing
 coverage
 .nyc_output
