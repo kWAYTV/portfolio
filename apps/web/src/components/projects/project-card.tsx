@@ -33,7 +33,7 @@ function ProjectCardInner({ repo }: ProjectCardProps) {
 
   if (canHover) {
     return (
-      <HoverCard closeDelay={100} openDelay={150}>
+      <HoverCard closeDelay={150} openDelay={200}>
         <HoverCardTrigger asChild>
           <a
             className={cn(cardClassName, "w-full cursor-pointer text-left")}
@@ -44,7 +44,12 @@ function ProjectCardInner({ repo }: ProjectCardProps) {
             <ProjectCardSummary languageColor={languageColor} repo={repo} />
           </a>
         </HoverCardTrigger>
-        <HoverCardContent align="start" className="w-80" side="top">
+        <HoverCardContent
+          align="start"
+          className="w-80 overflow-hidden rounded-md border border-border bg-popover p-0 shadow-lg ring-1 ring-border/50"
+          side="top"
+          sideOffset={8}
+        >
           <ProjectCardDetails repo={repo} />
         </HoverCardContent>
       </HoverCard>
@@ -67,7 +72,7 @@ function ProjectCardInner({ repo }: ProjectCardProps) {
       />
       <PopoverContent
         align="start"
-        className="w-[min(320px,calc(100vw-2rem))]"
+        className="w-[min(320px,calc(100vw-2rem))] overflow-hidden rounded-md border border-border bg-popover p-0 shadow-lg ring-1 ring-border/50"
         side="top"
       >
         <ProjectCardDetails repo={repo} showOpenLink />

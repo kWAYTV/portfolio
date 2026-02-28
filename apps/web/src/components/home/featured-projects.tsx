@@ -51,7 +51,7 @@ export function FeaturedProjects({ repos }: FeaturedProjectsProps) {
         {repos.map((repo) =>
           canHover ? (
             <li key={repo.id}>
-              <HoverCard closeDelay={100} openDelay={150}>
+              <HoverCard closeDelay={150} openDelay={200}>
                 <HoverCardTrigger asChild>
                   <a
                     aria-label={`Open ${repo.name} on GitHub`}
@@ -63,7 +63,12 @@ export function FeaturedProjects({ repos }: FeaturedProjectsProps) {
                     <FeaturedCardSummary repo={repo} />
                   </a>
                 </HoverCardTrigger>
-                <HoverCardContent align="start" className="w-80" side="top">
+                <HoverCardContent
+                  align="start"
+                  className="w-80 overflow-hidden rounded-md border border-border bg-popover p-0 shadow-lg ring-1 ring-border/50"
+                  side="top"
+                  sideOffset={8}
+                >
                   <ProjectCardDetails repo={repo} />
                 </HoverCardContent>
               </HoverCard>
@@ -88,7 +93,7 @@ export function FeaturedProjects({ repos }: FeaturedProjectsProps) {
                 />
                 <PopoverContent
                   align="start"
-                  className="w-[min(320px,calc(100vw-2rem))]"
+                  className="w-[min(320px,calc(100vw-2rem))] overflow-hidden rounded-md border border-border bg-popover p-0 shadow-lg ring-1 ring-border/50"
                   side="top"
                 >
                   <ProjectCardDetails repo={repo} showOpenLink />
