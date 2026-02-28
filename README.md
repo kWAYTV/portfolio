@@ -1,4 +1,4 @@
-# ide-portfolio
+# portfolio
 
 A portfolio site built with a modern TypeScript stack.
 
