@@ -1,3 +1,4 @@
+import { getPageImageUrl } from "@/lib/og";
 import { getTranslations, setRequestLocale } from "next-intl/server";
 import { Suspense } from "react";
 import { FeaturedProjectsLoader } from "@/components/home/featured-projects-loader";
@@ -12,11 +13,19 @@ import { PageContent } from "@/components/shared/page-content";
 import { Separator } from "@/components/ui/separator";
 import { welcomeCode } from "@/consts/code-content";
 
-export async function generateMetadata() {
+export async function generateMetadata({
+  params,
+}: {
+  params: Promise<{ locale: string }>;
+}) {
+  const { locale } = await params;
   const t = await getTranslations("common");
   return {
     title: t("siteTitle"),
     description: t("siteDescription"),
+    openGraph: {
+      images: [{ url: getPageImageUrl([locale]) }],
+    },
   };
 }
 

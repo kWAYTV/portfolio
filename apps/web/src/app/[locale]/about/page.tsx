@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { getPageImageUrl } from "@/lib/og";
 import { getTranslations, setRequestLocale } from "next-intl/server";
 import { AboutBio } from "@/components/about/about-bio";
 import { AboutHeader } from "@/components/about/about-header";
@@ -18,6 +19,9 @@ export async function generateMetadata({
   return {
     title: `${t("title")} | Martin Vila`,
     description: t("subtitle"),
+    openGraph: {
+      images: [{ url: getPageImageUrl([locale, "about"]) }],
+    },
   };
 }
 
