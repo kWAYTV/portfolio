@@ -5,6 +5,7 @@ export type { Octokit } from "@octokit/rest";
 export interface GitHubCommit {
   author: string;
   date: string;
+  description?: string;
   filesChanged?: number;
   insertions?: number;
   message: string;

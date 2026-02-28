@@ -31,10 +31,15 @@ export async function getGitHubCommits({
     const date = c.commit?.author?.date
       ? new Date(c.commit.author.date).toISOString()
       : "";
+    const fullMessage = c.commit?.message ?? "";
+    const lines = fullMessage.split("\n");
+    const message = lines[0] ?? "";
+    const description = lines.slice(1).join("\n").trim() || undefined;
     return {
       author,
       date,
-      message: (c.commit?.message ?? "").split("\n")[0] ?? "",
+      description,
+      message,
       sha: c.sha ?? "",
     };
   });

@@ -50,9 +50,14 @@ export function CommitHistoryItem({ commit }: CommitHistoryItemProps) {
           <p className="text-[11px] text-muted-foreground">
             {commit.author} · {dateRelative}
           </p>
-          <p className="text-[13px] text-popover-foreground leading-snug">
+          <p className="font-medium text-[13px] text-popover-foreground leading-snug">
             {commit.message}
           </p>
+          {commit.description && (
+            <p className="whitespace-pre-wrap text-[12px] text-muted-foreground leading-snug">
+              {commit.description}
+            </p>
+          )}
           {commit.filesChanged != null && commit.insertions != null && (
             <p className="text-[11px] text-muted-foreground">
               {commit.filesChanged} files changed, {commit.insertions}{" "}
