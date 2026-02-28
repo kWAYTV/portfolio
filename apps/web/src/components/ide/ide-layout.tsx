@@ -36,6 +36,7 @@ export function IdeLayout({ children, commits }: IdeLayoutProps) {
   const closeAllTabs = useEditorGroupsStore((s) => s.closeAllTabs);
   const mobileSidebarView = useIdeStore((s) => s.mobileSidebarView);
   const setMobileSidebarView = useIdeStore((s) => s.setMobileSidebarView);
+  const setSidebarView = useIdeStore((s) => s.setSidebarView);
 
   useEffect(() => {
     setRouter((path: string) => router.push(path));
@@ -90,7 +91,16 @@ export function IdeLayout({ children, commits }: IdeLayoutProps) {
       </div>
 
       <MobileActivityBar />
-      <StatusBar />
+      <StatusBar
+        onFocusSourceControl={() => {
+          setSidebarView("sourceControl");
+          if (!sidebarOpen) {
+            toggleSidebar();
+          }
+          setMobileSidebarView("sourceControl");
+        }}
+        pathname={pathname}
+      />
 
       <Sheet
         onOpenChange={(open) => !open && setMobileSidebarView(null)}
