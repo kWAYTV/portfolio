@@ -5,7 +5,6 @@ import { useTranslations } from "next-intl";
 import { memo } from "react";
 import { navItems } from "@/components/ide/config";
 import { LocaleSwitcher } from "@/components/internationalization/locale-switcher";
-import { ThemeToggle } from "@/components/theming/theme-toggle";
 import { REPO_URL } from "@/consts/ide-constants";
 import { matchNavItem } from "@/lib/ide/breadcrumb";
 import { cn } from "@/lib/utils";
@@ -99,7 +98,6 @@ export const StatusBar = memo(function StatusBar({
         <span className="hidden sm:inline">{fileType}</span>
         <div className="hidden md:flex md:items-center md:gap-3">
           <LocaleSwitcher />
-          <ThemeToggle />
         </div>
       </div>
     </div>

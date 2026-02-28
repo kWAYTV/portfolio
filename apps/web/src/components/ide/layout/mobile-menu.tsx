@@ -12,7 +12,6 @@ import { useTranslations } from "next-intl";
 import { useState } from "react";
 import { navItems } from "@/components/ide/config";
 import { LocaleSwitcher } from "@/components/internationalization/locale-switcher";
-import { ThemeToggle } from "@/components/theming/theme-toggle";
 import {
   Sheet,
   SheetContent,
@@ -103,9 +102,6 @@ export function MobileMenu({ pathname }: MobileMenuProps) {
               {tNav("language")}
             </span>
             <LocaleSwitcher />
-          </div>
-          <div className="px-4 py-3">
-            <ThemeToggle />
           </div>
         </div>
       </SheetContent>

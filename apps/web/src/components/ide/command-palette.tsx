@@ -8,14 +8,12 @@ import {
   FolderGit2,
   Home,
   Moon,
-  Palette,
   Sun,
 } from "lucide-react";
 import { useLocale, useTranslations } from "next-intl";
 import { useTheme } from "next-themes";
 import { useCallback, useEffect } from "react";
 import { navItems } from "@/components/ide/config";
-import { useActiveTheme } from "@/components/theming/active-theme-provider";
 import {
   Command,
   CommandDialog,
@@ -30,7 +28,6 @@ import {
 import { Kbd, KbdGroup } from "@/components/ui/kbd";
 import { REPO_URL } from "@/consts/ide-constants";
 import { useThemeTransition } from "@/hooks/use-theme-transition";
-import { THEME_PRESETS, type ThemePresetId } from "@/lib/theme-config";
 import { updateLocale } from "@/modules/i18n/lib/update-locale";
 import { useLocaleRouter } from "@/modules/i18n/routing";
 import { useIdeStore } from "@/stores/ide-store";
@@ -54,7 +51,6 @@ export function CommandPalette() {
   const locale = useLocale() as Locale;
   const { resolvedTheme } = useTheme();
   const setThemeWithTransition = useThemeTransition(280);
-  const { activeTheme, setActiveTheme } = useActiveTheme();
 
   useEffect(() => {
     const handler = (e: KeyboardEvent) => {
@@ -79,13 +75,6 @@ export function CommandPalette() {
     const next = resolvedTheme === "dark" ? "light" : "dark";
     await setThemeWithTransition(next);
   }, [resolvedTheme, setThemeWithTransition]);
-
-  const handleSetTheme = useCallback(
-    (id: ThemePresetId) => () => {
-      setActiveTheme(id);
-    },
-    [setActiveTheme]
-  );
 
   const handleSetLocale = useCallback((loc: Locale) => {
     updateLocale(loc);
@@ -129,21 +118,6 @@ export function CommandPalette() {
               )}
               {isDark ? t("lightTheme") : t("darkTheme")}
             </CommandItem>
-            {THEME_PRESETS.map(({ id }) => (
-              <CommandItem
-                key={id}
-                onSelect={handleSetTheme(id)}
-                value={`${t(`themePreset_${id}`)} theme preset`}
-              >
-                <Palette className="size-4 shrink-0" />
-                {t(`themePreset_${id}`)}
-                {activeTheme === id && (
-                  <CommandShortcut>
-                    <span className="text-primary">✓</span>
-                  </CommandShortcut>
-                )}
-              </CommandItem>
-            ))}
           </CommandGroup>
           <CommandSeparator />
           <CommandGroup heading={tLocale("selectLanguage")}>
