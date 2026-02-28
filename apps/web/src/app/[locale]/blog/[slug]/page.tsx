@@ -1,5 +1,6 @@
 import defaultMdxComponents from "fumadocs-ui/mdx";
 import type { Metadata } from "next";
+import { getPageImageUrl } from "@/lib/og";
 import { notFound } from "next/navigation";
 import { setRequestLocale } from "next-intl/server";
 import { BlogBackLink } from "@/components/blog/blog-back-link";
@@ -35,6 +36,9 @@ export async function generateMetadata({
   return {
     title: `${page.data.title} | Martin Vila`,
     description: page.data.description as string,
+    openGraph: {
+      images: [{ url: getPageImageUrl([locale, "blog", slug]) }],
+    },
   };
 }
 

@@ -1,3 +1,4 @@
+import { getPageImageUrl } from "@/lib/og";
 import { getTranslations, setRequestLocale } from "next-intl/server";
 import { Suspense } from "react";
 import { CodeView } from "@/components/ide/editor/code-view";
@@ -18,6 +19,9 @@ export async function generateMetadata({
   return {
     title: `${t("title")} | Martin Vila`,
     description: t("subtitle"),
+    openGraph: {
+      images: [{ url: getPageImageUrl([locale, "projects"]) }],
+    },
   };
 }
 

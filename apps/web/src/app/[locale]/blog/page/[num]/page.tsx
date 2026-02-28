@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { getPageImageUrl } from "@/lib/og";
 import { notFound } from "next/navigation";
 import { getTranslations, setRequestLocale } from "next-intl/server";
 import { BlogCard } from "@/components/blog/blog-card";
@@ -17,10 +18,13 @@ export async function generateMetadata({
 }: {
   params: Promise<{ locale: string; num: string }>;
 }): Promise<Metadata> {
-  const { locale } = await params;
+  const { locale, num } = await params;
   const t = await getTranslations({ locale, namespace: "blog" });
   return {
     title: `${t("title")} | Martin Vila`,
+    openGraph: {
+      images: [{ url: getPageImageUrl([locale, "blog", "page", num]) }],
+    },
   };
 }
 
