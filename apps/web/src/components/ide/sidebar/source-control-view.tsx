@@ -2,10 +2,13 @@
 
 import {
   Check,
+  Download,
   ExternalLink,
   GitBranch,
+  GitFork,
   MoreHorizontal,
   RefreshCw,
+  Upload,
   X,
 } from "lucide-react";
 import { useTranslations } from "next-intl";
@@ -13,6 +16,13 @@ import { useState } from "react";
 import { CollapsibleSection } from "@/components/ide/sidebar/collapsible-section";
 import { CommitHistoryItem } from "@/components/ide/sidebar/commit-history-item";
 import { Button } from "@/components/ui/button";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
 import type { Commit } from "@/consts/ide-constants";
 import { REPO_URL } from "@/consts/ide-constants";
 import { cn } from "@/lib/utils";
@@ -30,6 +40,7 @@ export function SourceControlView({
 }: SourceControlViewProps) {
   const t = useTranslations("ide");
   const [spinKey, setSpinKey] = useState(0);
+  const [menuOpen, setMenuOpen] = useState(false);
 
   return (
     <div
@@ -44,16 +55,57 @@ export function SourceControlView({
           {t("sourceControl")}
         </span>
         <div className="flex shrink-0 items-center gap-0.5">
-          <Button
-            aria-label={t("moreActions")}
-            className="size-6 rounded p-0"
-            size="icon-sm"
-            title={t("moreActions")}
-            type="button"
-            variant="ghost"
-          >
-            <MoreHorizontal className="size-3.5" />
-          </Button>
+          <DropdownMenu onOpenChange={setMenuOpen} open={menuOpen}>
+            <DropdownMenuTrigger
+              aria-label={t("moreActions")}
+              className="flex size-6 shrink-0 items-center justify-center rounded p-0 transition-colors hover:bg-sidebar-accent/50"
+              title={t("moreActions")}
+            >
+              <MoreHorizontal className="size-3.5" />
+            </DropdownMenuTrigger>
+            <DropdownMenuContent align="end" className="w-48">
+              <a
+                className="flex cursor-pointer items-center gap-2 px-2 py-2 text-xs outline-hidden hover:bg-accent hover:text-accent-foreground focus:bg-accent focus:text-accent-foreground [&_svg]:size-3.5 [&_svg]:shrink-0"
+                href={REPO_URL}
+                onClick={() => setMenuOpen(false)}
+                rel="noopener noreferrer"
+                target="_blank"
+              >
+                <ExternalLink />
+                {t("viewOnGitHub")}
+              </a>
+              <DropdownMenuSeparator />
+              <DropdownMenuItem disabled>
+                <Download className="size-3.5" />
+                {t("pull")}
+              </DropdownMenuItem>
+              <DropdownMenuItem disabled>
+                <Upload className="size-3.5" />
+                {t("push")}
+              </DropdownMenuItem>
+              <DropdownMenuItem disabled>
+                <RefreshCw className="size-3.5" />
+                {t("sync")}
+              </DropdownMenuItem>
+              <DropdownMenuItem disabled>
+                <RefreshCw className="size-3.5" />
+                {t("fetch")}
+              </DropdownMenuItem>
+              <DropdownMenuSeparator />
+              <DropdownMenuItem disabled>
+                <GitBranch className="size-3.5" />
+                {t("publishBranch")}
+              </DropdownMenuItem>
+              <DropdownMenuItem disabled>
+                <GitFork className="size-3.5" />
+                {t("createBranch")}
+              </DropdownMenuItem>
+              <DropdownMenuItem disabled>
+                <GitFork className="size-3.5" />
+                {t("switchBranch")}
+              </DropdownMenuItem>
+            </DropdownMenuContent>
+          </DropdownMenu>
           <Button
             aria-label={t("syncChanges")}
             className="size-6 rounded p-0"
