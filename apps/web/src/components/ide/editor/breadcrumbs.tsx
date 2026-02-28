@@ -1,6 +1,7 @@
 "use client";
 
 import { ChevronRight, Code, Eye } from "lucide-react";
+import { useTranslations } from "next-intl";
 import { navItems } from "@/components/ide/config";
 import { matchNavItem } from "@/lib/ide/breadcrumb";
 import { cn } from "@/lib/utils";
@@ -19,6 +20,7 @@ interface BreadcrumbsProps {
 }
 
 export function Breadcrumbs({ pathname }: BreadcrumbsProps) {
+  const t = useTranslations("ide");
   const viewMode = useIdeStore((s) => s.viewMode);
   const setViewMode = useIdeStore((s) => s.setViewMode);
   const parts = getBreadcrumbParts(pathname);
@@ -58,11 +60,11 @@ export function Breadcrumbs({ pathname }: BreadcrumbsProps) {
               : "text-muted-foreground hover:text-foreground"
           )}
           onClick={() => setViewMode("preview")}
-          title="Preview"
+          title={t("preview")}
           type="button"
         >
           <Eye className="size-3.5 shrink-0" />
-          Preview
+          {t("preview")}
         </button>
         <button
           className={cn(
@@ -72,11 +74,11 @@ export function Breadcrumbs({ pathname }: BreadcrumbsProps) {
               : "text-muted-foreground hover:text-foreground"
           )}
           onClick={() => setViewMode("code")}
-          title="Source"
+          title={t("source")}
           type="button"
         >
           <Code className="size-3.5 shrink-0" />
-          Source
+          {t("source")}
         </button>
       </fieldset>
     </div>

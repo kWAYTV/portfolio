@@ -1,5 +1,6 @@
 "use client";
 
+import { useTranslations } from "next-intl";
 import { getGhostSuggestion } from "@/components/ide/terminal/commands";
 import { TerminalPrompt } from "@/components/ide/terminal/prompt";
 import type { TerminalLine as TerminalLineData } from "@/hooks/use-terminal-state";
@@ -25,6 +26,7 @@ export function TerminalLine({
   onKeyDown,
   pathDisplay,
 }: TerminalLineProps) {
+  const t = useTranslations("ide");
   if (line.type === "input" && line.content === "" && isActiveInput) {
     const ghost = getGhostSuggestion(inputValue);
     return (
@@ -32,7 +34,7 @@ export function TerminalLine({
         <TerminalPrompt path={pathDisplay} />
         <span className="relative flex min-w-0 flex-1">
           <input
-            aria-label="Terminal input"
+            aria-label={t("terminalInput")}
             autoCapitalize="off"
             autoComplete="off"
             autoCorrect="off"
