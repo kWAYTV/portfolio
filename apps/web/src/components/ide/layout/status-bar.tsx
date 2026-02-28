@@ -1,8 +1,9 @@
 "use client";
 
-import { GitBranch, Play, Terminal } from "lucide-react";
+import { GitBranch, Moon, Play, Sun, Terminal } from "lucide-react";
 import { useTranslations } from "next-intl";
-import { memo } from "react";
+import { useTheme } from "next-themes";
+import { memo, useCallback } from "react";
 import { navItems } from "@/components/ide/config";
 import { LocaleSwitcher } from "@/components/internationalization/locale-switcher";
 import {
@@ -11,6 +12,7 @@ import {
   TooltipTrigger,
 } from "@/components/ui/tooltip";
 import { REPO_URL } from "@/consts/ide-constants";
+import { useThemeTransition } from "@/hooks/use-theme-transition";
 import { matchNavItem } from "@/lib/ide/breadcrumb";
 import { cn } from "@/lib/utils";
 import { useIdeStore } from "@/stores/ide-store";
@@ -29,6 +31,15 @@ export const StatusBar = memo(function StatusBar({
   const t = useTranslations("ide");
   const terminalOpen = useIdeStore((s) => s.terminalOpen);
   const toggleTerminal = useIdeStore((s) => s.toggleTerminal);
+  const { resolvedTheme } = useTheme();
+  const setThemeWithTransition = useThemeTransition(280);
+
+  const handleThemeToggle = useCallback(async () => {
+    const next = resolvedTheme === "dark" ? "light" : "dark";
+    await setThemeWithTransition(next);
+  }, [resolvedTheme, setThemeWithTransition]);
+
+  const isDark = resolvedTheme === "dark";
 
   const navItem = matchNavItem(pathname, navItems);
   const isKnownFileType =
@@ -128,6 +139,25 @@ export const StatusBar = memo(function StatusBar({
         <span className="hidden sm:inline">{fileType}</span>
         <div className="hidden md:flex md:items-center md:gap-3">
           <LocaleSwitcher />
+          <Tooltip>
+            <TooltipTrigger asChild>
+              <button
+                aria-label={isDark ? t("lightTheme") : t("darkTheme")}
+                className="flex cursor-pointer items-center gap-1 transition-colors hover:text-foreground"
+                onClick={handleThemeToggle}
+                type="button"
+              >
+                {isDark ? (
+                  <Sun className="size-3.5 shrink-0" />
+                ) : (
+                  <Moon className="size-3.5 shrink-0" />
+                )}
+              </button>
+            </TooltipTrigger>
+            <TooltipContent>
+              <p>{isDark ? t("lightTheme") : t("darkTheme")}</p>
+            </TooltipContent>
+          </Tooltip>
         </div>
       </div>
     </div>
