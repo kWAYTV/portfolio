@@ -57,7 +57,7 @@ export function EditorTabItem({
         {...attributes}
         {...listeners}
         className={cn(
-          "flex min-w-0 flex-1 cursor-grab items-center gap-2 overflow-hidden px-3 py-1.5",
+          "flex min-w-0 flex-1 items-center gap-2 overflow-hidden px-3 py-1.5",
           isDragging && "cursor-grabbing"
         )}
       >
