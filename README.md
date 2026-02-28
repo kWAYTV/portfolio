@@ -1,47 +1,23 @@
 # ide-portfolio
 
-This project was created with [Better-T-Stack](https://github.com/AmanVarshney01/create-better-t-stack), a modern TypeScript stack that combines Next.js, and more.
+A portfolio site built with a modern TypeScript stack.
 
-## Features
+## Stack
 
-- **TypeScript** - For type safety and improved developer experience
-- **Next.js** - Full-stack React framework
-- **TailwindCSS** - Utility-first CSS for rapid UI development
-- **shadcn/ui** - Reusable UI components
-- **Husky** - Git hooks for code quality
-- **Turborepo** - Optimized monorepo build system
+| Layer | Technologies |
+|-------|---------------|
+| **Framework** | Next.js 16, React 19 |
+| **Language** | TypeScript |
+| **Styling** | Tailwind CSS 4 |
+| **UI** | shadcn/ui, Radix, Base UI, fumadocs |
+| **Monorepo** | Turborepo, pnpm workspaces |
+| **DX** | Ultracite (Biome), Husky, Zod |
 
 ## Getting Started
 
-First, install the dependencies:
-
 ```bash
 pnpm install
+pnpm dev
 ```
 
-Then, run the development server:
-
-```bash
-pnpm run dev
-```
-
-Open [http://localhost:3000](http://localhost:3000) in your browser to see the web application.
-
-## Git Hooks and Formatting
-
-- Initialize hooks: `pnpm run prepare`
-
-## Project Structure
-
-```
-ide-portfolio/
-├── apps/
-│   ├── web/         # Frontend application (Next.js)
-```
-
-## Available Scripts
-
-- `pnpm run dev`: Start all applications in development mode
-- `pnpm run build`: Build all applications
-- `pnpm run dev:web`: Start only the web application
-- `pnpm run check-types`: Check TypeScript types across all apps
+Open [http://localhost:3000](http://localhost:3000).
