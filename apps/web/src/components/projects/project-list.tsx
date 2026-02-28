@@ -120,9 +120,20 @@ export const ProjectList = memo(function ProjectList({
             {t("noProjects")}
           </p>
         ) : (
-          paginatedRepos.map((repo) => (
-            <ProjectCard key={repo.id} repo={repo} />
-          ))
+          Array.from({ length: ITEMS_PER_PAGE }).map((_, i) =>
+            paginatedRepos[i] ? (
+              <ProjectCard
+                key={paginatedRepos[i].id}
+                repo={paginatedRepos[i]}
+              />
+            ) : (
+              <div
+                aria-hidden
+                className="h-16 shrink-0"
+                key={`empty-${startIndex + i}`}
+              />
+            )
+          )
         )}
       </div>
 

@@ -11,7 +11,7 @@ interface ProjectCardProps {
 }
 
 const cardClassName =
-  "group -mx-2 flex min-h-14 flex-col gap-2 rounded-md px-2 py-3 transition-colors duration-200 hover:bg-muted/30 sm:flex-row sm:items-start sm:justify-between sm:gap-4";
+  "group -mx-2 flex h-16 flex-col gap-2 overflow-hidden rounded-md px-2 py-3 transition-colors duration-200 hover:bg-muted/30 sm:flex-row sm:items-center sm:justify-between sm:gap-4";
 
 function ProjectCardInner({ repo }: ProjectCardProps) {
   const languageColor = repo.language
