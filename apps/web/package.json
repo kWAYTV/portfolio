@@ -28,6 +28,7 @@
     "babel-plugin-react-compiler": "^1.0.0",
     "class-variance-authority": "^0.7.1",
     "clsx": "^2.1.1",
+    "cmdk": "^1.1.1",
     "dotenv": "catalog:",
     "fumadocs-core": "^16.6.7",
     "fumadocs-mdx": "^14.2.8",
