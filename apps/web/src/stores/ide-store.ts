@@ -32,7 +32,9 @@ const INITIAL_EXPANDED = new Set([
 
 interface IdeState {
   closeAllTabs: () => void;
+  closeOtherTabs: (href: string) => void;
   closeTab: (href: string) => void;
+  closeTabsToRight: (href: string) => void;
   collapseAll: () => void;
   exitFullscreen: () => void;
   expandAll: () => void;
@@ -116,6 +118,20 @@ export const useIdeStore = create<IdeState>((set) => ({
     set((s) => ({
       openTabs: s.openTabs.filter((t) => t !== href),
     })),
+
+  closeOtherTabs: (href) =>
+    set((s) => ({
+      openTabs: s.openTabs.filter((t) => t === href),
+    })),
+
+  closeTabsToRight: (href) =>
+    set((s) => {
+      const idx = s.openTabs.indexOf(href);
+      if (idx < 0) {
+        return s;
+      }
+      return { openTabs: s.openTabs.slice(0, idx + 1) };
+    }),
 
   closeAllTabs: () => set({ openTabs: [] }),
 

@@ -7,6 +7,7 @@ import {
   ChevronsUpDown,
   X,
 } from "lucide-react";
+import { toast } from "sonner";
 import { explorerTree } from "@/components/ide/config";
 import { ExplorerTreeItem } from "@/components/ide/sidebar/explorer-tree-item";
 import { Button } from "@/components/ui/button";
@@ -26,6 +27,15 @@ export function Sidebar({
   const openTab = useIdeStore((s) => s.openTab);
   const { expanded, toggle, expandAll, collapseAll, isFullyExpanded } =
     useExplorerExpanded();
+
+  const copyPath = async (path: string) => {
+    try {
+      await navigator.clipboard.writeText(path);
+      toast.success("Path copied to clipboard");
+    } catch {
+      toast.error("Failed to copy path");
+    }
+  };
 
   return (
     <div
@@ -102,7 +112,10 @@ export function Sidebar({
             <div>
               {explorerTree.map((item) => (
                 <ExplorerTreeItem
+                  collapseAll={collapseAll}
+                  copyPath={copyPath}
                   depth={1}
+                  expandAll={expandAll}
                   expanded={expanded}
                   item={item}
                   key={item.name}

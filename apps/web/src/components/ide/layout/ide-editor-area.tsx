@@ -1,6 +1,7 @@
 "use client";
 
 import { Breadcrumbs } from "@/components/ide/editor/breadcrumbs";
+import { EditorContentContextMenu } from "@/components/ide/editor/editor-content-context-menu";
 import { EditorTabs } from "@/components/ide/editor/editor-tabs";
 import { cn } from "@/lib/utils";
 import { useIdeStore } from "@/stores/ide-store";
@@ -13,6 +14,7 @@ interface IdeEditorAreaProps {
 export function IdeEditorArea({ children, pathname }: IdeEditorAreaProps) {
   const openTabs = useIdeStore((s) => s.openTabs);
   const viewMode = useIdeStore((s) => s.viewMode);
+  const setViewMode = useIdeStore((s) => s.setViewMode);
   const hasOpenTabs = openTabs.length > 0;
 
   if (!hasOpenTabs) {
@@ -28,16 +30,21 @@ export function IdeEditorArea({ children, pathname }: IdeEditorAreaProps) {
       <EditorTabs pathname={pathname} />
       <div className="flex w-full min-w-0 flex-1 flex-col overflow-hidden outline-none">
         <Breadcrumbs pathname={pathname} />
-        <main
-          className={cn(
-            "min-h-0 w-full min-w-0 flex-1 overflow-y-auto",
-            viewMode === "preview" && "min-h-full"
-          )}
-          data-ide-main
-          data-preview={viewMode === "preview" ? "" : undefined}
+        <EditorContentContextMenu
+          onViewModeChange={setViewMode}
+          viewMode={viewMode}
         >
-          {children}
-        </main>
+          <main
+            className={cn(
+              "min-h-0 w-full min-w-0 flex-1 overflow-y-auto",
+              viewMode === "preview" && "min-h-full"
+            )}
+            data-ide-main
+            data-preview={viewMode === "preview" ? "" : undefined}
+          >
+            {children}
+          </main>
+        </EditorContentContextMenu>
       </div>
     </div>
   );

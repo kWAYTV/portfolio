@@ -14,11 +14,13 @@ import {
 } from "@dnd-kit/sortable";
 import { useEffect, useState } from "react";
 import { navItems } from "@/components/ide/config";
+import { EditorTabContextMenu } from "@/components/ide/editor/editor-tab-context-menu";
 import {
   EditorTabItem,
   EditorTabItemStatic,
 } from "@/components/ide/editor/editor-tab-item";
 import { EditorTabsEmpty } from "@/components/ide/editor/editor-tabs-empty";
+import { ContextMenu, ContextMenuTrigger } from "@/components/ui/context-menu";
 import { useIdeStore } from "@/stores/ide-store";
 
 interface EditorTabsProps {
@@ -28,6 +30,9 @@ interface EditorTabsProps {
 export function EditorTabs({ pathname }: EditorTabsProps) {
   const openTabs = useIdeStore((s) => s.openTabs);
   const closeTab = useIdeStore((s) => s.closeTab);
+  const closeAllTabs = useIdeStore((s) => s.closeAllTabs);
+  const closeOtherTabs = useIdeStore((s) => s.closeOtherTabs);
+  const closeTabsToRight = useIdeStore((s) => s.closeTabsToRight);
   const openTab = useIdeStore((s) => s.openTab);
   const reorderTabs = useIdeStore((s) => s.reorderTabs);
   const [mounted, setMounted] = useState(false);
@@ -73,31 +78,41 @@ export function EditorTabs({ pathname }: EditorTabsProps) {
 
   // Defer DndContext to client-only to avoid hydration mismatch from
   // dnd-kit's non-deterministic aria-describedby IDs (DndDescribedBy-N)
+  const renderTab = (item: (typeof navItems)[number], index: number) => {
+    const tabProps = {
+      active: isActive(item.href),
+      fileName: item.fileName,
+      fileType: item.fileType,
+      href: item.href,
+      onClose: () => closeTab(item.href),
+      onTabClick: openTab,
+    };
+    const tab = mounted ? (
+      <EditorTabItem key={item.href} {...tabProps} />
+    ) : (
+      <EditorTabItemStatic key={item.href} {...tabProps} />
+    );
+    return (
+      <ContextMenu key={item.href}>
+        <ContextMenuTrigger asChild>
+          <div className="contents">{tab}</div>
+        </ContextMenuTrigger>
+        <EditorTabContextMenu
+          href={item.href}
+          index={index}
+          onCloseAll={closeAllTabs}
+          onCloseOtherTabs={closeOtherTabs}
+          onCloseTab={closeTab}
+          onCloseTabsToRight={closeTabsToRight}
+          orderedItemsLength={orderedItems.length}
+        />
+      </ContextMenu>
+    );
+  };
+
   const container = (
     <div className="relative flex h-[35px] shrink-0 cursor-default items-stretch overflow-x-auto border-border border-b bg-muted/80 shadow-(--shadow-elevation-sm)">
-      {mounted
-        ? orderedItems.map((item) => (
-            <EditorTabItem
-              active={isActive(item.href)}
-              fileName={item.fileName}
-              fileType={item.fileType}
-              href={item.href}
-              key={item.href}
-              onClose={() => closeTab(item.href)}
-              onTabClick={openTab}
-            />
-          ))
-        : orderedItems.map((item) => (
-            <EditorTabItemStatic
-              active={isActive(item.href)}
-              fileName={item.fileName}
-              fileType={item.fileType}
-              href={item.href}
-              key={item.href}
-              onClose={() => closeTab(item.href)}
-              onTabClick={openTab}
-            />
-          ))}
+      {orderedItems.map((item, index) => renderTab(item, index))}
     </div>
   );
 
