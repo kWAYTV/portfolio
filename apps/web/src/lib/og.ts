@@ -1,6 +1,6 @@
-const IMAGE_FILE = "image.png";
+export const IMAGE_FILE = "image.webp";
 
-/** Path segments for OG image URL. Append image.png for full URL. */
+/** Path segments for OG image URL. Append image.webp for full URL. */
 export function getPageImageSegments(path: string[]): string[] {
   return [...path, IMAGE_FILE];
 }

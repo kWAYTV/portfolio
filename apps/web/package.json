@@ -24,6 +24,7 @@
     "@repo/env": "workspace:*",
     "@repo/github": "workspace:*",
     "@repo/i18n": "workspace:*",
+    "@takumi-rs/image-response": "^0.69.5",
     "@uiw/react-codemirror": "^4.25.5",
     "babel-plugin-react-compiler": "^1.0.0",
     "class-variance-authority": "^0.7.1",

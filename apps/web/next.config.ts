@@ -7,6 +7,7 @@ const withNextIntl = createNextIntlPlugin("./src/modules/i18n/request.ts");
 const withMDX = createMDX();
 
 const nextConfig: NextConfig = {
+  serverExternalPackages: ["@takumi-rs/image-response"],
   cacheComponents: true,
   devIndicators: false,
   experimental: {

@@ -1,12 +1,14 @@
+import { ImageResponse } from "@takumi-rs/image-response";
+import { generate as DefaultImage } from "fumadocs-ui/og/takumi";
 import { cacheLife, cacheTag } from "next/cache";
 import { notFound } from "next/navigation";
-import { ImageResponse } from "next/og";
-import { OgImage } from "@/components/og/og-image";
-import { getPageImageSegments, type PagePath, pathToSegments } from "@/lib/og";
+import {
+  getPageImageSegments,
+  IMAGE_FILE,
+  type PagePath,
+  pathToSegments,
+} from "@/lib/og";
 import { getBlog } from "@/lib/source";
-
-const IMAGE_FILE = "image.png";
-const SIZE = { width: 1200, height: 630 };
 
 const PAGE_COPY: Record<
   string,
@@ -177,12 +179,16 @@ export async function GET(
   }
 
   return new ImageResponse(
-    <OgImage
+    <DefaultImage
       description={data.description}
-      subtitle={data.subtitle}
+      site={data.subtitle}
       title={data.title}
     />,
-    SIZE
+    {
+      width: 1200,
+      height: 630,
+      format: "webp",
+    },
   );
 }
 
