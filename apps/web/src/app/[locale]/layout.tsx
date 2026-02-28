@@ -7,10 +7,10 @@ import { getMessages, setRequestLocale } from "next-intl/server";
 import type { PropsWithChildren } from "react";
 
 import "../../index.css";
+import { env } from "@repo/env/web";
 import { config as i18nConfig } from "@repo/i18n/config";
 import { IdeLayout } from "@/components/ide/ide-layout";
 import Providers from "@/components/providers";
-import { getGitHubCommits } from "@/lib/github";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -29,6 +29,7 @@ export function generateStaticParams() {
 }
 
 export const metadata: Metadata = {
+  metadataBase: new URL(env.NEXT_PUBLIC_SITE_URL),
   title: "Martín Vila — Portfolio",
   description: "welcome to my personal space.",
 };
@@ -45,10 +46,7 @@ export default async function LocaleLayout({
     notFound();
   }
 
-  const [messages, commits] = await Promise.all([
-    getMessages(),
-    getGitHubCommits(),
-  ]);
+  const messages = await getMessages();
 
   return (
     <html lang={locale} suppressHydrationWarning>
@@ -58,7 +56,7 @@ export default async function LocaleLayout({
         <RootProvider search={{ enabled: false }}>
           <Providers>
             <NextIntlClientProvider locale={locale} messages={messages}>
-              <IdeLayout commits={commits}>{children}</IdeLayout>
+              <IdeLayout>{children}</IdeLayout>
             </NextIntlClientProvider>
           </Providers>
         </RootProvider>

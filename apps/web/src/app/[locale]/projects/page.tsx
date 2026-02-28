@@ -1,4 +1,3 @@
-import { getPageImageUrl } from "@/lib/og";
 import { getTranslations, setRequestLocale } from "next-intl/server";
 import { Suspense } from "react";
 import { CodeView } from "@/components/ide/editor/code-view";
@@ -8,6 +7,7 @@ import { ProjectListSkeleton } from "@/components/projects/project-list-skeleton
 import { ProjectsHeader } from "@/components/projects/projects-header";
 import { PageContent } from "@/components/shared/page-content";
 import { projectsCode } from "@/consts/code-content";
+import { getPageImageUrl } from "@/lib/og";
 
 export async function generateMetadata({
   params,

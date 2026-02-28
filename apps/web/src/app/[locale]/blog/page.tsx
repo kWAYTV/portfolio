@@ -1,5 +1,4 @@
 import type { Metadata } from "next";
-import { getPageImageUrl } from "@/lib/og";
 import { getTranslations, setRequestLocale } from "next-intl/server";
 import { BlogCard } from "@/components/blog/blog-card";
 import { BlogHeader } from "@/components/blog/blog-header";
@@ -8,6 +7,7 @@ import { EditorContent } from "@/components/ide/editor/editor-content";
 import { PageContent } from "@/components/shared/page-content";
 import { Pagination } from "@/components/shared/pagination";
 import { blogCode } from "@/consts/code-content";
+import { getPageImageUrl } from "@/lib/og";
 import { getBlog } from "@/lib/source";
 
 const POSTS_PER_PAGE = 12;

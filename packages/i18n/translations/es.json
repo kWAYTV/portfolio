@@ -127,6 +127,7 @@
     "appearance": "Apariencia",
     "lightTheme": "Tema claro",
     "darkTheme": "Tema oscuro",
+    "toggleTheme": "Cambiar tema",
     "themePreset": "Paleta de colores",
     "themePreset_default": "Vercel",
     "themePreset_catppuccin": "Catppuccin",

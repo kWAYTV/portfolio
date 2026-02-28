@@ -13,8 +13,10 @@ import {
 } from "lucide-react";
 import { useTranslations } from "next-intl";
 import { useState } from "react";
+import useSWR from "swr";
 import { CollapsibleSection } from "@/components/ide/sidebar/collapsible-section";
 import { CommitHistoryItem } from "@/components/ide/sidebar/commit-history-item";
+import { SourceControlCommitHistorySkeleton } from "@/components/ide/sidebar/source-control-skeleton";
 import { Button } from "@/components/ui/button";
 import {
   DropdownMenu,
@@ -30,23 +32,26 @@ import {
 } from "@/components/ui/tooltip";
 import type { Commit } from "@/consts/ide-constants";
 import { REPO_URL } from "@/consts/ide-constants";
+import { getCommitsAction } from "@/lib/actions/github";
 import { IDE_DROPDOWN_CONTENT_CLASS } from "@/lib/ide-dropdown";
 import { cn } from "@/lib/utils";
 
 interface SourceControlViewProps {
-  commits?: Commit[];
   fullWidth?: boolean;
   onClose?: () => void;
 }
 
 export function SourceControlView({
-  commits = [],
   fullWidth = false,
   onClose,
 }: SourceControlViewProps) {
   const t = useTranslations("ide");
   const [spinKey, setSpinKey] = useState(0);
   const [menuOpen, setMenuOpen] = useState(false);
+  const { data: commits = [], isLoading } = useSWR<Commit[]>(
+    "github-commits",
+    getCommitsAction
+  );
 
   return (
     <div
@@ -232,15 +237,17 @@ export function SourceControlView({
         <div className="border-border border-t px-2 py-1">
           <CollapsibleSection defaultOpen title={t("commitHistory")}>
             <div className="max-h-32 space-y-0.5 overflow-y-auto py-1">
-              {commits.length === 0 ? (
+              {isLoading && <SourceControlCommitHistorySkeleton />}
+              {!isLoading && commits.length === 0 && (
                 <p className="py-1.5 pl-5 text-[13px] text-muted-foreground italic">
                   {t("noChanges")}
                 </p>
-              ) : (
+              )}
+              {!isLoading &&
+                commits.length > 0 &&
                 commits.map((commit) => (
                   <CommitHistoryItem commit={commit} key={commit.sha} />
-                ))
-              )}
+                ))}
             </div>
           </CollapsibleSection>
         </div>

@@ -1,5 +1,4 @@
 import type { Metadata } from "next";
-import { getPageImageUrl } from "@/lib/og";
 import { notFound } from "next/navigation";
 import { getTranslations, setRequestLocale } from "next-intl/server";
 import { BlogCard } from "@/components/blog/blog-card";
@@ -9,6 +8,7 @@ import { EditorContent } from "@/components/ide/editor/editor-content";
 import { PageContent } from "@/components/shared/page-content";
 import { Pagination } from "@/components/shared/pagination";
 import { blogCode } from "@/consts/code-content";
+import { getPageImageUrl } from "@/lib/og";
 import { getBlog } from "@/lib/source";
 
 const POSTS_PER_PAGE = 12;
@@ -38,6 +38,10 @@ export function generateStaticParams(): { locale: string; num: string }[] {
     for (let page = 2; page <= totalPages; page++) {
       params.push({ locale, num: String(page) });
     }
+  }
+  // Cache Components requires at least one param for build-time validation
+  if (params.length === 0) {
+    return [{ locale: "en", num: "2" }];
   }
   return params;
 }

@@ -7,6 +7,7 @@ const withNextIntl = createNextIntlPlugin("./src/modules/i18n/request.ts");
 const withMDX = createMDX();
 
 const nextConfig: NextConfig = {
+  cacheComponents: true,
   devIndicators: false,
   typedRoutes: true,
   reactCompiler: true,

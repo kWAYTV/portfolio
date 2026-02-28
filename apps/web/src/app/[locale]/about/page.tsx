@@ -1,5 +1,4 @@
 import type { Metadata } from "next";
-import { getPageImageUrl } from "@/lib/og";
 import { getTranslations, setRequestLocale } from "next-intl/server";
 import { AboutBio } from "@/components/about/about-bio";
 import { AboutHeader } from "@/components/about/about-header";
@@ -8,6 +7,7 @@ import { CodeView } from "@/components/ide/editor/code-view";
 import { EditorContent } from "@/components/ide/editor/editor-content";
 import { PageContent } from "@/components/shared/page-content";
 import { aboutCode } from "@/consts/code-content";
+import { getPageImageUrl } from "@/lib/og";
 
 export async function generateMetadata({
   params,
