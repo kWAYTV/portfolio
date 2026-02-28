@@ -5,6 +5,8 @@ export const featuredRepoNames = [
   "ide-portfolio",
   "lichess-bot",
   "portfolio",
+  "versend/core",
+  "versend/homepage",
 ] as const;
 
 export const FEATURED_COUNT = 3;

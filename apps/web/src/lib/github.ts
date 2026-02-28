@@ -23,6 +23,7 @@ async function fetchGitHubRepos(): Promise<
   return await getRepos({
     octokit,
     username: "kWAYTV",
+    extraRepos: [{ owner: "versend", repo: "core" }],
   });
 }
 
