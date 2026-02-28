@@ -46,6 +46,7 @@ interface IdeState {
 
   // Tabs
   openTabs: string[];
+  reorderTabs: (newOrder: string[]) => void;
   setFullscreen: (fullscreen: boolean) => void;
   setMobileSidebarView: (view: SidebarView | null) => void;
   setSidebarView: (view: SidebarView) => void;
@@ -108,6 +109,8 @@ export const useIdeStore = create<IdeState>((set) => ({
     set((s) =>
       s.openTabs.includes(href) ? s : { openTabs: [...s.openTabs, href] }
     ),
+
+  reorderTabs: (openTabs) => set({ openTabs }),
 
   closeTab: (href) =>
     set((s) => ({

@@ -1,5 +1,7 @@
 "use client";
 
+import { useSortable } from "@dnd-kit/sortable";
+import { CSS } from "@dnd-kit/utilities";
 import { X } from "lucide-react";
 import { FileIcon } from "@/components/ide/sidebar/file-icon";
 import { cn } from "@/lib/utils";
@@ -22,21 +24,46 @@ export function EditorTabItem({
   onClose,
   onTabClick,
 }: EditorTabItemProps) {
+  const {
+    attributes,
+    listeners,
+    setNodeRef,
+    transform,
+    transition,
+    isDragging,
+  } = useSortable({ id: href });
+
+  const style = {
+    transform: CSS.Transform.toString(transform),
+    transition,
+  };
+
   return (
     <div
       className={cn(
         "group relative flex h-full min-w-0 max-w-[180px] select-none items-center border-border/60 border-r pr-1 text-[13px] transition-colors",
         active
           ? "bg-background text-foreground shadow-(--shadow-elevation-sm)"
-          : "bg-muted/40 text-muted-foreground hover:bg-muted/70"
+          : "bg-muted/40 text-muted-foreground hover:bg-muted/70",
+        isDragging && "opacity-50 shadow-md"
       )}
+      ref={setNodeRef}
+      style={style}
     >
       {active && (
         <span className="absolute inset-x-0 bottom-0 h-[2px] bg-primary" />
       )}
-      <div className="flex min-w-0 flex-1 items-center gap-2 overflow-hidden px-3 py-1.5">
+      <div
+        {...attributes}
+        {...listeners}
+        className={cn(
+          "flex min-w-0 flex-1 cursor-grab items-center gap-2 overflow-hidden px-3 py-1.5",
+          isDragging && "cursor-grabbing"
+        )}
+      >
         <LocaleLink
           className="flex min-w-0 flex-1 items-center gap-2 truncate"
+          draggable={false}
           href={href}
           onClick={() => onTabClick?.(href)}
         >
