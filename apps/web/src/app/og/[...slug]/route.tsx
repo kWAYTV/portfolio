@@ -190,6 +190,8 @@ export function generateStaticParams() {
   const params: { slug: string[] }[] = [];
   const locales = ["en", "es"] as const;
 
+  // Generate OG image paths for all pages; enables static generation at build time
+
   for (const locale of locales) {
     params.push({ slug: getPageImageSegments([locale]) });
     params.push({ slug: getPageImageSegments([locale, "blog"]) });
