@@ -38,7 +38,10 @@ export function generateStaticParams(): { locale: string; num: string }[] {
 
   // Cache Components requires at least one param for build-time validation
   if (params.length === 0) {
-    return [{ locale: "en", num: "2" }];
+    return [
+      { locale: "en", num: "2" },
+      { locale: "es", num: "2" },
+    ];
   }
   return params;
 }

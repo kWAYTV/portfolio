@@ -1,3 +1,8 @@
+type Translate = (
+  key: string,
+  values?: Record<string, string | number>
+) => string;
+
 /** Mock file contents for cat command */
 const MOCK_FILE_CONTENTS: Record<string, string> = {
   "package.json": `{
@@ -67,10 +72,10 @@ const err = (s: string): { type: LineType; content: string } => ({
   content: s,
 });
 
-function runCat(parts: string[]): CommandResult {
+function runCat(parts: string[], t: Translate): CommandResult {
   const file = parts[1];
   if (!file) {
-    return { lines: [err("cat: missing file operand")] };
+    return { lines: [err(t("cmdOutput.catMissingOperand"))] };
   }
   const normalized =
     file.replace(RE_TILDE_PREFIX, "").replace(RE_WORKSPACE_PREFIX, "") || ".";
@@ -78,7 +83,7 @@ function runCat(parts: string[]): CommandResult {
   if (content) {
     return { lines: content.split("\n").map(out) };
   }
-  return { lines: [err(`cat: ${file}: No such file or directory`)] };
+  return { lines: [err(t("cmdOutput.catNoSuchFile", { file }))] };
 }
 
 const DIR_CONTENTS: Record<
@@ -180,22 +185,28 @@ function runCd(parts: string[], cwd: string): CommandResult {
   return { lines: [], cwd: next.replace(RE_SLASHES, "/") };
 }
 
-function runGit(parts: string[]): CommandResult {
+function runGit(parts: string[], t: Translate): CommandResult {
   const sub = parts[1]?.toLowerCase();
   if (sub === "status") {
     return {
       lines: [
-        out("On branch main"),
-        out("Your branch is up to date with 'origin/main'."),
+        out(t("cmdOutput.gitOnBranch")),
+        out(t("cmdOutput.gitUpToDate")),
         out(""),
-        out("Changes not staged for commit:"),
-        out('  (use "git add <file>..." to update what will be committed)'),
-        out("  modified:   apps/web/src/app/[locale]/blog/page.tsx"),
-        out("  modified:   apps/web/src/components/shared/pagination.tsx"),
-        out(""),
+        out(t("cmdOutput.gitChangesNotStaged")),
+        out(t("cmdOutput.gitUseAdd")),
         out(
-          'no changes added to commit (use "git add" and/or "git commit -a")'
+          t("cmdOutput.gitModifiedLine", {
+            path: "apps/web/src/app/[locale]/blog/page.tsx",
+          })
         ),
+        out(
+          t("cmdOutput.gitModifiedLine", {
+            path: "apps/web/src/components/shared/pagination.tsx",
+          })
+        ),
+        out(""),
+        out(t("cmdOutput.gitNoChangesToCommit")),
       ],
     };
   }
@@ -215,40 +226,46 @@ function runGit(parts: string[]): CommandResult {
       const del = Math.floor(Math.random() * 40);
       return {
         lines: [
-          out(`[main ${randomHash()}] ${msg}`),
+          out(t("cmdOutput.gitCommitSuccess", { hash: randomHash(), msg })),
           out(
-            ` ${files} file${files > 1 ? "s" : ""} changed, ${ins} insertion${ins !== 1 ? "s" : ""}(+), ${del} deletion${del !== 1 ? "s" : ""}(-)`
+            t("cmdOutput.gitCommitStats", {
+              files,
+              ins,
+              del,
+            })
           ),
         ],
       };
     }
     return {
       lines: [
-        out("Conventional commit format:"),
-        out('  git commit -m "feat: add feature"'),
-        out('  git commit -m "fix: resolve bug"'),
-        out('  git commit -m "docs: update readme"'),
-        out("  Types: feat|fix|docs|style|refactor|perf|test|build|ci|chore"),
+        out(t("cmdOutput.gitConventionalFormat")),
+        out(`  ${t("cmdOutput.gitCommitExample")}`),
+        out(t("cmdOutput.gitCommitTypes")),
       ],
     };
   }
   if (sub === "log") {
     return {
       lines: [
-        out(`commit ${randomHash()} (HEAD -> main, origin/main)`),
-        out("Author: Developer <dev@example.com>"),
-        out("Date:   Fri Feb 27 2025"),
+        out(t("cmdOutput.gitLogCommit", { hash: randomHash() })),
+        out(t("cmdOutput.gitLogAuthor")),
+        out(t("cmdOutput.gitLogDate")),
         out(""),
-        out("    feat(ide): add zustand store for layout state"),
+        out(t("cmdOutput.gitLogMessage")),
       ],
     };
   }
   return {
-    lines: [err(`git: '${sub ?? ""}' is not a git command`)],
+    lines: [err(t("cmdOutput.gitNotACommand", { sub: sub ?? "" }))],
   };
 }
 
-export function executeCommand(cmd: string, cwd: string): CommandResult {
+export function executeCommand(
+  cmd: string,
+  cwd: string,
+  t: Translate
+): CommandResult {
   const trimmed = cmd.trim();
   const parts = trimmed.split(RE_WHITESPACE);
   const cmdName = parts[0]?.toLowerCase() ?? "";
@@ -265,41 +282,39 @@ export function executeCommand(cmd: string, cwd: string): CommandResult {
       return runLs(cwd, hasLongFlag);
     }
     case "whoami":
-      return { lines: [out("visitor")] };
+      return { lines: [out(t("cmdOutput.whoami"))] };
     case "help":
     case "?":
       return {
         lines: [
-          out("Available commands:"),
+          out(t("cmdOutput.cmdHelpAvailable")),
           out(""),
-          out("  git status           Show working tree status"),
-          out(
-            '  git commit -m "msg"   Conventional commit (feat|fix|docs|...)'
-          ),
+          out(t("cmdOutput.cmdHelpGitStatus")),
+          out(t("cmdOutput.cmdHelpGitCommit")),
           out(""),
-          out("  cat <file>           Display file"),
-          out("  echo <text>           Echo text"),
-          out("  clear                Clear terminal"),
-          out("  ls, ls -la           List files"),
-          out("  pwd                  Print working directory"),
-          out("  cd <dir>             Change directory"),
-          out("  help, ?              Show this help"),
+          out(t("cmdOutput.cmdHelpCat")),
+          out(t("cmdOutput.cmdHelpEcho")),
+          out(t("cmdOutput.cmdHelpClear")),
+          out(t("cmdOutput.cmdHelpLs")),
+          out(t("cmdOutput.cmdHelpPwd")),
+          out(t("cmdOutput.cmdHelpCd")),
+          out(t("cmdOutput.cmdHelpHelp")),
         ],
       };
     case "cat":
-      return runCat(parts);
+      return runCat(parts, t);
     case "echo":
       return { lines: [out(parts.slice(1).join(" "))] };
     case "cd":
       return runCd(parts, cwd);
     case "git":
-      return runGit(parts);
+      return runGit(parts, t);
     default:
       if (!trimmed) {
         return { lines: [] };
       }
       return {
-        lines: [err(`${parts[0] ?? cmd}: command not found`)],
+        lines: [err(t("cmdOutput.commandNotFound", { cmd: parts[0] ?? cmd }))],
       };
   }
 }

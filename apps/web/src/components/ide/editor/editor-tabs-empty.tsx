@@ -1,6 +1,7 @@
 "use client";
 
 import { Code2 } from "lucide-react";
+import { useTranslations } from "next-intl";
 
 import {
   Empty,
@@ -11,6 +12,8 @@ import {
 } from "@/components/ui/empty";
 
 export function EditorTabsEmpty() {
+  const t = useTranslations("ide");
+
   return (
     <div className="flex flex-1 flex-col">
       <div className="h-[35px] shrink-0 border-border border-b bg-muted/80 shadow-(--shadow-elevation-sm)" />
@@ -19,8 +22,8 @@ export function EditorTabsEmpty() {
           <EmptyMedia variant="default">
             <Code2 className="size-12 text-muted-foreground/50" />
           </EmptyMedia>
-          <EmptyTitle>No open editors</EmptyTitle>
-          <EmptyDescription>Open a file from the sidebar</EmptyDescription>
+          <EmptyTitle>{t("noOpenEditors")}</EmptyTitle>
+          <EmptyDescription>{t("openFileFromSidebar")}</EmptyDescription>
         </EmptyHeader>
       </Empty>
     </div>

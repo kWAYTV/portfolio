@@ -21,7 +21,7 @@ const PAGE_COPY: Record<
     es: {
       title: "Martin Vila",
       description: "Bienvenido a mi espacio personal.",
-      subtitle: "Portfolio",
+      subtitle: "Portafolio",
     },
   },
   blog: {
