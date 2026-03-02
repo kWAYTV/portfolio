@@ -2,103 +2,30 @@ import { cacheLife, cacheTag } from "next/cache";
 import { notFound } from "next/navigation";
 import { ImageResponse } from "next/og";
 import { OgImage } from "@/components/og/og-image";
-import { getPageImageSegments, type PagePath, pathToSegments } from "@/lib/og";
+import {
+  getPageImageSegments,
+  LOCALE_LIST,
+  type PagePath,
+  pathToSegments,
+  STATIC_PAGE_TYPES,
+  segmentsToPagePath,
+} from "@/lib/og";
+import { getStaticOgCopy } from "@/lib/og-copy";
 import { getBlog } from "@/lib/source";
 
-const IMAGE_FILE = "image.png";
 const SIZE = { width: 1200, height: 630 };
 
-const PAGE_COPY: Record<
-  string,
-  Record<string, { title: string; description?: string; subtitle?: string }>
+type StaticPageType = Exclude<PagePath["type"], "blog-post">;
+const COPY_KEY: Record<
+  StaticPageType,
+  keyof typeof import("@/lib/og-copy").PAGE_COPY
 > = {
-  home: {
-    en: {
-      title: "Martin Vila",
-      description: "welcome to my personal space.",
-      subtitle: "Portfolio",
-    },
-    es: {
-      title: "Martin Vila",
-      description: "Bienvenido a mi espacio personal.",
-      subtitle: "Portafolio",
-    },
-  },
-  blog: {
-    en: {
-      title: "Blog",
-      description: "Quiet notes from current work.",
-      subtitle: "Martin Vila",
-    },
-    es: {
-      title: "Blog",
-      description: "Notas breves del trabajo actual.",
-      subtitle: "Martin Vila",
-    },
-  },
-  projects: {
-    en: {
-      title: "Projects",
-      description: "Open source work",
-      subtitle: "Martin Vila",
-    },
-    es: {
-      title: "Projects",
-      description: "Trabajo open source",
-      subtitle: "Martin Vila",
-    },
-  },
-  about: {
-    en: {
-      title: "About",
-      description: "A bit about me",
-      subtitle: "Martin Vila",
-    },
-    es: {
-      title: "About",
-      description: "Un poco sobre mí",
-      subtitle: "Martin Vila",
-    },
-  },
+  home: "home",
+  blog: "blog",
+  "blog-page": "blog",
+  projects: "projects",
+  about: "about",
 };
-
-function parsePath(slug: string[]): PagePath | null {
-  if (slug.at(-1) !== IMAGE_FILE) {
-    return null;
-  }
-  const path = slug.slice(0, -1);
-  if (path.length === 0) {
-    return null;
-  }
-
-  const [locale, ...rest] = path;
-  if (!(locale && ["en", "es"].includes(locale))) {
-    return null;
-  }
-
-  if (rest.length === 0) {
-    return { type: "home", locale };
-  }
-  if (rest.length === 1 && rest[0] === "blog") {
-    return { type: "blog", locale };
-  }
-  if (rest.length === 1 && rest[0] === "projects") {
-    return { type: "projects", locale };
-  }
-  if (rest.length === 1 && rest[0] === "about") {
-    return { type: "about", locale };
-  }
-  if (rest.length === 2 && rest[0] === "blog" && rest[1] !== "page") {
-    return { type: "blog-post", locale, slug: rest[1] };
-  }
-  if (rest.length === 3 && rest[0] === "blog" && rest[1] === "page") {
-    const num = Number.parseInt(rest[2], 10);
-    if (Number.isFinite(num)) {
-      return { type: "blog-page", locale, num };
-    }
-  }
-  return null;
-}
 
 // biome-ignore lint/suspicious/useAwait: async required for "use cache" directive
 async function getOgImageData(slug: string[]) {
@@ -106,64 +33,27 @@ async function getOgImageData(slug: string[]) {
   cacheTag("og-images");
   cacheLife("max");
 
-  const pagePath = parsePath(slug);
+  const pagePath = segmentsToPagePath(slug);
   if (!pagePath) {
     return null;
   }
 
-  let title: string;
-  let description: string | undefined;
-  let subtitle: string;
-
-  switch (pagePath.type) {
-    case "home": {
-      const copy = PAGE_COPY.home[pagePath.locale] ?? PAGE_COPY.home.en;
-      title = copy.title;
-      description = copy.description;
-      subtitle = copy.subtitle ?? "Portfolio";
-      break;
-    }
-    case "blog":
-    case "blog-page": {
-      const copy = PAGE_COPY.blog[pagePath.locale] ?? PAGE_COPY.blog.en;
-      title = copy.title;
-      description = copy.description;
-      subtitle = copy.subtitle ?? "Martin Vila";
-      break;
-    }
-    case "blog-post": {
-      const blog = getBlog(pagePath.locale);
-      const page = blog.getPage([pagePath.slug]);
-      if (!page) {
-        return null;
-      }
-      const data = page.data as { title: string; description?: string };
-      title = data.title;
-      description = data.description;
-      subtitle = "Martin Vila";
-      break;
-    }
-    case "projects": {
-      const copy = PAGE_COPY.projects[pagePath.locale] ?? PAGE_COPY.projects.en;
-      title = copy.title;
-      description = copy.description;
-      subtitle = copy.subtitle ?? "Martin Vila";
-      break;
-    }
-    case "about": {
-      const copy = PAGE_COPY.about[pagePath.locale] ?? PAGE_COPY.about.en;
-      title = copy.title;
-      description = copy.description;
-      subtitle = copy.subtitle ?? "Martin Vila";
-      break;
-    }
-    default: {
-      const _: never = pagePath;
+  if (pagePath.type === "blog-post") {
+    const blog = getBlog(pagePath.locale);
+    const page = blog.getPage([pagePath.slug]);
+    if (!page) {
       return null;
     }
+    const data = page.data as { title: string; description?: string };
+    return {
+      title: data.title,
+      description: data.description,
+      subtitle: "Martin Vila",
+    };
   }
 
-  return { title, description, subtitle };
+  const copy = getStaticOgCopy(COPY_KEY[pagePath.type], pagePath.locale);
+  return copy;
 }
 
 export async function GET(
@@ -186,17 +76,16 @@ export async function GET(
   );
 }
 
+const POSTS_PER_PAGE = 12;
+
 export function generateStaticParams() {
   const params: { slug: string[] }[] = [];
-  const locales = ["en", "es"] as const;
 
-  // Generate OG image paths for all pages; enables static generation at build time
-
-  for (const locale of locales) {
-    params.push({ slug: getPageImageSegments([locale]) });
-    params.push({ slug: getPageImageSegments([locale, "blog"]) });
-    params.push({ slug: getPageImageSegments([locale, "projects"]) });
-    params.push({ slug: getPageImageSegments([locale, "about"]) });
+  for (const locale of LOCALE_LIST) {
+    for (const type of STATIC_PAGE_TYPES) {
+      const p: PagePath = { type, locale };
+      params.push({ slug: getPageImageSegments(pathToSegments(p)) });
+    }
 
     const blog = getBlog(locale);
     const blogPages = blog.getPages();
@@ -205,7 +94,6 @@ export function generateStaticParams() {
       params.push({ slug: getPageImageSegments(pathToSegments(p)) });
     }
 
-    const POSTS_PER_PAGE = 12;
     const totalPages = Math.max(
       1,
       Math.ceil(blogPages.length / POSTS_PER_PAGE)
