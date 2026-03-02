@@ -157,6 +157,7 @@
     "changes": "Changes",
     "stagedChanges": "Staged Changes",
     "commitHistory": "Commit History",
+    "refreshCommitHistory": "Refresh commit history",
     "syncChanges": "Sync Changes",
     "moreActions": "More Actions",
     "pull": "Pull",

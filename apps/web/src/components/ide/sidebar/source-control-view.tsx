@@ -12,7 +12,7 @@ import {
   X,
 } from "lucide-react";
 import { useTranslations } from "next-intl";
-import { useState } from "react";
+import { useCallback, useRef, useState } from "react";
 import useSWR from "swr";
 import { CollapsibleSection } from "@/components/ide/sidebar/collapsible-section";
 import { CommitHistoryItem } from "@/components/ide/sidebar/commit-history-item";
@@ -27,7 +27,10 @@ import {
 } from "@/components/ui/dropdown-menu";
 import type { Commit } from "@/consts/ide-constants";
 import { REPO_URL } from "@/consts/ide-constants";
-import { getCommitsAction } from "@/lib/actions/github";
+import {
+  getCommitsAction,
+  revalidateCommitsAction,
+} from "@/lib/actions/github";
 import { IDE_DROPDOWN_CONTENT_CLASS } from "@/lib/ide-dropdown";
 import { cn } from "@/lib/utils";
 
@@ -41,12 +44,30 @@ export function SourceControlView({
   onClose,
 }: SourceControlViewProps) {
   const t = useTranslations("ide");
-  const [spinKey, setSpinKey] = useState(0);
+  const [isRefreshing, setIsRefreshing] = useState(false);
   const [menuOpen, setMenuOpen] = useState(false);
-  const { data: commits = [], isLoading } = useSWR<Commit[]>(
-    "github-commits",
-    getCommitsAction
-  );
+  const lastRefreshRef = useRef(0);
+  const {
+    data: commits = [],
+    isLoading,
+    mutate,
+  } = useSWR<Commit[]>("github-commits", getCommitsAction);
+
+  const REFRESH_COOLDOWN_MS = 5000;
+  const handleRefreshCommitHistory = useCallback(async () => {
+    const now = Date.now();
+    if (now - lastRefreshRef.current < REFRESH_COOLDOWN_MS) {
+      return;
+    }
+    lastRefreshRef.current = now;
+    setIsRefreshing(true);
+    try {
+      await revalidateCommitsAction();
+      await mutate();
+    } finally {
+      setIsRefreshing(false);
+    }
+  }, [mutate]);
 
   return (
     <div
@@ -115,9 +136,10 @@ export function SourceControlView({
             </DropdownMenuContent>
           </DropdownMenu>
           <Button
-            aria-label={t("syncChanges")}
+            aria-label={t("refreshCommitHistory")}
             className="size-6 rounded p-0"
-            onClick={() => setSpinKey((k: number) => k + 1)}
+            disabled={isRefreshing}
+            onClick={handleRefreshCommitHistory}
             size="icon-sm"
             type="button"
             variant="ghost"
@@ -125,9 +147,8 @@ export function SourceControlView({
             <RefreshCw
               className={cn(
                 "size-3.5",
-                spinKey > 0 && "animate-[spin_0.6s_linear_1]"
+                isRefreshing && "animate-[spin_0.6s_linear_infinite]"
               )}
-              key={spinKey}
             />
           </Button>
           {onClose && (
