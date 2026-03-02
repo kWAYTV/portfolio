@@ -90,6 +90,7 @@ export function CommandPalette() {
   return (
     <CommandDialog
       className="top-1/2 left-1/2 w-full max-w-xl -translate-x-1/2 -translate-y-1/2 gap-0 p-0"
+      closeAriaLabel={t("close")}
       description={t("commandPlaceholder")}
       onOpenChange={setOpen}
       open={open}

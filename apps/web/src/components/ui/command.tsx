@@ -36,16 +36,18 @@ function Command({
 function CommandDialog({
   title = "Command Palette",
   description = "Search for a command to run...",
+  closeAriaLabel,
   children,
   className,
   showCloseButton = false,
   ...props
 }: Omit<React.ComponentProps<typeof Dialog>, "children"> & {
-  title?: string
-  description?: string
-  className?: string
-  showCloseButton?: boolean
-  children: React.ReactNode
+  title?: string;
+  description?: string;
+  closeAriaLabel?: string;
+  className?: string;
+  showCloseButton?: boolean;
+  children: React.ReactNode;
 }) {
   return (
     <Dialog {...props}>
@@ -58,13 +60,14 @@ function CommandDialog({
           "top-1/3 translate-y-0 overflow-hidden rounded-none p-0",
           className
         )}
+        closeAriaLabel={closeAriaLabel}
         finalFocus={false}
         showCloseButton={showCloseButton}
       >
         {children}
       </DialogContent>
     </Dialog>
-  )
+  );
 }
 
 function CommandInput({

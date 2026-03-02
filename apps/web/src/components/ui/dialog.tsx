@@ -42,10 +42,12 @@ function DialogOverlay({
 function DialogContent({
   className,
   children,
+  closeAriaLabel = "Close",
   showCloseButton = true,
   ...props
 }: DialogPrimitive.Popup.Props & {
-  showCloseButton?: boolean
+  closeAriaLabel?: string;
+  showCloseButton?: boolean;
 }) {
   return (
     <DialogPortal>
@@ -70,14 +72,13 @@ function DialogContent({
               />
             }
           >
-            <XIcon
-            />
-            <span className="sr-only">Close</span>
+            <XIcon />
+            <span className="sr-only">{closeAriaLabel}</span>
           </DialogPrimitive.Close>
         )}
       </DialogPrimitive.Popup>
     </DialogPortal>
-  )
+  );
 }
 
 function DialogHeader({ className, ...props }: React.ComponentProps<"div">) {
@@ -92,11 +93,13 @@ function DialogHeader({ className, ...props }: React.ComponentProps<"div">) {
 
 function DialogFooter({
   className,
+  closeLabel = "Close",
   showCloseButton = false,
   children,
   ...props
 }: React.ComponentProps<"div"> & {
-  showCloseButton?: boolean
+  closeLabel?: string;
+  showCloseButton?: boolean;
 }) {
   return (
     <div
@@ -110,11 +113,11 @@ function DialogFooter({
       {children}
       {showCloseButton && (
         <DialogPrimitive.Close render={<Button variant="outline" />}>
-          Close
+          {closeLabel}
         </DialogPrimitive.Close>
       )}
     </div>
-  )
+  );
 }
 
 function DialogTitle({ className, ...props }: DialogPrimitive.Title.Props) {

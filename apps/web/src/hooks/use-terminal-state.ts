@@ -58,7 +58,7 @@ export function useTerminalState() {
 
     const cmd = inputValue.trim();
     const fullLine = `${prompt} ${inputValue}`;
-    const result = executeCommand(cmd, cwd);
+    const result = executeCommand(cmd, cwd, t);
 
     if (result.cwd !== undefined) {
       setCwd(result.cwd);
