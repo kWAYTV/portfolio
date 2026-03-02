@@ -74,7 +74,7 @@ export async function getGitHubRepos() {
   return getRepos({
     octokit,
     username: "kWAYTV",
-    extraRepos: [{ owner: "vercel", repo: "core" }],
+    extraRepos: [{ owner: "versend", repo: "core" }],
   });
 }`;
 
@@ -86,18 +86,14 @@ import { getBlog } from "@/lib/source";
 
 const POSTS_PER_PAGE = 12;
 
-export default async function BlogPage({ params, searchParams }) {
+export default async function BlogPage({ params }) {
   const { locale } = await params;
   const blog = getBlog(locale);
   const allPosts = blog.getPages().sort((a, b) =>
     new Date(b.data.date).getTime() - new Date(a.data.date).getTime()
   );
   const totalPages = Math.max(1, Math.ceil(allPosts.length / POSTS_PER_PAGE));
-  const page = Math.min(totalPages, parseInt(searchParams?.page ?? "1") || 1);
-  const posts = allPosts.slice(
-    (page - 1) * POSTS_PER_PAGE,
-    page * POSTS_PER_PAGE
-  );
+  const posts = allPosts.slice(0, POSTS_PER_PAGE);
 
   return (
     <PageContent>
@@ -118,7 +114,7 @@ export default async function BlogPage({ params, searchParams }) {
             />
           ))}
         </div>
-        <Pagination currentPage={page} totalPages={totalPages} />
+        <Pagination currentPage={1} totalPages={totalPages} />
       </div>
     </PageContent>
   );
