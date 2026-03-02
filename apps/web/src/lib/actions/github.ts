@@ -8,6 +8,7 @@ export async function getCommitsAction() {
 }
 
 /** Invalidates the cached commit history so the next fetch gets fresh data */
-export function revalidateCommitsAction() {
+// biome-ignore lint/suspicious/useAwait: Server Actions must be async
+export async function revalidateCommitsAction() {
   revalidateTag("github-commits");
 }
