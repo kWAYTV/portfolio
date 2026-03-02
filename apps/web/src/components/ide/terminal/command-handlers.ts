@@ -190,8 +190,8 @@ function runGit(parts: string[]): CommandResult {
         out(""),
         out("Changes not staged for commit:"),
         out('  (use "git add <file>..." to update what will be committed)'),
-        out("  modified:   apps/web/src/components/ide/ide-layout.tsx"),
-        out("  modified:   apps/web/src/stores/ide-store.ts"),
+        out("  modified:   apps/web/src/app/[locale]/blog/page.tsx"),
+        out("  modified:   apps/web/src/components/shared/pagination.tsx"),
         out(""),
         out(
           'no changes added to commit (use "git add" and/or "git commit -a")'
