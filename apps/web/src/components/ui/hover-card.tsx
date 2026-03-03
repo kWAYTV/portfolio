@@ -1,44 +1,99 @@
 "use client";
 
 import * as React from "react";
-/** biome-ignore lint/performance/noNamespaceImport: shadcn/radix pattern */
-import { HoverCard as HoverCardPrimitive } from "radix-ui";
-
+import { Popover as PopoverPrimitive } from "@base-ui/react/popover";
 import { cn } from "@/lib/utils";
 
-function HoverCard({
-  ...props
-}: React.ComponentProps<typeof HoverCardPrimitive.Root>) {
-  return <HoverCardPrimitive.Root data-slot="hover-card" {...props} />;
+interface HoverCardProps extends Omit<PopoverPrimitive.Root.Props, "children"> {
+  children: React.ReactNode;
+  openDelay?: number;
+  closeDelay?: number;
 }
 
-function HoverCardTrigger({
-  ...props
-}: React.ComponentProps<typeof HoverCardPrimitive.Trigger>) {
+function HoverCard({
+  openDelay = 200,
+  closeDelay = 100,
+  children,
+  ...rootProps
+}: HoverCardProps) {
   return (
-    <HoverCardPrimitive.Trigger data-slot="hover-card-trigger" {...props} />
+    <PopoverPrimitive.Root data-slot="hover-card" {...rootProps}>
+      <HoverCardDelayContext.Provider value={{ openDelay, closeDelay }}>
+        {children}
+      </HoverCardDelayContext.Provider>
+    </PopoverPrimitive.Root>
+  );
+}
+
+const HoverCardDelayContext = React.createContext({
+  openDelay: 200,
+  closeDelay: 100,
+});
+
+function HoverCardTrigger({
+  asChild,
+  children,
+  ...props
+}: PopoverPrimitive.Trigger.Props & {
+  asChild?: boolean;
+}) {
+  const { openDelay, closeDelay } = React.useContext(HoverCardDelayContext);
+  const triggerProps = {
+    ...props,
+    openOnHover: true,
+    delay: openDelay,
+    closeDelay,
+  };
+  if (asChild && React.isValidElement(children)) {
+    return (
+      <PopoverPrimitive.Trigger
+        data-slot="hover-card-trigger"
+        render={(mergeProps) =>
+          React.cloneElement(
+            children as React.ReactElement<object>,
+            mergeProps
+          )
+        }
+        {...triggerProps}
+      />
+    );
+  }
+  return (
+    <PopoverPrimitive.Trigger
+      data-slot="hover-card-trigger"
+      {...triggerProps}
+    >
+      {children}
+    </PopoverPrimitive.Trigger>
   );
 }
 
 function HoverCardContent({
   className,
   align = "center",
+  side = "bottom",
   sideOffset = 4,
   ...props
-}: React.ComponentProps<typeof HoverCardPrimitive.Content>) {
+}: PopoverPrimitive.Popup.Props &
+  Pick<PopoverPrimitive.Positioner.Props, "align" | "side" | "sideOffset">) {
   return (
-    <HoverCardPrimitive.Portal>
-      <HoverCardPrimitive.Content
+    <PopoverPrimitive.Portal>
+      <PopoverPrimitive.Positioner
         align={align}
-        className={cn(
-          "data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0 data-[state=closed]:zoom-out-95 data-[state=open]:zoom-in-95 data-[side=bottom]:slide-in-from-top-2 data-[side=left]:slide-in-from-right-2 data-[side=right]:slide-in-from-left-2 data-[side=top]:slide-in-from-bottom-2 z-50 w-64 origin-(--radix-hover-card-content-transform-origin) rounded-md border bg-popover p-4 text-popover-foreground shadow-[var(--shadow-elevation-md)] outline-hidden data-[state=closed]:animate-out data-[state=open]:animate-in",
-          className
-        )}
-        data-slot="hover-card-content"
+        className="isolate z-50"
+        side={side}
         sideOffset={sideOffset}
-        {...props}
-      />
-    </HoverCardPrimitive.Portal>
+      >
+        <PopoverPrimitive.Popup
+          className={cn(
+            "data-closed:fade-out-0 data-open:fade-in-0 data-closed:zoom-out-95 data-open:zoom-in-95 data-[side=bottom]:slide-in-from-top-2 data-[side=left]:slide-in-from-right-2 data-[side=right]:slide-in-from-left-2 data-[side=top]:slide-in-from-bottom-2 z-50 w-64 origin-(--transform-origin) rounded-md border bg-popover p-4 text-popover-foreground shadow-[var(--shadow-elevation-md)] outline-hidden data-closed:animate-out data-open:animate-in",
+            className
+          )}
+          data-slot="hover-card-content"
+          {...props}
+        />
+      </PopoverPrimitive.Positioner>
+    </PopoverPrimitive.Portal>
   );
 }
 
