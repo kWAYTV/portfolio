@@ -3,10 +3,14 @@
 import type { LucideIcon } from "lucide-react";
 import { cn } from "@/lib/utils";
 
+type IconComponent =
+  | LucideIcon
+  | React.ComponentType<{ className?: string; size?: number }>;
+
 interface ActivityBarButtonProps {
   active?: boolean;
   ariaLabel: string;
-  icon: LucideIcon;
+  icon: IconComponent;
   onClick: () => void;
 }
 
@@ -26,7 +30,7 @@ export function ActivityBarButton({
       onClick={onClick}
       type="button"
     >
-      <Icon className="size-5" />
+      <Icon className="size-5" size={20} />
     </button>
   );
 }

@@ -1,9 +1,12 @@
 "use client";
 
-import { GripHorizontal, PanelBottomClose, Play, Terminal } from "lucide-react";
+import { PanelBottomClose } from "lucide-react";
 import { useTranslations } from "next-intl";
 import { useCallback, useEffect, useRef, useState } from "react";
 import { MockTerminal } from "@/components/ide/terminal/mock-terminal";
+import { GripHorizontalIcon } from "@/components/ui/grip-horizontal";
+import { PlayIcon } from "@/components/ui/play";
+import { TerminalIcon } from "@/components/ui/terminal";
 import { cn } from "@/lib/utils";
 import { useIdeStore } from "@/stores/ide-store";
 
@@ -88,16 +91,17 @@ export function TerminalPanel() {
         role="separator"
         tabIndex={0}
       >
-        <GripHorizontal
+        <GripHorizontalIcon
           className={cn(
-            "size-3.5 text-muted-foreground transition-opacity duration-150",
+            "text-muted-foreground transition-opacity duration-150",
             showResizeHandle ? "opacity-100" : "opacity-0"
           )}
+          size={14}
         />
       </div>
       <div className="flex h-8 shrink-0 items-center justify-between border-border border-b bg-muted/50 px-2 shadow-(--shadow-elevation-sm)">
         <div className="flex items-center gap-2">
-          <Terminal className="size-4 text-muted-foreground" />
+          <TerminalIcon className="text-muted-foreground" size={16} />
           <span className="font-medium text-[11px] text-foreground">
             {t("terminal")}
           </span>
@@ -117,7 +121,7 @@ export function TerminalPanel() {
             }
             type="button"
           >
-            <Play className="size-4" />
+            <PlayIcon size={16} />
           </button>
           <button
             aria-label={t("closePanel")}

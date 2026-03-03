@@ -1,7 +1,6 @@
 "use client";
 
 import type { GitHubRepo } from "@repo/github";
-import { ChevronLeft, ChevronRight } from "lucide-react";
 import { useTranslations } from "next-intl";
 import {
   parseAsInteger,
@@ -16,6 +15,8 @@ import {
   type SortOption,
   sortOptions,
 } from "@/components/projects/project-filters";
+import { ChevronLeftIcon } from "@/components/ui/chevron-left";
+import { ChevronRightIcon } from "@/components/ui/chevron-right";
 
 const ITEMS_PER_PAGE = 5;
 
@@ -145,7 +146,7 @@ export const ProjectList = memo(function ProjectList({
             onClick={() => handlePageChange(currentPage - 1)}
             type="button"
           >
-            <ChevronLeft className="size-3.5" />
+            <ChevronLeftIcon size={14} />
             {t("prev")}
           </button>
           <span className="min-w-12 text-center text-muted-foreground/60 text-xs tabular-nums">
@@ -158,7 +159,7 @@ export const ProjectList = memo(function ProjectList({
             type="button"
           >
             {t("next")}
-            <ChevronRight className="size-3.5" />
+            <ChevronRightIcon size={14} />
           </button>
         </div>
       )}

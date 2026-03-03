@@ -1,9 +1,10 @@
 "use client";
 
 import type { GitHubRepo } from "@repo/github";
-import { ExternalLink, GitFork, Star } from "lucide-react";
+import { ExternalLink, Star } from "lucide-react";
 import { useTranslations } from "next-intl";
 import { memo } from "react";
+import { GitForkIcon } from "@/components/ui/git-fork";
 import { languageColors } from "@/consts/language-colors";
 import { cn } from "@/lib/utils";
 
@@ -69,7 +70,7 @@ function ProjectCardDetailsInner({
           {repo.stargazers_count}
         </span>
         <span className="inline-flex items-center gap-0.5">
-          <GitFork className="size-3" />
+          <GitForkIcon size={12} />
           {repo.forks_count}
         </span>
       </div>

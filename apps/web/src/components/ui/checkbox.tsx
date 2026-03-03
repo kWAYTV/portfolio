@@ -1,5 +1,5 @@
 import { Checkbox as CheckboxPrimitive } from "@base-ui/react/checkbox";
-import { CheckIcon } from "lucide-react";
+import { CheckIcon } from "@/components/ui/check";
 
 import { cn } from "@/lib/utils";
 
@@ -17,7 +17,7 @@ function Checkbox({ className, ...props }: CheckboxPrimitive.Root.Props) {
         className="grid place-content-center text-current transition-none [&>svg]:size-3.5"
         data-slot="checkbox-indicator"
       >
-        <CheckIcon />
+        <CheckIcon size={14} />
       </CheckboxPrimitive.Indicator>
     </CheckboxPrimitive.Root>
   );

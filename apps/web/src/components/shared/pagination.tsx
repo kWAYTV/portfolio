@@ -1,7 +1,8 @@
 "use client";
 
-import { ChevronLeft, ChevronRight } from "lucide-react";
 import { useTranslations } from "next-intl";
+import { ChevronLeftIcon } from "@/components/ui/chevron-left";
+import { ChevronRightIcon } from "@/components/ui/chevron-right";
 import { LocaleLink } from "@/modules/i18n/routing";
 
 interface PaginationProps {
@@ -36,7 +37,7 @@ export function Pagination({
           className="inline-flex h-7 items-center gap-1 px-2 text-muted-foreground/70 text-xs transition-colors hover:text-foreground"
           href={prevHref}
         >
-          <ChevronLeft className="size-3" />
+          <ChevronLeftIcon size={12} />
           {t("prev")}
         </LocaleLink>
       ) : (
@@ -44,7 +45,7 @@ export function Pagination({
           aria-disabled
           className="inline-flex h-7 cursor-not-allowed items-center gap-1 px-2 text-muted-foreground/40 text-xs"
         >
-          <ChevronLeft className="size-3" />
+          <ChevronLeftIcon size={12} />
           {t("prev")}
         </span>
       )}
@@ -57,7 +58,7 @@ export function Pagination({
           href={nextHref}
         >
           {t("next")}
-          <ChevronRight className="size-3" />
+          <ChevronRightIcon size={12} />
         </LocaleLink>
       ) : (
         <span
@@ -65,7 +66,7 @@ export function Pagination({
           className="inline-flex h-7 cursor-not-allowed items-center gap-1 px-2 text-muted-foreground/40 text-xs"
         >
           {t("next")}
-          <ChevronRight className="size-3" />
+          <ChevronRightIcon size={12} />
         </span>
       )}
     </div>

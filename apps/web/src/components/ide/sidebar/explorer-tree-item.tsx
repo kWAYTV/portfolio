@@ -1,9 +1,11 @@
 "use client";
 
-import { ChevronDown, ChevronRight, Folder, FolderOpen } from "lucide-react";
+import { Folder } from "lucide-react";
 import { useTranslations } from "next-intl";
 import type { TreeItem } from "@/components/ide/config";
 import { FileIcon } from "@/components/ide/sidebar/file-icon";
+import { ChevronDownIcon } from "@/components/ui/chevron-down";
+import { ChevronRightIcon } from "@/components/ui/chevron-right";
 import {
   ContextMenu,
   ContextMenuContent,
@@ -11,6 +13,7 @@ import {
   ContextMenuSeparator,
   ContextMenuTrigger,
 } from "@/components/ui/context-menu";
+import { FolderOpenIcon } from "@/components/ui/folder-open";
 import { LocaleLink } from "@/modules/i18n/routing";
 
 function isFileActive(pathname: string, href?: string): boolean {
@@ -53,8 +56,8 @@ export function ExplorerTreeItem({
   if (item.type === "folder") {
     const key = `${path}/${item.name}`;
     const isOpen = expanded.has(key);
-    const Chevron = isOpen ? ChevronDown : ChevronRight;
-    const FolderIcon = isOpen ? FolderOpen : Folder;
+    const Chevron = isOpen ? ChevronDownIcon : ChevronRightIcon;
+    const FolderIcon = isOpen ? FolderOpenIcon : Folder;
 
     return (
       <div key={key}>
@@ -68,9 +71,17 @@ export function ExplorerTreeItem({
             >
               <Chevron
                 aria-hidden
-                className="size-4 shrink-0 text-muted-foreground/70"
+                className="shrink-0 text-muted-foreground/70"
+                size={16}
               />
-              <FolderIcon className="size-4 shrink-0 text-muted-foreground" />
+              {isOpen ? (
+                <FolderOpenIcon
+                  className="shrink-0 text-muted-foreground"
+                  size={16}
+                />
+              ) : (
+                <FolderIcon className="size-4 shrink-0 text-muted-foreground" />
+              )}
               <span className="ml-1 truncate">{item.name}</span>
             </button>
           </ContextMenuTrigger>

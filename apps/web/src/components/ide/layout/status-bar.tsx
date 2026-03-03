@@ -1,11 +1,15 @@
 "use client";
 
-import { GitBranch, Moon, Play, Sun, Terminal } from "lucide-react";
 import { useTranslations } from "next-intl";
 import { useTheme } from "next-themes";
 import { memo, useCallback, useEffect, useState } from "react";
 import { navItems } from "@/components/ide/config";
 import { LocaleSwitcher } from "@/components/internationalization/locale-switcher";
+import { GitBranchIcon } from "@/components/ui/git-branch";
+import { MoonIcon } from "@/components/ui/moon";
+import { PlayIcon } from "@/components/ui/play";
+import { SunIcon } from "@/components/ui/sun";
+import { TerminalIcon } from "@/components/ui/terminal";
 import { REPO_URL } from "@/consts/ide-constants";
 import { useThemeTransition } from "@/hooks/use-theme-transition";
 import { matchNavItem } from "@/lib/ide/breadcrumb";
@@ -60,9 +64,9 @@ export const StatusBar = memo(function StatusBar({
       />
     );
   } else if (isDark) {
-    themeIcon = <Sun className="size-3.5 shrink-0" />;
+    themeIcon = <SunIcon className="shrink-0" size={14} />;
   } else {
-    themeIcon = <Moon className="size-3.5 shrink-0" />;
+    themeIcon = <MoonIcon className="shrink-0" size={14} />;
   }
 
   const navItem = matchNavItem(pathname, navItems);
@@ -85,7 +89,7 @@ export const StatusBar = memo(function StatusBar({
             onClick={onFocusSourceControl}
             type="button"
           >
-            <GitBranch className="size-3.5 shrink-0" />
+            <GitBranchIcon className="shrink-0" size={14} />
             <span className="hidden sm:inline">main</span>
           </button>
         ) : (
@@ -96,7 +100,7 @@ export const StatusBar = memo(function StatusBar({
             rel="noopener noreferrer"
             target="_blank"
           >
-            <GitBranch className="size-3.5 shrink-0" />
+            <GitBranchIcon className="shrink-0" size={14} />
             <span className="hidden sm:inline">main</span>
           </a>
         )}
@@ -116,7 +120,7 @@ export const StatusBar = memo(function StatusBar({
           }}
           type="button"
         >
-          <Play className="size-3.5 shrink-0" />
+          <PlayIcon className="shrink-0" size={14} />
           <span className="hidden sm:inline">{t("preview")}</span>
         </button>
         <button
@@ -128,7 +132,7 @@ export const StatusBar = memo(function StatusBar({
           onClick={toggleTerminal}
           type="button"
         >
-          <Terminal className="size-3.5 shrink-0" />
+          <TerminalIcon className="shrink-0" size={14} />
           <span className="hidden sm:inline">{t("terminal")}</span>
         </button>
         <span className="hidden tabular-nums sm:inline">{t("lnCol")}</span>

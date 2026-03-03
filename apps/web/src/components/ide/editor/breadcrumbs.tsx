@@ -1,8 +1,10 @@
 "use client";
 
-import { ChevronRight, Code, Eye } from "lucide-react";
+import { Code } from "lucide-react";
 import { useTranslations } from "next-intl";
 import { navItems } from "@/components/ide/config";
+import { ChevronRightIcon } from "@/components/ui/chevron-right";
+import { EyeIcon } from "@/components/ui/eye";
 import { matchNavItem } from "@/lib/ide/breadcrumb";
 import { cn } from "@/lib/utils";
 import { useIdeStore } from "@/stores/ide-store";
@@ -33,9 +35,10 @@ export function Breadcrumbs({ pathname }: BreadcrumbsProps) {
           return (
             <span className="flex items-center gap-1" key={key}>
               {i > 0 && (
-                <ChevronRight
+                <ChevronRightIcon
                   aria-hidden
-                  className="size-3 shrink-0 text-muted-foreground/50"
+                  className="shrink-0 text-muted-foreground/50"
+                  size={12}
                 />
               )}
               <span
@@ -62,7 +65,7 @@ export function Breadcrumbs({ pathname }: BreadcrumbsProps) {
           onClick={() => setViewMode("preview")}
           type="button"
         >
-          <Eye className="size-3.5 shrink-0" />
+          <EyeIcon className="shrink-0" size={14} />
           {t("preview")}
         </button>
         <button

@@ -1,9 +1,10 @@
 "use client";
 
 import type { GitHubRepo } from "@repo/github";
-import { GitFork, Star } from "lucide-react";
+import { Star } from "lucide-react";
 import { memo } from "react";
 import { ProjectCardDetails } from "@/components/projects/project-card-details";
+import { GitForkIcon } from "@/components/ui/git-fork";
 import {
   HoverCard,
   HoverCardContent,
@@ -119,7 +120,7 @@ function ProjectCardSummary({
           {repo.stargazers_count}
         </span>
         <span className="inline-flex items-center gap-0.5">
-          <GitFork className="size-3" />
+          <GitForkIcon size={12} />
           {repo.forks_count}
         </span>
       </div>

@@ -1,7 +1,8 @@
 "use client";
 
-import { GitBranch, Github } from "lucide-react";
 import { useLocale, useTranslations } from "next-intl";
+import { GitBranchIcon } from "@/components/ui/git-branch";
+import { GithubIcon } from "@/components/ui/github";
 import {
   HoverCard,
   HoverCardContent,
@@ -75,11 +76,11 @@ export function CommitHistoryItem({ commit }: CommitHistoryItemProps) {
             )}
             <div className="flex flex-wrap items-center gap-1.5">
               <span className="inline-flex items-center gap-1 rounded border border-border/60 bg-muted/30 px-1.5 py-0.5 font-medium text-[10px] text-primary">
-                <GitBranch className="size-3" />
+                <GitBranchIcon size={12} />
                 main
               </span>
               <span className="inline-flex items-center gap-1 rounded border border-border/60 bg-muted/20 px-1.5 py-0.5 font-medium text-[10px] text-muted-foreground">
-                <GitBranch className="size-3" />
+                <GitBranchIcon size={12} />
                 origin/main
               </span>
             </div>
@@ -91,7 +92,7 @@ export function CommitHistoryItem({ commit }: CommitHistoryItemProps) {
             rel="noopener noreferrer"
             target="_blank"
           >
-            <Github className="size-3.5" />
+            <GithubIcon size={14} />
             {shaShort} · {t("viewOnGitHub")}
           </a>
         </div>

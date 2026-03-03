@@ -1,7 +1,7 @@
 "use client";
 
 import { config, type Locale, localeToFlagEmoji } from "@repo/i18n/config";
-import { Command, ExternalLink, Languages, Settings } from "lucide-react";
+import { Command, ExternalLink } from "lucide-react";
 import { useLocale, useTranslations } from "next-intl";
 import {
   DropdownMenu,
@@ -15,6 +15,8 @@ import {
   DropdownMenuShortcut,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
+import { LanguagesIcon } from "@/components/ui/languages";
+import { SettingsIcon } from "@/components/ui/settings";
 import { REPO_URL } from "@/consts/ide-constants";
 import { IDE_DROPDOWN_CONTENT_CLASS } from "@/lib/ide-dropdown";
 import { cn } from "@/lib/utils";
@@ -35,7 +37,7 @@ export function SettingsMenu() {
         aria-label={t("settings")}
         className="flex size-10 cursor-pointer items-center justify-center text-sidebar-foreground/60 transition-colors hover:text-sidebar-primary"
       >
-        <Settings className="size-5" />
+        <SettingsIcon size={20} />
       </DropdownMenuTrigger>
       <DropdownMenuContent
         align="start"
@@ -58,7 +60,7 @@ export function SettingsMenu() {
         <DropdownMenuSeparator />
         <DropdownMenuGroup>
           <DropdownMenuLabel className="flex items-center gap-2">
-            <Languages className="size-3.5" />
+            <LanguagesIcon size={14} />
             {tLocale("selectLanguage")}
           </DropdownMenuLabel>
           <DropdownMenuRadioGroup

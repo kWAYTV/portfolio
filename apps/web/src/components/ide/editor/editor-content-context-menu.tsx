@@ -1,6 +1,6 @@
 "use client";
 
-import { Code, Copy, Eye } from "lucide-react";
+import { Code } from "lucide-react";
 import { useTranslations } from "next-intl";
 import type { ViewMode } from "@/components/ide/shared/view-mode";
 import {
@@ -10,6 +10,8 @@ import {
   ContextMenuSeparator,
   ContextMenuTrigger,
 } from "@/components/ui/context-menu";
+import { CopyIcon } from "@/components/ui/copy";
+import { EyeIcon } from "@/components/ui/eye";
 
 interface EditorContentContextMenuProps {
   children: React.ReactNode;
@@ -33,7 +35,7 @@ export function EditorContentContextMenu({
         {onCopy && (
           <>
             <ContextMenuItem onClick={onCopy}>
-              <Copy className="mr-1.5 size-3.5" />
+              <CopyIcon className="mr-1.5" size={14} />
               {t("copyContent")}
             </ContextMenuItem>
             <ContextMenuSeparator />
@@ -43,7 +45,7 @@ export function EditorContentContextMenu({
           className={viewMode === "preview" ? "bg-muted/50" : undefined}
           onClick={() => onViewModeChange("preview")}
         >
-          <Eye className="size-3.5" />
+          <EyeIcon size={14} />
           {t("preview")}
         </ContextMenuItem>
         <ContextMenuItem

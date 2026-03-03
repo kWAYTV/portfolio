@@ -1,7 +1,8 @@
 "use client";
 
-import { ChevronDown, ChevronRight } from "lucide-react";
 import { useState } from "react";
+import { ChevronDownIcon } from "@/components/ui/chevron-down";
+import { ChevronRightIcon } from "@/components/ui/chevron-right";
 
 interface CollapsibleSectionProps {
   children: React.ReactNode;
@@ -15,7 +16,7 @@ export function CollapsibleSection({
   title,
 }: CollapsibleSectionProps) {
   const [open, setOpen] = useState(defaultOpen);
-  const Chevron = open ? ChevronDown : ChevronRight;
+  const Chevron = open ? ChevronDownIcon : ChevronRightIcon;
 
   return (
     <div className="flex flex-col">
@@ -26,7 +27,8 @@ export function CollapsibleSection({
       >
         <Chevron
           aria-hidden
-          className="size-3.5 shrink-0 text-muted-foreground/70"
+          className="shrink-0 text-muted-foreground/70"
+          size={14}
         />
         {title}
       </button>

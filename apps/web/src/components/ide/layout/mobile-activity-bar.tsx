@@ -1,7 +1,9 @@
 "use client";
 
-import { GitBranch, PanelLeft, Terminal } from "lucide-react";
+import { PanelLeft } from "lucide-react";
 import { useTranslations } from "next-intl";
+import { GitBranchIcon } from "@/components/ui/git-branch";
+import { TerminalIcon } from "@/components/ui/terminal";
 import { cn } from "@/lib/utils";
 import { useIdeStore } from "@/stores/ide-store";
 
@@ -28,7 +30,7 @@ export function MobileActivityBar() {
         onClick={() => setMobileSidebarView("sourceControl")}
         type="button"
       >
-        <GitBranch className="size-5 shrink-0" />
+        <GitBranchIcon className="shrink-0" size={20} />
         <span className="text-xs">{t("sourceShort")}</span>
       </button>
       <button
@@ -42,7 +44,7 @@ export function MobileActivityBar() {
         onClick={toggleTerminal}
         type="button"
       >
-        <Terminal className="size-5 shrink-0" />
+        <TerminalIcon className="shrink-0" size={20} />
         <span className="text-xs">{t("terminal")}</span>
       </button>
     </div>

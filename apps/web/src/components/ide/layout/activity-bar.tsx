@@ -1,9 +1,11 @@
 "use client";
 
-import { GitBranch, PanelLeft, Terminal } from "lucide-react";
+import { PanelLeft } from "lucide-react";
 import { useTranslations } from "next-intl";
 import { ActivityBarButton } from "@/components/ide/layout/activity-bar-button";
 import { SettingsMenu } from "@/components/ide/layout/settings-menu";
+import { GitBranchIcon } from "@/components/ui/git-branch";
+import { TerminalIcon } from "@/components/ui/terminal";
 import { useIdeStore } from "@/stores/ide-store";
 
 export function ActivityBar() {
@@ -31,7 +33,7 @@ export function ActivityBar() {
       <ActivityBarButton
         active={sidebarOpen && sidebarView === "sourceControl"}
         ariaLabel={t("sourceControl")}
-        icon={GitBranch}
+        icon={GitBranchIcon}
         onClick={() => {
           setSidebarView("sourceControl");
           if (!sidebarOpen) {
@@ -42,7 +44,7 @@ export function ActivityBar() {
       <ActivityBarButton
         active={terminalOpen}
         ariaLabel={t("terminal")}
-        icon={Terminal}
+        icon={TerminalIcon}
         onClick={toggleTerminal}
       />
       <div className="mt-auto">

@@ -1,14 +1,17 @@
 "use client";
 
-import { FileText, Github, Linkedin, Twitter } from "lucide-react";
+import { FileTextIcon } from "@/components/ui/file-text";
+import { GithubIcon } from "@/components/ui/github";
+import { LinkedinIcon } from "@/components/ui/linkedin";
+import { TwitterIcon } from "@/components/ui/twitter";
 import { socialLinks } from "@/consts/social-links";
 import { cn } from "@/lib/utils";
 
 const icons = {
-  github: Github,
-  twitter: Twitter,
-  linkedin: Linkedin,
-  fileText: FileText,
+  github: GithubIcon,
+  twitter: TwitterIcon,
+  linkedin: LinkedinIcon,
+  fileText: FileTextIcon,
 } as const;
 
 export function SocialNav() {
@@ -27,7 +30,10 @@ export function SocialNav() {
             rel="noopener noreferrer"
             target="_blank"
           >
-            <Icon className="size-3.5 transition-transform duration-200 group-hover:scale-110 sm:size-4" />
+            <Icon
+              className="transition-transform duration-200 group-hover:scale-110"
+              size={16}
+            />
             <span className="text-xs sm:text-sm">{link.text}</span>
           </a>
         );

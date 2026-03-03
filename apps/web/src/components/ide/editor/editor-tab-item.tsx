@@ -2,9 +2,9 @@
 
 import { useSortable } from "@dnd-kit/sortable";
 import { CSS } from "@dnd-kit/utilities";
-import { X } from "lucide-react";
 import { useTranslations } from "next-intl";
 import { FileIcon } from "@/components/ide/sidebar/file-icon";
+import { XIcon } from "@/components/ui/x";
 import { cn } from "@/lib/utils";
 import { LocaleLink } from "@/modules/i18n/routing";
 
@@ -93,7 +93,7 @@ export function EditorTabItem({
         }}
         type="button"
       >
-        <X className="size-3.5" />
+        <XIcon size={14} />
       </button>
     </div>
   );
@@ -152,7 +152,7 @@ export function EditorTabItemStatic({
         }}
         type="button"
       >
-        <X className="size-3.5" />
+        <XIcon size={14} />
       </button>
     </div>
   );

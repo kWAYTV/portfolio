@@ -1,9 +1,9 @@
 "use client";
 
-import { Search } from "lucide-react";
 import { useTranslations } from "next-intl";
 import { memo } from "react";
 import { Input } from "@/components/ui/input";
+import { SearchIcon } from "@/components/ui/search";
 import {
   Select,
   SelectContent,
@@ -32,7 +32,10 @@ export const ProjectFilters = memo(function ProjectFilters({
   return (
     <div className="flex flex-col gap-2 sm:flex-row sm:items-center">
       <div className="relative min-w-0 flex-1">
-        <Search className="absolute top-1/2 left-2.5 size-3 -translate-y-1/2 text-muted-foreground/60" />
+        <SearchIcon
+          className="absolute top-1/2 left-2.5 -translate-y-1/2 text-muted-foreground/60"
+          size={12}
+        />
         <Input
           className="h-8 w-full border-transparent bg-muted/25 pl-8 text-xs transition-colors placeholder:text-muted-foreground/50 focus:border-border focus:bg-transparent sm:text-sm"
           onChange={(e: React.ChangeEvent<HTMLInputElement>) =>

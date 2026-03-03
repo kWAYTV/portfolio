@@ -1,7 +1,8 @@
 "use client";
 
-import { Minus, Square, X } from "lucide-react";
+import { Minus, Square } from "lucide-react";
 import { useTranslations } from "next-intl";
+import { XIcon } from "@/components/ui/x";
 import { cn } from "@/lib/utils";
 
 interface TitleBarProps {
@@ -39,7 +40,10 @@ export function TitleBar({
             }}
             type="button"
           >
-            <X className="size-[8px] stroke-[2.5] text-[#4d0000] opacity-0 transition-opacity group-hover/dots:opacity-100" />
+            <XIcon
+              className="text-[#4d0000] opacity-0 transition-opacity group-hover/dots:opacity-100"
+              size={8}
+            />
           </button>
           <button
             aria-label={tIde("minimize")}
