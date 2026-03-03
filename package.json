@@ -40,5 +40,10 @@
       "pnpm dlx ultracite fix"
     ]
   },
-  "packageManager": "pnpm@10.30.3"
+  "packageManager": "pnpm@10.30.3",
+  "pnpm": {
+    "overrides": {
+      "zod": "^4.3.6"
+    }
+  }
 }
