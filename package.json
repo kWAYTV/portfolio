@@ -27,11 +27,11 @@
   "devDependencies": {
     "@biomejs/biome": "2.4.0",
     "@repo/config": "workspace:*",
-    "@types/node": "^20.19.35",
+    "@types/node": "^20.19.37",
     "bumpp": "^10.4.1",
     "husky": "latest",
     "lint-staged": "latest",
-    "turbo": "^2.8.12",
+    "turbo": "^2.8.14",
     "typescript": "catalog:",
     "ultracite": "7.2.4"
   },
@@ -40,5 +40,5 @@
       "pnpm dlx ultracite fix"
     ]
   },
-  "packageManager": "pnpm@10.30.3"
+  "packageManager": "pnpm@10.31.0"
 }
