@@ -1,37 +1,73 @@
 "use client";
 
-import { ContextMenu as ContextMenuPrimitive } from "radix-ui";
-import type * as React from "react";
+import React from "react";
+import { ContextMenu as ContextMenuPrimitive } from "@base-ui/react/context-menu";
 import { cn } from "@/lib/utils";
 
 function ContextMenu({
   ...props
-}: React.ComponentProps<typeof ContextMenuPrimitive.Root>) {
+}: ContextMenuPrimitive.Root.Props) {
   return <ContextMenuPrimitive.Root data-slot="context-menu" {...props} />;
 }
 
 function ContextMenuTrigger({
+  asChild,
+  children,
   ...props
-}: React.ComponentProps<typeof ContextMenuPrimitive.Trigger>) {
+}: ContextMenuPrimitive.Trigger.Props & {
+  asChild?: boolean;
+}) {
+  if (asChild && React.isValidElement(children)) {
+    return (
+      <ContextMenuPrimitive.Trigger
+        data-slot="context-menu-trigger"
+        render={(triggerProps) =>
+          React.cloneElement(
+            children as React.ReactElement<object>,
+            triggerProps as Record<string, unknown>
+          )
+        }
+        {...props}
+      />
+    );
+  }
   return (
-    <ContextMenuPrimitive.Trigger data-slot="context-menu-trigger" {...props} />
+    <ContextMenuPrimitive.Trigger data-slot="context-menu-trigger" {...props}>
+      {children}
+    </ContextMenuPrimitive.Trigger>
   );
 }
 
 function ContextMenuContent({
   className,
+  align = "start",
+  alignOffset = 0,
+  side = "bottom",
+  sideOffset = 0,
   ...props
-}: React.ComponentProps<typeof ContextMenuPrimitive.Content>) {
+}: ContextMenuPrimitive.Popup.Props &
+  Pick<
+    ContextMenuPrimitive.Positioner.Props,
+    "align" | "alignOffset" | "side" | "sideOffset"
+  >) {
   return (
     <ContextMenuPrimitive.Portal>
-      <ContextMenuPrimitive.Content
-        className={cn(
-          "data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0 data-[state=closed]:zoom-out-95 data-[state=open]:zoom-in-95 data-[side=bottom]:slide-in-from-top-2 data-[side=left]:slide-in-from-right-2 data-[side=right]:slide-in-from-left-2 data-[side=top]:slide-in-from-bottom-2 z-50 min-w-28 origin-(--radix-context-menu-content-transform-origin) overflow-hidden rounded-sm border bg-popover p-0.5 text-popover-foreground shadow-md data-[state=closed]:animate-out data-[state=open]:animate-in",
-          className
-        )}
-        data-slot="context-menu-content"
-        {...props}
-      />
+      <ContextMenuPrimitive.Positioner
+        align={align}
+        alignOffset={alignOffset}
+        className="isolate z-50 outline-none"
+        side={side}
+        sideOffset={sideOffset}
+      >
+        <ContextMenuPrimitive.Popup
+          className={cn(
+            "data-closed:fade-out-0 data-open:fade-in-0 data-closed:zoom-out-95 data-open:zoom-in-95 data-[side=bottom]:slide-in-from-top-2 data-[side=left]:slide-in-from-right-2 data-[side=right]:slide-in-from-left-2 data-[side=top]:slide-in-from-bottom-2 z-50 min-w-28 origin-(--transform-origin) overflow-hidden rounded-sm border bg-popover p-0.5 text-popover-foreground shadow-md data-closed:animate-out data-open:animate-in",
+            className
+          )}
+          data-slot="context-menu-content"
+          {...props}
+        />
+      </ContextMenuPrimitive.Positioner>
     </ContextMenuPrimitive.Portal>
   );
 }
@@ -41,7 +77,7 @@ function ContextMenuItem({
   inset,
   variant = "default",
   ...props
-}: React.ComponentProps<typeof ContextMenuPrimitive.Item> & {
+}: ContextMenuPrimitive.Item.Props & {
   inset?: boolean;
   variant?: "default" | "destructive";
 }) {
