@@ -31,7 +31,7 @@
     "bumpp": "^10.4.1",
     "husky": "latest",
     "lint-staged": "latest",
-    "turbo": "^2.8.14",
+    "turbo": "^2.8.15",
     "typescript": "catalog:",
     "ultracite": "7.2.4"
   },
@@ -40,5 +40,5 @@
       "pnpm dlx ultracite fix"
     ]
   },
-  "packageManager": "pnpm@10.31.0"
+  "packageManager": "pnpm@10.32.0"
 }
