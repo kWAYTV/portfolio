@@ -14,6 +14,7 @@ import {
 import { useTranslations } from "next-intl";
 import { useCallback, useRef, useState } from "react";
 import useSWR from "swr";
+import { getCommitsAction, revalidateCommitsAction } from "@/actions/github";
 import { CollapsibleSection } from "@/components/ide/sidebar/collapsible-section";
 import { CommitHistoryItem } from "@/components/ide/sidebar/commit-history-item";
 import { SourceControlCommitHistorySkeleton } from "@/components/ide/sidebar/source-control-skeleton";
@@ -27,10 +28,6 @@ import {
 } from "@/components/ui/dropdown-menu";
 import type { Commit } from "@/consts/ide-constants";
 import { REPO_URL } from "@/consts/ide-constants";
-import {
-  getCommitsAction,
-  revalidateCommitsAction,
-} from "@/lib/actions/github";
 import { IDE_DROPDOWN_CONTENT_CLASS } from "@/lib/ide-dropdown";
 import { cn } from "@/lib/utils";
 
