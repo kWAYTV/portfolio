@@ -21,7 +21,7 @@ import {
 } from "@/components/ide/editor/editor-tab-item";
 import { EditorTabsEmpty } from "@/components/ide/editor/editor-tabs-empty";
 import { ContextMenu, ContextMenuTrigger } from "@/components/ui/context-menu";
-import { matchNavItem } from "@/lib/ide/breadcrumb";
+import { matchNavItem } from "@/lib/breadcrumb";
 
 interface EditorTabsProps {
   onCloseAll: () => void;

@@ -3,7 +3,7 @@
 import { ChevronRight, Code, Eye } from "lucide-react";
 import { useTranslations } from "next-intl";
 import { navItems } from "@/components/ide/config";
-import { matchNavItem } from "@/lib/ide/breadcrumb";
+import { matchNavItem } from "@/lib/breadcrumb";
 import { cn } from "@/lib/utils";
 import { useIdeStore } from "@/stores/ide-store";
 

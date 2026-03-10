@@ -8,7 +8,7 @@ import { navItems } from "@/components/ide/config";
 import { LocaleSwitcher } from "@/components/internationalization/locale-switcher";
 import { REPO_URL } from "@/consts/ide-constants";
 import { useThemeTransition } from "@/hooks/use-theme-transition";
-import { matchNavItem } from "@/lib/ide/breadcrumb";
+import { matchNavItem } from "@/lib/breadcrumb";
 import { cn } from "@/lib/utils";
 import { useIdeStore } from "@/stores/ide-store";
 

@@ -5,7 +5,7 @@ import { navItems } from "@/components/ide/config";
 import { Breadcrumbs } from "@/components/ide/editor/breadcrumbs";
 import { EditorContentContextMenu } from "@/components/ide/editor/editor-content-context-menu";
 import { EditorTabs } from "@/components/ide/editor/editor-tabs";
-import { copyContentToClipboard } from "@/lib/ide/breadcrumb";
+import { copyContentToClipboard } from "@/lib/breadcrumb";
 import { cn } from "@/lib/utils";
 import { useEditorGroupsStore } from "@/stores/editor-groups-store";
 import { useIdeStore } from "@/stores/ide-store";

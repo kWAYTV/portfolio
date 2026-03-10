@@ -3,7 +3,7 @@
 import { create } from "zustand";
 import { navItems } from "@/components/ide/config";
 import type { EditorGroup } from "@/components/ide/shared/split-editor-types";
-import { matchNavItem } from "@/lib/ide/breadcrumb";
+import { matchNavItem } from "@/lib/breadcrumb";
 
 const initialTabs = navItems.map((item) => item.href);
 
