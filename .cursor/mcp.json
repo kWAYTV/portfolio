@@ -11,6 +11,10 @@
     "next-devtools": {
       "command": "npx",
       "args": ["-y", "next-devtools-mcp@latest"]
+    },
+    "varlock-docs-mcp": {
+      "command": "npx",
+      "args": ["mcp-remote", "https://docs.mcp.varlock.dev/mcp"]
     }
   }
 }
