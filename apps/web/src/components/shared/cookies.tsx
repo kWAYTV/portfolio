@@ -4,6 +4,7 @@ import {
   ANALYTICS_CONSENT_EVENT,
   ANALYTICS_CONSENT_KEY,
   ANALYTICS_CONSENT_RESET,
+  invalidateConsentCache,
 } from "@repo/analytics";
 import { Cookie } from "lucide-react";
 import { useTranslations } from "next-intl";
@@ -26,6 +27,7 @@ export function CookieBanner() {
 
   const setConsent = useCallback((value: "accepted" | "declined") => {
     localStorage.setItem(ANALYTICS_CONSENT_KEY, value);
+    invalidateConsentCache();
     setVisible(false);
     window.dispatchEvent(
       new CustomEvent(ANALYTICS_CONSENT_EVENT, { detail: value })

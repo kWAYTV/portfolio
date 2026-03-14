@@ -3,6 +3,7 @@
 import {
   ANALYTICS_CONSENT_KEY,
   ANALYTICS_CONSENT_RESET,
+  invalidateConsentCache,
 } from "@repo/analytics";
 import { useTranslations } from "next-intl";
 
@@ -14,6 +15,7 @@ export function CookiePreferencesButton() {
       return;
     }
     localStorage.removeItem(ANALYTICS_CONSENT_KEY);
+    invalidateConsentCache();
     window.dispatchEvent(new CustomEvent(ANALYTICS_CONSENT_RESET));
   };
 
