@@ -1,5 +1,6 @@
 "use client";
 
+import { analytics } from "@repo/analytics";
 import { config, type Locale, localeToFlagEmoji } from "@repo/i18n/config";
 import { Languages } from "lucide-react";
 import { useLocale, useTranslations } from "next-intl";
@@ -28,6 +29,7 @@ export function LocaleSwitcher() {
   const [open, setOpen] = useState(false);
 
   const handleLocaleChange = (value: Locale) => {
+    analytics.localeSwitch(locale, value);
     setOpen(false);
     updateLocale(value, pathname);
   };

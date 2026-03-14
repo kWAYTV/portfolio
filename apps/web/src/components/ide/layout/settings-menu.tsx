@@ -1,5 +1,6 @@
 "use client";
 
+import { analytics } from "@repo/analytics";
 import { config, type Locale, localeToFlagEmoji } from "@repo/i18n/config";
 import { Command, ExternalLink, Languages, Settings } from "lucide-react";
 import { useLocale, useTranslations } from "next-intl";
@@ -62,7 +63,11 @@ export function SettingsMenu() {
             {tLocale("selectLanguage")}
           </DropdownMenuLabel>
           <DropdownMenuRadioGroup
-            onValueChange={(value) => updateLocale(value as Locale)}
+            onValueChange={(value) => {
+              const loc = value as Locale;
+              analytics.localeSwitch(locale, loc);
+              updateLocale(loc);
+            }}
             value={locale}
           >
             {locales.map((loc) => (
@@ -79,6 +84,7 @@ export function SettingsMenu() {
         <a
           className="flex cursor-pointer items-center gap-1.5 px-2 py-1 text-xs outline-hidden hover:bg-sidebar-accent hover:text-sidebar-accent-foreground focus:bg-sidebar-accent focus:text-sidebar-accent-foreground [&_svg]:size-3.5 [&_svg]:shrink-0"
           href={REPO_URL}
+          onClick={() => analytics.viewOnGitHub("settings-menu")}
           rel="noopener noreferrer"
           target="_blank"
         >

@@ -1,5 +1,6 @@
 "use client";
 
+import { analytics } from "@repo/analytics";
 import { useTranslations } from "next-intl";
 import {
   ContextMenuContent,
@@ -30,7 +31,12 @@ export function EditorTabContextMenu({
 
   return (
     <ContextMenuContent className="w-36 rounded-sm border border-border bg-popover p-0.5">
-      <ContextMenuItem onClick={() => onCloseTab(href)}>
+      <ContextMenuItem
+        onClick={() => {
+          analytics.tabClose(href);
+          onCloseTab(href);
+        }}
+      >
         {t("close")}
       </ContextMenuItem>
       {orderedItemsLength > 1 && (

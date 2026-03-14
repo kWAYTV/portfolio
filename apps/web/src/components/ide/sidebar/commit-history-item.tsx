@@ -23,7 +23,7 @@ export function CommitHistoryItem({ commit }: CommitHistoryItemProps) {
 
   return (
     <HoverCard closeDelay={150} openDelay={200}>
-      <HoverCardTrigger asChild>
+      <HoverCardTrigger asChild nativeButton={false}>
         <a
           className={cn(
             "block rounded px-2 py-1.5 text-left transition-colors",

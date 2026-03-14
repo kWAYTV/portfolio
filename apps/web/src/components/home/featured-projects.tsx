@@ -1,5 +1,6 @@
 "use client";
 
+import { analytics } from "@repo/analytics";
 import type { GitHubRepo } from "@repo/github";
 import { ExternalLink } from "lucide-react";
 import { useTranslations } from "next-intl";
@@ -52,11 +53,12 @@ export function FeaturedProjects({ repos }: FeaturedProjectsProps) {
           canHover ? (
             <li key={repo.id}>
               <HoverCard closeDelay={150} openDelay={200}>
-                <HoverCardTrigger asChild>
+                <HoverCardTrigger asChild nativeButton={false}>
                   <a
                     aria-label={`Open ${repo.name} on GitHub`}
                     className={cardClassName}
                     href={repo.html_url}
+                    onClick={() => analytics.projectClick(repo.name)}
                     rel="noopener noreferrer"
                     target="_blank"
                   >
@@ -85,6 +87,7 @@ export function FeaturedProjects({ repos }: FeaturedProjectsProps) {
                         cardClassName,
                         "w-full cursor-pointer text-left"
                       )}
+                      onClick={() => analytics.projectClick(repo.name)}
                       type="button"
                     >
                       <FeaturedCardSummary repo={repo} />

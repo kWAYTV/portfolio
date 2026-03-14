@@ -1,5 +1,6 @@
 "use client";
 
+import { analytics } from "@repo/analytics";
 import { GitBranch, PanelLeft, Terminal } from "lucide-react";
 import { useTranslations } from "next-intl";
 import { ActivityBarButton } from "@/components/ide/layout/activity-bar-button";
@@ -24,6 +25,7 @@ export function ActivityBar() {
         onClick={() => {
           setSidebarView("explorer");
           if (!sidebarOpen) {
+            analytics.sidebarToggle(true);
             toggleSidebar();
           }
         }}
@@ -35,6 +37,7 @@ export function ActivityBar() {
         onClick={() => {
           setSidebarView("sourceControl");
           if (!sidebarOpen) {
+            analytics.sidebarToggle(true);
             toggleSidebar();
           }
         }}
@@ -43,7 +46,10 @@ export function ActivityBar() {
         active={terminalOpen}
         ariaLabel={t("terminal")}
         icon={Terminal}
-        onClick={toggleTerminal}
+        onClick={() => {
+          analytics.terminalToggle(!terminalOpen);
+          toggleTerminal();
+        }}
       />
       <div className="mt-auto">
         <SettingsMenu />

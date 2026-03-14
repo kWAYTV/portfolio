@@ -1,5 +1,6 @@
 "use client";
 
+import { analytics } from "@repo/analytics";
 import type { GitHubRepo } from "@repo/github";
 import { GitFork, Star } from "lucide-react";
 import { memo } from "react";
@@ -34,10 +35,11 @@ function ProjectCardInner({ repo }: ProjectCardProps) {
   if (canHover) {
     return (
       <HoverCard closeDelay={150} openDelay={200}>
-        <HoverCardTrigger asChild>
+        <HoverCardTrigger asChild nativeButton={false}>
           <a
             className={cn(cardClassName, "w-full cursor-pointer text-left")}
             href={repo.html_url}
+            onClick={() => analytics.projectClick(repo.name)}
             rel="noopener noreferrer"
             target="_blank"
           >
@@ -64,6 +66,7 @@ function ProjectCardInner({ repo }: ProjectCardProps) {
             {...props}
             aria-label={`View ${repo.name} details`}
             className={cn(cardClassName, "w-full cursor-pointer text-left")}
+            onClick={() => analytics.projectClick(repo.name)}
             type="button"
           >
             <ProjectCardSummary languageColor={languageColor} repo={repo} />

@@ -1,5 +1,6 @@
 "use client";
 
+import { analytics } from "@repo/analytics";
 import { Code, Copy, Eye } from "lucide-react";
 import { useTranslations } from "next-intl";
 import type { ViewMode } from "@/components/ide/shared/view-mode";
@@ -32,7 +33,12 @@ export function EditorContentContextMenu({
       <ContextMenuContent className="w-36 rounded-sm border border-border bg-popover p-0.5">
         {onCopy && (
           <>
-            <ContextMenuItem onClick={onCopy}>
+            <ContextMenuItem
+              onClick={() => {
+                analytics.copyContent();
+                onCopy?.();
+              }}
+            >
               <Copy className="mr-1.5 size-3.5" />
               {t("copyContent")}
             </ContextMenuItem>
@@ -41,14 +47,20 @@ export function EditorContentContextMenu({
         )}
         <ContextMenuItem
           className={viewMode === "preview" ? "bg-muted/50" : undefined}
-          onClick={() => onViewModeChange("preview")}
+          onClick={() => {
+            analytics.viewModeChange("preview");
+            onViewModeChange("preview");
+          }}
         >
           <Eye className="size-3.5" />
           {t("preview")}
         </ContextMenuItem>
         <ContextMenuItem
           className={viewMode === "code" ? "bg-muted/50" : undefined}
-          onClick={() => onViewModeChange("code")}
+          onClick={() => {
+            analytics.viewModeChange("code");
+            onViewModeChange("code");
+          }}
         >
           <Code className="size-3.5" />
           {t("source")}

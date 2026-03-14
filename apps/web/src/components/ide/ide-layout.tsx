@@ -1,5 +1,6 @@
 "use client";
 
+import { analytics } from "@repo/analytics";
 import { useEffect } from "react";
 import { CommandPalette } from "@/components/ide/command-palette";
 import { ActivityBar } from "@/components/ide/layout/activity-bar";
@@ -56,6 +57,7 @@ export function IdeLayout({ children }: IdeLayoutProps) {
     if (isFullscreen) {
       exitFullscreen();
     } else if (sidebarOpen) {
+      analytics.sidebarToggle(false);
       toggleSidebar();
     }
   };
