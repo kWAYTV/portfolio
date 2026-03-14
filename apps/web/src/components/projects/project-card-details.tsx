@@ -1,5 +1,6 @@
 "use client";
 
+import { analytics } from "@repo/analytics";
 import type { GitHubRepo } from "@repo/github";
 import { ExternalLink, GitFork, Star } from "lucide-react";
 import { useTranslations } from "next-intl";
@@ -28,6 +29,10 @@ function ProjectCardDetailsInner({
           aria-label={t("openRepoOnGitHub", { name: repo.name })}
           className="shrink-0 rounded p-1 text-muted-foreground/60 transition-colors hover:bg-muted/50 hover:text-foreground"
           href={repo.html_url}
+          onClick={() => {
+            analytics.projectClick(repo.name);
+            analytics.viewOnGitHub("project-card-details");
+          }}
           rel="noopener noreferrer"
           target="_blank"
         >
@@ -77,6 +82,10 @@ function ProjectCardDetailsInner({
         <a
           className="flex items-center justify-center gap-2 border-border border-t bg-muted/20 px-3 py-2.5 text-[11px] text-muted-foreground transition-colors hover:bg-muted/40 hover:text-foreground"
           href={repo.html_url}
+          onClick={() => {
+            analytics.projectClick(repo.name);
+            analytics.viewOnGitHub("project-card-details-popover");
+          }}
           rel="noopener noreferrer"
           target="_blank"
         >

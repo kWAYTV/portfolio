@@ -8,6 +8,7 @@ import type { PropsWithChildren } from "react";
 
 import "../../index.css";
 import { env } from "@repo/env/web";
+import { UmamiScript } from "@/components/analytics/umami-script";
 import { IdeLayout } from "@/components/ide/ide-layout";
 import Providers from "@/components/providers";
 import { routing } from "@/modules/i18n/routing";
@@ -52,6 +53,10 @@ export default async function LocaleLayout({
       <body
         className={`${geistSans.variable} ${geistMono.variable} flex min-h-screen flex-col antialiased`}
       >
+        <UmamiScript
+          scriptUrl={env.NEXT_PUBLIC_UMAMI_URL}
+          websiteId={env.NEXT_PUBLIC_UMAMI_WEBSITE_ID}
+        />
         <RootProvider search={{ enabled: false }}>
           <Providers>
             <NextIntlClientProvider locale={locale} messages={messages}>

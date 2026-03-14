@@ -1,5 +1,6 @@
 "use client";
 
+import { analytics } from "@repo/analytics";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 import { useTranslations } from "next-intl";
 import { LocaleLink } from "@/modules/i18n/routing";
@@ -35,6 +36,9 @@ export function Pagination({
         <LocaleLink
           className="inline-flex h-7 items-center gap-1 px-2 text-muted-foreground/70 text-xs transition-colors hover:text-foreground"
           href={prevHref}
+          onClick={() =>
+            analytics.paginationClick(currentPage - 1, basePath.slice(1))
+          }
         >
           <ChevronLeft className="size-3" />
           {t("prev")}
@@ -55,6 +59,9 @@ export function Pagination({
         <LocaleLink
           className="inline-flex h-7 items-center gap-1 px-2 text-muted-foreground/70 text-xs transition-colors hover:text-foreground"
           href={nextHref}
+          onClick={() =>
+            analytics.paginationClick(currentPage + 1, basePath.slice(1))
+          }
         >
           {t("next")}
           <ChevronRight className="size-3" />

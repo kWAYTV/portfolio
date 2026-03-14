@@ -1,5 +1,6 @@
 "use client";
 
+import { analytics } from "@repo/analytics";
 import { FileText, Github, Linkedin, Twitter } from "lucide-react";
 import { socialLinks } from "@/consts/social-links";
 import { cn } from "@/lib/utils";
@@ -24,6 +25,12 @@ export function SocialNav() {
             )}
             href={link.href}
             key={link.text}
+            onClick={() => {
+              analytics.socialClick(link.text);
+              if (link.text === "resume") {
+                analytics.resumeDownload();
+              }
+            }}
             rel="noopener noreferrer"
             target="_blank"
           >

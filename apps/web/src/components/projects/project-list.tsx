@@ -1,5 +1,6 @@
 "use client";
 
+import { analytics } from "@repo/analytics";
 import type { GitHubRepo } from "@repo/github";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 import { useTranslations } from "next-intl";
@@ -81,13 +82,24 @@ export const ProjectList = memo(function ProjectList({
 
   const handleSearchChange = useCallback(
     (value: string) => {
+      const query = (value || "").toLowerCase().trim();
+      const nextCount = query
+        ? repos.filter(
+            (r) =>
+              r.name.toLowerCase().includes(query) ||
+              r.description?.toLowerCase().includes(query) ||
+              r.language?.toLowerCase().includes(query)
+          ).length
+        : repos.length;
+      analytics.searchProjects(value || "", nextCount);
       setParams({ q: value || null, page: 1 });
     },
-    [setParams]
+    [repos, setParams]
   );
 
   const handleSortChange = useCallback(
     (value: SortOption) => {
+      analytics.sortProjects(value);
       setParams({ sort: value, page: 1 });
     },
     [setParams]
@@ -95,6 +107,7 @@ export const ProjectList = memo(function ProjectList({
 
   const handlePageChange = useCallback(
     (newPage: number) => {
+      analytics.paginationClick(newPage, "projects");
       setParams({ page: newPage });
     },
     [setParams]

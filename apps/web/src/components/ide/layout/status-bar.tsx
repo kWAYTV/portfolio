@@ -1,5 +1,6 @@
 "use client";
 
+import { analytics } from "@repo/analytics";
 import { GitBranch, Moon, Play, Sun, Terminal } from "lucide-react";
 import { useTranslations } from "next-intl";
 import { useTheme } from "next-themes";
@@ -34,6 +35,7 @@ export const StatusBar = memo(function StatusBar({
 
   const handleThemeToggle = useCallback(async () => {
     const next = resolvedTheme === "dark" ? "light" : "dark";
+    analytics.themeToggle(next);
     await setThemeWithTransition(next);
   }, [resolvedTheme, setThemeWithTransition]);
 
@@ -93,6 +95,7 @@ export const StatusBar = memo(function StatusBar({
             aria-label={t("openRepo")}
             className="flex cursor-pointer items-center gap-1 transition-colors hover:text-foreground"
             href={REPO_URL}
+            onClick={() => analytics.viewOnGitHub("status-bar")}
             rel="noopener noreferrer"
             target="_blank"
           >
@@ -106,6 +109,7 @@ export const StatusBar = memo(function StatusBar({
           aria-label={t("openPreview")}
           className="flex cursor-pointer items-center gap-1 transition-colors hover:text-foreground"
           onClick={() => {
+            analytics.previewWindowOpen();
             window
               .open(
                 window.location.href,
@@ -125,7 +129,10 @@ export const StatusBar = memo(function StatusBar({
             "flex cursor-pointer items-center gap-1 transition-colors hover:text-foreground",
             terminalOpen && "text-foreground"
           )}
-          onClick={toggleTerminal}
+          onClick={() => {
+            analytics.terminalToggle(!terminalOpen);
+            toggleTerminal();
+          }}
           type="button"
         >
           <Terminal className="size-3.5 shrink-0" />

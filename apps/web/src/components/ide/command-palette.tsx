@@ -1,5 +1,6 @@
 "use client";
 
+import { analytics } from "@repo/analytics";
 import { config, type Locale, localeToFlagEmoji } from "@repo/i18n/config";
 import {
   BookOpen,
@@ -56,6 +57,7 @@ export function CommandPalette() {
     const handler = (e: KeyboardEvent) => {
       if ((e.metaKey || e.ctrlKey) && e.key === "k") {
         e.preventDefault();
+        analytics.commandPaletteOpen();
         setOpen(true);
       }
     };
@@ -73,16 +75,18 @@ export function CommandPalette() {
 
   const handleThemeToggle = useCallback(async () => {
     const next = resolvedTheme === "dark" ? "light" : "dark";
+    analytics.themeToggle(next);
     await setThemeWithTransition(next);
     setOpen(false);
   }, [resolvedTheme, setThemeWithTransition, setOpen]);
 
   const handleSetLocale = useCallback(
     (loc: Locale) => {
+      analytics.localeSwitch(locale, loc);
       updateLocale(loc);
       setOpen(false);
     },
-    [setOpen]
+    [locale, setOpen]
   );
 
   const isDark = resolvedTheme === "dark";
@@ -152,6 +156,7 @@ export function CommandPalette() {
             <CommandGroup>
               <CommandItem
                 onSelect={() => {
+                  analytics.viewOnGitHub("command-palette");
                   setOpen(false);
                   window.open(REPO_URL, "_blank", "noopener,noreferrer");
                 }}

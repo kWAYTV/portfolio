@@ -21,6 +21,7 @@
     "@dnd-kit/utilities": "^3.2.2",
     "@lezer/highlight": "^1.2.3",
     "@octokit/rest": "^22.0.1",
+    "@repo/analytics": "workspace:*",
     "@repo/env": "workspace:*",
     "@repo/github": "workspace:*",
     "@repo/i18n": "workspace:*",

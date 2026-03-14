@@ -4,6 +4,7 @@ import { notFound } from "next/navigation";
 import { setRequestLocale } from "next-intl/server";
 import { BlogBackLink } from "@/components/blog/blog-back-link";
 import { BlogPostHeader } from "@/components/blog/blog-post-header";
+import { BlogPostViewTracker } from "@/components/blog/blog-post-view-tracker";
 import { CodeView } from "@/components/ide/editor/code-view";
 import { EditorContent } from "@/components/ide/editor/editor-content";
 import { PageContent } from "@/components/shared/page-content";
@@ -66,6 +67,7 @@ export default async function BlogPostPage({
     <EditorContent
       preview={
         <PageContent className="max-w-lg sm:max-w-xl">
+          <BlogPostViewTracker slug={slug} />
           <BlogBackLink />
           <BlogPostHeader
             author={data.author}

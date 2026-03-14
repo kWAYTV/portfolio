@@ -3,6 +3,7 @@ import { Pagination } from "@/components/shared/pagination";
 
 interface BlogPost {
   data: unknown;
+  slugs?: string[];
   url: string;
 }
 
@@ -40,6 +41,7 @@ export function BlogListContent({
               description={data.description}
               key={post.url}
               locale={locale}
+              slug={post.slugs?.[0]}
               title={data.title}
               url={post.url}
             />

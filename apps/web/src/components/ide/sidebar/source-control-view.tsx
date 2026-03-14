@@ -1,5 +1,6 @@
 "use client";
 
+import { analytics } from "@repo/analytics";
 import {
   Check,
   Download,
@@ -93,7 +94,10 @@ export function SourceControlView({
               <a
                 className="flex cursor-pointer items-center gap-1.5 px-2 py-1 text-xs outline-hidden hover:bg-sidebar-accent hover:text-sidebar-accent-foreground focus:bg-sidebar-accent focus:text-sidebar-accent-foreground [&_svg]:size-3.5 [&_svg]:shrink-0"
                 href={REPO_URL}
-                onClick={() => setMenuOpen(false)}
+                onClick={() => {
+                  analytics.viewOnGitHub("source-control-menu");
+                  setMenuOpen(false);
+                }}
                 rel="noopener noreferrer"
                 target="_blank"
               >
@@ -210,6 +214,7 @@ export function SourceControlView({
               "text-muted-foreground/70 hover:bg-sidebar-accent/50 hover:text-sidebar-foreground"
             )}
             href={REPO_URL}
+            onClick={() => analytics.viewOnGitHub("source-control-footer")}
             rel="noopener noreferrer"
             target="_blank"
           >
