@@ -19,12 +19,23 @@ declare global {
   }
 }
 
-/** Check if the user has accepted analytics cookies (client-only) */
+let consentCache: boolean | null = null;
+
+/** Invalidate cached consent (call when localStorage changes) */
+export function invalidateConsentCache(): void {
+  consentCache = null;
+}
+
+/** Check if the user has accepted analytics cookies (client-only, cached) */
 export function hasConsent(): boolean {
   if (typeof window === "undefined") {
     return false;
   }
-  return localStorage.getItem(ANALYTICS_CONSENT_KEY) === "accepted";
+  if (consentCache !== null) {
+    return consentCache;
+  }
+  consentCache = localStorage.getItem(ANALYTICS_CONSENT_KEY) === "accepted";
+  return consentCache;
 }
 
 /**
