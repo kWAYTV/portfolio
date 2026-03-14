@@ -11,6 +11,7 @@ import { env } from "@repo/env/web";
 import { UmamiScript } from "@/components/analytics/umami-script";
 import { IdeLayout } from "@/components/ide/ide-layout";
 import Providers from "@/components/providers";
+import { CookieBanner } from "@/components/shared/cookies";
 import { routing } from "@/modules/i18n/routing";
 import { getStaticParams } from "@/modules/i18n/static";
 
@@ -61,6 +62,7 @@ export default async function LocaleLayout({
           <Providers>
             <NextIntlClientProvider locale={locale} messages={messages}>
               <IdeLayout>{children}</IdeLayout>
+              <CookieBanner />
             </NextIntlClientProvider>
           </Providers>
         </RootProvider>

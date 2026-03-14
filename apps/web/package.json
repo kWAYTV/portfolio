@@ -20,6 +20,7 @@
     "@dnd-kit/sortable": "^10.0.0",
     "@dnd-kit/utilities": "^3.2.2",
     "@lezer/highlight": "^1.2.3",
+    "@mynaui/icons-react": "^0.4.2",
     "@octokit/rest": "^22.0.1",
     "@repo/analytics": "workspace:*",
     "@repo/env": "workspace:*",

@@ -89,6 +89,22 @@
     "retry": "Try again",
     "home": "Home"
   },
+  "privacy": {
+    "title": "Privacy & Cookies",
+    "subtitle": "How this site uses data",
+    "cookiesTitle": "Cookies",
+    "cookiesBody": "This website uses cookies to remember your preferences and to provide optional analytics. Essential functionality works without them.",
+    "analyticsTitle": "Analytics",
+    "analyticsBody": "If you accept cookies, we use Umami—a privacy-friendly, open-source analytics tool—to understand how visitors use this site. No personal data is collected; we only see anonymized page views and events.",
+    "choicesTitle": "Your choices",
+    "choicesBody": "You can accept or decline analytics cookies using the banner at the bottom of the page. Your choice is stored locally and persists across visits.",
+    "changePreferences": "Reset consent"
+  },
+  "cookies": {
+    "bannerText": "This website uses cookies.",
+    "accept": "Accept",
+    "decline": "Decline"
+  },
   "notFound": {
     "title": "404",
     "subtitle": "Page not found",

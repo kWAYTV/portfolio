@@ -1,5 +1,16 @@
 export type EventData = Record<string, string | number | boolean>;
 
+/** localStorage key for analytics consent */
+export const ANALYTICS_CONSENT_KEY = "analytics-consent";
+
+/** Custom event dispatched when consent changes */
+export const ANALYTICS_CONSENT_EVENT = "analytics-consent-changed";
+
+/** Custom event to reset consent and re-show the cookie banner */
+export const ANALYTICS_CONSENT_RESET = "analytics-consent-reset";
+
+export type ConsentStatus = "accepted" | "declined" | null;
+
 declare global {
   interface Window {
     umami?: {
@@ -8,13 +19,20 @@ declare global {
   }
 }
 
+/** Check if the user has accepted analytics cookies (client-only) */
+export function hasConsent(): boolean {
+  if (typeof window === "undefined") {
+    return false;
+  }
+  return localStorage.getItem(ANALYTICS_CONSENT_KEY) === "accepted";
+}
+
 /**
- * Track a custom event with Umami
- * @param event - Event name (e.g., 'signup-click', 'download')
- * @param data - Optional event data
+ * Track a custom event with Umami.
+ * No-ops if consent not granted or Umami not loaded.
  */
 export function trackEvent(event: string, data?: EventData): void {
-  if (typeof window === "undefined" || !window.umami) {
+  if (typeof window === "undefined" || !hasConsent() || !window.umami) {
     return;
   }
   window.umami.track(event, data);

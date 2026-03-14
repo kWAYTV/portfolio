@@ -35,7 +35,7 @@ function ProjectCardInner({ repo }: ProjectCardProps) {
   if (canHover) {
     return (
       <HoverCard closeDelay={150} openDelay={200}>
-        <HoverCardTrigger asChild>
+        <HoverCardTrigger asChild nativeButton={false}>
           <a
             className={cn(cardClassName, "w-full cursor-pointer text-left")}
             href={repo.html_url}

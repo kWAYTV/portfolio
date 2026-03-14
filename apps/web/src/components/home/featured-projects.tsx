@@ -53,7 +53,7 @@ export function FeaturedProjects({ repos }: FeaturedProjectsProps) {
           canHover ? (
             <li key={repo.id}>
               <HoverCard closeDelay={150} openDelay={200}>
-                <HoverCardTrigger asChild>
+                <HoverCardTrigger asChild nativeButton={false}>
                   <a
                     aria-label={`Open ${repo.name} on GitHub`}
                     className={cardClassName}
