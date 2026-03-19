@@ -13,7 +13,8 @@
       "packages/**",
       "!**/.next",
       "!**/components/ui",
-      "!**/.source"
+      "!**/.source",
+      "!**/.agents"
     ]
   }
 }
