@@ -1,4 +1,5 @@
 import { getTranslations, setRequestLocale } from "next-intl/server";
+import { NuqsAdapter } from "nuqs/adapters/next/app";
 import { Suspense } from "react";
 import { CodeView } from "@/components/ide/editor/code-view";
 import { EditorContent } from "@/components/ide/editor/editor-content";
@@ -38,9 +39,11 @@ export default async function ProjectsPage({
       preview={
         <PageContent>
           <ProjectsHeader />
-          <Suspense fallback={<ProjectListSkeleton />}>
-            <ProjectListLoader />
-          </Suspense>
+          <NuqsAdapter>
+            <Suspense fallback={<ProjectListSkeleton />}>
+              <ProjectListLoader />
+            </Suspense>
+          </NuqsAdapter>
         </PageContent>
       }
       source={<CodeView code={projectsCode} lang="typescript" />}
