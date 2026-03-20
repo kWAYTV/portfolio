@@ -2,6 +2,7 @@
 
 import React from "react";
 import { ContextMenu as ContextMenuPrimitive } from "@base-ui/react/context-menu";
+import { createAsChildRender } from "@/lib/as-child-render";
 import { cn } from "@/lib/utils";
 
 function ContextMenu({
@@ -18,15 +19,11 @@ function ContextMenuTrigger({
   asChild?: boolean;
 }) {
   if (asChild && React.isValidElement(children)) {
+    const child = children as React.ReactElement<object>;
     return (
       <ContextMenuPrimitive.Trigger
         data-slot="context-menu-trigger"
-        render={(triggerProps) =>
-          React.cloneElement(
-            children as React.ReactElement<object>,
-            triggerProps as Record<string, unknown>
-          )
-        }
+        render={createAsChildRender(child)}
         {...props}
       />
     );
