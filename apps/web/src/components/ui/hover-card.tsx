@@ -2,7 +2,6 @@
 
 import * as React from "react";
 import { Popover as PopoverPrimitive } from "@base-ui/react/popover";
-import { createAsChildRender } from "@/lib/as-child-render";
 import { cn } from "@/lib/utils";
 
 interface HoverCardProps extends Omit<PopoverPrimitive.Root.Props, "children"> {
@@ -46,11 +45,15 @@ function HoverCardTrigger({
     closeDelay,
   };
   if (asChild && React.isValidElement(children)) {
-    const child = children as React.ReactElement<object>;
     return (
       <PopoverPrimitive.Trigger
         data-slot="hover-card-trigger"
-        render={createAsChildRender(child)}
+        render={(mergeProps) =>
+          React.cloneElement(
+            children as React.ReactElement<object>,
+            mergeProps
+          )
+        }
         {...triggerProps}
       />
     );
