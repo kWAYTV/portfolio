@@ -31,10 +31,6 @@ const INITIAL_EXPANDED = new Set([
 ]);
 
 interface IdeState {
-  closeAllTabs: () => void;
-  closeOtherTabs: (href: string) => void;
-  closeTab: (href: string) => void;
-  closeTabsToRight: (href: string) => void;
   collapseAll: () => void;
   commandPaletteOpen: boolean;
   exitFullscreen: () => void;
@@ -45,17 +41,12 @@ interface IdeState {
   isFullscreen: boolean;
   mobileSidebarView: SidebarView | null;
 
-  openTab: (href: string) => void;
-
-  // Tabs
-  openTabs: string[];
-  reorderTabs: (newOrder: string[]) => void;
   setCommandPaletteOpen: (open: boolean) => void;
   setFullscreen: (fullscreen: boolean) => void;
   setMobileSidebarView: (view: SidebarView | null) => void;
   setSidebarView: (view: SidebarView) => void;
-
   setViewMode: (mode: ViewMode) => void;
+
   // Layout
   sidebarOpen: boolean;
   sidebarView: SidebarView;
@@ -80,8 +71,6 @@ export const useIdeStore = create<IdeState>((set) => ({
   terminalOpen: false,
   isFullscreen: false,
   mobileSidebarView: null,
-
-  openTabs: ["/", "/about", "/projects", "/blog"],
 
   viewMode: "preview",
 
@@ -110,34 +99,6 @@ export const useIdeStore = create<IdeState>((set) => ({
   setFullscreen: (isFullscreen) => set({ isFullscreen }),
 
   setMobileSidebarView: (mobileSidebarView) => set({ mobileSidebarView }),
-
-  openTab: (href) =>
-    set((s) =>
-      s.openTabs.includes(href) ? s : { openTabs: [...s.openTabs, href] }
-    ),
-
-  reorderTabs: (openTabs) => set({ openTabs }),
-
-  closeTab: (href) =>
-    set((s) => ({
-      openTabs: s.openTabs.filter((t) => t !== href),
-    })),
-
-  closeOtherTabs: (href) =>
-    set((s) => ({
-      openTabs: s.openTabs.filter((t) => t === href),
-    })),
-
-  closeTabsToRight: (href) =>
-    set((s) => {
-      const idx = s.openTabs.indexOf(href);
-      if (idx < 0) {
-        return s;
-      }
-      return { openTabs: s.openTabs.slice(0, idx + 1) };
-    }),
-
-  closeAllTabs: () => set({ openTabs: [] }),
 
   setViewMode: (viewMode) => set({ viewMode }),
 
