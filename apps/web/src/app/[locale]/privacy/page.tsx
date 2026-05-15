@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import { getTranslations, setRequestLocale } from "next-intl/server";
-import { CookiePreferencesButton } from "@/components/privacy/cookie-preferences-button";
 import { PageContent } from "@/components/shared/page-content";
+import { CookiePreferencesButton } from "@/modules/privacy/components/cookie-preferences-button";
 
 export async function generateMetadata({
   params,

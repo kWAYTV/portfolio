@@ -1,13 +1,13 @@
 import type { Metadata } from "next";
 import { getTranslations, setRequestLocale } from "next-intl/server";
-import { AboutBio } from "@/components/about/about-bio";
-import { AboutHeader } from "@/components/about/about-header";
-import { ExperienceTimeline } from "@/components/about/experience-timeline";
-import { CodeView } from "@/components/ide/editor/code-view";
-import { EditorContent } from "@/components/ide/editor/editor-content";
 import { PageContent } from "@/components/shared/page-content";
-import { aboutCode } from "@/consts/code-content";
-import { getPageImageUrl } from "@/lib/og";
+import { AboutBio } from "@/modules/about/components/about-bio";
+import { AboutHeader } from "@/modules/about/components/about-header";
+import { ExperienceTimeline } from "@/modules/about/components/experience-timeline";
+import { CodeView } from "@/modules/ide/components/editor/code-view";
+import { EditorContent } from "@/modules/ide/components/editor/editor-content";
+import { aboutCode } from "@/modules/ide/consts/code-content";
+import { getPageImageUrl } from "@/modules/og/lib/og";
 
 export async function generateMetadata({
   params,

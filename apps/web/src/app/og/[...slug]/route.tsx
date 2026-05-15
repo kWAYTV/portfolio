@@ -1,7 +1,8 @@
 import { cacheLife, cacheTag } from "next/cache";
 import { notFound } from "next/navigation";
 import { ImageResponse } from "next/og";
-import { OgImage } from "@/components/og/og-image";
+import { getBlog } from "@/modules/blog/lib/source";
+import { OgImage } from "@/modules/og/components/og-image";
 import {
   getPageImageSegments,
   LOCALE_LIST,
@@ -9,16 +10,15 @@ import {
   pathToSegments,
   STATIC_PAGE_TYPES,
   segmentsToPagePath,
-} from "@/lib/og";
-import { getStaticOgCopy } from "@/lib/og-copy";
-import { getBlog } from "@/lib/source";
+} from "@/modules/og/lib/og";
+import { getStaticOgCopy } from "@/modules/og/lib/og-copy";
 
 const SIZE = { width: 1200, height: 630 };
 
 type StaticPageType = Exclude<PagePath["type"], "blog-post">;
 const COPY_KEY: Record<
   StaticPageType,
-  keyof typeof import("@/lib/og-copy").PAGE_COPY
+  keyof typeof import("@/modules/og/lib/og-copy").PAGE_COPY
 > = {
   home: "home",
   blog: "blog",

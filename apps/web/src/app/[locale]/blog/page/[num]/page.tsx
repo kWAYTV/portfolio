@@ -1,14 +1,14 @@
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { getTranslations, setRequestLocale } from "next-intl/server";
-import { BlogHeader } from "@/components/blog/blog-header";
-import { BlogListContent } from "@/components/blog/blog-list-content";
-import { CodeView } from "@/components/ide/editor/code-view";
-import { EditorContent } from "@/components/ide/editor/editor-content";
 import { PageContent } from "@/components/shared/page-content";
-import { blogCode } from "@/consts/code-content";
-import { getPaginatedPosts } from "@/lib/blog";
-import { getPageImageUrl } from "@/lib/og";
+import { BlogHeader } from "@/modules/blog/components/blog-header";
+import { BlogListContent } from "@/modules/blog/components/blog-list-content";
+import { getPaginatedPosts } from "@/modules/blog/lib/blog";
+import { CodeView } from "@/modules/ide/components/editor/code-view";
+import { EditorContent } from "@/modules/ide/components/editor/editor-content";
+import { blogCode } from "@/modules/ide/consts/code-content";
+import { getPageImageUrl } from "@/modules/og/lib/og";
 
 export async function generateMetadata({
   params,

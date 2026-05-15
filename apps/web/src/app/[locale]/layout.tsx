@@ -8,12 +8,12 @@ import type { PropsWithChildren } from "react";
 
 import "../../index.css";
 import { env } from "@repo/env/web";
-import { UmamiScript } from "@/components/analytics/umami-script";
-import { IdeLayout } from "@/components/ide/ide-layout";
 import Providers from "@/components/providers";
 import { CookieBanner } from "@/components/shared/cookies";
+import { UmamiScript } from "@/modules/analytics/components/umami-script";
 import { routing } from "@/modules/i18n/routing";
 import { getStaticParams } from "@/modules/i18n/static";
+import { IdeLayout } from "@/modules/ide/components/ide-layout";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",

@@ -2,15 +2,15 @@ import defaultMdxComponents from "fumadocs-ui/mdx";
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { setRequestLocale } from "next-intl/server";
-import { BlogBackLink } from "@/components/blog/blog-back-link";
-import { BlogPostHeader } from "@/components/blog/blog-post-header";
-import { BlogPostViewTracker } from "@/components/blog/blog-post-view-tracker";
-import { CodeView } from "@/components/ide/editor/code-view";
-import { EditorContent } from "@/components/ide/editor/editor-content";
 import { PageContent } from "@/components/shared/page-content";
-import { getPageImageUrl } from "@/lib/og";
-import { readMdxFile } from "@/lib/read-mdx-file";
-import { getBlog } from "@/lib/source";
+import { BlogBackLink } from "@/modules/blog/components/blog-back-link";
+import { BlogPostHeader } from "@/modules/blog/components/blog-post-header";
+import { BlogPostViewTracker } from "@/modules/blog/components/blog-post-view-tracker";
+import { readMdxFile } from "@/modules/blog/lib/read-mdx-file";
+import { getBlog } from "@/modules/blog/lib/source";
+import { CodeView } from "@/modules/ide/components/editor/code-view";
+import { EditorContent } from "@/modules/ide/components/editor/editor-content";
+import { getPageImageUrl } from "@/modules/og/lib/og";
 
 // biome-ignore lint/style/useConsistentTypeDefinitions: fumadocs
 type BlogPageData = {

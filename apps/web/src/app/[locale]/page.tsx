@@ -1,17 +1,17 @@
 import { getTranslations, setRequestLocale } from "next-intl/server";
 import { Suspense } from "react";
-import { FeaturedProjectsLoader } from "@/components/home/featured-projects-loader";
-import { FeaturedProjectsSkeleton } from "@/components/home/featured-projects-skeleton";
-import { HeroBio } from "@/components/home/hero-bio";
-import { HeroHeader } from "@/components/home/hero-header";
-import { HeroQuote } from "@/components/home/hero-quote";
-import { SocialNav } from "@/components/home/social-nav";
-import { CodeView } from "@/components/ide/editor/code-view";
-import { EditorContent } from "@/components/ide/editor/editor-content";
 import { PageContent } from "@/components/shared/page-content";
 import { Separator } from "@/components/ui/separator";
-import { welcomeCode } from "@/consts/code-content";
-import { getPageImageUrl } from "@/lib/og";
+import { FeaturedProjectsLoader } from "@/modules/home/components/featured-projects-loader";
+import { FeaturedProjectsSkeleton } from "@/modules/home/components/featured-projects-skeleton";
+import { HeroBio } from "@/modules/home/components/hero-bio";
+import { HeroHeader } from "@/modules/home/components/hero-header";
+import { HeroQuote } from "@/modules/home/components/hero-quote";
+import { SocialNav } from "@/modules/home/components/social-nav";
+import { CodeView } from "@/modules/ide/components/editor/code-view";
+import { EditorContent } from "@/modules/ide/components/editor/editor-content";
+import { welcomeCode } from "@/modules/ide/consts/code-content";
+import { getPageImageUrl } from "@/modules/og/lib/og";
 
 export async function generateMetadata({
   params,
