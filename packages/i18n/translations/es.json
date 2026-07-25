@@ -28,7 +28,10 @@
     "title": "Sobre mí",
     "subtitle": "Un poco sobre mí",
     "bio": "Soy ingeniero de software con pasión por construir aplicaciones backend y web. Actualmente buscando nuevas oportunidades.",
-    "experience": "Experiencia"
+    "experience": "Experiencia",
+    "period": "Periodo",
+    "company": "Empresa",
+    "role": "Rol"
   },
   "experience": {
     "freelancing": {

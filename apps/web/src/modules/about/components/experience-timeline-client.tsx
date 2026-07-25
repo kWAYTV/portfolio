@@ -1,17 +1,5 @@
 "use client";
 
-import {
-  Timeline,
-  TimelineConnector,
-  TimelineContent,
-  TimelineDescription,
-  TimelineDot,
-  TimelineHeader,
-  TimelineItem,
-  TimelineTime,
-  TimelineTitle,
-} from "@/components/ui/timeline";
-
 interface ExperienceItem {
   company: string;
   id: string;
@@ -21,43 +9,68 @@ interface ExperienceItem {
 }
 
 interface ExperienceTimelineClientProps {
+  columns: {
+    company: string;
+    period: string;
+    role: string;
+  };
   items: ExperienceItem[];
 }
 
 export function ExperienceTimelineClient({
+  columns,
   items,
 }: ExperienceTimelineClientProps) {
-  const activeIndex = items.findIndex((item) =>
-    item.period.toLowerCase().includes("present")
-  );
-
   return (
-    <Timeline
-      activeIndex={activeIndex >= 0 ? activeIndex : undefined}
-      className="[--timeline-connector-thickness:1px] [--timeline-dot-size:0.875rem]"
-    >
-      {items.map((item) => (
-        <TimelineItem key={item.id}>
-          <TimelineDot />
-          <TimelineConnector />
-          <TimelineContent>
-            <TimelineHeader className="flex flex-wrap items-baseline gap-x-2 gap-y-0">
-              <TimelineTime
-                className="text-[10px] text-muted-foreground/70 tabular-nums sm:text-xs"
-                dateTime={item.period}
-              >
-                {item.periodLabel}
-              </TimelineTime>
-              <TimelineTitle className="font-medium text-foreground text-xs sm:text-sm">
-                {item.company}
-              </TimelineTitle>
-            </TimelineHeader>
-            <TimelineDescription className="text-[11px] text-muted-foreground/80 leading-relaxed sm:text-xs">
-              {item.role}
-            </TimelineDescription>
-          </TimelineContent>
-        </TimelineItem>
-      ))}
-    </Timeline>
+    <div className="surface-panel overflow-hidden">
+      <table className="w-full min-w-0 border-collapse text-left">
+        <caption className="sr-only">{columns.role}</caption>
+        <thead className="border-border border-b">
+          <tr className="font-mono-label text-muted-foreground">
+            <th className="px-3 py-2.5 font-medium sm:px-4" scope="col">
+              {columns.period}
+            </th>
+            <th className="px-3 py-2.5 font-medium sm:px-4" scope="col">
+              {columns.company}
+            </th>
+            <th
+              className="hidden px-3 py-2.5 font-medium sm:table-cell sm:px-4"
+              scope="col"
+            >
+              {columns.role}
+            </th>
+          </tr>
+        </thead>
+        <tbody>
+          {items.map((item) => {
+            const isActive = item.period.toLowerCase().includes("present");
+            return (
+              <tr className="row-hairline align-top" key={item.id}>
+                <td className="px-3 py-3 font-mono text-[11px] text-muted-foreground tabular-nums sm:px-4 sm:text-xs">
+                  <span
+                    className={
+                      isActive ? "text-[var(--color-accent-signal)]" : undefined
+                    }
+                  >
+                    {item.periodLabel}
+                  </span>
+                </td>
+                <td className="px-3 py-3 sm:px-4">
+                  <div className="font-display font-medium text-foreground text-sm tracking-tight">
+                    {item.company}
+                  </div>
+                  <div className="mt-1 text-muted-foreground text-xs sm:hidden">
+                    {item.role}
+                  </div>
+                </td>
+                <td className="hidden px-3 py-3 text-muted-foreground text-sm sm:table-cell sm:px-4">
+                  {item.role}
+                </td>
+              </tr>
+            );
+          })}
+        </tbody>
+      </table>
+    </div>
   );
 }

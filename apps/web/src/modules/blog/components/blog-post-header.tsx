@@ -18,14 +18,14 @@ export function BlogPostHeader({
   });
 
   return (
-    <header className="space-y-1.5">
-      <h1 className="font-medium text-base tracking-tight sm:text-lg">
+    <header className="space-y-3 border-border border-b pb-5">
+      <h1 className="font-display font-semibold text-2xl tracking-tight sm:text-3xl">
         {title}
       </h1>
-      <div className="flex items-center gap-2 text-[10px] text-muted-foreground/50 sm:text-xs">
+      <div className="flex flex-wrap items-center gap-x-2 gap-y-1 font-mono text-[10px] text-muted-foreground uppercase tracking-[0.06em] sm:text-xs">
         <span>{author}</span>
-        <span>·</span>
-        <time>{formattedDate}</time>
+        <span aria-hidden>·</span>
+        <time dateTime={date}>{formattedDate}</time>
       </div>
     </header>
   );

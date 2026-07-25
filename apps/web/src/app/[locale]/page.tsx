@@ -1,7 +1,7 @@
 import { getTranslations, setRequestLocale } from "next-intl/server";
 import { Suspense } from "react";
 import { PageContent } from "@/components/shared/page-content";
-import { Separator } from "@/components/ui/separator";
+import { Reveal } from "@/components/shared/reveal";
 import { FeaturedProjectsLoader } from "@/modules/home/components/featured-projects-loader";
 import { FeaturedProjectsSkeleton } from "@/modules/home/components/featured-projects-skeleton";
 import { HeroBio } from "@/modules/home/components/hero-bio";
@@ -41,15 +41,23 @@ export default async function HomePage({
     <EditorContent
       preview={
         <PageContent>
-          <HeroHeader />
-          <HeroBio />
-          <Separator className="bg-border/50" />
-          <SocialNav />
-          <Separator className="bg-border/50" />
-          <Suspense fallback={<FeaturedProjectsSkeleton />}>
-            <FeaturedProjectsLoader />
-          </Suspense>
-          <HeroQuote />
+          <Reveal index={0}>
+            <HeroHeader />
+          </Reveal>
+          <Reveal index={1}>
+            <HeroBio />
+          </Reveal>
+          <Reveal index={2}>
+            <SocialNav />
+          </Reveal>
+          <Reveal index={3}>
+            <Suspense fallback={<FeaturedProjectsSkeleton />}>
+              <FeaturedProjectsLoader />
+            </Suspense>
+          </Reveal>
+          <Reveal index={4}>
+            <HeroQuote />
+          </Reveal>
         </PageContent>
       }
       source={<CodeView code={welcomeCode} lang="tsx" />}

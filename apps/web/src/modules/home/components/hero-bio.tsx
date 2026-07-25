@@ -4,7 +4,7 @@ export async function HeroBio() {
   const t = await getTranslations("hero");
 
   return (
-    <p className="text-muted-foreground/80 text-xs leading-relaxed sm:text-sm">
+    <p className="max-w-[58ch] text-muted-foreground text-sm leading-relaxed sm:text-[length:var(--text-md)]">
       {t("bio")}
     </p>
   );

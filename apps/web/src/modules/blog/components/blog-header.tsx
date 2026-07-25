@@ -4,11 +4,11 @@ export async function BlogHeader() {
   const t = await getTranslations("blog");
 
   return (
-    <header className="space-y-1.5">
-      <h1 className="font-medium text-base tracking-tight sm:text-lg">
+    <header className="space-y-2">
+      <h1 className="font-display font-semibold text-2xl tracking-tight sm:text-3xl">
         {t("title")}
       </h1>
-      <p className="text-muted-foreground/60 text-xs leading-relaxed sm:text-sm">
+      <p className="max-w-[58ch] text-muted-foreground text-sm leading-relaxed">
         {t("subtitle")}
       </p>
     </header>

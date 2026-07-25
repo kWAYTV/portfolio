@@ -34,21 +34,21 @@ export function BlogCard({
 
   return (
     <LocaleLink
-      className="group -mx-2 flex flex-col gap-2 rounded-md px-2 py-3 transition-colors duration-200 hover:bg-muted/30 sm:flex-row sm:items-start sm:justify-between sm:gap-4"
+      className="group row-hairline flex flex-col gap-2 py-4 transition-colors duration-200 sm:flex-row sm:items-baseline sm:justify-between sm:gap-6"
       href={url}
       onClick={() => analytics.blogPostView(slugForTracking)}
     >
       <div className="min-w-0 flex-1 space-y-1.5">
-        <h2 className="font-medium text-foreground/80 text-xs leading-relaxed transition-colors duration-200 group-hover:text-foreground sm:text-sm">
+        <h2 className="font-display font-medium text-foreground text-sm tracking-tight transition-colors group-hover:text-[var(--color-accent-signal)] sm:text-base">
           {title}
         </h2>
-        {description && (
-          <p className="text-[11px] text-muted-foreground/70 leading-relaxed sm:text-xs">
+        {description ? (
+          <p className="max-w-[58ch] text-muted-foreground text-xs leading-relaxed sm:text-sm">
             {description}
           </p>
-        )}
+        ) : null}
       </div>
-      <time className="shrink-0 whitespace-nowrap text-[10px] text-muted-foreground/60 tabular-nums transition-colors duration-200 group-hover:text-muted-foreground/80 sm:text-xs">
+      <time className="shrink-0 font-mono text-[10px] text-muted-foreground tabular-nums sm:text-xs">
         {formattedDate}
       </time>
     </LocaleLink>
