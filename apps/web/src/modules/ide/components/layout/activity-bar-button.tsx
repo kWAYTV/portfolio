@@ -20,9 +20,10 @@ export function ActivityBarButton({
     <button
       aria-label={ariaLabel}
       className={cn(
-        "flex size-10 cursor-pointer items-center justify-center text-sidebar-foreground/60 transition-colors hover:text-sidebar-primary",
-        active && "text-sidebar-primary"
+        "ide-accent-bar relative flex size-10 cursor-pointer items-center justify-center text-sidebar-foreground/55 transition-[color,box-shadow] duration-[var(--dur-micro)] ease-[var(--ease-out)] hover:text-sidebar-foreground",
+        active && "text-[var(--color-accent-signal)]"
       )}
+      data-active={active ? "true" : "false"}
       onClick={onClick}
       type="button"
     >

@@ -21,7 +21,7 @@ export function CookiePreferencesButton() {
 
   return (
     <button
-      className="mt-2 rounded-md border border-border bg-muted/30 px-3 py-2 font-medium text-xs transition-colors hover:bg-muted/50"
+      className="mt-2 rounded-[var(--radius-control)] border border-border bg-background px-3 py-2 font-medium text-xs transition-colors hover:border-[var(--color-accent-signal)] hover:text-[var(--color-accent-signal)] focus-visible:outline-2 focus-visible:outline-[var(--color-focus)] focus-visible:outline-offset-2"
       onClick={handleClick}
       type="button"
     >

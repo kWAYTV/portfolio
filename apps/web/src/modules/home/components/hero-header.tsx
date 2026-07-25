@@ -5,13 +5,11 @@ export async function HeroHeader() {
   const tCommon = await getTranslations("common");
 
   return (
-    <header className="space-y-1.5">
-      <h1 className="font-medium text-base tracking-tight sm:text-lg">
+    <header className="space-y-3">
+      <h1 className="font-display font-semibold text-[length:var(--text-display)] text-foreground tracking-tight">
         {tCommon("siteName")}
       </h1>
-      <p className="text-muted-foreground/80 text-xs sm:text-sm">
-        {t("tagline")}
-      </p>
+      <p className="font-mono-label text-muted-foreground">{t("tagline")}</p>
     </header>
   );
 }

@@ -28,39 +28,39 @@ export default async function PrivacyPage({
 
   return (
     <PageContent>
-      <header className="space-y-1.5">
-        <h1 className="font-medium text-base tracking-tight sm:text-lg">
+      <header className="space-y-2">
+        <h1 className="font-display font-semibold text-2xl tracking-tight sm:text-3xl">
           {t("title")}
         </h1>
-        <p className="text-muted-foreground/60 text-xs sm:text-sm">
+        <p className="max-w-[58ch] text-muted-foreground text-sm">
           {t("subtitle")}
         </p>
       </header>
 
-      <div className="space-y-6 text-sm">
-        <section>
-          <h2 className="font-medium text-foreground text-xs tracking-tight sm:text-sm">
+      <div className="space-y-8 text-sm">
+        <section className="max-w-[58ch] space-y-2 border-border border-t pt-5">
+          <h2 className="font-display font-medium text-base text-foreground tracking-tight">
             {t("cookiesTitle")}
           </h2>
-          <p className="mt-2 text-muted-foreground leading-relaxed">
+          <p className="text-muted-foreground leading-relaxed">
             {t("cookiesBody")}
           </p>
         </section>
 
-        <section>
-          <h2 className="font-medium text-foreground text-xs tracking-tight sm:text-sm">
+        <section className="max-w-[58ch] space-y-2 border-border border-t pt-5">
+          <h2 className="font-display font-medium text-base text-foreground tracking-tight">
             {t("analyticsTitle")}
           </h2>
-          <p className="mt-2 text-muted-foreground leading-relaxed">
+          <p className="text-muted-foreground leading-relaxed">
             {t("analyticsBody")}
           </p>
         </section>
 
-        <section>
-          <h2 className="font-medium text-foreground text-xs tracking-tight sm:text-sm">
+        <section className="max-w-[58ch] space-y-3 border-border border-t pt-5">
+          <h2 className="font-display font-medium text-base text-foreground tracking-tight">
             {t("choicesTitle")}
           </h2>
-          <p className="mt-2 text-muted-foreground leading-relaxed">
+          <p className="text-muted-foreground leading-relaxed">
             {t("choicesBody")}
           </p>
           <CookiePreferencesButton />

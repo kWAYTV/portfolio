@@ -9,7 +9,7 @@ export function BlogBackLink() {
   return (
     <LocaleLink
       aria-label={t("backToBlog")}
-      className="text-[10px] text-muted-foreground/70 transition-colors hover:text-muted-foreground sm:text-xs"
+      className="link-accent font-mono text-[10px] text-muted-foreground tracking-wide sm:text-xs"
       href="/blog"
     >
       {t("backToBlog")}

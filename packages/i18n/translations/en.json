@@ -28,7 +28,10 @@
     "title": "About",
     "subtitle": "A bit about me",
     "bio": "I'm a software engineer with a passion for building backend & web applications. Currently actively seeking new opportunities.",
-    "experience": "Experience"
+    "experience": "Experience",
+    "period": "Period",
+    "company": "Company",
+    "role": "Role"
   },
   "experience": {
     "freelancing": {

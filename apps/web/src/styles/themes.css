@@ -1,1 +1,3 @@
-/* Vercel theme – uses :root / .dark from globals.css */
+/* Hallmark theme bridge — Cobalt tokens live in index.css + /tokens.css.
+ * Kept as the shadcn/themes import target so local overrides can land here.
+ */

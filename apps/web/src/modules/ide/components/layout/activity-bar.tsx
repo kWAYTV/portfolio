@@ -17,7 +17,7 @@ export function ActivityBar() {
   const toggleTerminal = useIdeStore((s) => s.toggleTerminal);
 
   return (
-    <div className="flex h-full w-12 shrink-0 select-none flex-col items-center border-border border-r bg-sidebar py-1 shadow-(--shadow-elevation-sm)">
+    <div className="flex h-full w-12 shrink-0 select-none flex-col items-center border-border border-r bg-sidebar py-1">
       <ActivityBarButton
         active={sidebarOpen && sidebarView === "explorer"}
         ariaLabel={t("explorer")}

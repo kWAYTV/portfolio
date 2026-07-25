@@ -6,7 +6,6 @@ import {
   ANALYTICS_CONSENT_RESET,
   invalidateConsentCache,
 } from "@repo/analytics";
-import { Cookie } from "lucide-react";
 import { useTranslations } from "next-intl";
 import { useCallback, useEffect, useState } from "react";
 import { LocaleLink } from "@/modules/i18n/routing";
@@ -39,32 +38,27 @@ export function CookieBanner() {
   }
 
   return (
-    <div className="fixed bottom-4 left-1/2 z-50 flex -translate-x-1/2 items-center gap-3 rounded-full bg-background px-4 py-2 font-medium text-sm shadow-sm ring-1 ring-border">
-      <div className="flex items-center gap-2">
-        <Cookie className="size-5 shrink-0 text-muted-foreground" />
-        <LocaleLink
-          className="relative text-foreground transition-colors after:absolute after:right-0 after:bottom-0.5 after:left-0 after:h-px after:origin-left after:scale-x-0 after:bg-current after:transition-transform after:duration-200 hover:text-foreground/90 hover:after:scale-x-100"
-          href="/privacy"
-        >
-          {t("bannerText")}
-        </LocaleLink>
-      </div>
-      <div className="flex shrink-0 gap-1">
+    <div className="fixed right-4 bottom-4 left-4 z-50 mx-auto flex max-w-md flex-col gap-3 rounded-[var(--radius-panel)] border border-border bg-background px-4 py-3 shadow-sm sm:left-auto sm:w-auto sm:flex-row sm:items-center">
+      <LocaleLink
+        className="link-accent text-foreground text-sm"
+        href="/privacy"
+      >
+        {t("bannerText")}
+      </LocaleLink>
+      <div className="flex shrink-0 gap-2">
         <button
-          className="flex size-5 items-center justify-center rounded-full bg-green-600 text-white transition-colors hover:bg-green-700"
+          className="rounded-[var(--radius-control)] bg-[var(--color-accent-signal)] px-3 py-1.5 font-medium text-[var(--color-accent-ink)] text-xs transition-opacity hover:opacity-90 focus-visible:outline-2 focus-visible:outline-[var(--color-focus)] focus-visible:outline-offset-2"
           onClick={() => setConsent("accepted")}
-          title={t("accept")}
           type="button"
         >
-          <span className="font-semibold text-[10px]">✓</span>
+          {t("accept")}
         </button>
         <button
-          className="flex size-5 items-center justify-center rounded-full bg-red-600 text-white transition-colors hover:bg-red-700"
+          className="rounded-[var(--radius-control)] border border-border px-3 py-1.5 font-medium text-muted-foreground text-xs transition-colors hover:text-foreground focus-visible:outline-2 focus-visible:outline-[var(--color-focus)] focus-visible:outline-offset-2"
           onClick={() => setConsent("declined")}
-          title={t("decline")}
           type="button"
         >
-          <span className="font-semibold text-[10px]">✕</span>
+          {t("decline")}
         </button>
       </div>
     </div>

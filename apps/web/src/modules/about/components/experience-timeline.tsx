@@ -26,10 +26,17 @@ export async function ExperienceTimeline() {
 
   return (
     <section className="space-y-4">
-      <h2 className="font-medium text-xs tracking-tight sm:text-sm">
+      <h2 className="font-mono-label text-muted-foreground">
         {t("experience")}
       </h2>
-      <ExperienceTimelineClient items={items} />
+      <ExperienceTimelineClient
+        columns={{
+          company: t("company"),
+          period: t("period"),
+          role: t("role"),
+        }}
+        items={items}
+      />
     </section>
   );
 }

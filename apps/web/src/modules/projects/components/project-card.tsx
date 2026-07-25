@@ -24,7 +24,7 @@ interface ProjectCardProps {
 }
 
 const cardClassName =
-  "group -mx-2 flex h-16 flex-col gap-2 overflow-hidden rounded-md px-2 py-3 transition-colors duration-200 hover:bg-muted/30 sm:flex-row sm:items-center sm:justify-between sm:gap-4";
+  "group row-hairline flex min-h-16 flex-col gap-2 overflow-hidden py-3.5 transition-colors duration-200 sm:flex-row sm:items-center sm:justify-between sm:gap-4";
 
 function ProjectCardInner({ repo }: ProjectCardProps) {
   const languageColor = repo.language
@@ -48,7 +48,7 @@ function ProjectCardInner({ repo }: ProjectCardProps) {
         </HoverCardTrigger>
         <HoverCardContent
           align="start"
-          className="w-80 overflow-hidden rounded-md border border-border bg-popover p-0 shadow-lg ring-1 ring-border/50"
+          className="w-80 overflow-hidden rounded-[var(--radius-panel)] border border-border bg-popover p-0 shadow-sm"
           side="top"
           sideOffset={8}
         >
@@ -75,7 +75,7 @@ function ProjectCardInner({ repo }: ProjectCardProps) {
       />
       <PopoverContent
         align="start"
-        className="w-[min(320px,calc(100vw-2rem))] overflow-hidden rounded-md border border-border bg-popover p-0 shadow-lg ring-1 ring-border/50"
+        className="w-[min(320px,calc(100vw-2rem))] overflow-hidden rounded-[var(--radius-panel)] border border-border bg-popover p-0 shadow-sm"
         side="top"
       >
         <ProjectCardDetails repo={repo} showOpenLink />
@@ -96,16 +96,16 @@ function ProjectCardSummary({
   return (
     <>
       <div className="min-w-0 flex-1 space-y-1.5">
-        <span className="truncate font-medium text-foreground/80 text-xs leading-relaxed transition-colors duration-200 group-hover:text-foreground sm:text-sm">
+        <span className="truncate font-display font-medium text-foreground text-sm tracking-tight transition-colors duration-200 group-hover:text-[var(--color-accent-signal)] sm:text-base">
           {repo.name}
         </span>
         {repo.description && (
-          <p className="line-clamp-1 text-[11px] text-muted-foreground/70 leading-relaxed sm:text-xs">
+          <p className="line-clamp-1 text-muted-foreground text-xs leading-relaxed">
             {repo.description}
           </p>
         )}
       </div>
-      <div className="flex shrink-0 items-center gap-2 text-[10px] text-muted-foreground/60 tabular-nums transition-colors duration-200 group-hover:text-muted-foreground/80 sm:gap-3 sm:text-xs">
+      <div className="flex shrink-0 items-center gap-2 font-mono text-[10px] text-muted-foreground tabular-nums sm:gap-3 sm:text-xs">
         {repo.language && (
           <span className="flex items-center gap-1">
             <span

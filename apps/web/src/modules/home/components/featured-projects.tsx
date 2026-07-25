@@ -2,7 +2,6 @@
 
 import { analytics } from "@repo/analytics";
 import type { GitHubRepo } from "@repo/github";
-import { ExternalLink } from "lucide-react";
 import { useTranslations } from "next-intl";
 import {
   HoverCard,
@@ -23,8 +22,8 @@ interface FeaturedProjectsProps {
   repos: GitHubRepo[];
 }
 
-const cardClassName =
-  "group -mx-2 flex min-w-0 flex-col gap-2 rounded-md px-2 py-3 transition-colors duration-200 hover:bg-muted/30 sm:flex-row sm:items-start sm:justify-between sm:gap-4";
+const rowClassName =
+  "group flex min-w-0 w-full items-baseline justify-between gap-4 border-b border-white/10 py-3 text-left transition-colors duration-200 last:border-b-0 hover:text-[var(--color-accent-signal)]";
 
 export function FeaturedProjects({ repos }: FeaturedProjectsProps) {
   const t = useTranslations("projects");
@@ -35,20 +34,20 @@ export function FeaturedProjects({ repos }: FeaturedProjectsProps) {
   }
 
   return (
-    <section className="space-y-3">
-      <div className="flex min-w-0 items-center justify-between gap-2">
-        <h2 className="min-w-0 truncate font-medium text-xs tracking-tight sm:text-sm">
+    <section className="band-graphite -mx-4 px-4 py-6 sm:-mx-6 sm:px-6 sm:py-7">
+      <div className="mb-4 flex min-w-0 items-baseline justify-between gap-3">
+        <h2 className="font-mono-label text-[var(--color-graphite-muted)]">
           {t("featured")}
         </h2>
         <LocaleLink
-          className="shrink-0 whitespace-nowrap text-[10px] text-muted-foreground/50 transition-colors hover:text-muted-foreground sm:text-xs"
+          className="link-accent shrink-0 font-mono text-[10px] text-[var(--color-graphite-muted)] tracking-wide sm:text-xs"
           href="/projects"
         >
           {t("viewAll")}
         </LocaleLink>
       </div>
 
-      <ul className="space-y-1">
+      <ul>
         {repos.map((repo) =>
           canHover ? (
             <li key={repo.id}>
@@ -56,18 +55,18 @@ export function FeaturedProjects({ repos }: FeaturedProjectsProps) {
                 <HoverCardTrigger asChild nativeButton={false}>
                   <a
                     aria-label={`Open ${repo.name} on GitHub`}
-                    className={cardClassName}
+                    className={rowClassName}
                     href={repo.html_url}
                     onClick={() => analytics.projectClick(repo.name)}
                     rel="noopener noreferrer"
                     target="_blank"
                   >
-                    <FeaturedCardSummary repo={repo} />
+                    <FeaturedRowSummary repo={repo} />
                   </a>
                 </HoverCardTrigger>
                 <HoverCardContent
                   align="start"
-                  className="w-80 overflow-hidden rounded-md border border-border bg-popover p-0 shadow-lg ring-1 ring-border/50"
+                  className="w-80 overflow-hidden rounded-[var(--radius-panel)] border border-border bg-popover p-0 shadow-sm"
                   side="top"
                   sideOffset={8}
                 >
@@ -83,20 +82,17 @@ export function FeaturedProjects({ repos }: FeaturedProjectsProps) {
                     <button
                       {...props}
                       aria-label={`View ${repo.name} details`}
-                      className={cn(
-                        cardClassName,
-                        "w-full cursor-pointer text-left"
-                      )}
+                      className={cn(rowClassName, "cursor-pointer")}
                       onClick={() => analytics.projectClick(repo.name)}
                       type="button"
                     >
-                      <FeaturedCardSummary repo={repo} />
+                      <FeaturedRowSummary repo={repo} />
                     </button>
                   )}
                 />
                 <PopoverContent
                   align="start"
-                  className="w-[min(320px,calc(100vw-2rem))] overflow-hidden rounded-md border border-border bg-popover p-0 shadow-lg ring-1 ring-border/50"
+                  className="w-[min(320px,calc(100vw-2rem))] overflow-hidden rounded-[var(--radius-panel)] border border-border bg-popover p-0 shadow-sm"
                   side="top"
                 >
                   <ProjectCardDetails repo={repo} showOpenLink />
@@ -110,20 +106,22 @@ export function FeaturedProjects({ repos }: FeaturedProjectsProps) {
   );
 }
 
-function FeaturedCardSummary({ repo }: { repo: GitHubRepo }) {
+function FeaturedRowSummary({ repo }: { repo: GitHubRepo }) {
   return (
     <>
-      <div className="min-w-0 flex-1 space-y-1.5">
-        <span className="truncate font-medium text-foreground/80 text-xs leading-relaxed transition-colors duration-200 group-hover:text-foreground group-hover:underline sm:text-sm">
+      <div className="min-w-0 flex-1">
+        <span className="block truncate font-display font-medium text-[var(--color-graphite-ink)] text-sm tracking-tight sm:text-base">
           {repo.name}
         </span>
-        {repo.description && (
-          <p className="line-clamp-1 text-[11px] text-muted-foreground/70 leading-relaxed sm:text-xs">
+        {repo.description ? (
+          <p className="mt-1 line-clamp-1 text-[var(--color-graphite-muted)] text-xs">
             {repo.description}
           </p>
-        )}
+        ) : null}
       </div>
-      <ExternalLink className="size-3 shrink-0 text-muted-foreground/60 transition-colors duration-200 group-hover:text-muted-foreground/80" />
+      <span className="shrink-0 font-mono text-[10px] text-[var(--color-graphite-muted)] tabular-nums sm:text-xs">
+        ★ {repo.stargazers_count}
+      </span>
     </>
   );
 }

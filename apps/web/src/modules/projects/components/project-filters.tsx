@@ -32,9 +32,9 @@ export const ProjectFilters = memo(function ProjectFilters({
   return (
     <div className="flex flex-col gap-2 sm:flex-row sm:items-center">
       <div className="relative min-w-0 flex-1">
-        <Search className="absolute top-1/2 left-2.5 size-3 -translate-y-1/2 text-muted-foreground/60" />
+        <Search className="absolute top-1/2 left-2.5 size-3.5 -translate-y-1/2 text-muted-foreground" />
         <Input
-          className="h-8 w-full border-transparent bg-muted/25 pl-8 text-xs transition-colors placeholder:text-muted-foreground/50 focus:border-border focus:bg-transparent sm:text-sm"
+          className="h-9 w-full rounded-[var(--radius-control)] border-border bg-background pl-9 text-sm transition-colors placeholder:text-muted-foreground focus-visible:border-[var(--color-accent-signal)]"
           onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
             onSearchChange(e.target.value)
           }
@@ -44,7 +44,7 @@ export const ProjectFilters = memo(function ProjectFilters({
         />
       </div>
       <Select onValueChange={(v) => onSortChange(v as SortOption)} value={sort}>
-        <SelectTrigger className="h-8 w-full border-transparent bg-muted/25 text-xs transition-colors hover:bg-muted/40 sm:w-32 sm:text-sm">
+        <SelectTrigger className="h-9 w-full rounded-[var(--radius-control)] border-border bg-background text-sm transition-colors sm:w-36">
           <SelectValue />
         </SelectTrigger>
         <SelectContent>
