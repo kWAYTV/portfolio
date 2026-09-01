@@ -39,6 +39,11 @@ export async function BlogIndex({
 }) {
   const { posts, totalPages, totalCount } = getPaginatedPosts(locale, page);
   const t = await getTranslations({ locale, namespace: "blog" });
+  const formatter = new Intl.DateTimeFormat(locale, {
+    day: "2-digit",
+    month: "short",
+    year: "numeric",
+  });
 
   return (
     <article className="document">
@@ -46,40 +51,36 @@ export async function BlogIndex({
         <h1 className="page-title">{t("title")}</h1>
         <p className="lede">{t("subtitle")}</p>
       </header>
-      <p className="meta">{t("postCount", { count: totalCount })}</p>
-      {posts.length === 0 ? (
-        <p className="meta">{t("noPosts")}</p>
-      ) : (
-        <ul className="hairline-list">
-          {posts.map((post) => {
-            const data = post.data as {
-              date?: string;
-              description?: string;
-              title: string;
-            };
-            return (
-              <li key={post.url}>
-                <LocaleLink className="hairline-row" href={post.url}>
-                  <div className="min-w-0">
-                    <strong>{data.title}</strong>
-                    {data.description ? <p>{data.description}</p> : null}
-                  </div>
-                  <time>
+      <section className="section">
+        <p className="meta">{t("postCount", { count: totalCount })}</p>
+        {posts.length === 0 ? (
+          <p className="meta">{t("noPosts")}</p>
+        ) : (
+          <div className="rows">
+            {posts.map((post) => {
+              const data = post.data as {
+                date?: string;
+                description?: string;
+                title: string;
+              };
+              return (
+                <LocaleLink className="row" href={post.url} key={post.url}>
+                  <span className="row-title">{data.title}</span>
+                  <span className="row-meta">
                     {data.date
-                      ? new Date(data.date).toLocaleDateString(locale, {
-                          day: "2-digit",
-                          month: "short",
-                          year: "numeric",
-                        })
+                      ? formatter.format(new Date(data.date))
                       : t("soon")}
-                  </time>
+                  </span>
+                  {data.description ? (
+                    <span className="row-sub">{data.description}</span>
+                  ) : null}
                 </LocaleLink>
-              </li>
-            );
-          })}
-        </ul>
-      )}
-      <Pagination currentPage={page} totalPages={totalPages} />
+              );
+            })}
+          </div>
+        )}
+        <Pagination currentPage={page} totalPages={totalPages} />
+      </section>
     </article>
   );
 }

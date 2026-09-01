@@ -5,12 +5,16 @@ import { LocaleLink } from "@/modules/i18n/routing";
 import { getPageImageUrl } from "@/modules/og/lib/og";
 import { getGitHubRepos } from "@/modules/projects/lib/github";
 import {
+  PROJECTS_PER_PAGE,
   type ProjectSort,
   parseProjectSort,
   queryProjects,
 } from "@/modules/projects/lib/query";
 
 const SORTS: ProjectSort[] = ["updated", "stars", "created", "name"];
+const SKELETON_ROWS = Array.from({ length: PROJECTS_PER_PAGE }, (_, i) => i);
+
+type SearchParams = Promise<{ page?: string; q?: string; sort?: string }>;
 
 export async function generateMetadata({
   params,
@@ -33,7 +37,7 @@ export default async function ProjectsPage({
   searchParams,
 }: {
   params: Promise<{ locale: string }>;
-  searchParams: Promise<{ page?: string; q?: string; sort?: string }>;
+  searchParams: SearchParams;
 }) {
   const { locale } = await params;
   setRequestLocale(locale);
@@ -45,10 +49,27 @@ export default async function ProjectsPage({
         <h1 className="page-title">{t("title")}</h1>
         <p className="lede">{t("subtitle")}</p>
       </header>
-      <Suspense fallback={<p className="meta">{t("search")}…</p>}>
+      <Suspense fallback={<CatalogueSkeleton label={t("loading")} />}>
         <ProjectCatalogue locale={locale} searchParams={searchParams} />
       </Suspense>
     </article>
+  );
+}
+
+function CatalogueSkeleton({ label }: { label: string }) {
+  return (
+    <div aria-busy="true" className="section">
+      <div className="filters">
+        <div className="search" />
+        <div className="sorts" />
+      </div>
+      <p className="meta">{label}</p>
+      <div className="rows">
+        {SKELETON_ROWS.map((i) => (
+          <div className="skeleton-row" key={i} />
+        ))}
+      </div>
+    </div>
   );
 }
 
@@ -57,7 +78,7 @@ async function ProjectCatalogue({
   searchParams,
 }: {
   locale: string;
-  searchParams: Promise<{ page?: string; q?: string; sort?: string }>;
+  searchParams: SearchParams;
 }) {
   const query = await searchParams;
   const q = query.q ?? "";
@@ -74,40 +95,45 @@ async function ProjectCatalogue({
   }
 
   return (
-    <>
-      <form className="filters">
-        <input
-          defaultValue={q}
-          name="q"
-          placeholder={t("searchPlaceholder")}
-          type="search"
-        />
-        {sort === "updated" ? null : (
-          <input name="sort" type="hidden" value={sort} />
-        )}
-        <button type="submit">{t("search")}</button>
-      </form>
-      <div className="project-sort">
-        {SORTS.map((value) => {
-          const sortParams = new URLSearchParams();
-          if (q) {
-            sortParams.set("q", q);
-          }
-          if (value !== "updated") {
-            sortParams.set("sort", value);
-          }
-          const href =
-            sortParams.size > 0 ? `/projects?${sortParams}` : "/projects";
-          return (
-            <LocaleLink
-              aria-current={value === sort ? "page" : undefined}
-              href={href}
-              key={value}
-            >
-              {t(`sort.${value}`)}
-            </LocaleLink>
-          );
-        })}
+    <div className="section">
+      <div className="filters">
+        <search>
+          <form className="search">
+            <input
+              aria-label={t("search")}
+              defaultValue={q}
+              name="q"
+              placeholder={t("searchPlaceholder")}
+              type="search"
+            />
+            {sort === "updated" ? null : (
+              <input name="sort" type="hidden" value={sort} />
+            )}
+            <button type="submit">{t("search")}</button>
+          </form>
+        </search>
+        <nav aria-label="Sort" className="sorts">
+          {SORTS.map((value) => {
+            const sortParams = new URLSearchParams();
+            if (q) {
+              sortParams.set("q", q);
+            }
+            if (value !== "updated") {
+              sortParams.set("sort", value);
+            }
+            const href =
+              sortParams.size > 0 ? `/projects?${sortParams}` : "/projects";
+            return (
+              <LocaleLink
+                aria-current={value === sort ? "page" : undefined}
+                href={href}
+                key={value}
+              >
+                {t(`sort.${value}`)}
+              </LocaleLink>
+            );
+          })}
+        </nav>
       </div>
       <p className="meta">
         {t("projectCount", { count: result.totalCount })}
@@ -116,24 +142,26 @@ async function ProjectCatalogue({
       {result.repos.length === 0 ? (
         <p className="meta">{t("noProjects")}</p>
       ) : (
-        <ul className="hairline-list">
+        <div className="rows">
           {result.repos.map((repo) => (
-            <li key={repo.id}>
-              <a
-                className="hairline-row"
-                href={repo.html_url}
-                rel="noopener noreferrer"
-                target="_blank"
-              >
-                <div className="min-w-0">
-                  <strong>{repo.name}</strong>
-                  {repo.description ? <p>{repo.description}</p> : null}
-                </div>
-                <span>★ {repo.stargazers_count}</span>
-              </a>
-            </li>
+            <a
+              className="row"
+              href={repo.html_url}
+              key={repo.id}
+              rel="noopener noreferrer"
+              target="_blank"
+            >
+              <span className="row-title">{repo.name}</span>
+              <span className="row-meta">
+                {repo.language ? `${repo.language} · ` : ""}★{" "}
+                {repo.stargazers_count}
+              </span>
+              {repo.description ? (
+                <span className="row-sub">{repo.description}</span>
+              ) : null}
+            </a>
           ))}
-        </ul>
+        </div>
       )}
       <Pagination
         basePath="/projects"
@@ -142,6 +170,6 @@ async function ProjectCatalogue({
         query={filterQuery.toString()}
         totalPages={result.totalPages}
       />
-    </>
+    </div>
   );
 }

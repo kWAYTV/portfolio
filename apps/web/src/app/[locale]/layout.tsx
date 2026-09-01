@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { IBM_Plex_Mono, Newsreader } from "next/font/google";
+import { Archivo, JetBrains_Mono } from "next/font/google";
 import { notFound } from "next/navigation";
 import { NextIntlClientProvider } from "next-intl";
 import { getMessages, setRequestLocale } from "next-intl/server";
@@ -15,16 +15,17 @@ import { UmamiScript } from "@/modules/analytics/components/umami-script";
 import { routing } from "@/modules/i18n/routing";
 import { getStaticParams } from "@/modules/i18n/static";
 
-const newsreader = Newsreader({
-  style: ["normal", "italic"],
+const archivo = Archivo({
+  display: "swap",
   subsets: ["latin"],
-  variable: "--font-newsreader",
-  weight: ["400", "500", "600"],
+  variable: "--font-archivo",
+  weight: ["400", "500", "600", "700", "800"],
 });
 
-const ibmPlexMono = IBM_Plex_Mono({
+const jetbrainsMono = JetBrains_Mono({
+  display: "swap",
   subsets: ["latin"],
-  variable: "--font-ibm-plex-mono",
+  variable: "--font-jetbrains-mono",
   weight: ["400", "500"],
 });
 
@@ -54,7 +55,7 @@ export default async function LocaleLayout({
 
   return (
     <html lang={locale} suppressHydrationWarning>
-      <body className={`${newsreader.variable} ${ibmPlexMono.variable}`}>
+      <body className={`${archivo.variable} ${jetbrainsMono.variable}`}>
         <UmamiScript
           scriptUrl={env.NEXT_PUBLIC_UMAMI_URL}
           websiteId={env.NEXT_PUBLIC_UMAMI_WEBSITE_ID}

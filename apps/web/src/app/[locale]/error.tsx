@@ -19,13 +19,17 @@ export default function ErrorBoundary({
 
   return (
     <article className="document">
-      <h1 className="page-title">{t("title")}</h1>
-      <p className="lede">{t("description")}</p>
-      <p className="meta">
-        <button className="control-btn" onClick={reset} type="button">
+      <header>
+        <h1 className="page-title">{t("title")}</h1>
+        <p className="lede">{t("description")}</p>
+      </header>
+      <p className="control-group">
+        <button className="control" onClick={reset} type="button">
           {t("retry")}
         </button>
-        <LocaleLink href="/">{t("home")}</LocaleLink>
+        <LocaleLink className="control" href="/">
+          {t("home")}
+        </LocaleLink>
       </p>
     </article>
   );

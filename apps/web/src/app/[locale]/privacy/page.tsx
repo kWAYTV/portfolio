@@ -30,16 +30,22 @@ export default async function PrivacyPage({
         <h1 className="page-title">{t("title")}</h1>
         <p className="lede">{t("subtitle")}</p>
       </header>
-      <section>
-        <h2>{t("cookiesTitle")}</h2>
+      <section className="section">
+        <div className="section-head">
+          <h2>{t("cookiesTitle")}</h2>
+        </div>
         <p className="page-copy">{t("cookiesBody")}</p>
       </section>
-      <section>
-        <h2>{t("analyticsTitle")}</h2>
+      <section className="section">
+        <div className="section-head">
+          <h2>{t("analyticsTitle")}</h2>
+        </div>
         <p className="page-copy">{t("analyticsBody")}</p>
       </section>
-      <section>
-        <h2>{t("choicesTitle")}</h2>
+      <section className="section">
+        <div className="section-head">
+          <h2>{t("choicesTitle")}</h2>
+        </div>
         <p className="page-copy">{t("choicesBody")}</p>
         <CookiePreferencesButton />
       </section>

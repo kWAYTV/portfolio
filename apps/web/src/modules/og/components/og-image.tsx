@@ -8,52 +8,47 @@ export function OgImage({ title, description, subtitle }: OgImageProps) {
   return (
     <div
       style={{
-        background: "#f4efe3",
-        border: "16px solid #c9b89a",
+        background: "#fcfcfc",
+        borderBottom: "12px solid #111",
         display: "flex",
         flexDirection: "column",
         height: "100%",
-        justifyContent: "flex-end",
-        padding: 80,
+        justifyContent: "space-between",
+        padding: 72,
         width: "100%",
       }}
     >
       <div
         style={{
-          color: "#2b2218",
-          fontSize: title.length > 40 ? 48 : 72,
-          fontWeight: 500,
-          letterSpacing: "-0.03em",
-          lineHeight: 1.05,
-          maxWidth: "90%",
+          color: "#666",
+          fontFamily: "ui-monospace, monospace",
+          fontSize: 22,
+          letterSpacing: "0.09em",
+          textTransform: "uppercase",
         }}
       >
-        {title}
+        {subtitle}
       </div>
-      {description ? (
+      <div style={{ display: "flex", flexDirection: "column", gap: 20 }}>
         <div
           style={{
-            color: "#5c5144",
-            fontSize: 28,
-            marginTop: 16,
-            maxWidth: "80%",
+            color: "#111",
+            fontSize: title.length > 40 ? 56 : 88,
+            fontWeight: 800,
+            letterSpacing: "-0.045em",
+            lineHeight: 0.95,
+            maxWidth: "92%",
+            textTransform: "lowercase",
           }}
         >
-          {description}
+          {title}
         </div>
-      ) : null}
-      {subtitle ? (
-        <div
-          style={{
-            color: "#8a7a66",
-            fontFamily: "ui-monospace, monospace",
-            fontSize: 22,
-            marginTop: 28,
-          }}
-        >
-          {subtitle}
-        </div>
-      ) : null}
+        {description ? (
+          <div style={{ color: "#444", fontSize: 28, maxWidth: "80%" }}>
+            {description}
+          </div>
+        ) : null}
+      </div>
     </div>
   );
 }

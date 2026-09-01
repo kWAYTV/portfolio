@@ -14,12 +14,20 @@ export async function SiteFooter() {
   const year = await getCopyrightYear();
 
   return (
-    <footer className="site-footer">
-      <p className="footer-close">{t("close")}</p>
-      <p className="footer-meta">
-        <span>{year}</span>
-        <LocaleLink href="/privacy">{t("privacy")}</LocaleLink>
+    <footer className="colophon">
+      <p>
+        {t("colophon")} · {year}
       </p>
+      <nav aria-label={t("links")}>
+        <a
+          href="https://github.com/kWAYTV/portfolio"
+          rel="noopener noreferrer"
+          target="_blank"
+        >
+          {t("source")}
+        </a>
+        <LocaleLink href="/privacy">{t("privacy")}</LocaleLink>
+      </nav>
     </footer>
   );
 }

@@ -1,62 +1,67 @@
-/* Hallmark · pre-emit critique: P5 H5 E5 S5 R5 V4
- * Hallmark · genre: editorial · macrostructure: Long Document · theme: Newsprint
- * tone: austere · anchor hue: 78 · nav: N9 · footer: Ft6
- * enrichment: E9 year-tape SVG · studied: no
+/* Hallmark · pre-emit critique: P5 H5 E5 S5 R5 V5
+ * Hallmark · genre: editorial · macrostructure: Stat-Led · theme: custom (recorder)
+ * theme_axes: light / grotesk-heavy / neutral · nav: N6 · footer: Ft4
+ * enrichment: E9 contribution recorder SVG · design-system: design.md · designed-as-app
  */
 :root {
-  --color-paper: oklch(96.4% 0.014 78);
-  --color-paper-2: oklch(93.2% 0.016 76);
-  --color-rule: oklch(84% 0.014 74);
-  --color-ink: oklch(20% 0.02 52);
-  --color-ink-2: oklch(34% 0.016 58);
-  --color-muted: oklch(44% 0.014 64);
-  --color-accent: oklch(49% 0.155 38);
-  --color-focus: oklch(49% 0.155 38);
-  --color-tape: oklch(32% 0.04 48);
+  --color-paper: oklch(99% 0 0);
+  --color-paper-2: oklch(96% 0 0);
+  --color-rule: oklch(88% 0 0);
+  --color-rule-2: oklch(76% 0 0);
+  --color-ink: oklch(12% 0 0);
+  --color-ink-2: oklch(30% 0 0);
+  --color-muted: oklch(46% 0 0);
+  --color-focus: oklch(12% 0 0);
+  --color-trace: oklch(12% 0 0);
+  --color-trace-fill: oklch(12% 0 0 / 0.08);
 
-  --font-display:
-    var(--font-newsreader), "Iowan Old Style", "Palatino Linotype", Palatino,
-    serif;
-  --font-body:
-    var(--font-newsreader), "Iowan Old Style", "Palatino Linotype", Palatino,
-    serif;
+  --font-display: var(--font-archivo), "Helvetica Neue", Arial, sans-serif;
+  --font-body: var(--font-archivo), "Helvetica Neue", Arial, sans-serif;
   --font-mono:
-    var(--font-ibm-plex-mono), "IBM Plex Mono", ui-monospace, monospace;
+    var(--font-jetbrains-mono), ui-monospace, "SFMono-Regular", monospace;
 
   --space-2xs: 0.25rem;
   --space-xs: 0.5rem;
   --space-sm: 0.75rem;
   --space-md: 1rem;
   --space-lg: 1.5rem;
-  --space-xl: 2rem;
-  --space-2xl: 3rem;
-  --space-3xl: 4.5rem;
+  --space-xl: 2.5rem;
+  --space-2xl: 4rem;
+  --space-3xl: 6rem;
 
   --text-xs: 0.75rem;
   --text-sm: 0.875rem;
   --text-md: 1rem;
   --text-lg: 1.25rem;
-  --text-xl: 1.5rem;
-  --text-display: clamp(2rem, 4vw + 1rem, 3rem);
+  --text-xl: 1.625rem;
+  --text-2xl: 2.25rem;
+  --text-display: clamp(2.75rem, 4vw + 1.5rem, 4.5rem);
+  --text-figure: clamp(5.5rem, 17vw, 13rem);
 
-  --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
-  --ease-in: cubic-bezier(0.7, 0, 0.84, 0);
-  --ease-in-out: cubic-bezier(0.65, 0, 0.35, 1);
-  --dur-fast: 150ms;
-  --dur-med: 210ms;
+  --tracking-display: -0.045em;
+  --tracking-label: 0.09em;
 
-  --radius-control: 2px;
+  --ease-out: cubic-bezier(0.23, 1, 0.32, 1);
+  --ease-in-out: cubic-bezier(0.77, 0, 0.175, 1);
+  --dur-micro: 120ms;
+  --dur-short: 200ms;
+  --dur-long: 400ms;
+  --dur-focal: 900ms;
+
+  --radius-control: 0;
   --measure: 62ch;
+  --shell: 72rem;
 }
 
 .dark {
-  --color-paper: oklch(16% 0.014 70);
-  --color-paper-2: oklch(19% 0.016 68);
-  --color-rule: oklch(30% 0.014 66);
-  --color-ink: oklch(93% 0.012 80);
-  --color-ink-2: oklch(78% 0.014 76);
-  --color-muted: oklch(70% 0.012 72);
-  --color-accent: oklch(72% 0.13 42);
-  --color-focus: oklch(72% 0.13 42);
-  --color-tape: oklch(78% 0.06 50);
+  --color-paper: oklch(9% 0 0);
+  --color-paper-2: oklch(14% 0 0);
+  --color-rule: oklch(24% 0 0);
+  --color-rule-2: oklch(34% 0 0);
+  --color-ink: oklch(97% 0 0);
+  --color-ink-2: oklch(82% 0 0);
+  --color-muted: oklch(64% 0 0);
+  --color-focus: oklch(97% 0 0);
+  --color-trace: oklch(97% 0 0);
+  --color-trace-fill: oklch(97% 0 0 / 0.1);
 }

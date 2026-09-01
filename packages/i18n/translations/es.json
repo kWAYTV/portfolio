@@ -1,6 +1,6 @@
 {
   "common": {
-    "siteDescription": "Bienvenido a mi espacio personal.",
+    "siteDescription": "desarrollador · gamer · autodidacta",
     "siteName": "Martin Vila",
     "siteTitle": "Martin Vila"
   },
@@ -15,16 +15,26 @@
     "selectLanguage": "Seleccionar idioma"
   },
   "footer": {
-    "close": "Tuyo, Martin.",
-    "privacy": "privacidad"
+    "colophon": "Compuesto en Archivo y JetBrains Mono. Los datos de contribuciones se leen de la API GraphQL de GitHub y se refrescan cada hora. Hecho con Next.js, servido estático.",
+    "links": "Pie de página",
+    "privacy": "privacidad",
+    "source": "código"
   },
   "hero": {
     "tagline": "desarrollador · gamer · autodidacta",
-    "bio": "Construyendo software minimalista y reflexivo. Explorando la intersección entre diseño e ingeniería."
+    "bio": "Construyo software pequeño y deliberado: servicios backend, aplicaciones web y las herramientas que los rodean. Actualmente busco nuevo trabajo."
   },
   "graph": {
-    "caption": "{count} contribuciones · últimos 365 días",
-    "empty": "El libro del año espera a que GitHub conteste."
+    "qualifier": "contribuciones registradas en GitHub en los últimos 365 días.",
+    "stage": "contribuciones diarias · 365 días",
+    "count": "{count, plural, =0 {sin contribuciones} one {# contribución} other {# contribuciones}}",
+    "scrubHint": "Registrador de contribuciones. Mueve el puntero o usa las flechas para leer un día.",
+    "activeDays": "Días activos",
+    "longestStreak": "Racha más larga",
+    "currentStreak": "Racha actual",
+    "busiestDay": "Día más activo",
+    "days": "{count, plural, one {día} other {días}}",
+    "empty": "El registrador espera a que GitHub responda."
   },
   "about": {
     "title": "Sobre mí",
@@ -56,11 +66,12 @@
   },
   "projects": {
     "title": "Proyectos",
-    "subtitle": "Trabajo open source",
+    "subtitle": "Repositorios públicos, ordenables y buscables. Se omiten forks y trabajo archivado.",
     "featured": "Trabajo",
     "viewAll": "todos los proyectos →",
     "search": "Buscar",
-    "searchPlaceholder": "Buscar…",
+    "searchPlaceholder": "Buscar repositorios",
+    "loading": "Leyendo repositorios…",
     "noProjects": "No se encontraron proyectos",
     "projectCount": "{count, plural, one {# proyecto} other {# proyectos}}",
     "matching": "que coinciden con “{query}”",
@@ -75,7 +86,8 @@
   },
   "blog": {
     "title": "Notas",
-    "subtitle": "Notas breves del trabajo actual. Más posts aparecerán aquí conforme se publiquen.",
+    "subtitle": "Notas breves del trabajo actual. Más entradas aparecerán aquí conforme se escriban.",
+    "viewAll": "todas las notas →",
     "backToBlog": "← notas",
     "noPosts": "Aún no hay posts.",
     "postCount": "{count, plural, one {# nota} other {# notas}}",

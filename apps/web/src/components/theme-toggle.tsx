@@ -22,8 +22,13 @@ export function ThemeToggle() {
   }, [nextTheme, setTheme]);
 
   return (
-    <button className="control-btn" onClick={handleClick} type="button">
-      {mounted ? t(nextTheme) : t("light")}
+    <button
+      aria-pressed={isDark}
+      className="control"
+      onClick={handleClick}
+      type="button"
+    >
+      {mounted ? t(nextTheme) : t("dark")}
     </button>
   );
 }

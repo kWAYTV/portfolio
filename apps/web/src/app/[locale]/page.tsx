@@ -1,7 +1,7 @@
+import { summarizeContributions } from "@repo/github";
 import { getTranslations, setRequestLocale } from "next-intl/server";
-import { Suspense } from "react";
+import { ContributionRecorder } from "@/components/contribution-recorder";
 import { SocialLinks } from "@/components/social-links";
-import { YearTape } from "@/components/year-tape";
 import { getSortedPosts } from "@/modules/blog/lib/blog";
 import { HeroQuote } from "@/modules/home/components/hero-quote";
 import { LocaleLink } from "@/modules/i18n/routing";
@@ -35,126 +35,168 @@ export default async function HomePage({
 }) {
   const { locale } = await params;
   setRequestLocale(locale);
-
-  const t = await getTranslations();
+  const t = await getTranslations({ locale, namespace: "hero" });
 
   return (
     <article className="document">
-      <header>
-        <h1>{t("common.siteName")}</h1>
-        <p className="tagline">{t("hero.tagline")}</p>
-      </header>
-      <p className="lede">{t("hero.bio")}</p>
-      <SocialLinks />
-      <Suspense fallback={null}>
-        <HomeTape emptyLabel={t("graph.empty")} locale={locale} />
-      </Suspense>
-      <section>
-        <h2>{t("projects.featured")}</h2>
-        <Suspense fallback={null}>
-          <HomeWork locale={locale} />
-        </Suspense>
+      <section className="stat-hero">
+        <p className="lede">
+          {t("bio")} <span className="label">{t("tagline")}</span>
+        </p>
+        <SocialLinks />
+        <StatHero locale={locale} />
       </section>
-      <section>
-        <h2>{t("blog.title")}</h2>
-        <HomeNotes locale={locale} />
-      </section>
+      <FeaturedWork locale={locale} />
+      <LatestNotes locale={locale} />
       <HeroQuote />
     </article>
   );
 }
 
-async function HomeTape({
-  emptyLabel,
-  locale,
-}: {
-  emptyLabel: string;
-  locale: string;
-}) {
+async function StatHero({ locale }: { locale: string }) {
   const t = await getTranslations({ locale, namespace: "graph" });
   const calendar = await getGitHubContributionCalendar();
-  const resolvedCaption = calendar
-    ? t("caption", { count: calendar.total })
-    : emptyLabel;
 
-  return (
-    <div className="year-tape">
-      <YearTape
-        calendar={calendar}
-        caption={resolvedCaption}
-        emptyLabel={emptyLabel}
-      />
-    </div>
-  );
-}
-
-async function HomeWork({ locale }: { locale: string }) {
-  const t = await getTranslations({ locale, namespace: "projects" });
-  const repos = getFeaturedRepos(await getGitHubRepos());
-
-  if (repos.length === 0) {
-    return <p className="meta">{t("noProjects")}</p>;
+  if (!calendar || calendar.days.length === 0) {
+    return <p className="meta">{t("empty")}</p>;
   }
+
+  const stats = summarizeContributions(calendar.days);
+  const formatted = new Intl.NumberFormat(locale).format(calendar.total);
+  const busiestDate = stats.busiest
+    ? new Intl.DateTimeFormat(locale, {
+        day: "numeric",
+        month: "short",
+        timeZone: "UTC",
+      }).format(new Date(`${stats.busiest.date}T00:00:00Z`))
+    : null;
 
   return (
     <>
-      <ul className="hairline-list">
-        {repos.map((repo) => (
-          <li key={repo.id}>
-            <a
-              className="hairline-row"
-              href={repo.html_url}
-              rel="noopener noreferrer"
-              target="_blank"
-            >
-              <div className="min-w-0">
-                <strong>{repo.name}</strong>
-                {repo.description ? <p>{repo.description}</p> : null}
-              </div>
-              <span>★ {repo.stargazers_count}</span>
-            </a>
-          </li>
-        ))}
-      </ul>
-      <p className="meta">
-        <LocaleLink href="/projects">{t("viewAll")}</LocaleLink>
-      </p>
+      <div className="figure-block">
+        <span
+          aria-hidden="true"
+          className="figure"
+          style={{ "--target": calendar.total } as React.CSSProperties}
+        />
+        <span className="sr-only">{formatted}</span>
+        <p className="qualifier">{t("qualifier")}</p>
+      </div>
+      <ContributionRecorder
+        days={calendar.days}
+        locale={locale}
+        max={stats.max}
+      />
+      <dl className="readouts">
+        <div className="readout">
+          <dt className="label">{t("activeDays")}</dt>
+          <dd>
+            {stats.activeDays}
+            <small> / {calendar.days.length}</small>
+          </dd>
+        </div>
+        <div className="readout">
+          <dt className="label">{t("longestStreak")}</dt>
+          <dd>
+            {stats.longestStreak}
+            <small> {t("days", { count: stats.longestStreak })}</small>
+          </dd>
+        </div>
+        <div className="readout">
+          <dt className="label">{t("currentStreak")}</dt>
+          <dd>
+            {stats.currentStreak}
+            <small> {t("days", { count: stats.currentStreak })}</small>
+          </dd>
+        </div>
+        <div className="readout">
+          <dt className="label">{t("busiestDay")}</dt>
+          <dd>
+            {stats.busiest?.count ?? 0}
+            <small> {busiestDate}</small>
+          </dd>
+        </div>
+      </dl>
     </>
   );
 }
 
-async function HomeNotes({ locale }: { locale: string }) {
-  const t = await getTranslations({ locale, namespace: "blog" });
-  const posts = getSortedPosts(locale).slice(0, 3);
-
-  if (posts.length === 0) {
-    return <p className="meta">{t("noPosts")}</p>;
-  }
+async function FeaturedWork({ locale }: { locale: string }) {
+  const t = await getTranslations({ locale, namespace: "projects" });
+  const repos = getFeaturedRepos(await getGitHubRepos());
 
   return (
-    <ul className="hairline-list">
-      {posts.map((post) => {
-        const data = post.data as {
-          date?: string;
-          title: string;
-        };
-        return (
-          <li key={post.url}>
-            <LocaleLink className="hairline-row" href={post.url}>
-              <strong>{data.title}</strong>
-              <time>
-                {data.date
-                  ? new Date(data.date).toLocaleDateString(locale, {
-                      day: "2-digit",
-                      month: "short",
-                      year: "numeric",
-                    })
-                  : t("soon")}
-              </time>
-            </LocaleLink>
-          </li>
-        );
-      })}
-    </ul>
+    <section className="section">
+      <div className="section-head">
+        <h2>{t("featured")}</h2>
+        <LocaleLink className="label" href="/projects">
+          {t("viewAll")}
+        </LocaleLink>
+      </div>
+      {repos.length === 0 ? (
+        <p className="meta">{t("noProjects")}</p>
+      ) : (
+        <div className="rows">
+          {repos.map((repo) => (
+            <a
+              className="row"
+              href={repo.html_url}
+              key={repo.id}
+              rel="noopener noreferrer"
+              target="_blank"
+            >
+              <span className="row-title">{repo.name}</span>
+              <span className="row-meta">
+                {repo.language ? `${repo.language} · ` : ""}★{" "}
+                {repo.stargazers_count}
+              </span>
+              {repo.description ? (
+                <span className="row-sub">{repo.description}</span>
+              ) : null}
+            </a>
+          ))}
+        </div>
+      )}
+    </section>
+  );
+}
+
+async function LatestNotes({ locale }: { locale: string }) {
+  const t = await getTranslations({ locale, namespace: "blog" });
+  const posts = getSortedPosts(locale).slice(0, 3);
+  const formatter = new Intl.DateTimeFormat(locale, {
+    day: "2-digit",
+    month: "short",
+    year: "numeric",
+  });
+
+  return (
+    <section className="section">
+      <div className="section-head">
+        <h2>{t("title")}</h2>
+        <LocaleLink className="label" href="/blog">
+          {t("viewAll")}
+        </LocaleLink>
+      </div>
+      {posts.length === 0 ? (
+        <p className="meta">{t("noPosts")}</p>
+      ) : (
+        <div className="rows">
+          {posts.map((post) => {
+            const data = post.data as { date?: string; title: string };
+            return (
+              <LocaleLink className="row" href={post.url} key={post.url}>
+                <span className="row-title">{data.title}</span>
+                <span className="row-meta">
+                  {data.date
+                    ? formatter.format(new Date(data.date))
+                    : t("soon")}
+                </span>
+              </LocaleLink>
+            );
+          })}
+        </div>
+      )}
+    </section>
   );
 }

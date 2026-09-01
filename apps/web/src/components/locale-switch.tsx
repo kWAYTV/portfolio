@@ -30,7 +30,7 @@ function LocaleButton({
   return (
     <button
       aria-current={isCurrent ? "true" : undefined}
-      className="control-btn"
+      className="control"
       disabled={isCurrent}
       onClick={handleClick}
       type="button"
@@ -45,7 +45,7 @@ export function LocaleSwitch() {
   const pathname = useLocalePathname();
 
   return (
-    <span className="locale-switch">
+    <span className="control-group">
       {locales.map((loc) => (
         <LocaleButton
           current={locale}

@@ -55,12 +55,12 @@ export default async function BlogPostPage({
   return (
     <article className="document">
       <BlogPostViewTracker slug={slug} />
-      <p className="meta">
-        <LocaleLink href="/blog">{t("backToBlog")}</LocaleLink>
-      </p>
       <header>
+        <LocaleLink className="label" href="/blog">
+          {t("backToBlog")}
+        </LocaleLink>
         <h1 className="page-title">{data.title}</h1>
-        <p className="tagline">
+        <p className="meta">
           {new Date(data.date).toLocaleDateString(locale, {
             day: "2-digit",
             month: "long",

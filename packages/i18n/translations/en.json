@@ -1,6 +1,6 @@
 {
   "common": {
-    "siteDescription": "welcome to my personal space.",
+    "siteDescription": "developer · gamer · self-taught",
     "siteName": "Martin Vila",
     "siteTitle": "Martin Vila"
   },
@@ -8,23 +8,33 @@
     "home": "home",
     "about": "about",
     "projects": "projects",
-    "blog": "blog",
+    "blog": "notes",
     "menu": "Menu"
   },
   "localeSwitcher": {
     "selectLanguage": "Select language"
   },
   "footer": {
-    "close": "Yours, Martin.",
-    "privacy": "privacy"
+    "colophon": "Set in Archivo and JetBrains Mono. Contribution data read from the GitHub GraphQL API and refreshed hourly. Built with Next.js, served static.",
+    "links": "Footer",
+    "privacy": "privacy",
+    "source": "source"
   },
   "hero": {
     "tagline": "developer · gamer · self-taught",
-    "bio": "Building minimal, thoughtful software. Currently exploring the intersection of design and engineering."
+    "bio": "I build small, deliberate software — backend services, web apps, and the tools around them. Currently looking for new work."
   },
   "graph": {
-    "caption": "{count} contributions · last 365 days",
-    "empty": "The year ledger is quiet until GitHub answers."
+    "qualifier": "contributions recorded on GitHub in the last 365 days.",
+    "stage": "daily contributions · 365 days",
+    "count": "{count, plural, =0 {no contributions} one {# contribution} other {# contributions}}",
+    "scrubHint": "Contribution recorder. Move the pointer or use the arrow keys to read a day.",
+    "activeDays": "Active days",
+    "longestStreak": "Longest streak",
+    "currentStreak": "Current streak",
+    "busiestDay": "Busiest day",
+    "days": "{count, plural, one {day} other {days}}",
+    "empty": "The recorder is idle until GitHub answers."
   },
   "about": {
     "title": "About",
@@ -56,11 +66,12 @@
   },
   "projects": {
     "title": "Projects",
-    "subtitle": "Open source work",
+    "subtitle": "Public repositories, sorted and searchable. Forks and archived work are left out.",
     "featured": "Work",
     "viewAll": "all projects →",
     "search": "Search",
-    "searchPlaceholder": "Search…",
+    "searchPlaceholder": "Search repositories",
+    "loading": "Reading repositories…",
     "noProjects": "No projects found",
     "projectCount": "{count, plural, one {# project} other {# projects}}",
     "matching": "matching “{query}”",
@@ -75,7 +86,8 @@
   },
   "blog": {
     "title": "Notes",
-    "subtitle": "Quiet notes from current work. More entries will fall in here as they are published.",
+    "subtitle": "Short notes from current work. More entries land here as they are written.",
+    "viewAll": "all notes →",
     "backToBlog": "← notes",
     "noPosts": "No posts yet.",
     "postCount": "{count, plural, one {# note} other {# notes}}",

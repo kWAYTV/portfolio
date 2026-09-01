@@ -6,10 +6,14 @@ export default async function NotFoundPage() {
 
   return (
     <article className="document">
-      <h1 className="page-title">{t("title")}</h1>
-      <p className="lede">{t("description")}</p>
-      <p className="meta">
-        <LocaleLink href="/">{t("home")}</LocaleLink>
+      <header>
+        <h1 className="page-title">{t("title")}</h1>
+        <p className="lede">{t("description")}</p>
+      </header>
+      <p>
+        <LocaleLink className="control" href="/">
+          {t("home")}
+        </LocaleLink>
       </p>
     </article>
   );

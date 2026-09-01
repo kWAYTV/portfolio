@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { getTranslations, setRequestLocale } from "next-intl/server";
+import { SocialLinks } from "@/components/social-links";
 import { experience } from "@/modules/about/consts/experience";
 import { getPageImageUrl } from "@/modules/og/lib/og";
 
@@ -33,20 +34,27 @@ export default async function AboutPage({
       <header>
         <h1 className="page-title">{t("about.title")}</h1>
         <p className="lede">{t("about.bio")}</p>
+        <SocialLinks />
       </header>
-      <section>
-        <h2>{t("about.experience")}</h2>
-        <ul className="hairline-list">
+      <section className="section">
+        <div className="section-head">
+          <h2>{t("about.experience")}</h2>
+        </div>
+        <div className="rows">
           {experience.map((item) => (
-            <li className="hairline-row" key={item.id}>
-              <div className="min-w-0">
-                <strong>{t(`experience.${item.key}.role`)}</strong>
-                <p>{t(`experience.${item.key}.company`)}</p>
-              </div>
-              <span>{t(`experience.${item.key}.period`)}</span>
-            </li>
+            <div className="row" key={item.id}>
+              <span className="row-title">
+                {t(`experience.${item.key}.role`)}
+              </span>
+              <span className="row-meta">
+                {t(`experience.${item.key}.period`)}
+              </span>
+              <span className="row-sub">
+                {t(`experience.${item.key}.company`)}
+              </span>
+            </div>
           ))}
-        </ul>
+        </div>
       </section>
     </article>
   );
