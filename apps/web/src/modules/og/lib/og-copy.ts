@@ -5,52 +5,52 @@ export interface OgCopy {
 }
 
 export const PAGE_COPY: Record<string, Record<string, OgCopy>> = {
-  home: {
+  about: {
     en: {
-      title: "Martin Vila",
-      description: "welcome to my personal space.",
-      subtitle: "Portfolio",
+      description: "A bit about me",
+      subtitle: "Martin Vila",
+      title: "About",
     },
     es: {
-      title: "Martin Vila",
-      description: "Bienvenido a mi espacio personal.",
-      subtitle: "Portafolio",
+      description: "Un poco sobre mí",
+      subtitle: "Martin Vila",
+      title: "About",
     },
   },
   blog: {
     en: {
-      title: "Blog",
       description: "Quiet notes from current work.",
       subtitle: "Martin Vila",
+      title: "Blog",
     },
     es: {
-      title: "Blog",
       description: "Notas breves del trabajo actual.",
       subtitle: "Martin Vila",
+      title: "Blog",
+    },
+  },
+  home: {
+    en: {
+      description: "welcome to my personal space.",
+      subtitle: "Portfolio",
+      title: "Martin Vila",
+    },
+    es: {
+      description: "Bienvenido a mi espacio personal.",
+      subtitle: "Portafolio",
+      title: "Martin Vila",
     },
   },
   projects: {
     en: {
-      title: "Projects",
       description: "Open source work",
       subtitle: "Martin Vila",
+      title: "Projects",
     },
     es: {
-      title: "Projects",
       description: "Trabajo open source",
       subtitle: "Martin Vila",
-    },
-  },
-  about: {
-    en: {
-      title: "About",
-      description: "A bit about me",
-      subtitle: "Martin Vila",
-    },
-    es: {
-      title: "About",
-      description: "Un poco sobre mí",
-      subtitle: "Martin Vila",
+      title: "Projects",
     },
   },
 };

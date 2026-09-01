@@ -9,11 +9,15 @@ interface PostData {
   title: string;
 }
 
+function postData(page: { data: unknown }): PostData {
+  return page.data as PostData;
+}
+
 export function getSortedPosts(locale: string) {
   const blog = getBlog(locale);
   return blog.getPages().sort((a, b) => {
-    const dateA = new Date((a.data as PostData).date ?? 0).getTime();
-    const dateB = new Date((b.data as PostData).date ?? 0).getTime();
+    const dateA = new Date(postData(a).date ?? 0).getTime();
+    const dateB = new Date(postData(b).date ?? 0).getTime();
     return dateB - dateA;
   });
 }
@@ -27,7 +31,7 @@ export function getPaginatedPosts(locale: string, page: number) {
 
   return {
     posts,
-    totalPages,
     totalCount: allPosts.length,
+    totalPages,
   };
 }

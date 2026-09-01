@@ -63,24 +63,24 @@ export function segmentsToPagePath(slug: string[]): PagePath | null {
   }
 
   if (rest.length === 0) {
-    return { type: "home", locale };
+    return { locale, type: "home" };
   }
   if (rest.length === 1 && rest[0] === "blog") {
-    return { type: "blog", locale };
+    return { locale, type: "blog" };
   }
   if (rest.length === 1 && rest[0] === "projects") {
-    return { type: "projects", locale };
+    return { locale, type: "projects" };
   }
   if (rest.length === 1 && rest[0] === "about") {
-    return { type: "about", locale };
+    return { locale, type: "about" };
   }
   if (rest.length === 2 && rest[0] === "blog" && rest[1] !== "page") {
-    return { type: "blog-post", locale, slug: rest[1] };
+    return { locale, slug: rest[1], type: "blog-post" };
   }
   if (rest.length === 3 && rest[0] === "blog" && rest[1] === "page") {
     const num = Number.parseInt(rest[2], 10);
     if (Number.isFinite(num)) {
-      return { type: "blog-page", locale, num };
+      return { locale, num, type: "blog-page" };
     }
   }
   return null;

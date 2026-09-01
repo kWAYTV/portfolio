@@ -7,10 +7,12 @@ function mergeDeep<T extends object>(base: T, over: Partial<T>): T {
     const a = out[k];
     const b = over[k];
     if (
-      b != null &&
+      b !== undefined &&
+      b !== null &&
       typeof b === "object" &&
       !Array.isArray(b) &&
-      a != null &&
+      a !== undefined &&
+      a !== null &&
       typeof a === "object" &&
       !Array.isArray(a)
     ) {

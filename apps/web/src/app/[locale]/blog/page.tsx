@@ -1,12 +1,8 @@
 import type { Metadata } from "next";
 import { getTranslations, setRequestLocale } from "next-intl/server";
-import { PageContent } from "@/components/shared/page-content";
-import { BlogHeader } from "@/modules/blog/components/blog-header";
-import { BlogListContent } from "@/modules/blog/components/blog-list-content";
+import { Pagination } from "@/components/pagination";
 import { getPaginatedPosts } from "@/modules/blog/lib/blog";
-import { CodeView } from "@/modules/ide/components/editor/code-view";
-import { EditorContent } from "@/modules/ide/components/editor/editor-content";
-import { blogCode } from "@/modules/ide/consts/code-content";
+import { LocaleLink } from "@/modules/i18n/routing";
 import { getPageImageUrl } from "@/modules/og/lib/og";
 
 export async function generateMetadata({
@@ -17,10 +13,10 @@ export async function generateMetadata({
   const { locale } = await params;
   const t = await getTranslations({ locale, namespace: "blog" });
   return {
-    title: `${t("title")} | Martin Vila`,
     openGraph: {
       images: [{ url: getPageImageUrl([locale, "blog"]) }],
     },
+    title: `${t("title")} | Martin Vila`,
   };
 }
 
@@ -31,41 +27,60 @@ export default async function BlogPage({
 }) {
   const { locale } = await params;
   setRequestLocale(locale);
+  return <BlogIndex locale={locale} page={1} />;
+}
 
-  const { posts, totalPages, totalCount } = getPaginatedPosts(locale, 1);
+export async function BlogIndex({
+  locale,
+  page,
+}: {
+  locale: string;
+  page: number;
+}) {
+  const { posts, totalPages, totalCount } = getPaginatedPosts(locale, page);
   const t = await getTranslations({ locale, namespace: "blog" });
-
-  if (totalCount === 0) {
-    return (
-      <EditorContent
-        preview={
-          <PageContent>
-            <BlogHeader />
-            <p className="text-muted-foreground/60 text-xs sm:text-sm">
-              {t("noPosts")}
-            </p>
-          </PageContent>
-        }
-        source={<CodeView code={blogCode} lang="tsx" />}
-      />
-    );
-  }
+  const formatter = new Intl.DateTimeFormat(locale, {
+    day: "2-digit",
+    month: "short",
+    year: "numeric",
+  });
 
   return (
-    <EditorContent
-      preview={
-        <PageContent>
-          <BlogHeader />
-          <BlogListContent
-            currentPage={1}
-            locale={locale}
-            postCountLabel={t("postCount", { count: totalCount })}
-            posts={posts}
-            totalPages={totalPages}
-          />
-        </PageContent>
-      }
-      source={<CodeView code={blogCode} lang="tsx" />}
-    />
+    <article className="document">
+      <header>
+        <h1 className="page-title">{t("title")}</h1>
+        <p className="lede">{t("subtitle")}</p>
+      </header>
+      <section className="section">
+        <p className="meta">{t("postCount", { count: totalCount })}</p>
+        {posts.length === 0 ? (
+          <p className="meta">{t("noPosts")}</p>
+        ) : (
+          <div className="rows">
+            {posts.map((post) => {
+              const data = post.data as {
+                date?: string;
+                description?: string;
+                title: string;
+              };
+              return (
+                <LocaleLink className="row" href={post.url} key={post.url}>
+                  <span className="row-title">{data.title}</span>
+                  <span className="row-meta">
+                    {data.date
+                      ? formatter.format(new Date(data.date))
+                      : t("soon")}
+                  </span>
+                  {data.description ? (
+                    <span className="row-sub">{data.description}</span>
+                  ) : null}
+                </LocaleLink>
+              );
+            })}
+          </div>
+        )}
+        <Pagination currentPage={page} totalPages={totalPages} />
+      </section>
+    </article>
   );
 }

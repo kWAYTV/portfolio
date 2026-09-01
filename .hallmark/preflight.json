@@ -1,21 +1,21 @@
 {
-  "scannedAt": "2026-07-25",
-  "fontStack": "Geist + Geist Mono (next/font) → replacing with Space Grotesk + Geist + JetBrains Mono per Cobalt",
-  "palette": "OKLCH custom properties in apps/web/src/index.css (shadcn)",
-  "motion": "next-themes view transitions; no framer-motion/gsap",
-  "spacing": "Tailwind v4 default + --spacing 0.25rem",
+  "scannedAt": "2026-09-01",
+  "fontStack": "Newsreader + IBM Plex Mono (next/font)",
+  "palette": "OKLCH Newsprint tokens in tokens.css",
+  "motion": "none on page; theme view-transition optional",
+  "spacing": "4-pt named scale",
   "framework": "Next.js 16 App Router + Turborepo",
   "preserve": [
-    "IDE shell functionality",
     "routes",
     "i18n",
     "analytics consent",
-    "GitHub data"
+    "GitHub data",
+    "blog MDX",
+    "OG images"
   ],
   "introduce": [
-    "Cobalt tokens",
-    "macrostructure families",
-    "hairline list voice",
-    "display type"
+    "Long Document shell",
+    "year-tape contribution ledger",
+    "Newsprint tokens"
   ]
 }

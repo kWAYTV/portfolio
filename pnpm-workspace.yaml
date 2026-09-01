@@ -1,7 +1,11 @@
 packages:
   - apps/*
   - packages/*
+allowBuilds:
+  '@parcel/watcher': true
+  '@swc/core': true
+  esbuild: true
 catalog:
   dotenv: ^17.4.2
-  zod: ^4.4.3
-  typescript: ^5.9.3
+  typescript: ^7.0.2
+  zod: ^4.5.4

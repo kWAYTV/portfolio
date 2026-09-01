@@ -1,13 +1,8 @@
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { getTranslations, setRequestLocale } from "next-intl/server";
-import { PageContent } from "@/components/shared/page-content";
-import { BlogHeader } from "@/modules/blog/components/blog-header";
-import { BlogListContent } from "@/modules/blog/components/blog-list-content";
+import { BlogIndex } from "@/app/[locale]/blog/page";
 import { getPaginatedPosts } from "@/modules/blog/lib/blog";
-import { CodeView } from "@/modules/ide/components/editor/code-view";
-import { EditorContent } from "@/modules/ide/components/editor/editor-content";
-import { blogCode } from "@/modules/ide/consts/code-content";
 import { getPageImageUrl } from "@/modules/og/lib/og";
 
 export async function generateMetadata({
@@ -18,10 +13,10 @@ export async function generateMetadata({
   const { locale, num } = await params;
   const t = await getTranslations({ locale, namespace: "blog" });
   return {
-    title: `${t("title")} | Martin Vila`,
     openGraph: {
       images: [{ url: getPageImageUrl([locale, "blog", "page", num]) }],
     },
+    title: `${t("title")} | Martin Vila`,
   };
 }
 
@@ -31,12 +26,14 @@ export function generateStaticParams(): { locale: string; num: string }[] {
 
   for (const locale of locales) {
     const { totalPages } = getPaginatedPosts(locale, 1);
-    for (let page = 2; page <= totalPages; page++) {
-      params.push({ locale, num: String(page) });
-    }
+    params.push(
+      ...Array.from({ length: Math.max(0, totalPages - 1) }, (_, index) => ({
+        locale,
+        num: String(index + 2),
+      }))
+    );
   }
 
-  // Cache Components requires at least one param for build-time validation
   if (params.length === 0) {
     return [
       { locale: "en", num: "2" },
@@ -59,28 +56,10 @@ export default async function BlogPageNum({
     notFound();
   }
 
-  const { posts, totalPages, totalCount } = getPaginatedPosts(locale, page);
+  const { totalPages } = getPaginatedPosts(locale, page);
   if (page > totalPages) {
     notFound();
   }
 
-  const t = await getTranslations({ locale, namespace: "blog" });
-
-  return (
-    <EditorContent
-      preview={
-        <PageContent>
-          <BlogHeader />
-          <BlogListContent
-            currentPage={page}
-            locale={locale}
-            postCountLabel={t("postCount", { count: totalCount })}
-            posts={posts}
-            totalPages={totalPages}
-          />
-        </PageContent>
-      }
-      source={<CodeView code={blogCode} lang="tsx" />}
-    />
-  );
+  return <BlogIndex locale={locale} page={page} />;
 }

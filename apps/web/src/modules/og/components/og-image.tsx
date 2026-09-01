@@ -1,62 +1,54 @@
 interface OgImageProps {
   description?: string;
-  /** Optional subtitle below description (e.g. "Portfolio", "Blog") */
   subtitle?: string;
   title: string;
 }
-
-const BG = "linear-gradient(135deg, #0f0f0f 0%, #1a1a1a 100%)";
 
 export function OgImage({ title, description, subtitle }: OgImageProps) {
   return (
     <div
       style={{
-        background: BG,
-        width: "100%",
-        height: "100%",
+        background: "#fcfcfc",
+        borderBottom: "12px solid #111",
         display: "flex",
         flexDirection: "column",
-        alignItems: "center",
-        justifyContent: "center",
-        padding: 80,
+        height: "100%",
+        justifyContent: "space-between",
+        padding: 72,
+        width: "100%",
       }}
     >
       <div
         style={{
-          fontSize: title.length > 40 ? 48 : 72,
-          fontWeight: 600,
-          color: "#ffffff",
-          letterSpacing: "-0.02em",
-          textAlign: "center",
-          maxWidth: "90%",
+          color: "#666",
+          fontFamily: "ui-monospace, monospace",
+          fontSize: 22,
+          letterSpacing: "0.09em",
+          textTransform: "uppercase",
         }}
       >
-        {title}
+        {subtitle}
       </div>
-      {description && (
+      <div style={{ display: "flex", flexDirection: "column", gap: 20 }}>
         <div
           style={{
-            fontSize: 28,
-            color: "#a3a3a3",
-            marginTop: 16,
-            textAlign: "center",
-            maxWidth: "85%",
+            color: "#111",
+            fontSize: title.length > 40 ? 56 : 88,
+            fontWeight: 800,
+            letterSpacing: "-0.045em",
+            lineHeight: 0.95,
+            maxWidth: "92%",
+            textTransform: "lowercase",
           }}
         >
-          {description}
+          {title}
         </div>
-      )}
-      {subtitle && (
-        <div
-          style={{
-            fontSize: 24,
-            color: "#525252",
-            marginTop: description ? 32 : 48,
-          }}
-        >
-          {subtitle}
-        </div>
-      )}
+        {description ? (
+          <div style={{ color: "#444", fontSize: 28, maxWidth: "80%" }}>
+            {description}
+          </div>
+        ) : null}
+      </div>
     </div>
   );
 }

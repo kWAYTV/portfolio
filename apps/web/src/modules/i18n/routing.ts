@@ -3,13 +3,13 @@ import { createNavigation } from "next-intl/navigation";
 import { defineRouting } from "next-intl/routing";
 
 export const routing = defineRouting({
-  locales: Object.keys(config.locales) as string[],
   defaultLocale: config.defaultLocale,
   localeCookie: {
     name: config.localeCookieName,
   },
-  localePrefix: "as-needed",
   localeDetection: false,
+  localePrefix: "as-needed",
+  locales: Object.keys(config.locales) as string[],
 });
 
 export const {

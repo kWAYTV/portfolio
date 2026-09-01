@@ -1,5 +1,29 @@
 [
   {
+    "date": "2026-09-01",
+    "macrostructure": "Stat-Led",
+    "theme": "custom",
+    "theme_axes": "light / grotesk-heavy / neutral",
+    "vibe": "strip-chart recorder, black ink on white paper",
+    "enrichment": "E9 contribution recorder SVG",
+    "brief": "Monochrome remake — Archivo + JetBrains Mono, motion.dev stylus, static cache components",
+    "scope": "app",
+    "nav": "N6",
+    "footer": "Ft4",
+    "genre": "editorial"
+  },
+  {
+    "date": "2026-09-01",
+    "macrostructure": "Long Document",
+    "theme": "Newsprint",
+    "enrichment": "year-tape SVG",
+    "brief": "Static remake of portfolio — keep features, drop IDE, year ledger",
+    "scope": "app",
+    "nav": "N9",
+    "footer": "Ft6",
+    "genre": "editorial"
+  },
+  {
     "date": "2026-07-25",
     "macrostructure": "Workbench",
     "theme": "Cobalt",
