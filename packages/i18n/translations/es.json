@@ -24,8 +24,9 @@
     "bio": "Construyo software pequeño y deliberado: servicios backend, aplicaciones web y las herramientas que los rodean. Actualmente busco nuevo trabajo."
   },
   "graph": {
-    "qualifier": "contribuciones registradas en GitHub en los últimos {days} días.",
-    "stage": "contribuciones diarias · {days} días",
+    "title": "actividad",
+    "total": "Contribuciones",
+    "stage": "GitHub · últimos {days} días",
     "count": "{count, plural, =0 {sin contribuciones} one {# contribución} other {# contribuciones}}",
     "scrubHint": "Registrador de contribuciones. Mueve el puntero o usa las flechas para leer un día.",
     "activeDays": "Días activos",

@@ -34,7 +34,7 @@
   --text-xl: 1.625rem;
   --text-2xl: 2.25rem;
   --text-display: clamp(2.75rem, 4vw + 1.5rem, 4.5rem);
-  --text-figure: clamp(4.25rem, 20vw, 13rem);
+  --text-figure: clamp(3.25rem, 11vw, 7.5rem);
 
   --tracking-display: -0.045em;
   --tracking-label: 0.09em;

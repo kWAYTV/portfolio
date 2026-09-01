@@ -2,6 +2,7 @@
 
 import type { ContributionDay } from "@repo/github";
 import {
+  AnimatePresence,
   motion,
   useMotionTemplate,
   useReducedMotion,
@@ -184,7 +185,19 @@ export function ContributionRecorder({
         <span className="label">{t("stage", { days: days.length })}</span>
         <p aria-live="polite" className="recorder-readout">
           <strong>{dateLabel}</strong>
-          <span>{t("count", { count: day.count })}</span>
+          <span className="recorder-value">
+            <AnimatePresence initial={false} mode="popLayout">
+              <motion.span
+                animate={{ opacity: 1, transform: "translateY(0px)" }}
+                exit={{ opacity: 0, transform: "translateY(-6px)" }}
+                initial={{ opacity: 0, transform: "translateY(6px)" }}
+                key={day.count}
+                transition={{ duration: 0.14, ease: [0.23, 1, 0.32, 1] }}
+              >
+                {t("count", { count: day.count })}
+              </motion.span>
+            </AnimatePresence>
+          </span>
         </p>
       </div>
       <div

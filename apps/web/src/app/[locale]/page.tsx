@@ -1,6 +1,8 @@
 import { type PinnedRepo, summarizeContributions } from "@repo/github";
 import { getTranslations, setRequestLocale } from "next-intl/server";
 import { ContributionRecorder } from "@/components/contribution-recorder";
+import { Count } from "@/components/count";
+import { Reveal, Rule, Stage, Wipe } from "@/components/motion";
 import { SocialLinks } from "@/components/social-links";
 import { getSortedPosts } from "@/modules/blog/lib/blog";
 import { LocaleLink } from "@/modules/i18n/routing";
@@ -36,30 +38,43 @@ export default async function HomePage({
   const { locale } = await params;
   setRequestLocale(locale);
   const t = await getTranslations({ locale, namespace: "hero" });
+  const tCommon = await getTranslations({ locale, namespace: "common" });
 
   return (
-    <article className="document">
-      <section className="stat-hero">
-        <p className="lede">{t("bio")}</p>
-        <SocialLinks />
-        <StatHero locale={locale} />
-      </section>
-      <FeaturedWork locale={locale} />
-      <LatestNotes locale={locale} />
-    </article>
+    <Stage className="document">
+      <header className="hero">
+        <Wipe>
+          <h1 className="hero-name">{tCommon("siteName")}</h1>
+        </Wipe>
+        <Reveal>
+          <p className="lede">{t("bio")}</p>
+        </Reveal>
+        <Reveal>
+          <SocialLinks />
+        </Reveal>
+      </header>
+      <Reveal>
+        <Activity locale={locale} />
+      </Reveal>
+      <Reveal>
+        <FeaturedWork locale={locale} />
+      </Reveal>
+      <Reveal>
+        <LatestNotes locale={locale} />
+      </Reveal>
+    </Stage>
   );
 }
 
-async function StatHero({ locale }: { locale: string }) {
+async function Activity({ locale }: { locale: string }) {
   const t = await getTranslations({ locale, namespace: "graph" });
   const calendar = await getGitHubContributionCalendar();
 
   if (!calendar || calendar.days.length === 0) {
-    return <p className="meta">{t("empty")}</p>;
+    return null;
   }
 
   const stats = summarizeContributions(calendar.days);
-  const formatted = new Intl.NumberFormat(locale).format(calendar.total);
   const busiestDate = stats.busiest
     ? new Intl.DateTimeFormat(locale, {
         day: "numeric",
@@ -69,17 +84,13 @@ async function StatHero({ locale }: { locale: string }) {
     : null;
 
   return (
-    <>
-      <div className="figure-block">
-        <span
-          aria-hidden="true"
-          className="figure"
-          style={{ "--target": calendar.total } as React.CSSProperties}
-        />
-        <span className="sr-only">{formatted}</span>
-        <p className="qualifier">
-          {t("qualifier", { days: calendar.days.length })}
-        </p>
+    <section className="section">
+      <div className="section-head">
+        <Rule />
+        <h2>{t("title")}</h2>
+        <span className="label">
+          {t("stage", { days: calendar.days.length })}
+        </span>
       </div>
       <ContributionRecorder
         days={calendar.days}
@@ -88,35 +99,41 @@ async function StatHero({ locale }: { locale: string }) {
       />
       <dl className="readouts">
         <div className="readout">
+          <dt className="label">{t("total")}</dt>
+          <dd>
+            <Count locale={locale} value={calendar.total} />
+          </dd>
+        </div>
+        <div className="readout">
           <dt className="label">{t("activeDays")}</dt>
           <dd>
-            {stats.activeDays}
+            <Count locale={locale} value={stats.activeDays} />
             <small> / {calendar.days.length}</small>
           </dd>
         </div>
         <div className="readout">
           <dt className="label">{t("longestStreak")}</dt>
           <dd>
-            {stats.longestStreak}
+            <Count locale={locale} value={stats.longestStreak} />
             <small> {t("days", { count: stats.longestStreak })}</small>
           </dd>
         </div>
         <div className="readout">
           <dt className="label">{t("currentStreak")}</dt>
           <dd>
-            {stats.currentStreak}
+            <Count locale={locale} value={stats.currentStreak} />
             <small> {t("days", { count: stats.currentStreak })}</small>
           </dd>
         </div>
         <div className="readout">
           <dt className="label">{t("busiestDay")}</dt>
           <dd>
-            {stats.busiest?.count ?? 0}
+            <Count locale={locale} value={stats.busiest?.count ?? 0} />
             <small> {busiestDate}</small>
           </dd>
         </div>
       </dl>
-    </>
+    </section>
   );
 }
 
@@ -138,6 +155,7 @@ async function FeaturedWork({ locale }: { locale: string }) {
   return (
     <section className="section">
       <div className="section-head">
+        <Rule />
         <h2>{t("featured")}</h2>
         <LocaleLink className="label" href="/projects">
           {t("viewAll")}
@@ -182,6 +200,7 @@ async function LatestNotes({ locale }: { locale: string }) {
   return (
     <section className="section">
       <div className="section-head">
+        <Rule />
         <h2>{t("title")}</h2>
         <LocaleLink className="label" href="/blog">
           {t("viewAll")}
