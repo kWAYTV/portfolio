@@ -1,24 +1,29 @@
 {
-  "name": "ide-portfolio",
+  "name": "portfolio",
   "private": true,
+  "type": "module",
   "workspaces": [
     "apps/*",
     "packages/*"
   ],
-  "type": "module",
   "scripts": {
+    "build": "turbo run build",
+    "check": "ultracite check",
+    "check-types": "turbo run check-types",
     "dev": "turbo run dev",
     "dev:stream": "turbo run dev --ui=stream",
-    "build": "turbo run build",
-    "check-types": "turbo run check-types",
     "dev:web": "turbo run -F web dev",
+    "fix": "ultracite fix",
     "format": "turbo run format",
     "lint": "turbo run lint",
-    "check": "ultracite check",
-    "fix": "ultracite fix",
     "prepare": "husky",
     "release": "pnpm dlx bumpp -r",
     "update": "pnpm dlx taze -r -w -f"
+  },
+  "lint-staged": {
+    "{apps,packages}/**/*.{js,jsx,ts,tsx,json,jsonc,css,scss,md,mdx}": [
+      "pnpm dlx ultracite fix"
+    ]
   },
   "dependencies": {
     "@repo/env": "workspace:*",
@@ -26,20 +31,15 @@
     "zod": "catalog:"
   },
   "devDependencies": {
-    "@biomejs/biome": "2.4.0",
+    "@biomejs/biome": "2.5.11",
     "@repo/config": "workspace:*",
-    "@types/node": "^20.19.41",
+    "@types/node": "^24.13.3",
     "bumpp": "^10.4.1",
     "husky": "latest",
     "lint-staged": "latest",
-    "turbo": "^2.9.14",
+    "turbo": "^2.10.12",
     "typescript": "catalog:",
-    "ultracite": "7.2.4"
+    "ultracite": "7.10.7"
   },
-  "lint-staged": {
-    "{apps,packages}/**/*.{js,jsx,ts,tsx,json,jsonc,css,scss,md,mdx}": [
-      "pnpm dlx ultracite fix"
-    ]
-  },
-  "packageManager": "pnpm@10.33.4"
+  "packageManager": "pnpm@10.34.5"
 }

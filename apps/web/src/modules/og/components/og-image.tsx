@@ -1,62 +1,59 @@
 interface OgImageProps {
   description?: string;
-  /** Optional subtitle below description (e.g. "Portfolio", "Blog") */
   subtitle?: string;
   title: string;
 }
-
-const BG = "linear-gradient(135deg, #0f0f0f 0%, #1a1a1a 100%)";
 
 export function OgImage({ title, description, subtitle }: OgImageProps) {
   return (
     <div
       style={{
-        background: BG,
-        width: "100%",
-        height: "100%",
+        background: "#f4efe3",
+        border: "16px solid #c9b89a",
         display: "flex",
         flexDirection: "column",
-        alignItems: "center",
-        justifyContent: "center",
+        height: "100%",
+        justifyContent: "flex-end",
         padding: 80,
+        width: "100%",
       }}
     >
       <div
         style={{
+          color: "#2b2218",
           fontSize: title.length > 40 ? 48 : 72,
-          fontWeight: 600,
-          color: "#ffffff",
-          letterSpacing: "-0.02em",
-          textAlign: "center",
+          fontWeight: 500,
+          letterSpacing: "-0.03em",
+          lineHeight: 1.05,
           maxWidth: "90%",
         }}
       >
         {title}
       </div>
-      {description && (
+      {description ? (
         <div
           style={{
+            color: "#5c5144",
             fontSize: 28,
-            color: "#a3a3a3",
             marginTop: 16,
-            textAlign: "center",
-            maxWidth: "85%",
+            maxWidth: "80%",
           }}
         >
           {description}
         </div>
-      )}
-      {subtitle && (
+      ) : null}
+      {subtitle ? (
         <div
           style={{
-            fontSize: 24,
-            color: "#525252",
-            marginTop: description ? 32 : 48,
+            color: "#8a7a66",
+            fontFamily: "ui-monospace, monospace",
+            fontSize: 22,
+            marginTop: 28,
           }}
         >
           {subtitle}
         </div>
-      )}
+      ) : null}
     </div>
   );
 }

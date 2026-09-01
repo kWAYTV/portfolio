@@ -1,6 +1,5 @@
-import { RootProvider } from "fumadocs-ui/provider/next";
 import type { Metadata } from "next";
-import { Geist, JetBrains_Mono, Space_Grotesk } from "next/font/google";
+import { IBM_Plex_Mono, Newsreader } from "next/font/google";
 import { notFound } from "next/navigation";
 import { NextIntlClientProvider } from "next-intl";
 import { getMessages, setRequestLocale } from "next-intl/server";
@@ -8,28 +7,25 @@ import type { PropsWithChildren } from "react";
 
 import "../../index.css";
 import { env } from "@repo/env/web";
+import { CookieBanner } from "@/components/cookie-banner";
 import Providers from "@/components/providers";
-import { CookieBanner } from "@/components/shared/cookies";
+import { SiteFooter } from "@/components/site-footer";
+import { SiteHeader } from "@/components/site-header";
 import { UmamiScript } from "@/modules/analytics/components/umami-script";
 import { routing } from "@/modules/i18n/routing";
 import { getStaticParams } from "@/modules/i18n/static";
-import { IdeLayout } from "@/modules/ide/components/ide-layout";
 
-const spaceGrotesk = Space_Grotesk({
-  variable: "--font-space-grotesk",
+const newsreader = Newsreader({
+  style: ["normal", "italic"],
   subsets: ["latin"],
-  weight: ["400", "500", "600", "700"],
-});
-
-const geistSans = Geist({
-  variable: "--font-geist-sans",
-  subsets: ["latin"],
-});
-
-const jetbrainsMono = JetBrains_Mono({
-  variable: "--font-jetbrains-mono",
-  subsets: ["latin"],
+  variable: "--font-newsreader",
   weight: ["400", "500", "600"],
+});
+
+const ibmPlexMono = IBM_Plex_Mono({
+  subsets: ["latin"],
+  variable: "--font-ibm-plex-mono",
+  weight: ["400", "500"],
 });
 
 export function generateStaticParams() {
@@ -37,9 +33,9 @@ export function generateStaticParams() {
 }
 
 export const metadata: Metadata = {
-  metadataBase: new URL(env.NEXT_PUBLIC_SITE_URL),
-  title: "Martín Vila — Portfolio",
   description: "welcome to my personal space.",
+  metadataBase: new URL(env.NEXT_PUBLIC_SITE_URL),
+  title: "Martín Vila",
 };
 
 export default async function LocaleLayout({
@@ -58,21 +54,21 @@ export default async function LocaleLayout({
 
   return (
     <html lang={locale} suppressHydrationWarning>
-      <body
-        className={`${spaceGrotesk.variable} ${geistSans.variable} ${jetbrainsMono.variable} flex min-h-screen flex-col antialiased`}
-      >
+      <body className={`${newsreader.variable} ${ibmPlexMono.variable}`}>
         <UmamiScript
           scriptUrl={env.NEXT_PUBLIC_UMAMI_URL}
           websiteId={env.NEXT_PUBLIC_UMAMI_WEBSITE_ID}
         />
-        <RootProvider search={{ enabled: false }}>
-          <Providers>
-            <NextIntlClientProvider locale={locale} messages={messages}>
-              <IdeLayout>{children}</IdeLayout>
-              <CookieBanner />
-            </NextIntlClientProvider>
-          </Providers>
-        </RootProvider>
+        <Providers>
+          <NextIntlClientProvider locale={locale} messages={messages}>
+            <div className="site-shell">
+              <SiteHeader />
+              <main className="site-main">{children}</main>
+              <SiteFooter />
+            </div>
+            <CookieBanner />
+          </NextIntlClientProvider>
+        </Providers>
       </body>
     </html>
   );

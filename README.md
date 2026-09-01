@@ -1,6 +1,7 @@
 # portfolio
 
-A portfolio site built with a modern TypeScript stack.
+Martin Vila's personal site. A small static document: notes, open source, and a
+year ledger of GitHub work.
 
 ## Stack
 
@@ -9,11 +10,10 @@ A portfolio site built with a modern TypeScript stack.
 | **Framework** | [Next.js](https://nextjs.org) 16, [React](https://react.dev) 19 |
 | **Language** | [TypeScript](https://www.typescriptlang.org) |
 | **Styling** | [Tailwind CSS](https://tailwindcss.com) 4 |
-| **UI** | [shadcn/ui](https://ui.shadcn.com), [Radix](https://www.radix-ui.com), [Base UI](https://base-ui.com), [fumadocs](https://fumadocs.dev), [cmdk](https://cmdk.paco.me), [sonner](https://sonner.emilkowal.ski), [lucide-react](https://lucide.dev) |
-| **State & URL** | [Zustand](https://zustand-demo.pmnd.rs), [nuqs](https://nuqs.47ng.com) |
-| **i18n & themes** | [next-intl](https://next-intl-docs.vercel.app), [next-themes](https://github.com/pacocoursey/next-themes) |
+| **Content** | [fumadocs](https://fumadocs.dev) MDX, [next-intl](https://next-intl-docs.vercel.app) |
+| **Data** | GitHub GraphQL + REST via `@octokit/rest` |
 | **Monorepo** | [Turborepo](https://turbo.build), [pnpm](https://pnpm.io) workspaces |
-| **DX** | [Ultracite](https://ultracite.run) (Biome), [Husky](https://typicode.github.io/husky), [Zod](https://zod.dev) |
+| **DX** | [Ultracite](https://ultracite.run) (Biome), [Husky](https://typicode.github.io/husky) |
 
 ## Getting Started
 
@@ -21,5 +21,3 @@ A portfolio site built with a modern TypeScript stack.
 pnpm install
 pnpm dev
 ```
-
-Open [http://localhost:3000](http://localhost:3000).

@@ -1,5 +1,16 @@
 [
   {
+    "date": "2026-09-01",
+    "macrostructure": "Long Document",
+    "theme": "Newsprint",
+    "enrichment": "year-tape SVG",
+    "brief": "Static remake of portfolio — keep features, drop IDE, year ledger",
+    "scope": "app",
+    "nav": "N9",
+    "footer": "Ft6",
+    "genre": "editorial"
+  },
+  {
     "date": "2026-07-25",
     "macrostructure": "Workbench",
     "theme": "Cobalt",

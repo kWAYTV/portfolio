@@ -1,3 +1,4 @@
+/** biome-ignore-all lint/performance/noBarrelFile: package entry point */
 import type {
   GetGitHubCommitsOptions,
   GetGitHubReposOptions,
@@ -5,6 +6,11 @@ import type {
   GitHubRepo,
 } from "./types.js";
 
+export type {
+  ContributionCalendar,
+  ContributionDay,
+} from "./contributions.js";
+export { getGitHubContributions } from "./contributions.js";
 export type {
   GetGitHubCommitsOptions,
   GetGitHubReposOptions,
@@ -52,9 +58,9 @@ export async function getGitHubRepos({
 }: GetGitHubReposOptions): Promise<GitHubRepo[]> {
   const [userRepos, ...extraReposData] = await Promise.all([
     octokit.paginate(octokit.repos.listForUser, {
-      username,
       per_page: 100,
       sort: "updated",
+      username,
     }),
     ...extraRepos.map(({ owner, repo }) =>
       octokit.repos.get({ owner, repo }).then((res) => res.data)
@@ -66,22 +72,22 @@ export async function getGitHubRepos({
   return repos
     .filter((repo) => !(repo.fork || repo.archived))
     .map((repo) => ({
+      archived: repo.archived ?? false,
+      created_at: repo.created_at ?? "",
+      description: repo.description ?? null,
+      fork: repo.fork ?? false,
+      forks_count: repo.forks_count ?? 0,
+      full_name: repo.full_name,
+      homepage: repo.homepage ?? null,
+      html_url: repo.html_url,
       id: repo.id,
+      language: repo.language ?? null,
       name: repo.full_name.startsWith(`${username}/`)
         ? repo.name
         : repo.full_name,
-      full_name: repo.full_name,
-      description: repo.description ?? null,
-      html_url: repo.html_url,
-      homepage: repo.homepage ?? null,
-      stargazers_count: repo.stargazers_count ?? 0,
-      forks_count: repo.forks_count ?? 0,
-      language: repo.language ?? null,
-      topics: repo.topics ?? [],
       pushed_at: repo.pushed_at ?? "",
-      created_at: repo.created_at ?? "",
-      fork: repo.fork ?? false,
-      archived: repo.archived ?? false,
+      stargazers_count: repo.stargazers_count ?? 0,
+      topics: repo.topics ?? [],
     }))
     .sort(
       (a, b) =>

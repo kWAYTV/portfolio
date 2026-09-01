@@ -1,18 +1,11 @@
 "use client";
 
-import { Toaster } from "@/components/ui/sonner";
 import { ThemeProvider } from "@/modules/theming/components/theme-provider";
 
 export default function Providers({ children }: { children: React.ReactNode }) {
   return (
-    <ThemeProvider
-      attribute="class"
-      defaultTheme="system"
-      disableTransitionOnChange
-      enableSystem
-    >
+    <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
       {children}
-      <Toaster richColors />
     </ThemeProvider>
   );
 }

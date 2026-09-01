@@ -1,27 +1,20 @@
-import defaultMdxComponents from "fumadocs-ui/mdx";
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
-import { setRequestLocale } from "next-intl/server";
-import { PageContent } from "@/components/shared/page-content";
-import { BlogBackLink } from "@/modules/blog/components/blog-back-link";
-import { BlogPostHeader } from "@/modules/blog/components/blog-post-header";
+import { getTranslations, setRequestLocale } from "next-intl/server";
 import { BlogPostViewTracker } from "@/modules/blog/components/blog-post-view-tracker";
-import { readMdxFile } from "@/modules/blog/lib/read-mdx-file";
 import { getBlog } from "@/modules/blog/lib/source";
-import { CodeView } from "@/modules/ide/components/editor/code-view";
-import { EditorContent } from "@/modules/ide/components/editor/editor-content";
+import { LocaleLink } from "@/modules/i18n/routing";
 import { getPageImageUrl } from "@/modules/og/lib/og";
 
-// biome-ignore lint/style/useConsistentTypeDefinitions: fumadocs
-type BlogPageData = {
+interface BlogPageData {
+  author: string;
   body: React.ComponentType<{
     components?: Record<string, React.ComponentType>;
   }>;
-  title: string;
-  description?: string;
-  author: string;
   date: string;
-};
+  description?: string;
+  title: string;
+}
 
 export async function generateMetadata({
   params,
@@ -29,17 +22,16 @@ export async function generateMetadata({
   params: Promise<{ locale: string; slug: string }>;
 }): Promise<Metadata> {
   const { locale, slug } = await params;
-  const blog = getBlog(locale);
-  const page = blog.getPage([slug]);
+  const page = getBlog(locale).getPage([slug]);
   if (!page) {
     return {};
   }
   return {
-    title: `${page.data.title} | Martin Vila`,
     description: page.data.description as string,
     openGraph: {
       images: [{ url: getPageImageUrl([locale, "blog", slug]) }],
     },
+    title: `${page.data.title} | Martin Vila`,
   };
 }
 
@@ -50,8 +42,7 @@ export default async function BlogPostPage({
 }) {
   const { locale, slug } = await params;
   setRequestLocale(locale);
-  const blog = getBlog(locale);
-  const page = blog.getPage([slug]);
+  const page = getBlog(locale).getPage([slug]);
 
   if (!page) {
     notFound();
@@ -59,47 +50,39 @@ export default async function BlogPostPage({
 
   const data = page.data as unknown as BlogPageData;
   const Mdx = data.body;
-  const rawMdx =
-    readMdxFile(locale, slug) ??
-    `---\ntitle: ${data.title}\ndescription: ${data.description ?? ""}\ndate: ${data.date}\nauthor: ${data.author}\n---\n\n(Content not found)`;
+  const t = await getTranslations({ locale, namespace: "blog" });
 
   return (
-    <EditorContent
-      preview={
-        <PageContent className="max-w-lg sm:max-w-xl">
-          <BlogPostViewTracker slug={slug} />
-          <BlogBackLink />
-          <BlogPostHeader
-            author={data.author}
-            date={data.date}
-            locale={locale}
-            title={data.title}
-          />
-          <article className="prose prose-neutral prose-sm dark:prose-invert prose-table:w-full max-w-none prose-img:max-w-full prose-pre:overflow-x-auto prose-table:overflow-x-auto prose-img:rounded-md prose-headings:font-medium prose-a:text-foreground prose-code:text-xs prose-p:text-muted-foreground/80 prose-headings:tracking-tight prose-a:underline-offset-4">
-            {/* @ts-expect-error MDXContent accepts components */}
-            <Mdx components={defaultMdxComponents} />
-          </article>
-        </PageContent>
-      }
-      source={<CodeView code={rawMdx} lang="mdx" />}
-    />
+    <article className="document">
+      <BlogPostViewTracker slug={slug} />
+      <p className="meta">
+        <LocaleLink href="/blog">{t("backToBlog")}</LocaleLink>
+      </p>
+      <header>
+        <h1 className="page-title">{data.title}</h1>
+        <p className="tagline">
+          {new Date(data.date).toLocaleDateString(locale, {
+            day: "2-digit",
+            month: "long",
+            year: "numeric",
+          })}
+          {data.author ? ` · ${data.author}` : ""}
+        </p>
+      </header>
+      <div className="prose">
+        <Mdx />
+      </div>
+    </article>
   );
 }
 
 export function generateStaticParams(): { locale: string; slug: string }[] {
-  const locales = ["en", "es"];
-  const blogEn = getBlog("en");
-  const blogEs = getBlog("es");
-  const loaders = [blogEn, blogEs];
-  const params: { locale: string; slug: string }[] = [];
-  for (let i = 0; i < locales.length; i++) {
-    const pages = loaders[i].getPages();
-    for (const page of pages) {
-      params.push({
-        locale: locales[i],
+  return (["en", "es"] as const).flatMap((locale) =>
+    getBlog(locale)
+      .getPages()
+      .map((page) => ({
+        locale,
         slug: page.slugs[0],
-      });
-    }
-  }
-  return params;
+      }))
+  );
 }

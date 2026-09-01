@@ -13,18 +13,18 @@ import {
 } from "@/modules/og/lib/og";
 import { getStaticOgCopy } from "@/modules/og/lib/og-copy";
 
-const SIZE = { width: 1200, height: 630 };
+const SIZE = { height: 630, width: 1200 };
 
 type StaticPageType = Exclude<PagePath["type"], "blog-post">;
 const COPY_KEY: Record<
   StaticPageType,
   keyof typeof import("@/modules/og/lib/og-copy").PAGE_COPY
 > = {
-  home: "home",
+  about: "about",
   blog: "blog",
   "blog-page": "blog",
+  home: "home",
   projects: "projects",
-  about: "about",
 };
 
 // biome-ignore lint/suspicious/useAwait: async required for "use cache" directive
@@ -46,9 +46,9 @@ async function getOgImageData(slug: string[]) {
     }
     const data = page.data as { title: string; description?: string };
     return {
-      title: data.title,
       description: data.description,
       subtitle: "Martin Vila",
+      title: data.title,
     };
   }
 
@@ -83,14 +83,14 @@ export function generateStaticParams() {
 
   for (const locale of LOCALE_LIST) {
     for (const type of STATIC_PAGE_TYPES) {
-      const p: PagePath = { type, locale };
+      const p: PagePath = { locale, type };
       params.push({ slug: getPageImageSegments(pathToSegments(p)) });
     }
 
     const blog = getBlog(locale);
     const blogPages = blog.getPages();
     for (const page of blogPages) {
-      const p: PagePath = { type: "blog-post", locale, slug: page.slugs[0] };
+      const p: PagePath = { locale, slug: page.slugs[0], type: "blog-post" };
       params.push({ slug: getPageImageSegments(pathToSegments(p)) });
     }
 
@@ -98,10 +98,12 @@ export function generateStaticParams() {
       1,
       Math.ceil(blogPages.length / POSTS_PER_PAGE)
     );
-    for (let n = 2; n <= totalPages; n++) {
-      const p: PagePath = { type: "blog-page", locale, num: n };
-      params.push({ slug: getPageImageSegments(pathToSegments(p)) });
-    }
+    params.push(
+      ...Array.from({ length: Math.max(0, totalPages - 1) }, (_, index) => {
+        const p: PagePath = { locale, num: index + 2, type: "blog-page" };
+        return { slug: getPageImageSegments(pathToSegments(p)) };
+      })
+    );
   }
 
   return params;

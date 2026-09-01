@@ -1,12 +1,6 @@
 import type { Metadata } from "next";
 import { getTranslations, setRequestLocale } from "next-intl/server";
-import { PageContent } from "@/components/shared/page-content";
-import { AboutBio } from "@/modules/about/components/about-bio";
-import { AboutHeader } from "@/modules/about/components/about-header";
-import { ExperienceTimeline } from "@/modules/about/components/experience-timeline";
-import { CodeView } from "@/modules/ide/components/editor/code-view";
-import { EditorContent } from "@/modules/ide/components/editor/editor-content";
-import { aboutCode } from "@/modules/ide/consts/code-content";
+import { experience } from "@/modules/about/consts/experience";
 import { getPageImageUrl } from "@/modules/og/lib/og";
 
 export async function generateMetadata({
@@ -17,11 +11,11 @@ export async function generateMetadata({
   const { locale } = await params;
   const t = await getTranslations({ locale, namespace: "about" });
   return {
-    title: `${t("title")} | Martin Vila`,
     description: t("subtitle"),
     openGraph: {
       images: [{ url: getPageImageUrl([locale, "about"]) }],
     },
+    title: `${t("title")} | Martin Vila`,
   };
 }
 
@@ -32,17 +26,28 @@ export default async function AboutPage({
 }) {
   const { locale } = await params;
   setRequestLocale(locale);
+  const t = await getTranslations();
 
   return (
-    <EditorContent
-      preview={
-        <PageContent>
-          <AboutHeader />
-          <AboutBio />
-          <ExperienceTimeline />
-        </PageContent>
-      }
-      source={<CodeView code={aboutCode} lang="markdown" />}
-    />
+    <article className="document">
+      <header>
+        <h1 className="page-title">{t("about.title")}</h1>
+        <p className="lede">{t("about.bio")}</p>
+      </header>
+      <section>
+        <h2>{t("about.experience")}</h2>
+        <ul className="hairline-list">
+          {experience.map((item) => (
+            <li className="hairline-row" key={item.id}>
+              <div className="min-w-0">
+                <strong>{t(`experience.${item.key}.role`)}</strong>
+                <p>{t(`experience.${item.key}.company`)}</p>
+              </div>
+              <span>{t(`experience.${item.key}.period`)}</span>
+            </li>
+          ))}
+        </ul>
+      </section>
+    </article>
   );
 }

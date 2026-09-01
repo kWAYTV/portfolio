@@ -9,11 +9,8 @@ const withMDX = createMDX();
 const nextConfig: NextConfig = {
   cacheComponents: true,
   devIndicators: false,
-  experimental: {
-    optimizePackageImports: ["radix-ui"],
-  },
-  typedRoutes: true,
   reactCompiler: true,
+  typedRoutes: true,
 };
 
 export default withMDX(withNextIntl(nextConfig));

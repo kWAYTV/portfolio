@@ -3,13 +3,12 @@ import "server-only";
 import { Octokit } from "@octokit/rest";
 import { env } from "@repo/env/web";
 import {
-  getGitHubCommits as getCommits,
+  getGitHubContributions as getContributions,
   getGitHubRepos as getRepos,
 } from "@repo/github";
 import { cacheLife, cacheTag } from "next/cache";
 
-const REPO_OWNER = "kWAYTV";
-const REPO_NAME = "portfolio";
+export const GITHUB_USER = "kWAYTV";
 const EXTRA_REPOS = [{ owner: "versend", repo: "core" }];
 
 export async function getGitHubRepos() {
@@ -24,27 +23,24 @@ export async function getGitHubRepos() {
 
   const octokit = new Octokit({ auth: token });
   return await getRepos({
-    octokit,
-    username: REPO_OWNER,
     extraRepos: EXTRA_REPOS,
+    octokit,
+    username: GITHUB_USER,
   });
 }
 
-export async function getGitHubCommits() {
+export async function getGitHubContributionCalendar() {
   "use cache";
-  cacheTag("github-commits");
-  cacheLife({ revalidate: 300 });
+  cacheTag("github-contributions");
+  cacheLife("hours");
 
   const token = env.GITHUB_TOKEN;
   if (!token) {
-    return [];
+    return null;
   }
 
-  const octokit = new Octokit({ auth: token });
-  return await getCommits({
-    octokit,
-    owner: REPO_OWNER,
-    perPage: 15,
-    repo: REPO_NAME,
+  return await getContributions({
+    token,
+    username: GITHUB_USER,
   });
 }

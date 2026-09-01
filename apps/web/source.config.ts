@@ -8,15 +8,15 @@ const blogSchema = pageSchema.extend({
 });
 
 export const blogEn = defineCollections({
-  type: "doc",
   dir: "content/blog/en",
   schema: blogSchema,
+  type: "doc",
 });
 
 export const blogEs = defineCollections({
-  type: "doc",
   dir: "content/blog/es",
   schema: blogSchema,
+  type: "doc",
 });
 
 export default defineConfig();
