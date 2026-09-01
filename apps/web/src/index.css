@@ -489,8 +489,8 @@ a.row:active .row-title {
   font-size: var(--text-figure);
   font-weight: 800;
   line-height: 0.88;
-  text-transform: lowercase;
   letter-spacing: -0.05em;
+  text-wrap: balance;
   overflow-wrap: anywhere;
 }
 
