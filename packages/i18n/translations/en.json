@@ -21,7 +21,8 @@
   },
   "hero": {
     "tagline": "developer · gamer · self-taught",
-    "bio": "I build small, deliberate software — backend services, web apps, and the tools around them. Currently looking for new work."
+    "headline": "I build small, deliberate software.",
+    "bio": "Backend services, web apps, and the tools around them. Self-taught, based in Spain, currently looking for new work."
   },
   "graph": {
     "title": "activity",

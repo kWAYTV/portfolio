@@ -13,8 +13,8 @@ The GitHub contribution trace is the instrument; everything else is the manual
 around it. Dark mode is the same sheet inverted, not a second theme.
 
 ## Macrostructure family
-- Home: Stat-Led — lede, real contribution total as the figure, worded
-  qualifier, the recorder, four readouts, then ruled index rows.
+- Home: Stat-Led — display statement, lede, socials, then the recorder with its
+  five readouts (total is one of them, never the hero), then ruled index rows.
 - Content pages (about, notes, privacy): stacked display heads with a 2px ink
   rule above, ruled rows, mono meta. No kickers, no numbered eyebrows.
 - Catalogue pages (projects, notes index): ruled rows — title · mono meta ·

@@ -542,10 +542,7 @@ a.row:active .row-title {
 
 .recorder-head {
   display: flex;
-  flex-wrap: wrap;
-  gap: var(--space-xs) var(--space-lg);
-  align-items: baseline;
-  justify-content: space-between;
+  justify-content: end;
 }
 
 .recorder-readout {

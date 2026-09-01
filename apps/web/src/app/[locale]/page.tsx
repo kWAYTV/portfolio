@@ -38,13 +38,12 @@ export default async function HomePage({
   const { locale } = await params;
   setRequestLocale(locale);
   const t = await getTranslations({ locale, namespace: "hero" });
-  const tCommon = await getTranslations({ locale, namespace: "common" });
 
   return (
     <Stage className="document">
       <header className="hero">
         <Wipe>
-          <h1 className="hero-name">{tCommon("siteName")}</h1>
+          <h1 className="hero-name">{t("headline")}</h1>
         </Wipe>
         <Reveal>
           <p className="lede">{t("bio")}</p>

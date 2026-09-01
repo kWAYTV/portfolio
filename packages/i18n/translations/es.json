@@ -21,7 +21,8 @@
   },
   "hero": {
     "tagline": "desarrollador · gamer · autodidacta",
-    "bio": "Construyo software pequeño y deliberado: servicios backend, aplicaciones web y las herramientas que los rodean. Actualmente busco nuevo trabajo."
+    "headline": "Construyo software pequeño y deliberado.",
+    "bio": "Servicios backend, aplicaciones web y las herramientas que los rodean. Autodidacta, desde España, actualmente buscando nuevo trabajo."
   },
   "graph": {
     "title": "actividad",
