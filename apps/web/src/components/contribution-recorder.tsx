@@ -17,19 +17,17 @@ import {
 } from "react";
 
 const DAY_WIDTH = 2;
-const HEIGHT = 112;
-const PAD_TOP = 10;
-const PAD_BOTTOM = 3;
+const BAR_WIDTH = 1.3;
+const HEIGHT = 100;
+const PAD_TOP = 6;
+const BASELINE = 1;
 
 const SPRING = { damping: 42, stiffness: 520 };
 
 interface Geometry {
-  area: string;
+  bars: Array<{ h: number; x: number; y: number }>;
   months: Array<{ label: string; pct: number }>;
-  peakY: number;
-  trace: string;
   width: number;
-  ys: number[];
 }
 
 function buildGeometry(
@@ -38,20 +36,17 @@ function buildGeometry(
   locale: string
 ): Geometry {
   const width = days.length * DAY_WIDTH;
-  const usable = HEIGHT - PAD_TOP - PAD_BOTTOM;
-  const ys = days.map((day) => {
+  const usable = HEIGHT - PAD_TOP;
+  const bars = days.map((day, index) => {
     const ratio = max === 0 ? 0 : day.count / max;
-    return PAD_TOP + (1 - ratio) * usable;
+    const h =
+      day.count === 0 ? BASELINE : Math.max(BASELINE * 2, ratio * usable);
+    return {
+      h,
+      x: index * DAY_WIDTH + (DAY_WIDTH - BAR_WIDTH) / 2,
+      y: HEIGHT - h,
+    };
   });
-
-  const segments: string[] = [];
-  for (const [index, y] of ys.entries()) {
-    const x = index * DAY_WIDTH + DAY_WIDTH / 2;
-    segments.push(`${index === 0 ? "M" : "L"}${x} ${y.toFixed(2)}`);
-  }
-  const trace = segments.join(" ");
-  const lastX = (days.length - 1) * DAY_WIDTH + DAY_WIDTH / 2;
-  const area = `${trace} L${lastX} ${HEIGHT} L${DAY_WIDTH / 2} ${HEIGHT} Z`;
 
   const formatter = new Intl.DateTimeFormat(locale, {
     month: "short",
@@ -74,7 +69,7 @@ function buildGeometry(
     });
   }
 
-  return { area, months, peakY: PAD_TOP, trace, width, ys };
+  return { bars, months, width };
 }
 
 export function ContributionRecorder({
@@ -100,8 +95,8 @@ export function ContributionRecorder({
     [days.length]
   );
   const toYPct = useCallback(
-    (i: number) => ((geometry.ys[i] ?? HEIGHT) / HEIGHT) * 100,
-    [geometry.ys]
+    (i: number) => ((geometry.bars[i]?.y ?? HEIGHT) / HEIGHT) * 100,
+    [geometry.bars]
   );
 
   const x = useSpring(toPct(last), SPRING);
@@ -181,6 +176,8 @@ export function ContributionRecorder({
     return null;
   }
 
+  const valueText = `${dateLabel}, ${t("count", { count: day.count })}`;
+
   return (
     <figure className="recorder">
       <div className="recorder-head">
@@ -195,7 +192,7 @@ export function ContributionRecorder({
         aria-valuemax={last}
         aria-valuemin={0}
         aria-valuenow={index}
-        aria-valuetext={`${dateLabel}, ${t("count", { count: day.count })}`}
+        aria-valuetext={valueText}
         className="recorder-stage"
         onKeyDown={handleKeyDown}
         onPointerLeave={handlePointerLeave}
@@ -222,11 +219,21 @@ export function ContributionRecorder({
             className="recorder-peak"
             x1={0}
             x2={geometry.width}
-            y1={geometry.peakY}
-            y2={geometry.peakY}
+            y1={PAD_TOP}
+            y2={PAD_TOP}
           />
-          <path className="recorder-area" d={geometry.area} />
-          <path className="recorder-trace" d={geometry.trace} pathLength={1} />
+          <g className="recorder-bars">
+            {geometry.bars.map((bar, i) => (
+              <rect
+                className={i === index ? "is-active" : undefined}
+                height={bar.h}
+                key={days[i]?.date}
+                width={BAR_WIDTH}
+                x={bar.x}
+                y={bar.y}
+              />
+            ))}
+          </g>
         </svg>
         <motion.div
           className="recorder-stylus"

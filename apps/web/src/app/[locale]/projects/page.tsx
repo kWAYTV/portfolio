@@ -1,6 +1,7 @@
 import { getTranslations, setRequestLocale } from "next-intl/server";
 import { Suspense } from "react";
 import { Pagination } from "@/components/pagination";
+import { Bone, RowsSkeleton } from "@/components/skeleton";
 import { LocaleLink } from "@/modules/i18n/routing";
 import { getPageImageUrl } from "@/modules/og/lib/og";
 import { getGitHubRepos } from "@/modules/projects/lib/github";
@@ -12,7 +13,6 @@ import {
 } from "@/modules/projects/lib/query";
 
 const SORTS: ProjectSort[] = ["updated", "stars", "created", "name"];
-const SKELETON_ROWS = Array.from({ length: PROJECTS_PER_PAGE }, (_, i) => i);
 
 type SearchParams = Promise<{ page?: string; q?: string; sort?: string }>;
 
@@ -60,15 +60,11 @@ function CatalogueSkeleton({ label }: { label: string }) {
   return (
     <div aria-busy="true" className="section">
       <div className="filters">
-        <div className="search" />
-        <div className="sorts" />
+        <Bone className="bone-search" />
+        <Bone className="bone-meta" />
       </div>
       <p className="meta">{label}</p>
-      <div className="rows">
-        {SKELETON_ROWS.map((i) => (
-          <div className="skeleton-row" key={i} />
-        ))}
-      </div>
+      <RowsSkeleton count={PROJECTS_PER_PAGE} />
     </div>
   );
 }

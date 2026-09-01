@@ -15,7 +15,7 @@
     "selectLanguage": "Seleccionar idioma"
   },
   "footer": {
-    "colophon": "Compuesto en Archivo y JetBrains Mono. Los datos de contribuciones se leen de la API GraphQL de GitHub y se refrescan cada hora. Hecho con Next.js, servido estático.",
+    "colophon": "Archivo · JetBrains Mono · datos de GitHub, cada hora · Next.js, estático",
     "links": "Pie de página",
     "privacy": "privacidad",
     "source": "código"

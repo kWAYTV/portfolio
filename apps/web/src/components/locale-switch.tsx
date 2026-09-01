@@ -4,12 +4,11 @@ import { analytics } from "@repo/analytics";
 import { config, type Locale } from "@repo/i18n/config";
 import { useLocale } from "next-intl";
 import { useCallback } from "react";
-import { updateLocale } from "@/modules/i18n/lib/update-locale";
-import { useLocalePathname } from "@/modules/i18n/routing";
+import { LocaleLink, useLocalePathname } from "@/modules/i18n/routing";
 
 const locales = Object.keys(config.locales) as Locale[];
 
-function LocaleButton({
+function LocaleOption({
   current,
   loc,
   pathname,
@@ -20,23 +19,28 @@ function LocaleButton({
 }) {
   const isCurrent = loc === current;
   const handleClick = useCallback(() => {
-    if (isCurrent) {
-      return;
-    }
     analytics.localeSwitch(current, loc);
-    updateLocale(loc, pathname);
-  }, [current, isCurrent, loc, pathname]);
+  }, [current, loc]);
+
+  if (isCurrent) {
+    return (
+      <span aria-current="true" className="control">
+        {loc}
+      </span>
+    );
+  }
 
   return (
-    <button
-      aria-current={isCurrent ? "true" : undefined}
+    <LocaleLink
       className="control"
-      disabled={isCurrent}
+      // biome-ignore lint/suspicious/noExplicitAny: pathname is a validated app route
+      href={pathname as any}
+      locale={loc}
       onClick={handleClick}
-      type="button"
+      prefetch
     >
       {loc}
-    </button>
+    </LocaleLink>
   );
 }
 
@@ -47,7 +51,7 @@ export function LocaleSwitch() {
   return (
     <span className="control-group">
       {locales.map((loc) => (
-        <LocaleButton
+        <LocaleOption
           current={locale}
           key={loc}
           loc={loc}

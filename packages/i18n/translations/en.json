@@ -15,7 +15,7 @@
     "selectLanguage": "Select language"
   },
   "footer": {
-    "colophon": "Set in Archivo and JetBrains Mono. Contribution data read from the GitHub GraphQL API and refreshed hourly. Built with Next.js, served static.",
+    "colophon": "Archivo · JetBrains Mono · GitHub data, hourly · Next.js, static",
     "links": "Footer",
     "privacy": "privacy",
     "source": "source"

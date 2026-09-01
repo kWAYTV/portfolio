@@ -244,10 +244,19 @@ button {
   content: "/";
 }
 
-@media (max-width: 480px) {
+@media (max-width: 640px) {
   .masthead {
     grid-template-columns: 1fr;
     align-items: start;
+    padding-top: var(--space-md);
+  }
+
+  .masthead-row > .label {
+    display: none;
+  }
+
+  .masthead-nav {
+    gap: var(--space-md);
   }
 }
 
@@ -307,7 +316,8 @@ button {
 
 .section-head {
   display: flex;
-  gap: var(--space-md);
+  flex-wrap: wrap;
+  gap: var(--space-xs) var(--space-md);
   align-items: baseline;
   justify-content: space-between;
   padding-top: var(--space-sm);
@@ -366,6 +376,16 @@ button {
 @media (hover: hover) and (pointer: fine) {
   a.row:hover .row-title {
     transform: translateX(6px);
+  }
+}
+
+@media (max-width: 480px) {
+  .row {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .row-meta {
+    white-space: normal;
   }
 }
 
@@ -497,6 +517,10 @@ a.row:active .row-title {
 }
 
 .recorder-readout {
+  min-height: 1.4em;
+}
+
+.recorder-readout {
   display: flex;
   gap: var(--space-sm);
   align-items: baseline;
@@ -525,7 +549,7 @@ a.row:active .row-title {
 .recorder-stage svg {
   display: block;
   width: 100%;
-  height: auto;
+  height: clamp(6rem, 18vw, 8rem);
 }
 
 .recorder-grid {
@@ -541,35 +565,23 @@ a.row:active .row-title {
   vector-effect: non-scaling-stroke;
 }
 
-.recorder-area {
-  fill: var(--color-trace-fill);
-  animation: fade var(--dur-long) var(--ease-out) 650ms both;
+.recorder-bars {
+  clip-path: inset(0 100% 0 0);
+  animation: reveal var(--dur-focal) var(--ease-out) 80ms forwards;
 }
 
-.recorder-trace {
-  fill: none;
-  stroke: var(--color-trace);
-  stroke-dasharray: 1;
-  stroke-dashoffset: 1;
-  stroke-linejoin: round;
-  stroke-width: 1.25;
-  vector-effect: non-scaling-stroke;
-  animation: draw var(--dur-focal) var(--ease-out) 80ms forwards;
+.recorder-bars rect {
+  fill: var(--color-ink-2);
+  transition: fill var(--dur-micro) ease;
 }
 
-@keyframes draw {
+.recorder-bars rect.is-active {
+  fill: var(--color-ink);
+}
+
+@keyframes reveal {
   to {
-    stroke-dashoffset: 0;
-  }
-}
-
-@keyframes fade {
-  from {
-    opacity: 0;
-  }
-
-  to {
-    opacity: 1;
+    clip-path: inset(0 0 0 0);
   }
 }
 
@@ -624,11 +636,16 @@ a.row:active .row-title {
   border-bottom: 1px solid var(--color-rule);
 }
 
+.filters search {
+  flex: 1 1 16rem;
+  max-width: 24rem;
+}
+
 .search {
   display: flex;
   gap: var(--space-sm);
   align-items: baseline;
-  min-width: min(100%, 20rem);
+  width: 100%;
   border-bottom: 1px solid var(--color-ink);
 }
 
@@ -664,7 +681,8 @@ a.row:active .row-title {
 
 .sorts {
   display: flex;
-  gap: var(--space-md);
+  flex-wrap: wrap;
+  gap: var(--space-xs) var(--space-md);
 }
 
 .sorts a {
@@ -712,9 +730,65 @@ a.row:active .row-title {
   color: var(--color-rule-2);
 }
 
-.skeleton-row {
-  height: 3.25rem;
-  border-bottom: 1px solid var(--color-rule);
+/* ---------- skeletons ---------- */
+
+.bone {
+  display: block;
+  height: 0.875em;
+  background: var(--color-paper-2);
+  animation: pulse 1.4s var(--ease-in-out) infinite;
+}
+
+.bone-display {
+  width: min(100%, 14rem);
+  height: var(--text-display);
+}
+
+.bone-lede {
+  width: min(100%, 36rem);
+  height: 2.4em;
+}
+
+.bone-head {
+  width: 6rem;
+  height: var(--text-xl);
+}
+
+.bone-title {
+  width: min(60%, 16rem);
+  height: 1em;
+}
+
+.bone-meta {
+  width: 5rem;
+  height: 0.75em;
+}
+
+.bone-sub {
+  grid-column: 1 / -1;
+  width: min(90%, 30rem);
+  height: 0.875em;
+}
+
+.bone-search {
+  width: min(100%, 20rem);
+  height: 1.5rem;
+}
+
+.bone-figure {
+  width: min(100%, 18rem);
+  height: var(--text-figure);
+}
+
+.bone-stage {
+  width: 100%;
+  height: clamp(6rem, 18vw, 8rem);
+}
+
+@keyframes pulse {
+  50% {
+    opacity: 0.45;
+  }
 }
 
 /* ---------- prose ---------- */
@@ -940,8 +1014,7 @@ a.row:active .row-title {
 
 @media (prefers-reduced-motion: reduce) {
   .figure,
-  .recorder-trace,
-  .recorder-area {
+  .recorder-bars {
     animation: none;
   }
 
@@ -949,8 +1022,8 @@ a.row:active .row-title {
     --n: var(--target);
   }
 
-  .recorder-trace {
-    stroke-dashoffset: 0;
+  .recorder-bars {
+    clip-path: none;
   }
 
   .row-title,

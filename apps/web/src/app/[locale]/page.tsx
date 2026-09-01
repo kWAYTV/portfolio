@@ -3,7 +3,6 @@ import { getTranslations, setRequestLocale } from "next-intl/server";
 import { ContributionRecorder } from "@/components/contribution-recorder";
 import { SocialLinks } from "@/components/social-links";
 import { getSortedPosts } from "@/modules/blog/lib/blog";
-import { HeroQuote } from "@/modules/home/components/hero-quote";
 import { LocaleLink } from "@/modules/i18n/routing";
 import { getPageImageUrl } from "@/modules/og/lib/og";
 import { getFeaturedRepos } from "@/modules/projects/lib/featured";
@@ -46,7 +45,6 @@ export default async function HomePage({
       </section>
       <FeaturedWork locale={locale} />
       <LatestNotes locale={locale} />
-      <HeroQuote />
     </article>
   );
 }
