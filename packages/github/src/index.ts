@@ -11,6 +11,8 @@ export type {
   ContributionDay,
 } from "./contributions";
 export { getGitHubContributions } from "./contributions";
+export type { PinnedRepo } from "./pinned";
+export { getGitHubPinnedRepos } from "./pinned";
 export type { ContributionStats } from "./stats";
 export { summarizeContributions } from "./stats";
 export type {

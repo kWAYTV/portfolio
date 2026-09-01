@@ -1,4 +1,4 @@
-import { summarizeContributions } from "@repo/github";
+import { type PinnedRepo, summarizeContributions } from "@repo/github";
 import { getTranslations, setRequestLocale } from "next-intl/server";
 import { ContributionRecorder } from "@/components/contribution-recorder";
 import { SocialLinks } from "@/components/social-links";
@@ -8,6 +8,7 @@ import { getPageImageUrl } from "@/modules/og/lib/og";
 import { getFeaturedRepos } from "@/modules/projects/lib/featured";
 import {
   getGitHubContributionCalendar,
+  getGitHubPinnedRepos,
   getGitHubRepos,
 } from "@/modules/projects/lib/github";
 
@@ -121,7 +122,18 @@ async function StatHero({ locale }: { locale: string }) {
 
 async function FeaturedWork({ locale }: { locale: string }) {
   const t = await getTranslations({ locale, namespace: "projects" });
-  const repos = getFeaturedRepos(await getGitHubRepos());
+  const pinned = await getGitHubPinnedRepos();
+  const repos: PinnedRepo[] =
+    pinned.length > 0
+      ? pinned
+      : getFeaturedRepos(await getGitHubRepos()).map((repo) => ({
+          description: repo.description,
+          fullName: repo.full_name,
+          language: repo.language,
+          name: repo.name,
+          stars: repo.stargazers_count,
+          url: repo.html_url,
+        }));
 
   return (
     <section className="section">
@@ -138,15 +150,14 @@ async function FeaturedWork({ locale }: { locale: string }) {
           {repos.map((repo) => (
             <a
               className="row"
-              href={repo.html_url}
-              key={repo.id}
+              href={repo.url}
+              key={repo.fullName}
               rel="noopener noreferrer"
               target="_blank"
             >
               <span className="row-title">{repo.name}</span>
               <span className="row-meta">
-                {repo.language ? `${repo.language} · ` : ""}★{" "}
-                {repo.stargazers_count}
+                {repo.language ? `${repo.language} · ` : ""}★ {repo.stars}
               </span>
               {repo.description ? (
                 <span className="row-sub">{repo.description}</span>

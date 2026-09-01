@@ -15,9 +15,7 @@ export async function SiteFooter() {
 
   return (
     <footer className="colophon">
-      <p>
-        {t("colophon")} · {year}
-      </p>
+      <span className="label">{year}</span>
       <nav aria-label={t("links")}>
         <a
           href="https://github.com/kWAYTV/portfolio"
