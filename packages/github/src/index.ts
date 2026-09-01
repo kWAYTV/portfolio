@@ -9,8 +9,8 @@ import type {
 export type {
   ContributionCalendar,
   ContributionDay,
-} from "./contributions.js";
-export { getGitHubContributions } from "./contributions.js";
+} from "./contributions";
+export { getGitHubContributions } from "./contributions";
 export type {
   GetGitHubCommitsOptions,
   GetGitHubReposOptions,

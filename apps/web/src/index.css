@@ -4,7 +4,7 @@
  * enrichment: year-tape SVG · studied: no
  */
 @import "tailwindcss";
-@import "../../tokens.css";
+@import "../../../tokens.css";
 
 @theme inline {
   --color-background: var(--color-paper);

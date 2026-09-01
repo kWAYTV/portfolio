@@ -1,4 +1,5 @@
 import { getTranslations, setRequestLocale } from "next-intl/server";
+import { Suspense } from "react";
 import { Pagination } from "@/components/pagination";
 import { LocaleLink } from "@/modules/i18n/routing";
 import { getPageImageUrl } from "@/modules/og/lib/og";
@@ -36,12 +37,33 @@ export default async function ProjectsPage({
 }) {
   const { locale } = await params;
   setRequestLocale(locale);
+  const t = await getTranslations({ locale, namespace: "projects" });
 
+  return (
+    <article className="document">
+      <header>
+        <h1 className="page-title">{t("title")}</h1>
+        <p className="lede">{t("subtitle")}</p>
+      </header>
+      <Suspense fallback={<p className="meta">{t("search")}…</p>}>
+        <ProjectCatalogue locale={locale} searchParams={searchParams} />
+      </Suspense>
+    </article>
+  );
+}
+
+async function ProjectCatalogue({
+  locale,
+  searchParams,
+}: {
+  locale: string;
+  searchParams: Promise<{ page?: string; q?: string; sort?: string }>;
+}) {
   const query = await searchParams;
   const q = query.q ?? "";
   const sort = parseProjectSort(query.sort);
   const page = Number.parseInt(query.page ?? "1", 10) || 1;
-  const t = await getTranslations();
+  const t = await getTranslations({ locale, namespace: "projects" });
   const result = queryProjects(await getGitHubRepos(), { page, q, sort });
   const filterQuery = new URLSearchParams();
   if (q) {
@@ -52,22 +74,18 @@ export default async function ProjectsPage({
   }
 
   return (
-    <article className="document">
-      <header>
-        <h1 className="page-title">{t("projects.title")}</h1>
-        <p className="lede">{t("projects.subtitle")}</p>
-      </header>
+    <>
       <form className="filters">
         <input
           defaultValue={q}
           name="q"
-          placeholder={t("projects.searchPlaceholder")}
+          placeholder={t("searchPlaceholder")}
           type="search"
         />
         {sort === "updated" ? null : (
           <input name="sort" type="hidden" value={sort} />
         )}
-        <button type="submit">{t("projects.search")}</button>
+        <button type="submit">{t("search")}</button>
       </form>
       <div className="project-sort">
         {SORTS.map((value) => {
@@ -86,17 +104,17 @@ export default async function ProjectsPage({
               href={href}
               key={value}
             >
-              {t(`projects.sort.${value}`)}
+              {t(`sort.${value}`)}
             </LocaleLink>
           );
         })}
       </div>
       <p className="meta">
-        {t("projects.projectCount", { count: result.totalCount })}
-        {q ? ` ${t("projects.matching", { query: q })}` : ""}
+        {t("projectCount", { count: result.totalCount })}
+        {q ? ` ${t("matching", { query: q })}` : ""}
       </p>
       {result.repos.length === 0 ? (
-        <p className="meta">{t("projects.noProjects")}</p>
+        <p className="meta">{t("noProjects")}</p>
       ) : (
         <ul className="hairline-list">
           {result.repos.map((repo) => (
@@ -124,6 +142,6 @@ export default async function ProjectsPage({
         query={filterQuery.toString()}
         totalPages={result.totalPages}
       />
-    </article>
+    </>
   );
 }
