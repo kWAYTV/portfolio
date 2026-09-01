@@ -40,9 +40,7 @@ export default async function HomePage({
   return (
     <article className="document">
       <section className="stat-hero">
-        <p className="lede">
-          {t("bio")} <span className="label">{t("tagline")}</span>
-        </p>
+        <p className="lede">{t("bio")}</p>
         <SocialLinks />
         <StatHero locale={locale} />
       </section>
@@ -80,7 +78,9 @@ async function StatHero({ locale }: { locale: string }) {
           style={{ "--target": calendar.total } as React.CSSProperties}
         />
         <span className="sr-only">{formatted}</span>
-        <p className="qualifier">{t("qualifier")}</p>
+        <p className="qualifier">
+          {t("qualifier", { days: calendar.days.length })}
+        </p>
       </div>
       <ContributionRecorder
         days={calendar.days}

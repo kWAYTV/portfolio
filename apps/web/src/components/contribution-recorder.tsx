@@ -184,7 +184,7 @@ export function ContributionRecorder({
   return (
     <figure className="recorder">
       <div className="recorder-head">
-        <span className="label">{t("stage")}</span>
+        <span className="label">{t("stage", { days: days.length })}</span>
         <p aria-live="polite" className="recorder-readout">
           <strong>{dateLabel}</strong>
           <span>{t("count", { count: day.count })}</span>
