@@ -1,6 +1,19 @@
 [
   {
     "date": "2026-09-01",
+    "macrostructure": "Index-First",
+    "theme": "custom",
+    "theme_axes": "light / geist-sans / neutral",
+    "vibe": "graphite, one narrow column, softly rounded",
+    "enrichment": "E9 contribution heatmap",
+    "brief": "Compact redesign — Geist, 44rem shell, 6–10px radii, GitHub-shaped contribution grid in ink, blog removed",
+    "scope": "app",
+    "nav": "N1",
+    "footer": "Ft2",
+    "genre": "modern-minimal"
+  },
+  {
+    "date": "2026-09-01",
     "macrostructure": "Stat-Led",
     "theme": "custom",
     "theme_axes": "light / grotesk-heavy / neutral",

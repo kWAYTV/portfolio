@@ -1,10 +1,9 @@
 import { type PinnedRepo, summarizeContributions } from "@repo/github";
 import { getTranslations, setRequestLocale } from "next-intl/server";
-import { ContributionRecorder } from "@/components/contribution-recorder";
-import { Count } from "@/components/count";
-import { Reveal, Rule, Stage, Wipe } from "@/components/motion";
+import { ContributionGraph } from "@/components/contribution-graph";
+import { ArrowIcon } from "@/components/icons";
+import { RepoList } from "@/components/repo-list";
 import { SocialLinks } from "@/components/social-links";
-import { getSortedPosts } from "@/modules/blog/lib/blog";
 import { LocaleLink } from "@/modules/i18n/routing";
 import { getPageImageUrl } from "@/modules/og/lib/og";
 import { getFeaturedRepos } from "@/modules/projects/lib/featured";
@@ -38,30 +37,23 @@ export default async function HomePage({
   const { locale } = await params;
   setRequestLocale(locale);
   const t = await getTranslations({ locale, namespace: "hero" });
+  const tCommon = await getTranslations({ locale, namespace: "common" });
 
   return (
-    <Stage className="document">
-      <header className="hero">
-        <Wipe>
-          <h1 className="hero-name">{t("headline")}</h1>
-        </Wipe>
-        <Reveal>
-          <p className="lede">{t("bio")}</p>
-        </Reveal>
-        <Reveal>
-          <SocialLinks />
-        </Reveal>
+    <article className="document">
+      <header className="intro">
+        <div>
+          <h1 className="page-title">{tCommon("siteName")}</h1>
+          <p className="role">{t("role")}</p>
+        </div>
+        <p className="lede">
+          <strong>{t("headline")}</strong> {t("bio")}
+        </p>
+        <SocialLinks />
       </header>
-      <Reveal>
-        <Activity locale={locale} />
-      </Reveal>
-      <Reveal>
-        <FeaturedWork locale={locale} />
-      </Reveal>
-      <Reveal>
-        <LatestNotes locale={locale} />
-      </Reveal>
-    </Stage>
+      <Activity locale={locale} />
+      <FeaturedWork locale={locale} />
+    </article>
   );
 }
 
@@ -74,62 +66,30 @@ async function Activity({ locale }: { locale: string }) {
   }
 
   const stats = summarizeContributions(calendar.days);
-  const busiestDate = stats.busiest
-    ? new Intl.DateTimeFormat(locale, {
-        day: "numeric",
-        month: "short",
-        timeZone: "UTC",
-      }).format(new Date(`${stats.busiest.date}T00:00:00Z`))
-    : null;
+  const numbers = new Intl.NumberFormat(locale);
 
   return (
-    <section className="section">
+    <section aria-labelledby="activity" className="section">
       <div className="section-head">
-        <Rule />
-        <h2>{t("title")}</h2>
-        <span className="label">
-          {t("stage", { days: calendar.days.length })}
-        </span>
+        <h2 id="activity">{t("title")}</h2>
       </div>
-      <ContributionRecorder
+      <ContributionGraph
         days={calendar.days}
         locale={locale}
-        max={stats.max}
+        total={calendar.total}
       />
-      <dl className="readouts">
-        <div className="readout">
-          <dt className="label">{t("total")}</dt>
-          <dd>
-            <Count locale={locale} value={calendar.total} />
-          </dd>
+      <dl className="facts">
+        <div>
+          <dd>{numbers.format(stats.activeDays)}</dd>
+          <dt>{t("activeDays")}</dt>
         </div>
-        <div className="readout">
-          <dt className="label">{t("activeDays")}</dt>
-          <dd>
-            <Count locale={locale} value={stats.activeDays} />
-            <small> / {calendar.days.length}</small>
-          </dd>
+        <div>
+          <dd>{t("days", { count: stats.longestStreak })}</dd>
+          <dt>{t("longestStreak")}</dt>
         </div>
-        <div className="readout">
-          <dt className="label">{t("longestStreak")}</dt>
-          <dd>
-            <Count locale={locale} value={stats.longestStreak} />
-            <small> {t("days", { count: stats.longestStreak })}</small>
-          </dd>
-        </div>
-        <div className="readout">
-          <dt className="label">{t("currentStreak")}</dt>
-          <dd>
-            <Count locale={locale} value={stats.currentStreak} />
-            <small> {t("days", { count: stats.currentStreak })}</small>
-          </dd>
-        </div>
-        <div className="readout">
-          <dt className="label">{t("busiestDay")}</dt>
-          <dd>
-            <Count locale={locale} value={stats.busiest?.count ?? 0} />
-            <small> {busiestDate}</small>
-          </dd>
+        <div>
+          <dd>{t("days", { count: stats.currentStreak })}</dd>
+          <dt>{t("currentStreak")}</dt>
         </div>
       </dl>
     </section>
@@ -152,77 +112,28 @@ async function FeaturedWork({ locale }: { locale: string }) {
         }));
 
   return (
-    <section className="section">
+    <section aria-labelledby="work" className="section">
       <div className="section-head">
-        <Rule />
-        <h2>{t("featured")}</h2>
-        <LocaleLink className="label" href="/projects">
+        <h2 id="work">{t("featured")}</h2>
+        <LocaleLink className="control" href="/projects">
           {t("viewAll")}
+          <ArrowIcon />
         </LocaleLink>
       </div>
       {repos.length === 0 ? (
         <p className="meta">{t("noProjects")}</p>
       ) : (
-        <div className="rows">
-          {repos.map((repo) => (
-            <a
-              className="row"
-              href={repo.url}
-              key={repo.fullName}
-              rel="noopener noreferrer"
-              target="_blank"
-            >
-              <span className="row-title">{repo.name}</span>
-              <span className="row-meta">
-                {repo.language ? `${repo.language} · ` : ""}★ {repo.stars}
-              </span>
-              {repo.description ? (
-                <span className="row-sub">{repo.description}</span>
-              ) : null}
-            </a>
-          ))}
-        </div>
-      )}
-    </section>
-  );
-}
-
-async function LatestNotes({ locale }: { locale: string }) {
-  const t = await getTranslations({ locale, namespace: "blog" });
-  const posts = getSortedPosts(locale).slice(0, 3);
-  const formatter = new Intl.DateTimeFormat(locale, {
-    day: "2-digit",
-    month: "short",
-    year: "numeric",
-  });
-
-  return (
-    <section className="section">
-      <div className="section-head">
-        <Rule />
-        <h2>{t("title")}</h2>
-        <LocaleLink className="label" href="/blog">
-          {t("viewAll")}
-        </LocaleLink>
-      </div>
-      {posts.length === 0 ? (
-        <p className="meta">{t("noPosts")}</p>
-      ) : (
-        <div className="rows">
-          {posts.map((post) => {
-            const data = post.data as { date?: string; title: string };
-            return (
-              <LocaleLink className="row" href={post.url} key={post.url}>
-                <span className="row-title">{data.title}</span>
-                <span className="row-meta">
-                  {data.date
-                    ? formatter.format(new Date(data.date))
-                    : t("soon")}
-                </span>
-              </LocaleLink>
-            );
-          })}
-        </div>
+        <RepoList
+          locale={locale}
+          repos={repos.map((repo) => ({
+            description: repo.description,
+            key: repo.fullName,
+            language: repo.language,
+            name: repo.name,
+            stars: repo.stars,
+            url: repo.url,
+          }))}
+        />
       )}
     </section>
   );

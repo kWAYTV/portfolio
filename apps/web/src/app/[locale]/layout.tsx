@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { Archivo, JetBrains_Mono } from "next/font/google";
+import { Geist, Geist_Mono } from "next/font/google";
 import { notFound } from "next/navigation";
 import { NextIntlClientProvider } from "next-intl";
 import { getMessages, setRequestLocale } from "next-intl/server";
@@ -15,17 +15,17 @@ import { UmamiScript } from "@/modules/analytics/components/umami-script";
 import { routing } from "@/modules/i18n/routing";
 import { getStaticParams } from "@/modules/i18n/static";
 
-const archivo = Archivo({
+const geistSans = Geist({
   display: "swap",
   subsets: ["latin"],
-  variable: "--font-archivo",
-  weight: ["400", "500", "600", "700", "800"],
+  variable: "--font-geist-sans",
+  weight: ["400", "500", "600"],
 });
 
-const jetbrainsMono = JetBrains_Mono({
+const geistMono = Geist_Mono({
   display: "swap",
   subsets: ["latin"],
-  variable: "--font-jetbrains-mono",
+  variable: "--font-geist-mono",
   weight: ["400", "500"],
 });
 
@@ -34,7 +34,8 @@ export function generateStaticParams() {
 }
 
 export const metadata: Metadata = {
-  description: "welcome to my personal space.",
+  description:
+    "Software developer. Backend services, web apps, and the tools around them.",
   metadataBase: new URL(env.NEXT_PUBLIC_SITE_URL),
   title: "Martín Vila",
 };
@@ -55,7 +56,7 @@ export default async function LocaleLayout({
 
   return (
     <html lang={locale} suppressHydrationWarning>
-      <body className={`${archivo.variable} ${jetbrainsMono.variable}`}>
+      <body className={`${geistSans.variable} ${geistMono.variable}`}>
         <UmamiScript
           scriptUrl={env.NEXT_PUBLIC_UMAMI_URL}
           websiteId={env.NEXT_PUBLIC_UMAMI_WEBSITE_ID}

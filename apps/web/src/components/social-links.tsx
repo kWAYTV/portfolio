@@ -2,9 +2,29 @@
 
 import { analytics } from "@repo/analytics";
 import { useCallback } from "react";
-import { socialLinks } from "@/modules/home/consts/social-links";
+import { FileIcon, GitHubIcon, LinkedInIcon, XIcon } from "@/components/icons";
+import {
+  type SocialIcon,
+  socialLinks,
+} from "@/modules/home/consts/social-links";
 
-function SocialLink({ href, text }: { href: string; text: string }) {
+const ICONS = {
+  fileText: FileIcon,
+  github: GitHubIcon,
+  linkedin: LinkedInIcon,
+  twitter: XIcon,
+} satisfies Record<SocialIcon, typeof GitHubIcon>;
+
+function SocialLink({
+  href,
+  icon,
+  text,
+}: {
+  href: string;
+  icon: SocialIcon;
+  text: string;
+}) {
+  const Icon = ICONS[icon];
   const handleClick = useCallback(() => {
     analytics.socialClick(text);
     if (text === "resume") {
@@ -14,11 +34,13 @@ function SocialLink({ href, text }: { href: string; text: string }) {
 
   return (
     <a
+      className="chip"
       href={href}
       onClick={handleClick}
       rel="noopener noreferrer"
       target="_blank"
     >
+      <Icon />
       {text}
     </a>
   );
@@ -26,9 +48,14 @@ function SocialLink({ href, text }: { href: string; text: string }) {
 
 export function SocialLinks() {
   return (
-    <nav aria-label="Social" className="social-links">
+    <nav aria-label="Social" className="chips">
       {socialLinks.map((link) => (
-        <SocialLink href={link.href} key={link.text} text={link.text} />
+        <SocialLink
+          href={link.href}
+          icon={link.icon}
+          key={link.text}
+          text={link.text}
+        />
       ))}
     </nav>
   );

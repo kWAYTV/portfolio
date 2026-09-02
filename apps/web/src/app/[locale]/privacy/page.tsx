@@ -11,7 +11,7 @@ export async function generateMetadata({
   const t = await getTranslations({ locale, namespace: "privacy" });
   return {
     description: t("subtitle"),
-    title: `${t("title")} | Martin Vila`,
+    title: `${t("title")} · Martin Vila`,
   };
 }
 
@@ -26,7 +26,7 @@ export default async function PrivacyPage({
 
   return (
     <article className="document">
-      <header>
+      <header className="page-head">
         <h1 className="page-title">{t("title")}</h1>
         <p className="lede">{t("subtitle")}</p>
       </header>
@@ -47,7 +47,9 @@ export default async function PrivacyPage({
           <h2>{t("choicesTitle")}</h2>
         </div>
         <p className="page-copy">{t("choicesBody")}</p>
-        <CookiePreferencesButton />
+        <p>
+          <CookiePreferencesButton />
+        </p>
       </section>
     </article>
   );

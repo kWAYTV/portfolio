@@ -17,7 +17,7 @@ export function CookiePreferencesButton() {
   }, []);
 
   return (
-    <button className="control" onClick={handleClick} type="button">
+    <button className="button" onClick={handleClick} type="button">
       {t("changePreferences")}
     </button>
   );

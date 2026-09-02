@@ -6,7 +6,7 @@ export default async function NotFoundPage() {
 
   return (
     <article className="document">
-      <header>
+      <header className="page-head">
         <h1 className="page-title">{t("title")}</h1>
         <p className="lede">{t("description")}</p>
       </header>

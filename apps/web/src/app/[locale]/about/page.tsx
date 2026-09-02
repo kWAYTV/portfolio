@@ -16,7 +16,7 @@ export async function generateMetadata({
     openGraph: {
       images: [{ url: getPageImageUrl([locale, "about"]) }],
     },
-    title: `${t("title")} | Martin Vila`,
+    title: `${t("title")} · Martin Vila`,
   };
 }
 
@@ -31,30 +31,33 @@ export default async function AboutPage({
 
   return (
     <article className="document">
-      <header>
+      <header className="page-head">
         <h1 className="page-title">{t("about.title")}</h1>
         <p className="lede">{t("about.bio")}</p>
         <SocialLinks />
       </header>
-      <section className="section">
+      <section aria-labelledby="experience" className="section">
         <div className="section-head">
-          <h2>{t("about.experience")}</h2>
+          <h2 id="experience">{t("about.experience")}</h2>
         </div>
-        <div className="rows">
+        <ol className="timeline">
           {experience.map((item) => (
-            <div className="row" key={item.id}>
-              <span className="row-title">
-                {t(`experience.${item.key}.role`)}
-              </span>
-              <span className="row-meta">
+            <li className="timeline-item" key={item.id}>
+              <span aria-hidden="true" className="timeline-dot" />
+              <div className="timeline-body">
+                <span className="timeline-title">
+                  {t(`experience.${item.key}.role`)}
+                </span>
+                <span className="timeline-sub">
+                  {t(`experience.${item.key}.company`)}
+                </span>
+              </div>
+              <span className="timeline-meta">
                 {t(`experience.${item.key}.period`)}
               </span>
-              <span className="row-sub">
-                {t(`experience.${item.key}.company`)}
-              </span>
-            </div>
+            </li>
           ))}
-        </div>
+        </ol>
       </section>
     </article>
   );

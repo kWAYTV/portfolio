@@ -39,7 +39,6 @@ export function trackEvent(event: string, data?: EventData): void {
 }
 
 export const analytics = {
-  blogPostView: (slug: string) => trackEvent("blog-post-view", { slug }),
   localeSwitch: (from: string, to: string) =>
     trackEvent("locale-switch", { from, to }),
   projectClick: (name: string) => trackEvent("project-click", { name }),

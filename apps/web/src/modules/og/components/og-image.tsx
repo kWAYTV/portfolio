@@ -4,50 +4,71 @@ interface OgImageProps {
   title: string;
 }
 
+/* Satori cannot read CSS custom properties; these mirror tokens.css (graphite). */
+const PAPER = "#ffffff";
+const INK = "#1c1c1c";
+const INK_2 = "#4a4a4a";
+const MUTED = "#767676";
+const RULE = "#e3e3e3";
+
 export function OgImage({ title, description, subtitle }: OgImageProps) {
   return (
     <div
       style={{
-        background: "#fcfcfc",
-        borderBottom: "12px solid #111",
+        background: PAPER,
         display: "flex",
-        flexDirection: "column",
         height: "100%",
-        justifyContent: "space-between",
-        padding: 72,
+        padding: 48,
         width: "100%",
       }}
     >
       <div
         style={{
-          color: "#666",
-          fontFamily: "ui-monospace, monospace",
-          fontSize: 22,
-          letterSpacing: "0.09em",
-          textTransform: "uppercase",
+          border: `2px solid ${RULE}`,
+          borderRadius: 24,
+          display: "flex",
+          flexDirection: "column",
+          height: "100%",
+          justifyContent: "space-between",
+          padding: 64,
+          width: "100%",
         }}
       >
-        {subtitle}
-      </div>
-      <div style={{ display: "flex", flexDirection: "column", gap: 20 }}>
         <div
           style={{
-            color: "#111",
-            fontSize: title.length > 40 ? 56 : 88,
-            fontWeight: 800,
-            letterSpacing: "-0.045em",
-            lineHeight: 0.95,
-            maxWidth: "92%",
-            textTransform: "lowercase",
+            color: MUTED,
+            fontFamily: "ui-monospace, monospace",
+            fontSize: 24,
           }}
         >
-          {title}
+          {subtitle}
         </div>
-        {description ? (
-          <div style={{ color: "#444", fontSize: 28, maxWidth: "80%" }}>
-            {description}
+        <div style={{ display: "flex", flexDirection: "column", gap: 20 }}>
+          <div
+            style={{
+              color: INK,
+              fontSize: title.length > 24 ? 60 : 76,
+              fontWeight: 600,
+              letterSpacing: "-0.02em",
+              lineHeight: 1.05,
+              maxWidth: "92%",
+            }}
+          >
+            {title}
           </div>
-        ) : null}
+          {description ? (
+            <div
+              style={{
+                color: INK_2,
+                fontSize: 30,
+                lineHeight: 1.4,
+                maxWidth: "80%",
+              }}
+            >
+              {description}
+            </div>
+          ) : null}
+        </div>
       </div>
     </div>
   );

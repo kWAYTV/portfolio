@@ -1,4 +1,10 @@
-export const socialLinks = [
+export type SocialIcon = "github" | "twitter" | "linkedin" | "fileText";
+
+export const socialLinks: ReadonlyArray<{
+  href: string;
+  icon: SocialIcon;
+  text: string;
+}> = [
   { href: "https://github.com/kWAYTV", icon: "github", text: "github" },
   { href: "https://twitter.com/ogeperc", icon: "twitter", text: "twitter" },
   {
@@ -11,4 +17,4 @@ export const socialLinks = [
     icon: "fileText",
     text: "resume",
   },
-] as const;
+];

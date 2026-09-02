@@ -14,15 +14,11 @@ export function getPageImageUrl(path: string[]): string {
 /** Page types and their path structure */
 export type PagePath =
   | { type: "home"; locale: string }
-  | { type: "blog"; locale: string }
-  | { type: "blog-page"; locale: string; num: number }
-  | { type: "blog-post"; locale: string; slug: string }
   | { type: "projects"; locale: string }
   | { type: "about"; locale: string };
 
 export const STATIC_PAGE_TYPES = [
   "home",
-  "blog",
   "projects",
   "about",
 ] as const satisfies readonly PagePath["type"][];
@@ -33,12 +29,6 @@ export function pathToSegments(p: PagePath): string[] {
   switch (p.type) {
     case "home":
       return [p.locale];
-    case "blog":
-      return [p.locale, "blog"];
-    case "blog-page":
-      return [p.locale, "blog", "page", String(p.num)];
-    case "blog-post":
-      return [p.locale, "blog", p.slug];
     case "projects":
       return [p.locale, "projects"];
     case "about":
@@ -50,7 +40,7 @@ export function pathToSegments(p: PagePath): string[] {
   }
 }
 
-/** Parse route slug (e.g. ["en", "blog", "image.png"]) to PagePath. Inverse of pathToSegments. */
+/** Parse route slug (e.g. ["en", "about", "image.png"]) to PagePath. Inverse of pathToSegments. */
 export function segmentsToPagePath(slug: string[]): PagePath | null {
   // biome-ignore lint/style/useAtIndex: slug.at(-1) requires es2022, project may target older
   if (slug[slug.length - 1] !== IMAGE_FILE || slug.length < 2) {
@@ -65,23 +55,11 @@ export function segmentsToPagePath(slug: string[]): PagePath | null {
   if (rest.length === 0) {
     return { locale, type: "home" };
   }
-  if (rest.length === 1 && rest[0] === "blog") {
-    return { locale, type: "blog" };
-  }
   if (rest.length === 1 && rest[0] === "projects") {
     return { locale, type: "projects" };
   }
   if (rest.length === 1 && rest[0] === "about") {
     return { locale, type: "about" };
-  }
-  if (rest.length === 2 && rest[0] === "blog" && rest[1] !== "page") {
-    return { locale, slug: rest[1], type: "blog-post" };
-  }
-  if (rest.length === 3 && rest[0] === "blog" && rest[1] === "page") {
-    const num = Number.parseInt(rest[2], 10);
-    if (Number.isFinite(num)) {
-      return { locale, num, type: "blog-page" };
-    }
   }
   return null;
 }

@@ -5,75 +5,86 @@ emitting code. Do not regenerate per page — extend or amend this file when the
 system needs to grow.
 
 ## Genre
-editorial (Swiss neo-grotesque slot — no serif anywhere)
+modern-minimal (Geist school — single sans family, monochrome, composed, quiet)
 
 ## World
-A strip-chart recorder. Black ink on white paper, hairline grid, mono readouts.
-The GitHub contribution trace is the instrument; everything else is the manual
-around it. Dark mode is the same sheet inverted, not a second theme.
+A short personal page that fits in one narrow column. The GitHub contribution
+grid is the one piece of instrumentation; everything else is a list. Surfaces
+are softly rounded, never pill-shaped. Dark mode is the same sheet inverted.
 
 ## Macrostructure family
-- Home: Stat-Led — display statement, lede, socials, then the recorder with its
-  five readouts (total is one of them, never the hero), then ruled index rows.
-- Content pages (about, notes, privacy): stacked display heads with a 2px ink
-  rule above, ruled rows, mono meta. No kickers, no numbered eyebrows.
-- Catalogue pages (projects, notes index): ruled rows — title · mono meta ·
-  optional sub line. Filters are typographic (underlined input, mono sort links).
+- Home: Index-First — compact identity header (name, role, one paragraph,
+  social chips), then stacked indexes: activity grid, pinned work. No hero
+  figure, no display type.
+- Content pages (about, privacy): the same document rhythm — small title, lede,
+  sections with a body-size heading and a hairline above.
+- Catalogue pages (projects): rows with a letter mark, title, sub line, and mono
+  meta. Filters are a rounded input and small sort tabs.
 
-## Theme — custom, zero chroma
-- `--color-paper`   oklch(99% 0 0)   · dark oklch(9% 0 0)
-- `--color-paper-2` oklch(96% 0 0)   · dark oklch(14% 0 0)
-- `--color-rule`    oklch(88% 0 0)   · dark oklch(24% 0 0)
-- `--color-rule-2`  oklch(76% 0 0)   · dark oklch(34% 0 0)
-- `--color-ink`     oklch(12% 0 0)   · dark oklch(97% 0 0)
-- `--color-ink-2`   oklch(30% 0 0)   · dark oklch(82% 0 0)
-- `--color-muted`   oklch(46% 0 0)   · dark oklch(64% 0 0)
+## Theme — custom "graphite", zero chroma
+- `--color-paper`   oklch(100% 0 0)  · dark oklch(12% 0 0)
+- `--color-paper-2` oklch(97% 0 0)   · dark oklch(16% 0 0)
+- `--color-paper-3` oklch(94% 0 0)   · dark oklch(20% 0 0)
+- `--color-rule`    oklch(91% 0 0)   · dark oklch(24% 0 0)
+- `--color-rule-2`  oklch(84% 0 0)   · dark oklch(32% 0 0)
+- `--color-ink`     oklch(16% 0 0)   · dark oklch(94% 0 0)
+- `--color-ink-2`   oklch(36% 0 0)   · dark oklch(78% 0 0)
+- `--color-muted`   oklch(52% 0 0)   · dark oklch(62% 0 0)
 - `--color-focus`   = ink
 
-There is no accent. Emphasis is weight, size, and the 2px ink rule.
+There is no accent. Emphasis is weight and proximity. The contribution grid is
+ink at five opacity steps (`color-mix` against paper) so it always matches the
+sheet it sits on.
 
 ## Typography
-- Display: Archivo 800, lowercase, tracking -0.045em, line-height ≤ 0.95
-- Body: Archivo 400, 1rem, line-height 1.5
-- Label voice: JetBrains Mono 500, 0.75rem, uppercase, tracking 0.09em, muted
-- Readouts / numerals: tabular-nums everywhere
-- Measure: 62ch
+- One family: Geist Sans. Geist Mono only for numerals, dates, and labels.
+- Page title / name: `--text-xl` (1.25rem), weight 500, tracking -0.015em
+- Section heading: `--text-md`, weight 500, ink. Never uppercase.
+- Body: `--text-md` (0.9375rem), weight 400, line-height 1.6, ink-2
+- Meta: `--text-sm` (0.8125rem), muted; mono + tabular-nums for numbers
+- Measure: 60ch
 
-## Spacing
-4-point named scale in `tokens.css`. Named tokens only.
+## Shell
+- `--shell: 44rem`. One column. Inline padding clamp(1.25rem, 5vw, 2rem).
+- Sections separated by `--space-2xl`; inside a section, `--space-md`.
+
+## Radius
+- `--radius-cell` 2px — heatmap cells
+- `--radius-control` 6px — inputs, chips, nav hover, buttons
+- `--radius-mark` 8px — 32px letter marks
+- `--radius-surface` 10px — row hover surface, cookie banner
+Nothing is a pill. `corner-shape: squircle` is applied as a progressive
+enhancement on surfaces.
 
 ## Motion
-- One focal moment, home only: the trace draws left→right (900ms) while the
-  figure counts up (900ms). Both CSS, off the main thread, from a hidden start.
-- Motion (motion.dev) owns the recorder stylus: a stiff spring
-  (stiffness 520, damping 42) glides the pen between days; keyboard steps jump.
-- Feedback only elsewhere: underline draw-in 200ms, row title shifts 6px on
-  hover, controls scale 0.96 on press. All `--ease-out`
-  cubic-bezier(0.23, 1, 0.32, 1). No scroll reveals, no parallax, no route
-  choreography.
-- Reduced motion: focal animations resolve instantly; spring jumps.
+- Composed page: no reveals, no route choreography, no counters.
+- Feedback only: colour and background transitions 120–200ms, `--ease-out`.
+- The heatmap readout swaps text instantly; hover is enough.
+- Reduced motion: transitions collapse to 0s.
 
 ## Microinteractions stance
 - Silent success
 - Hover gated behind `(hover: hover) and (pointer: fine)`
-- Readout updates through `aria-live="polite"`; the recorder is a slider role
+- Row hover paints a `--radius-surface` background that bleeds 12px past the
+  content edge (`inset` pseudo), so text never shifts.
+- Readouts update through `aria-live="polite"`; the grid is a labelled list.
 
 ## Nav / footer
-- Nav: N6 masthead band — display wordmark + controls, hairline row with mono
-  links and the tagline, 2px ink rule below the wordmark.
-- Footer: Ft4 colophon — one mono paragraph (type, data source, stack, year)
-  and two links.
+- Nav: N1 — wordmark left, two text links (about, projects), then the locale
+  and theme controls. One row, hairline below, no tagline.
+- Footer: Ft2 — one inline row: year · source · privacy. Hairline above.
 
 ## Per-page allowances
-- Home is the only page that carries the recorder.
-- Never invent metrics. Totals, streaks, and the busiest day are computed from
-  the GitHub calendar.
-- Never clone GitHub's contribution heatmap.
+- Home is the only page that carries the contribution grid.
+- Never invent metrics. Totals, streaks, and active days are computed from the
+  GitHub calendar; levels come from GitHub's own quartiles.
+- The grid mirrors GitHub's 7 × 53 layout on purpose — it is the reader's
+  mental model — but is coloured with the site's ink, not GitHub's green.
 
 ## Rendering
 - Everything is prerendered. GitHub data is `use cache` with hourly life.
 - Only project search params are dynamic, behind a row skeleton.
 
 ## Product constraint
-The site is a static document. No IDE chrome, terminals, command palettes, or
-fake source views.
+The site is a static document. No IDE chrome, terminals, command palettes,
+blog, or fake source views.

@@ -19,11 +19,11 @@ export default function ErrorBoundary({
 
   return (
     <article className="document">
-      <header>
+      <header className="page-head">
         <h1 className="page-title">{t("title")}</h1>
         <p className="lede">{t("description")}</p>
       </header>
-      <p className="control-group">
+      <p className="segment">
         <button className="control" onClick={reset} type="button">
           {t("retry")}
         </button>
