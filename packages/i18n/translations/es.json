@@ -8,7 +8,6 @@
     "home": "inicio",
     "about": "sobre mí",
     "projects": "proyectos",
-    "blog": "notas",
     "menu": "Menú"
   },
   "localeSwitcher": {
@@ -20,22 +19,21 @@
     "source": "código"
   },
   "hero": {
-    "tagline": "desarrollador · gamer · autodidacta",
+    "role": "Desarrollador de software",
     "headline": "Construyo software pequeño y deliberado.",
     "bio": "Servicios backend, aplicaciones web y las herramientas que los rodean. Autodidacta, desde España, actualmente buscando nuevo trabajo."
   },
   "graph": {
-    "title": "actividad",
-    "total": "Contribuciones",
-    "stage": "GitHub · últimos {days} días",
-    "count": "{count, plural, =0 {sin contribuciones} one {# contribución} other {# contribuciones}}",
-    "scrubHint": "Registrador de contribuciones. Mueve el puntero o usa las flechas para leer un día.",
-    "activeDays": "Días activos",
-    "longestStreak": "Racha más larga",
-    "currentStreak": "Racha actual",
-    "busiestDay": "Día más activo",
-    "days": "{count, plural, one {día} other {días}}",
-    "empty": "El registrador espera a que GitHub responda."
+    "title": "Actividad",
+    "total": "{count, plural, one {# contribución} other {# contribuciones}} en el último año",
+    "count": "{count, plural, =0 {Sin contribuciones} one {# contribución} other {# contribuciones}} el {date}",
+    "label": "Contribuciones en GitHub, último año",
+    "activeDays": "días activos",
+    "longestStreak": "racha más larga",
+    "currentStreak": "racha actual",
+    "days": "{count, plural, one {# día} other {# días}}",
+    "less": "Menos",
+    "more": "Más"
   },
   "about": {
     "title": "Sobre mí",
@@ -45,22 +43,22 @@
   },
   "experience": {
     "freelancing": {
-      "period": "2019 - Presente",
+      "period": "2019 – ahora",
       "role": "Desarrollador Freelance / Contribuidor Open Source",
       "company": "Freelance"
     },
     "tokyoSchool": {
-      "period": "2024 - Presente",
+      "period": "2024 – ahora",
       "role": "PCAP Python, Programación Informática",
       "company": "Tokyo School"
     },
     "insergalSales": {
-      "period": "2018 - 2019",
+      "period": "2018 – 2019",
       "role": "Asistente de Ventas, Marketing",
       "company": "Insergal"
     },
     "insergalMechanic": {
-      "period": "2018 - 2019",
+      "period": "2018 – 2019",
       "role": "Mecánico Automotriz",
       "company": "Insergal"
     }
@@ -69,32 +67,22 @@
     "title": "Proyectos",
     "subtitle": "Repositorios públicos, ordenables y buscables. Se omiten forks y trabajo archivado.",
     "featured": "Trabajo",
-    "viewAll": "todos los proyectos →",
+    "viewAll": "Todos los proyectos",
     "search": "Buscar",
     "searchPlaceholder": "Buscar repositorios",
     "loading": "Leyendo repositorios…",
     "noProjects": "No se encontraron proyectos",
     "projectCount": "{count, plural, one {# proyecto} other {# proyectos}}",
     "matching": "que coinciden con “{query}”",
+    "stars": "{count, plural, one {# estrella} other {# estrellas}}",
     "sort": {
       "stars": "Estrellas",
       "updated": "Actualizado",
       "created": "Creado",
       "name": "Nombre"
     },
-    "prev": "ant.",
-    "next": "sig."
-  },
-  "blog": {
-    "title": "Notas",
-    "subtitle": "Notas breves del trabajo actual. Más entradas aparecerán aquí conforme se escriban.",
-    "viewAll": "todas las notas →",
-    "backToBlog": "← notas",
-    "noPosts": "Aún no hay posts.",
-    "postCount": "{count, plural, one {# nota} other {# notas}}",
-    "prev": "ant.",
-    "next": "sig.",
-    "soon": "Pronto"
+    "prev": "Anterior",
+    "next": "Siguiente"
   },
   "error": {
     "title": "Algo salió mal",
@@ -125,7 +113,7 @@
     "home": "Inicio"
   },
   "theme": {
-    "dark": "oscuro",
-    "light": "claro"
+    "dark": "Cambiar a tema oscuro",
+    "light": "Cambiar a tema claro"
   }
 }

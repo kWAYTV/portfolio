@@ -9,6 +9,7 @@ import type {
 export type {
   ContributionCalendar,
   ContributionDay,
+  ContributionLevel,
 } from "./contributions";
 export { getGitHubContributions } from "./contributions";
 export type { PinnedRepo } from "./pinned";

@@ -1,6 +1,8 @@
 import { getTranslations, setRequestLocale } from "next-intl/server";
 import { Suspense } from "react";
+import { SearchIcon } from "@/components/icons";
 import { Pagination } from "@/components/pagination";
+import { RepoList } from "@/components/repo-list";
 import { Bone, RowsSkeleton } from "@/components/skeleton";
 import { LocaleLink } from "@/modules/i18n/routing";
 import { getPageImageUrl } from "@/modules/og/lib/og";
@@ -28,7 +30,7 @@ export async function generateMetadata({
     openGraph: {
       images: [{ url: getPageImageUrl([locale, "projects"]) }],
     },
-    title: `${t("title")} | Martin Vila`,
+    title: `${t("title")} · Martin Vila`,
   };
 }
 
@@ -45,8 +47,10 @@ export default async function ProjectsPage({
 
   return (
     <article className="document">
-      <header>
-        <h1 className="page-title">{t("title")}</h1>
+      <header className="page-head">
+        <h1 className="page-title" data-testid="projects-shell">
+          {t("title")}
+        </h1>
         <p className="lede">{t("subtitle")}</p>
       </header>
       <Suspense fallback={<CatalogueSkeleton label={t("loading")} />}>
@@ -58,14 +62,14 @@ export default async function ProjectsPage({
 
 function CatalogueSkeleton({ label }: { label: string }) {
   return (
-    <div aria-busy="true" className="section">
+    <section aria-busy="true" className="section">
       <div className="filters">
         <Bone className="bone-search" />
         <Bone className="bone-meta" />
       </div>
       <p className="meta">{label}</p>
       <RowsSkeleton count={PROJECTS_PER_PAGE} />
-    </div>
+    </section>
   );
 }
 
@@ -91,10 +95,11 @@ async function ProjectCatalogue({
   }
 
   return (
-    <div className="section">
+    <section className="section" data-testid="projects-catalogue">
       <div className="filters">
         <search>
           <form className="search">
+            <SearchIcon />
             <input
               aria-label={t("search")}
               defaultValue={q}
@@ -105,10 +110,12 @@ async function ProjectCatalogue({
             {sort === "updated" ? null : (
               <input name="sort" type="hidden" value={sort} />
             )}
-            <button type="submit">{t("search")}</button>
+            <button className="control" type="submit">
+              {t("search")}
+            </button>
           </form>
         </search>
-        <nav aria-label="Sort" className="sorts">
+        <nav aria-label="Sort" className="segment">
           {SORTS.map((value) => {
             const sortParams = new URLSearchParams();
             if (q) {
@@ -122,6 +129,7 @@ async function ProjectCatalogue({
             return (
               <LocaleLink
                 aria-current={value === sort ? "page" : undefined}
+                className="control"
                 href={href}
                 key={value}
               >
@@ -138,34 +146,24 @@ async function ProjectCatalogue({
       {result.repos.length === 0 ? (
         <p className="meta">{t("noProjects")}</p>
       ) : (
-        <div className="rows">
-          {result.repos.map((repo) => (
-            <a
-              className="row"
-              href={repo.html_url}
-              key={repo.id}
-              rel="noopener noreferrer"
-              target="_blank"
-            >
-              <span className="row-title">{repo.name}</span>
-              <span className="row-meta">
-                {repo.language ? `${repo.language} · ` : ""}★{" "}
-                {repo.stargazers_count}
-              </span>
-              {repo.description ? (
-                <span className="row-sub">{repo.description}</span>
-              ) : null}
-            </a>
-          ))}
-        </div>
+        <RepoList
+          locale={locale}
+          repos={result.repos.map((repo) => ({
+            description: repo.description,
+            key: String(repo.id),
+            language: repo.language,
+            name: repo.name,
+            stars: repo.stargazers_count,
+            url: repo.html_url,
+          }))}
+        />
       )}
       <Pagination
         basePath="/projects"
         currentPage={result.page}
-        namespace="projects"
         query={filterQuery.toString()}
         totalPages={result.totalPages}
       />
-    </div>
+    </section>
   );
 }

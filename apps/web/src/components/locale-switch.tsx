@@ -2,7 +2,7 @@
 
 import { analytics } from "@repo/analytics";
 import { config, type Locale } from "@repo/i18n/config";
-import { useLocale } from "next-intl";
+import { useLocale, useTranslations } from "next-intl";
 import { useCallback } from "react";
 import { LocaleLink, useLocalePathname } from "@/modules/i18n/routing";
 
@@ -35,9 +35,9 @@ function LocaleOption({
       className="control"
       // biome-ignore lint/suspicious/noExplicitAny: pathname is a validated app route
       href={pathname as any}
+      hrefLang={loc}
       locale={loc}
       onClick={handleClick}
-      prefetch
     >
       {loc}
     </LocaleLink>
@@ -47,9 +47,10 @@ function LocaleOption({
 export function LocaleSwitch() {
   const locale = useLocale() as Locale;
   const pathname = useLocalePathname();
+  const t = useTranslations("localeSwitcher");
 
   return (
-    <span className="control-group">
+    <nav aria-label={t("selectLanguage")} className="segment">
       {locales.map((loc) => (
         <LocaleOption
           current={locale}
@@ -58,6 +59,6 @@ export function LocaleSwitch() {
           pathname={pathname}
         />
       ))}
-    </span>
+    </nav>
   );
 }

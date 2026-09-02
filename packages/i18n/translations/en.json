@@ -8,7 +8,6 @@
     "home": "home",
     "about": "about",
     "projects": "projects",
-    "blog": "notes",
     "menu": "Menu"
   },
   "localeSwitcher": {
@@ -20,22 +19,21 @@
     "source": "source"
   },
   "hero": {
-    "tagline": "developer · gamer · self-taught",
+    "role": "Software developer",
     "headline": "I build small, deliberate software.",
     "bio": "Backend services, web apps, and the tools around them. Self-taught, based in Spain, currently looking for new work."
   },
   "graph": {
-    "title": "activity",
-    "total": "Contributions",
-    "stage": "GitHub · last {days} days",
-    "count": "{count, plural, =0 {no contributions} one {# contribution} other {# contributions}}",
-    "scrubHint": "Contribution recorder. Move the pointer or use the arrow keys to read a day.",
-    "activeDays": "Active days",
-    "longestStreak": "Longest streak",
-    "currentStreak": "Current streak",
-    "busiestDay": "Busiest day",
-    "days": "{count, plural, one {day} other {days}}",
-    "empty": "The recorder is idle until GitHub answers."
+    "title": "Activity",
+    "total": "{count, plural, one {# contribution} other {# contributions}} in the last year",
+    "count": "{count, plural, =0 {No contributions} one {# contribution} other {# contributions}} on {date}",
+    "label": "GitHub contributions, last year",
+    "activeDays": "active days",
+    "longestStreak": "longest streak",
+    "currentStreak": "current streak",
+    "days": "{count, plural, one {# day} other {# days}}",
+    "less": "Less",
+    "more": "More"
   },
   "about": {
     "title": "About",
@@ -45,22 +43,22 @@
   },
   "experience": {
     "freelancing": {
-      "period": "2019 - Present",
+      "period": "2019 – now",
       "role": "Freelance Developer / Open Source Contributor",
       "company": "Freelance"
     },
     "tokyoSchool": {
-      "period": "2024 - Present",
+      "period": "2024 – now",
       "role": "PCAP Python, Computer Programming",
       "company": "Tokyo School"
     },
     "insergalSales": {
-      "period": "2018 - 2019",
+      "period": "2018 – 2019",
       "role": "Sales Assistant, Marketing",
       "company": "Insergal"
     },
     "insergalMechanic": {
-      "period": "2018 - 2019",
+      "period": "2018 – 2019",
       "role": "Automotive Mechanic",
       "company": "Insergal"
     }
@@ -69,32 +67,22 @@
     "title": "Projects",
     "subtitle": "Public repositories, sorted and searchable. Forks and archived work are left out.",
     "featured": "Work",
-    "viewAll": "all projects →",
+    "viewAll": "All projects",
     "search": "Search",
     "searchPlaceholder": "Search repositories",
     "loading": "Reading repositories…",
     "noProjects": "No projects found",
     "projectCount": "{count, plural, one {# project} other {# projects}}",
     "matching": "matching “{query}”",
+    "stars": "{count, plural, one {# star} other {# stars}}",
     "sort": {
       "stars": "Stars",
       "updated": "Updated",
       "created": "Created",
       "name": "Name"
     },
-    "prev": "prev",
-    "next": "next"
-  },
-  "blog": {
-    "title": "Notes",
-    "subtitle": "Short notes from current work. More entries land here as they are written.",
-    "viewAll": "all notes →",
-    "backToBlog": "← notes",
-    "noPosts": "No posts yet.",
-    "postCount": "{count, plural, one {# note} other {# notes}}",
-    "prev": "prev",
-    "next": "next",
-    "soon": "Soon"
+    "prev": "Previous",
+    "next": "Next"
   },
   "error": {
     "title": "Something went wrong",
@@ -125,7 +113,7 @@
     "home": "Home"
   },
   "theme": {
-    "dark": "dark",
-    "light": "light"
+    "dark": "Switch to dark theme",
+    "light": "Switch to light theme"
   }
 }

@@ -9,26 +9,20 @@ export async function SiteHeader() {
   const tCommon = await getTranslations("common");
 
   return (
-    <header>
-      <div className="masthead">
-        <LocaleLink className="masthead-wordmark" href="/">
-          {tCommon("siteName")}
-        </LocaleLink>
-        <div className="masthead-controls">
-          <LocaleSwitch />
-          <ThemeToggle />
-        </div>
-      </div>
-      <div className="masthead-row">
-        <NavLinks
-          items={[
-            { href: "/about", label: t("about") },
-            { href: "/projects", label: t("projects") },
-            { href: "/blog", label: t("blog") },
-          ]}
-          menuLabel={t("menu")}
-        />
-        <span className="label">{tCommon("siteDescription")}</span>
+    <header className="masthead">
+      <LocaleLink className="wordmark" href="/">
+        {tCommon("siteName")}
+      </LocaleLink>
+      <NavLinks
+        items={[
+          { href: "/about", label: t("about") },
+          { href: "/projects", label: t("projects") },
+        ]}
+        menuLabel={t("menu")}
+      />
+      <div className="masthead-controls">
+        <LocaleSwitch />
+        <ThemeToggle />
       </div>
     </header>
   );

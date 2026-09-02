@@ -14,29 +14,19 @@ export const PAGE_COPY: Record<string, Record<string, OgCopy>> = {
     es: {
       description: "Un poco sobre mí",
       subtitle: "Martin Vila",
-      title: "About",
-    },
-  },
-  blog: {
-    en: {
-      description: "Quiet notes from current work.",
-      subtitle: "Martin Vila",
-      title: "Blog",
-    },
-    es: {
-      description: "Notas breves del trabajo actual.",
-      subtitle: "Martin Vila",
-      title: "Blog",
+      title: "Sobre mí",
     },
   },
   home: {
     en: {
-      description: "welcome to my personal space.",
+      description:
+        "Software developer. Backend services, web apps, and the tools around them.",
       subtitle: "Portfolio",
       title: "Martin Vila",
     },
     es: {
-      description: "Bienvenido a mi espacio personal.",
+      description:
+        "Desarrollador de software. Servicios backend, aplicaciones web y las herramientas que los rodean.",
       subtitle: "Portafolio",
       title: "Martin Vila",
     },
@@ -50,7 +40,7 @@ export const PAGE_COPY: Record<string, Record<string, OgCopy>> = {
     es: {
       description: "Trabajo open source",
       subtitle: "Martin Vila",
-      title: "Projects",
+      title: "Proyectos",
     },
   },
 };

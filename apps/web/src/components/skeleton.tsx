@@ -6,15 +6,18 @@ export function Bone({ className }: { className?: string }) {
 
 export function RowsSkeleton({ count = 8 }: { count?: number }) {
   return (
-    <div className="rows">
+    <ul className="repos">
       {ROWS.slice(0, count).map((i) => (
-        <div className="row" key={i}>
-          <Bone className="bone-title" />
+        <li className="repo is-bone" key={i}>
+          <Bone className="bone-mark" />
+          <span className="repo-body">
+            <Bone className="bone-title" />
+            <Bone className="bone-sub" />
+          </span>
           <Bone className="bone-meta" />
-          {i % 2 === 0 ? <Bone className="bone-sub" /> : null}
-        </div>
+        </li>
       ))}
-    </div>
+    </ul>
   );
 }
 
@@ -27,11 +30,11 @@ export function PageSkeleton({
 }) {
   return (
     <article aria-busy="true" className="document">
-      <header>
+      <header className="page-head">
         <Bone className="bone-display" />
         <Bone className="bone-lede" />
       </header>
-      <div className="section">
+      <section className="section">
         {filters ? (
           <div className="filters">
             <Bone className="bone-search" />
@@ -43,7 +46,7 @@ export function PageSkeleton({
           </div>
         )}
         <RowsSkeleton count={rows} />
-      </div>
+      </section>
     </article>
   );
 }
@@ -51,27 +54,24 @@ export function PageSkeleton({
 export function HomeSkeleton() {
   return (
     <article aria-busy="true" className="document">
-      <section className="stat-hero">
-        <Bone className="bone-lede" />
+      <header className="intro">
+        <Bone className="bone-display" />
         <Bone className="bone-meta" />
-        <Bone className="bone-figure" />
         <Bone className="bone-lede" />
-        <Bone className="bone-stage" />
-        <div className="readouts">
-          {[0, 1, 2, 3].map((i) => (
-            <div className="readout" key={i}>
-              <Bone className="bone-meta" />
-              <Bone className="bone-head" />
-            </div>
-          ))}
+        <Bone className="bone-chips" />
+      </header>
+      <section className="section">
+        <div className="section-head">
+          <Bone className="bone-head" />
         </div>
+        <Bone className="bone-stage" />
       </section>
-      <div className="section">
+      <section className="section">
         <div className="section-head">
           <Bone className="bone-head" />
         </div>
         <RowsSkeleton count={3} />
-      </div>
+      </section>
     </article>
   );
 }

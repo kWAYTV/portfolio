@@ -6,7 +6,7 @@ export function NavLinks({
   items,
   menuLabel,
 }: {
-  items: Array<{ href: "/about" | "/projects" | "/blog"; label: string }>;
+  items: Array<{ href: "/about" | "/projects"; label: string }>;
   menuLabel: string;
 }) {
   const pathname = useLocalePathname();
@@ -19,6 +19,7 @@ export function NavLinks({
         return (
           <LocaleLink
             aria-current={active ? "page" : undefined}
+            className="control"
             href={item.href}
             key={item.href}
           >
