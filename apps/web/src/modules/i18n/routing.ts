@@ -14,6 +14,7 @@ export const routing = defineRouting({
 
 export const {
   Link: LocaleLink,
+  getPathname,
   redirect: localeRedirect,
   usePathname: useLocalePathname,
   useRouter: useLocaleRouter,
