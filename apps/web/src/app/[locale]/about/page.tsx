@@ -32,7 +32,9 @@ export default async function AboutPage({
   return (
     <article className="document">
       <header className="page-head">
-        <h1 className="page-title">{t("about.title")}</h1>
+        <h1 className="page-title" data-testid="about-shell">
+          {t("about.title")}
+        </h1>
         <p className="lede">{t("about.bio")}</p>
         <SocialLinks />
       </header>

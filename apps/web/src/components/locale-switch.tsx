@@ -38,7 +38,6 @@ function LocaleOption({
       hrefLang={loc}
       locale={loc}
       onClick={handleClick}
-      prefetch
     >
       {loc}
     </LocaleLink>

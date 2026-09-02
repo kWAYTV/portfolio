@@ -1,8 +1,10 @@
 import { type PinnedRepo, summarizeContributions } from "@repo/github";
 import { getTranslations, setRequestLocale } from "next-intl/server";
+import { Suspense } from "react";
 import { ContributionGraph } from "@/components/contribution-graph";
 import { ArrowIcon } from "@/components/icons";
 import { RepoList } from "@/components/repo-list";
+import { Bone, RowsSkeleton } from "@/components/skeleton";
 import { SocialLinks } from "@/components/social-links";
 import { LocaleLink } from "@/modules/i18n/routing";
 import { getPageImageUrl } from "@/modules/og/lib/og";
@@ -43,7 +45,9 @@ export default async function HomePage({
     <article className="document">
       <header className="intro">
         <div>
-          <h1 className="page-title">{tCommon("siteName")}</h1>
+          <h1 className="page-title" data-testid="home-shell">
+            {tCommon("siteName")}
+          </h1>
           <p className="role">{t("role")}</p>
         </div>
         <p className="lede">
@@ -51,9 +55,35 @@ export default async function HomePage({
         </p>
         <SocialLinks />
       </header>
-      <Activity locale={locale} />
-      <FeaturedWork locale={locale} />
+      <Suspense fallback={<ActivitySkeleton />}>
+        <Activity locale={locale} />
+      </Suspense>
+      <Suspense fallback={<WorkSkeleton />}>
+        <FeaturedWork locale={locale} />
+      </Suspense>
     </article>
+  );
+}
+
+function ActivitySkeleton() {
+  return (
+    <section aria-busy="true" className="section">
+      <div className="section-head">
+        <Bone className="bone-head" />
+      </div>
+      <Bone className="bone-stage" />
+    </section>
+  );
+}
+
+function WorkSkeleton() {
+  return (
+    <section aria-busy="true" className="section">
+      <div className="section-head">
+        <Bone className="bone-head" />
+      </div>
+      <RowsSkeleton count={3} />
+    </section>
   );
 }
 
@@ -69,7 +99,11 @@ async function Activity({ locale }: { locale: string }) {
   const numbers = new Intl.NumberFormat(locale);
 
   return (
-    <section aria-labelledby="activity" className="section">
+    <section
+      aria-labelledby="activity"
+      className="section"
+      data-testid="home-activity"
+    >
       <div className="section-head">
         <h2 id="activity">{t("title")}</h2>
       </div>

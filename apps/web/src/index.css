@@ -153,13 +153,14 @@ button {
 
 .masthead-nav {
   display: flex;
-  gap: var(--space-2xs);
+  gap: var(--space-3xs);
 }
 
 .masthead-controls {
   display: flex;
   gap: var(--space-xs);
   align-items: center;
+  margin-right: calc(-1 * var(--space-2xs));
 }
 
 /* ---------- controls ---------- */
@@ -169,7 +170,6 @@ button {
   gap: var(--space-2xs);
   align-items: center;
   padding: var(--space-2xs) var(--space-xs);
-  margin: calc(-1 * var(--space-2xs)) calc(-1 * var(--space-xs));
   font-size: var(--text-sm);
   line-height: 1.4;
   color: var(--color-muted);
@@ -240,12 +240,11 @@ button {
 
 .segment {
   display: inline-flex;
-  gap: var(--space-2xs);
+  gap: var(--space-3xs);
   align-items: center;
 }
 
 .segment .control {
-  margin: 0;
   text-transform: capitalize;
 }
 
@@ -351,6 +350,10 @@ button {
   gap: var(--space-xs) var(--space-md);
   align-items: baseline;
   justify-content: space-between;
+}
+
+.section-head .control {
+  margin-right: calc(-1 * var(--space-xs));
 }
 
 .section-head h2 {
@@ -807,10 +810,6 @@ a.repo:active::before {
   appearance: none;
 }
 
-.search .control {
-  margin: 0;
-}
-
 .pager {
   display: flex;
   gap: var(--space-md);
@@ -909,7 +908,8 @@ a.repo:active::before {
 
 .colophon nav {
   display: flex;
-  gap: var(--space-2xs);
+  gap: var(--space-3xs);
+  margin-right: calc(-1 * var(--space-xs));
 }
 
 /* ---------- cookie banner ---------- */

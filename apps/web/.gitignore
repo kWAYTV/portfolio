@@ -58,3 +58,11 @@ dev-dist
 .dev.vars*
 
 .open-next
+
+# Playwright
+/test-results/
+/playwright-report/
+
+# Next.js generated agent rules
+/AGENTS.md
+/CLAUDE.md
