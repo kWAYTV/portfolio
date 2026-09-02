@@ -2,46 +2,44 @@
 
 import type { ContributionDay } from "@repo/github";
 import { useTranslations } from "next-intl";
-import { type PointerEvent, useCallback, useMemo, useState } from "react";
+import {
+  type ComponentProps,
+  cloneElement,
+  useCallback,
+  useMemo,
+  useState,
+} from "react";
+import {
+  type Activity,
+  ActivityCalendar,
+  type ThemeInput,
+} from "react-activity-calendar";
 
-const WEEK = 7;
+type RenderBlock = NonNullable<
+  ComponentProps<typeof ActivityCalendar>["renderBlock"]
+>;
+
 const LEVELS = [0, 1, 2, 3, 4] as const;
 
-interface MonthMark {
-  label: string;
-  week: number;
-}
+const THEME: ThemeInput = {
+  dark: [
+    "var(--cell-0)",
+    "var(--cell-1)",
+    "var(--cell-2)",
+    "var(--cell-3)",
+    "var(--cell-4)",
+  ],
+  light: [
+    "var(--cell-0)",
+    "var(--cell-1)",
+    "var(--cell-2)",
+    "var(--cell-3)",
+    "var(--cell-4)",
+  ],
+};
 
 function utcDate(date: string) {
   return new Date(`${date}T00:00:00Z`);
-}
-
-/** One label per month change, placed on the week that starts it. */
-function buildMonths(days: ContributionDay[], locale: string): MonthMark[] {
-  const formatter = new Intl.DateTimeFormat(locale, {
-    month: "short",
-    timeZone: "UTC",
-  });
-  const offset = days[0]?.weekday ?? 0;
-  const marks: MonthMark[] = [];
-  let lastMonth = "";
-
-  for (const [index, day] of days.entries()) {
-    const week = Math.floor((index + offset) / WEEK);
-    const month = day.date.slice(0, 7);
-    if (month === lastMonth) {
-      continue;
-    }
-    lastMonth = month;
-    const previous = marks.at(-1);
-    // A month that only owns the first partial column would collide with the next label.
-    if (previous && week - previous.week < 2) {
-      marks.pop();
-    }
-    marks.push({ label: formatter.format(utcDate(day.date)), week });
-  }
-
-  return marks;
 }
 
 export function ContributionGraph({
@@ -54,9 +52,23 @@ export function ContributionGraph({
   total: number;
 }) {
   const t = useTranslations("graph");
-  const [active, setActive] = useState<number | null>(null);
+  const [active, setActive] = useState<Activity | null>(null);
 
-  const months = useMemo(() => buildMonths(days, locale), [days, locale]);
+  const data = useMemo<Activity[]>(
+    () => days.map(({ count, date, level }) => ({ count, date, level })),
+    [days]
+  );
+
+  const months = useMemo(() => {
+    const formatter = new Intl.DateTimeFormat(locale, {
+      month: "short",
+      timeZone: "UTC",
+    });
+    return Array.from({ length: 12 }, (_, month) =>
+      formatter.format(new Date(Date.UTC(2020, month, 1)))
+    );
+  }, [locale]);
+
   const dayFormatter = useMemo(
     () =>
       new Intl.DateTimeFormat(locale, {
@@ -69,15 +81,8 @@ export function ContributionGraph({
     [locale]
   );
 
-  const offset = days[0]?.weekday ?? 0;
-  const weeks = Math.ceil((days.length + offset) / WEEK);
-  const spacers = useMemo(
-    () => Array.from({ length: offset }, (_, i) => i),
-    [offset]
-  );
-
   const describe = useCallback(
-    (day: ContributionDay) =>
+    (day: Activity) =>
       t("count", {
         count: day.count,
         date: dayFormatter.format(utcDate(day.date)),
@@ -85,65 +90,39 @@ export function ContributionGraph({
     [dayFormatter, t]
   );
 
-  const handlePointerOver = useCallback((event: PointerEvent<HTMLElement>) => {
-    const target = event.target as HTMLElement;
-    const index = target.dataset.i;
-    if (index !== undefined) {
-      setActive(Number(index));
-    }
-  }, []);
+  const renderBlock = useCallback<RenderBlock>(
+    (block, activity) =>
+      cloneElement(block, {
+        "aria-label": describe(activity),
+        onMouseEnter: () => setActive(activity),
+        onMouseLeave: () => setActive(null),
+      }),
+    [describe]
+  );
 
-  const handlePointerLeave = useCallback(() => {
-    setActive(null);
-  }, []);
-
-  const activeDay = active === null ? undefined : days[active];
-  const readout = activeDay
-    ? describe(activeDay)
-    : t("total", { count: total });
-
-  const columns = `repeat(${weeks}, var(--cell))`;
+  const readout = active ? describe(active) : t("total", { count: total });
 
   return (
-    <figure className="graph">
-      <div className="graph-scroll" dir="rtl">
-        <div className="graph-sheet" dir="ltr">
-          <div
-            aria-hidden="true"
-            className="graph-months"
-            style={{ gridTemplateColumns: columns }}
-          >
-            {months.map((mark) => (
-              <span
-                key={mark.label + mark.week}
-                style={{ gridColumnStart: mark.week + 1 }}
-              >
-                {mark.label}
-              </span>
-            ))}
-          </div>
-          <ol
-            aria-label={t("label")}
-            className="graph-grid"
-            onPointerLeave={handlePointerLeave}
-            onPointerOver={handlePointerOver}
-            style={{ gridTemplateColumns: columns }}
-          >
-            {spacers.map((i) => (
-              <li aria-hidden="true" className="cell is-empty" key={`s${i}`} />
-            ))}
-            {days.map((day, index) => (
-              <li
-                aria-label={describe(day)}
-                className={`cell${index === active ? "is-active" : ""}`}
-                data-i={index}
-                data-level={day.level}
-                key={day.date}
-              />
-            ))}
-          </ol>
-        </div>
-      </div>
+    <figure aria-label={t("label")} className="graph">
+      <ActivityCalendar
+        blockMargin={3}
+        blockRadius={2}
+        blockSize={10}
+        className="graph-calendar"
+        colorScheme="light"
+        data={data}
+        fontSize={12}
+        labels={{
+          legend: { less: t("less"), more: t("more") },
+          months,
+          totalCount: t("total", { count: total }),
+        }}
+        maxLevel={4}
+        renderBlock={renderBlock}
+        showColorLegend={false}
+        showTotalCount={false}
+        theme={THEME}
+      />
       <figcaption className="graph-foot">
         <p aria-live="polite" className="graph-readout">
           {readout}
