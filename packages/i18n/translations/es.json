@@ -8,7 +8,8 @@
     "home": "inicio",
     "about": "sobre mí",
     "projects": "proyectos",
-    "menu": "Menú"
+    "menu": "Menú",
+    "skipToContent": "Saltar al contenido"
   },
   "localeSwitcher": {
     "selectLanguage": "Seleccionar idioma"

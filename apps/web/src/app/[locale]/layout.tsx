@@ -2,7 +2,11 @@ import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import { notFound } from "next/navigation";
 import { NextIntlClientProvider } from "next-intl";
-import { getMessages, setRequestLocale } from "next-intl/server";
+import {
+  getMessages,
+  getTranslations,
+  setRequestLocale,
+} from "next-intl/server";
 import type { PropsWithChildren } from "react";
 
 import "../../index.css";
@@ -52,11 +56,17 @@ export default async function LocaleLayout({
     notFound();
   }
 
-  const messages = await getMessages();
+  const [messages, tNav] = await Promise.all([
+    getMessages(),
+    getTranslations("nav"),
+  ]);
 
   return (
     <html lang={locale} suppressHydrationWarning>
       <body className={`${geistSans.variable} ${geistMono.variable}`}>
+        <a className="skip-link" href="#main-content">
+          {tNav("skipToContent")}
+        </a>
         <UmamiScript
           scriptUrl={env.NEXT_PUBLIC_UMAMI_URL}
           websiteId={env.NEXT_PUBLIC_UMAMI_WEBSITE_ID}
@@ -65,7 +75,9 @@ export default async function LocaleLayout({
           <NextIntlClientProvider locale={locale} messages={messages}>
             <div className="site-shell">
               <SiteHeader />
-              <main className="site-main">{children}</main>
+              <main className="site-main" id="main-content">
+                {children}
+              </main>
               <SiteFooter />
             </div>
             <CookieBanner />

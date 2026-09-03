@@ -58,13 +58,11 @@ body {
   font-size: var(--text-md);
   font-weight: 400;
   -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
   line-height: 1.6;
   color: var(--color-ink);
   background: var(--color-paper);
   text-rendering: optimizeLegibility;
-  transition:
-    color var(--dur-short) ease,
-    background-color var(--dur-short) ease;
 }
 
 ::selection {
@@ -105,6 +103,25 @@ button {
   clip: rect(0, 0, 0, 0);
 }
 
+.skip-link {
+  position: fixed;
+  top: var(--space-sm);
+  left: var(--space-sm);
+  z-index: 100;
+  padding: var(--space-xs) var(--space-sm);
+  font-size: var(--text-sm);
+  font-weight: 500;
+  color: var(--color-paper);
+  background: var(--color-ink);
+  border-radius: var(--radius-control);
+  transform: translateY(calc(-100% - var(--space-lg)));
+}
+
+.skip-link:focus {
+  outline-color: var(--color-paper);
+  transform: translateY(0);
+}
+
 /* ---------- voices ---------- */
 
 .mono {
@@ -130,7 +147,7 @@ button {
 
 .site-main {
   flex: 1;
-  padding-block: var(--space-xl) var(--space-3xl);
+  padding-block: var(--space-2xl) var(--space-3xl);
 }
 
 /* ---------- masthead (N1) ---------- */
@@ -140,13 +157,14 @@ button {
   flex-wrap: wrap;
   gap: var(--space-xs) var(--space-lg);
   align-items: center;
-  padding-block: var(--space-md);
+  min-height: 4.5rem;
+  padding-block: var(--space-sm);
   border-bottom: 1px solid var(--color-rule);
 }
 
 .wordmark {
   margin-right: auto;
-  font-weight: 500;
+  font-weight: 600;
   letter-spacing: var(--tracking-tight);
   white-space: nowrap;
 }
@@ -169,7 +187,8 @@ button {
   display: inline-flex;
   gap: var(--space-2xs);
   align-items: center;
-  padding: var(--space-2xs) var(--space-xs);
+  min-height: 2.5rem;
+  padding: var(--space-xs) var(--space-sm);
   font-size: var(--text-sm);
   line-height: 1.4;
   color: var(--color-muted);
@@ -183,6 +202,10 @@ button {
 .control[aria-current],
 .control:disabled {
   color: var(--color-ink);
+}
+
+.control[aria-current] {
+  background: var(--color-paper-2);
 }
 
 .control[aria-disabled="true"] {
@@ -212,8 +235,8 @@ button {
 
 .icon-control {
   justify-content: center;
-  width: 1.75rem;
-  height: 1.75rem;
+  width: 2.5rem;
+  height: 2.5rem;
   padding: 0;
   margin: 0;
   color: var(--color-ink);
@@ -297,7 +320,7 @@ button {
 .document {
   display: flex;
   flex-direction: column;
-  gap: var(--space-2xl);
+  gap: var(--space-3xl);
 }
 
 .intro,
@@ -307,13 +330,41 @@ button {
   gap: var(--space-md);
 }
 
+.home-intro {
+  display: grid;
+  grid-template-columns: minmax(0, 0.8fr) minmax(0, 1.2fr);
+  gap: var(--space-xl) var(--space-3xl);
+  align-items: end;
+  padding-block: var(--space-lg) var(--space-xl);
+}
+
+.identity,
+.intro-copy {
+  display: flex;
+  flex-direction: column;
+}
+
+.identity {
+  gap: var(--space-xs);
+}
+
+.intro-copy {
+  gap: var(--space-lg);
+}
+
 .page-title {
   min-width: 0;
   font-size: var(--text-xl);
   font-weight: 500;
-  line-height: 1.3;
-  letter-spacing: var(--tracking-tight);
+  line-height: 1.1;
+  letter-spacing: -0.03em;
+  text-wrap: balance;
   overflow-wrap: anywhere;
+}
+
+.home-intro .page-title {
+  font-size: clamp(3rem, 7vw, var(--text-2xl));
+  font-weight: 600;
 }
 
 .role {
@@ -321,10 +372,22 @@ button {
   color: var(--color-muted);
 }
 
+.home-intro .role {
+  font-family: var(--font-mono);
+  font-size: var(--text-sm);
+  font-variant-numeric: tabular-nums;
+}
+
 .lede {
   max-width: var(--measure);
   color: var(--color-ink-2);
   text-wrap: pretty;
+}
+
+.home-intro .lede {
+  max-width: 46ch;
+  font-size: var(--text-lg);
+  line-height: 1.55;
 }
 
 .lede strong {
@@ -342,6 +405,8 @@ button {
   display: flex;
   flex-direction: column;
   gap: var(--space-md);
+  padding-top: var(--space-md);
+  border-top: 1px solid var(--color-rule);
 }
 
 .section-head {
@@ -357,10 +422,10 @@ button {
 }
 
 .section-head h2 {
-  font-size: var(--text-md);
-  font-weight: 500;
-  line-height: 1.4;
-  letter-spacing: var(--tracking-tight);
+  font-size: var(--text-lg);
+  font-weight: 600;
+  line-height: 1.2;
+  letter-spacing: -0.02em;
 }
 
 /* ---------- chips ---------- */
@@ -375,7 +440,7 @@ button {
   display: inline-flex;
   gap: var(--space-xs);
   align-items: center;
-  height: 1.875rem;
+  min-height: 2.5rem;
   padding-inline: var(--space-sm);
   font-size: var(--text-sm);
   font-weight: 500;
@@ -408,6 +473,7 @@ button {
 
 .chip:active {
   background: var(--color-paper-3);
+  scale: 0.96;
 }
 
 /* ---------- repo rows ---------- */
@@ -449,6 +515,10 @@ button {
 a.repo:active::before {
   background: var(--color-paper-3);
   opacity: 1;
+}
+
+a.repo:active {
+  scale: 0.99;
 }
 
 .mark {
@@ -761,7 +831,7 @@ a.repo:active::before {
 .search input {
   flex: 1;
   min-width: 0;
-  font-size: var(--text-sm);
+  font-size: var(--text-md);
   color: var(--color-ink);
   outline: none;
   background: none;
@@ -949,7 +1019,52 @@ a.repo:active::before {
   }
 }
 
-/* ---------- reduced motion ---------- */
+/* ---------- responsive ---------- */
+
+@media (max-width: 40rem) {
+  .site-main {
+    padding-block: var(--space-xl) var(--space-2xl);
+  }
+
+  .masthead {
+    gap: 0 var(--space-sm);
+    padding-block: var(--space-xs);
+  }
+
+  .masthead-nav {
+    order: 3;
+    width: 100%;
+  }
+
+  .masthead-controls {
+    order: 2;
+  }
+
+  .home-intro {
+    grid-template-columns: minmax(0, 1fr);
+    gap: var(--space-lg);
+    align-items: start;
+    padding-block: var(--space-sm) var(--space-md);
+  }
+
+  .home-intro .page-title {
+    font-size: clamp(2.5rem, 15vw, 3.5rem);
+  }
+
+  .home-intro .lede {
+    font-size: var(--text-md);
+  }
+
+  .document {
+    gap: var(--space-2xl);
+  }
+}
+
+@media (min-width: 40.001rem) {
+  .search input {
+    font-size: var(--text-sm);
+  }
+}
 
 @media (prefers-reduced-motion: reduce) {
   *,
@@ -958,4 +1073,13 @@ a.repo:active::before {
     transition-duration: 0s !important;
     animation-duration: 0s !important;
   }
+}
+
+.disable-transitions,
+.disable-transitions *,
+.disable-transitions::before,
+.disable-transitions::after,
+.disable-transitions *::before,
+.disable-transitions *::after {
+  transition: none !important;
 }

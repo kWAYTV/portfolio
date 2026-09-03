@@ -42,18 +42,20 @@ export default async function HomePage({
   const tCommon = await getTranslations({ locale, namespace: "common" });
 
   return (
-    <article className="document">
-      <header className="intro">
-        <div>
+    <article className="document home-document">
+      <header className="intro home-intro">
+        <div className="identity">
           <h1 className="page-title" data-testid="home-shell">
             {tCommon("siteName")}
           </h1>
           <p className="role">{t("role")}</p>
         </div>
-        <p className="lede">
-          <strong>{t("headline")}</strong> {t("bio")}
-        </p>
-        <SocialLinks />
+        <div className="intro-copy">
+          <p className="lede">
+            <strong>{t("headline")}</strong> {t("bio")}
+          </p>
+          <SocialLinks />
+        </div>
       </header>
       <Suspense fallback={<ActivitySkeleton />}>
         <Activity locale={locale} />

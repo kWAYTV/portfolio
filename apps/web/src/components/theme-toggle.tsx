@@ -6,6 +6,18 @@ import { useTheme } from "next-themes";
 import { useCallback, useEffect, useState } from "react";
 import { ThemeIcon } from "@/components/icons";
 
+function suppressThemeTransitions() {
+  const root = document.documentElement;
+  root.classList.add("disable-transitions");
+
+  window.requestAnimationFrame(() => {
+    root.getBoundingClientRect();
+    window.requestAnimationFrame(() => {
+      root.classList.remove("disable-transitions");
+    });
+  });
+}
+
 export function ThemeToggle() {
   const { resolvedTheme, setTheme } = useTheme();
   const t = useTranslations("theme");
@@ -18,6 +30,7 @@ export function ThemeToggle() {
   const isDark = mounted && resolvedTheme === "dark";
   const nextTheme = isDark ? "light" : "dark";
   const handleClick = useCallback(() => {
+    suppressThemeTransitions();
     setTheme(nextTheme);
     analytics.themeToggle(nextTheme);
   }, [nextTheme, setTheme]);

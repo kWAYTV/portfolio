@@ -8,14 +8,16 @@ system needs to grow.
 modern-minimal (Geist school — single sans family, monochrome, composed, quiet)
 
 ## World
-A short personal page that fits in one narrow column. The GitHub contribution
-grid is the one piece of instrumentation; everything else is a list. Surfaces
-are softly rounded, never pill-shaped. Dark mode is the same sheet inverted.
+A concise portfolio index on a wide editorial sheet. The home introduction
+uses an asymmetric two-column composition, then returns to full-width indexes.
+The GitHub contribution grid is the one piece of instrumentation; everything
+else is a list. Surfaces are softly rounded, never pill-shaped. Dark mode is
+the same sheet inverted.
 
 ## Macrostructure family
-- Home: Index-First — compact identity header (name, role, one paragraph,
-  social chips), then stacked indexes: activity grid, pinned work. No hero
-  figure, no display type.
+- Home: Index-First — large identity at the leading edge, summary and social
+  links at the trailing edge, then stacked full-width indexes: activity grid
+  and pinned work. No hero figure.
 - Content pages (about, privacy): the same document rhythm — small title, lede,
   sections with a body-size heading and a hairline above.
 - Catalogue pages (projects): rows with a letter mark, title, sub line, and mono
@@ -38,15 +40,17 @@ sheet it sits on.
 
 ## Typography
 - One family: Geist Sans. Geist Mono only for numerals, dates, and labels.
-- Page title / name: `--text-xl` (1.25rem), weight 500, tracking -0.015em
-- Section heading: `--text-md`, weight 500, ink. Never uppercase.
-- Body: `--text-md` (0.9375rem), weight 400, line-height 1.6, ink-2
+- Home name: fluid up to `--text-2xl` (4rem), weight 600, tracking -0.03em
+- Page title: `--text-xl` (1.75rem), weight 500, tracking -0.03em
+- Section heading: `--text-lg` (1.125rem), weight 600, ink. Never uppercase.
+- Body: `--text-md` (1rem), weight 400, line-height 1.6, ink-2
 - Meta: `--text-sm` (0.8125rem), muted; mono + tabular-nums for numbers
-- Measure: 60ch
+- Measure: 62ch
 
 ## Shell
-- `--shell: 44rem`. One column. Inline padding clamp(1.25rem, 5vw, 2rem).
-- Sections separated by `--space-2xl`; inside a section, `--space-md`.
+- `--shell: 64rem`. Inline padding clamp(1.25rem, 5vw, 2.5rem).
+- Home intro: 2:3 split above 40rem, one column below.
+- Sections separated by `--space-3xl`; inside a section, `--space-md`.
 
 ## Radius
 - `--radius-cell` 2px — heatmap cells
@@ -59,6 +63,7 @@ enhancement on surfaces.
 ## Motion
 - Composed page: no reveals, no route choreography, no counters.
 - Feedback only: colour and background transitions 120–200ms, `--ease-out`.
+- Theme changes snap; transitions are suppressed for the swap.
 - The heatmap readout swaps text instantly; hover is enough.
 - Reduced motion: transitions collapse to 0s.
 
