@@ -21,7 +21,9 @@ export default function ErrorBoundary({
     <article className="document">
       <header className="page-head">
         <h1 className="page-title">{t("title")}</h1>
-        <p className="lede">{t("description")}</p>
+        <p className="lede" data-enter="error-lede">
+          {t("description")}
+        </p>
       </header>
       <p className="segment">
         <button className="control" onClick={reset} type="button">

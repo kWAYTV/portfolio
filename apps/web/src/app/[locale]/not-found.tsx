@@ -8,7 +8,9 @@ export default async function NotFoundPage() {
     <article className="document">
       <header className="page-head">
         <h1 className="page-title">{t("title")}</h1>
-        <p className="lede">{t("description")}</p>
+        <p className="lede" data-enter="not-found-lede">
+          {t("description")}
+        </p>
       </header>
       <p>
         <LocaleLink className="control" href="/">

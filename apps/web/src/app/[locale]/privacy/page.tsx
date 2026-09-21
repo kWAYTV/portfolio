@@ -28,21 +28,23 @@ export default async function PrivacyPage({
     <article className="document">
       <header className="page-head">
         <h1 className="page-title">{t("title")}</h1>
-        <p className="lede">{t("subtitle")}</p>
+        <p className="lede" data-enter="privacy-lede">
+          {t("subtitle")}
+        </p>
       </header>
-      <section className="section">
+      <section className="section" data-reveal="privacy-cookies">
         <div className="section-head">
           <h2>{t("cookiesTitle")}</h2>
         </div>
         <p className="page-copy">{t("cookiesBody")}</p>
       </section>
-      <section className="section">
+      <section className="section" data-reveal="privacy-analytics">
         <div className="section-head">
           <h2>{t("analyticsTitle")}</h2>
         </div>
         <p className="page-copy">{t("analyticsBody")}</p>
       </section>
-      <section className="section">
+      <section className="section" data-reveal="privacy-choices">
         <div className="section-head">
           <h2>{t("choicesTitle")}</h2>
         </div>

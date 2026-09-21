@@ -46,9 +46,9 @@ function SocialLink({
   );
 }
 
-export function SocialLinks() {
+export function SocialLinks({ enterKey = "social" }: { enterKey?: string }) {
   return (
-    <nav aria-label="Social" className="chips">
+    <nav aria-label="Social" className="chips" data-enter={enterKey}>
       {socialLinks.map((link) => (
         <SocialLink
           href={link.href}

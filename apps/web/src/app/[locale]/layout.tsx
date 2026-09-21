@@ -8,6 +8,7 @@ import type { PropsWithChildren } from "react";
 import "../../index.css";
 import { env } from "@repo/env/web";
 import { CookieBanner } from "@/components/cookie-banner";
+import { PageMotion } from "@/components/motion/page-motion";
 import Providers from "@/components/providers";
 import { SiteFooter } from "@/components/site-footer";
 import { SiteHeader } from "@/components/site-header";
@@ -21,6 +22,9 @@ const geistSans = Geist({
   variable: "--font-geist-sans",
   weight: ["400", "500", "600"],
 });
+
+const MOTION_BOOT =
+  'try{if(matchMedia("(prefers-reduced-motion: no-preference)").matches){document.documentElement.classList.add("motion");setTimeout(function(){document.querySelectorAll("[data-enter]").forEach(function(el){if(getComputedStyle(el).opacity==="0")el.style.opacity="1"})},2000)}}catch(e){}';
 
 const geistMono = Geist_Mono({
   display: "swap",
@@ -57,6 +61,10 @@ export default async function LocaleLayout({
   return (
     <html lang={locale} suppressHydrationWarning>
       <body className={`${geistSans.variable} ${geistMono.variable}`}>
+        <script
+          // biome-ignore lint/security/noDangerouslySetInnerHtml: sets the motion class before first paint
+          dangerouslySetInnerHTML={{ __html: MOTION_BOOT }}
+        />
         <UmamiScript
           scriptUrl={env.NEXT_PUBLIC_UMAMI_URL}
           websiteId={env.NEXT_PUBLIC_UMAMI_WEBSITE_ID}
@@ -65,7 +73,9 @@ export default async function LocaleLayout({
           <NextIntlClientProvider locale={locale} messages={messages}>
             <div className="site-shell">
               <SiteHeader />
-              <main className="site-main">{children}</main>
+              <main className="site-main">
+                <PageMotion>{children}</PageMotion>
+              </main>
               <SiteFooter />
             </div>
             <CookieBanner />

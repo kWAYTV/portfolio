@@ -35,16 +35,22 @@ export default async function AboutPage({
         <h1 className="page-title" data-testid="about-shell">
           {t("about.title")}
         </h1>
-        <p className="lede">{t("about.bio")}</p>
-        <SocialLinks />
+        <p className="lede" data-enter="about-lede">
+          {t("about.bio")}
+        </p>
+        <SocialLinks enterKey="about-social" />
       </header>
-      <section aria-labelledby="experience" className="section">
+      <section
+        aria-labelledby="experience"
+        className="section"
+        data-reveal="experience"
+      >
         <div className="section-head">
           <h2 id="experience">{t("about.experience")}</h2>
         </div>
         <ol className="timeline">
           {experience.map((item) => (
-            <li className="timeline-item" key={item.id}>
+            <li className="timeline-item" data-reveal-item key={item.id}>
               <span aria-hidden="true" className="timeline-dot" />
               <div className="timeline-body">
                 <span className="timeline-title">

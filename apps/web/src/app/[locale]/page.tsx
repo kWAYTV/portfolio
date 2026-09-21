@@ -48,12 +48,14 @@ export default async function HomePage({
           <h1 className="page-title" data-testid="home-shell">
             {tCommon("siteName")}
           </h1>
-          <p className="role">{t("role")}</p>
+          <p className="role" data-enter="home-role">
+            {t("role")}
+          </p>
         </div>
-        <p className="lede">
+        <p className="lede" data-enter="home-lede">
           <strong>{t("headline")}</strong> {t("bio")}
         </p>
-        <SocialLinks />
+        <SocialLinks enterKey="home-social" />
       </header>
       <Suspense fallback={<ActivitySkeleton />}>
         <Activity locale={locale} />
@@ -102,6 +104,7 @@ async function Activity({ locale }: { locale: string }) {
     <section
       aria-labelledby="activity"
       className="section"
+      data-reveal="activity"
       data-testid="home-activity"
     >
       <div className="section-head">
@@ -146,7 +149,7 @@ async function FeaturedWork({ locale }: { locale: string }) {
         }));
 
   return (
-    <section aria-labelledby="work" className="section">
+    <section aria-labelledby="work" className="section" data-reveal="work">
       <div className="section-head">
         <h2 id="work">{t("featured")}</h2>
         <LocaleLink className="control" href="/projects">

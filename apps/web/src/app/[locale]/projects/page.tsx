@@ -51,7 +51,9 @@ export default async function ProjectsPage({
         <h1 className="page-title" data-testid="projects-shell">
           {t("title")}
         </h1>
-        <p className="lede">{t("subtitle")}</p>
+        <p className="lede" data-enter="projects-lede">
+          {t("subtitle")}
+        </p>
       </header>
       <Suspense fallback={<CatalogueSkeleton label={t("loading")} />}>
         <ProjectCatalogue locale={locale} searchParams={searchParams} />
@@ -95,7 +97,11 @@ async function ProjectCatalogue({
   }
 
   return (
-    <section className="section" data-testid="projects-catalogue">
+    <section
+      className="section"
+      data-reveal="catalogue"
+      data-testid="projects-catalogue"
+    >
       <div className="filters">
         <search>
           <form className="search">

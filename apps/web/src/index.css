@@ -949,6 +949,14 @@ a.repo:active::before {
   }
 }
 
+/* ---------- motion ---------- */
+
+@media (prefers-reduced-motion: no-preference) {
+  html.motion [data-enter] {
+    opacity: 0;
+  }
+}
+
 /* ---------- reduced motion ---------- */
 
 @media (prefers-reduced-motion: reduce) {
@@ -957,5 +965,9 @@ a.repo:active::before {
   ::after {
     transition-duration: 0s !important;
     animation-duration: 0s !important;
+  }
+
+  html.motion [data-enter] {
+    opacity: 1;
   }
 }
