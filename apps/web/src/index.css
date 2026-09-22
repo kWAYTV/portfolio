@@ -217,6 +217,14 @@ button {
   padding: 0;
   margin: 0;
   color: var(--color-ink);
+  transition:
+    transform var(--dur-micro) var(--ease-out),
+    color var(--dur-micro) ease,
+    background-color var(--dur-micro) ease;
+}
+
+.icon-control:active {
+  transform: scale(0.96);
 }
 
 .icon-control svg {
@@ -239,9 +247,30 @@ button {
 }
 
 .segment {
+  position: relative;
   display: inline-flex;
   gap: var(--space-3xs);
   align-items: center;
+}
+
+.segment-thumb {
+  position: absolute;
+  left: 0;
+  z-index: 0;
+  width: 100%;
+  pointer-events: none;
+  background: var(--color-paper-3);
+  border-radius: var(--radius-control);
+  opacity: 0;
+}
+
+.segment-thumb[data-ready="true"] {
+  opacity: 1;
+}
+
+.segment > :not(.segment-thumb) {
+  position: relative;
+  z-index: 1;
 }
 
 .segment .control {

@@ -3,6 +3,7 @@ import { Suspense } from "react";
 import { SearchIcon } from "@/components/icons";
 import { Pagination } from "@/components/pagination";
 import { RepoList } from "@/components/repo-list";
+import { Segment } from "@/components/segment";
 import { Bone, RowsSkeleton } from "@/components/skeleton";
 import { LocaleLink } from "@/modules/i18n/routing";
 import { getPageImageUrl } from "@/modules/og/lib/og";
@@ -115,7 +116,7 @@ async function ProjectCatalogue({
             </button>
           </form>
         </search>
-        <nav aria-label="Sort" className="segment">
+        <Segment label="Sort">
           {SORTS.map((value) => {
             const sortParams = new URLSearchParams();
             if (q) {
@@ -137,7 +138,7 @@ async function ProjectCatalogue({
               </LocaleLink>
             );
           })}
-        </nav>
+        </Segment>
       </div>
       <p className="meta">
         {t("projectCount", { count: result.totalCount })}
