@@ -825,22 +825,6 @@ a.repo:active::before {
   animation: pulse 1.4s var(--ease-in-out) infinite;
 }
 
-.bone-display {
-  width: min(100%, 10rem);
-  height: var(--text-xl);
-}
-
-.bone-lede {
-  width: min(100%, 34rem);
-  height: 2.6em;
-}
-
-.bone-chips {
-  width: min(100%, 20rem);
-  height: 1.875rem;
-  border-radius: var(--radius-control);
-}
-
 .bone-head {
   width: 5rem;
   height: var(--text-md);
