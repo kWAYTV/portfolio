@@ -4,6 +4,7 @@ import { analytics } from "@repo/analytics";
 import { config, type Locale } from "@repo/i18n/config";
 import { useLocale, useTranslations } from "next-intl";
 import { useCallback } from "react";
+import { Segment } from "@/components/segment";
 import { LocaleLink, useLocalePathname } from "@/modules/i18n/routing";
 
 const locales = Object.keys(config.locales) as Locale[];
@@ -50,7 +51,7 @@ export function LocaleSwitch() {
   const t = useTranslations("localeSwitcher");
 
   return (
-    <nav aria-label={t("selectLanguage")} className="segment">
+    <Segment label={t("selectLanguage")}>
       {locales.map((loc) => (
         <LocaleOption
           current={locale}
@@ -59,6 +60,6 @@ export function LocaleSwitch() {
           pathname={pathname}
         />
       ))}
-    </nav>
+    </Segment>
   );
 }

@@ -1,20 +1,16 @@
 import { getTranslations, setRequestLocale } from "next-intl/server";
 import { Suspense } from "react";
-import { SearchIcon } from "@/components/icons";
 import { Pagination } from "@/components/pagination";
+import { ProjectFilters } from "@/components/project-filters";
 import { RepoList } from "@/components/repo-list";
 import { Bone, RowsSkeleton } from "@/components/skeleton";
-import { LocaleLink } from "@/modules/i18n/routing";
 import { getPageImageUrl } from "@/modules/og/lib/og";
 import { getGitHubRepos } from "@/modules/projects/lib/github";
 import {
   PROJECTS_PER_PAGE,
-  type ProjectSort,
   parseProjectSort,
   queryProjects,
 } from "@/modules/projects/lib/query";
-
-const SORTS: ProjectSort[] = ["updated", "stars", "created", "name"];
 
 type SearchParams = Promise<{ page?: string; q?: string; sort?: string }>;
 
@@ -53,23 +49,33 @@ export default async function ProjectsPage({
         </h1>
         <p className="lede">{t("subtitle")}</p>
       </header>
-      <Suspense fallback={<CatalogueSkeleton label={t("loading")} />}>
-        <ProjectCatalogue locale={locale} searchParams={searchParams} />
-      </Suspense>
+      <section className="section">
+        <Suspense fallback={<FiltersSkeleton />}>
+          <ProjectFilters />
+        </Suspense>
+        <Suspense fallback={<CatalogueSkeleton label={t("loading")} />}>
+          <ProjectCatalogue locale={locale} searchParams={searchParams} />
+        </Suspense>
+      </section>
     </article>
+  );
+}
+
+function FiltersSkeleton() {
+  return (
+    <div aria-busy="true" className="filters">
+      <Bone className="bone-search" />
+      <Bone className="bone-meta" />
+    </div>
   );
 }
 
 function CatalogueSkeleton({ label }: { label: string }) {
   return (
-    <section aria-busy="true" className="section">
-      <div className="filters">
-        <Bone className="bone-search" />
-        <Bone className="bone-meta" />
-      </div>
+    <div aria-busy="true">
       <p className="meta">{label}</p>
       <RowsSkeleton count={PROJECTS_PER_PAGE} />
-    </section>
+    </div>
   );
 }
 
@@ -95,50 +101,7 @@ async function ProjectCatalogue({
   }
 
   return (
-    <section className="section" data-testid="projects-catalogue">
-      <div className="filters">
-        <search>
-          <form className="search">
-            <SearchIcon />
-            <input
-              aria-label={t("search")}
-              defaultValue={q}
-              name="q"
-              placeholder={t("searchPlaceholder")}
-              type="search"
-            />
-            {sort === "updated" ? null : (
-              <input name="sort" type="hidden" value={sort} />
-            )}
-            <button className="control" type="submit">
-              {t("search")}
-            </button>
-          </form>
-        </search>
-        <nav aria-label="Sort" className="segment">
-          {SORTS.map((value) => {
-            const sortParams = new URLSearchParams();
-            if (q) {
-              sortParams.set("q", q);
-            }
-            if (value !== "updated") {
-              sortParams.set("sort", value);
-            }
-            const href =
-              sortParams.size > 0 ? `/projects?${sortParams}` : "/projects";
-            return (
-              <LocaleLink
-                aria-current={value === sort ? "page" : undefined}
-                className="control"
-                href={href}
-                key={value}
-              >
-                {t(`sort.${value}`)}
-              </LocaleLink>
-            );
-          })}
-        </nav>
-      </div>
+    <div data-testid="projects-catalogue">
       <p className="meta">
         {t("projectCount", { count: result.totalCount })}
         {q ? ` ${t("matching", { query: q })}` : ""}
@@ -164,6 +127,6 @@ async function ProjectCatalogue({
         query={filterQuery.toString()}
         totalPages={result.totalPages}
       />
-    </section>
+    </div>
   );
 }

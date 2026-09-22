@@ -217,6 +217,14 @@ button {
   padding: 0;
   margin: 0;
   color: var(--color-ink);
+  transition:
+    transform var(--dur-micro) var(--ease-out),
+    color var(--dur-micro) ease,
+    background-color var(--dur-micro) ease;
+}
+
+.icon-control:active {
+  transform: scale(0.96);
 }
 
 .icon-control svg {
@@ -239,9 +247,30 @@ button {
 }
 
 .segment {
+  position: relative;
   display: inline-flex;
   gap: var(--space-3xs);
   align-items: center;
+}
+
+.segment-thumb {
+  position: absolute;
+  left: 0;
+  z-index: 0;
+  width: 100%;
+  pointer-events: none;
+  background: var(--color-paper-3);
+  border-radius: var(--radius-control);
+  opacity: 0;
+}
+
+.segment-thumb[data-ready="true"] {
+  opacity: 1;
+}
+
+.segment > :not(.segment-thumb) {
+  position: relative;
+  z-index: 1;
 }
 
 .segment .control {
@@ -794,22 +823,6 @@ a.repo:active::before {
   background: var(--color-paper-2);
   border-radius: var(--radius-cell);
   animation: pulse 1.4s var(--ease-in-out) infinite;
-}
-
-.bone-display {
-  width: min(100%, 10rem);
-  height: var(--text-xl);
-}
-
-.bone-lede {
-  width: min(100%, 34rem);
-  height: 2.6em;
-}
-
-.bone-chips {
-  width: min(100%, 20rem);
-  height: 1.875rem;
-  border-radius: var(--radius-control);
 }
 
 .bone-head {
