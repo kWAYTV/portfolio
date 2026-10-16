@@ -21,6 +21,7 @@ export const skillSites = {
   pino: "https://getpino.io/",
   React: "https://react.dev/",
   Redis: "https://redis.io/",
+  Rekordbox: "https://rekordbox.com/en/",
   Rust: "https://www.rust-lang.org/",
   "Socket.io": "https://socket.io/",
   Swift: "https://www.swift.org/",

@@ -6,7 +6,7 @@ import { ThemeProvider } from "@/modules/theming/components/theme-provider";
 
 export default function Providers({ children }: { children: React.ReactNode }) {
   return (
-    <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
+    <ThemeProvider>
       <TooltipProvider delayDuration={280} skipDelayDuration={120}>
         <SoundProvider>{children}</SoundProvider>
       </TooltipProvider>

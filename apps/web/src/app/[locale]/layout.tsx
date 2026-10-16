@@ -14,6 +14,7 @@ import { SiteHeader } from "@/components/site-header";
 import { UmamiScript } from "@/modules/analytics/components/umami-script";
 import { routing } from "@/modules/i18n/routing";
 import { getStaticParams } from "@/modules/i18n/static";
+import { ThemeScript } from "@/modules/theming/theme-script";
 
 const geistSans = Geist({
   display: "swap",
@@ -66,10 +67,27 @@ export default async function LocaleLayout({
       <body
         className={`${geistSans.variable} ${geistMono.variable} ${display.variable}`}
       >
+        <ThemeScript />
         <UmamiScript
           scriptUrl={env.NEXT_PUBLIC_UMAMI_URL}
           websiteId={env.NEXT_PUBLIC_UMAMI_WEBSITE_ID}
         />
+        <svg aria-hidden="true" className="paper-grain">
+          <filter id="paper-grain">
+            <feTurbulence
+              baseFrequency="0.8"
+              numOctaves="2"
+              stitchTiles="stitch"
+              type="fractalNoise"
+            />
+            <feComponentTransfer>
+              <feFuncR intercept="-0.55" slope="2.2" type="linear" />
+              <feFuncG intercept="-0.55" slope="2.2" type="linear" />
+              <feFuncB intercept="-0.55" slope="2.2" type="linear" />
+            </feComponentTransfer>
+          </filter>
+          <rect filter="url(#paper-grain)" height="100%" width="100%" />
+        </svg>
         <Providers>
           <NextIntlClientProvider locale={locale} messages={messages}>
             <div className="site-shell">

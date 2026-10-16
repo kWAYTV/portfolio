@@ -15,6 +15,7 @@ export function SkillRail({ label }: { label: string }) {
                 href={skillSites[skill.title]}
                 path={skill.path}
                 title={skill.title}
+                viewBox={"viewBox" in skill ? skill.viewBox : undefined}
               />
             </li>
           ))}
@@ -26,6 +27,7 @@ export function SkillRail({ label }: { label: string }) {
                 path={skill.path}
                 tabIndex={-1}
                 title={skill.title}
+                viewBox={"viewBox" in skill ? skill.viewBox : undefined}
               />
             </li>
           ))}

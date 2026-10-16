@@ -18,7 +18,7 @@ function onDark(hex: string) {
   const blue = channel(hex, 4);
   const luminance = (0.2126 * red + 0.7152 * green + 0.0722 * blue) / 255;
   if (luminance < 0.28) {
-    return "#f4efe6";
+    return "#e8e8e8";
   }
   return `#${hex}`;
 }
@@ -29,12 +29,14 @@ export function SkillMark({
   path,
   tabIndex,
   title,
+  viewBox = "0 0 24 24",
 }: {
   hex: string;
   href: string;
   path: string;
   tabIndex?: number;
   title: string;
+  viewBox?: string;
 }) {
   return (
     <Tooltip>
@@ -52,7 +54,7 @@ export function SkillMark({
           tabIndex={tabIndex}
           target="_blank"
         >
-          <svg aria-hidden="true" viewBox="0 0 24 24">
+          <svg aria-hidden="true" viewBox={viewBox}>
             <path d={path} fill="currentColor" />
           </svg>
           <span className="sr-only">{title}</span>

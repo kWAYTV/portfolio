@@ -1,6 +1,6 @@
 /* Hallmark · pre-emit critique: P4 H5 E4 S4 R4 V4
- * Hallmark · genre: editorial · macrostructure: Poster Ticket · theme: custom (shop oxide)
- * tone: technical · anchor hue: warm · nav: N1 · footer: Ft2
+ * Hallmark · genre: editorial · macrostructure: Poster Ticket · theme: gray paper
+ * tone: technical · anchor hue: neutral · nav: N1 · footer: Ft2
  * enrichment: none · design-system: design.md
  */
 @import "tailwindcss";
@@ -24,6 +24,22 @@ html {
   scrollbar-color: var(--color-rule-2) var(--color-paper);
   scrollbar-width: thin;
   background: var(--color-paper);
+}
+
+.paper-grain {
+  position: fixed;
+  inset: 0;
+  z-index: 2;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  mix-blend-mode: multiply;
+  opacity: 0.16;
+}
+
+html.dark .paper-grain {
+  mix-blend-mode: screen;
+  opacity: 0.22;
 }
 
 html.dark {
@@ -762,7 +778,7 @@ a.repo:active::before {
 
 .graph .react-activity-calendar {
   gap: 0;
-  width: 100% !important;
+  width: max-content !important;
   max-width: 100%;
   font-family: var(--font-mono);
   color: var(--color-muted);
@@ -770,15 +786,12 @@ a.repo:active::before {
 
 .graph .react-activity-calendar__scroll-container {
   max-width: 100%;
-  overflow-x: auto;
-  overflow-y: hidden;
-  scrollbar-width: thin;
+  overflow: hidden !important;
 }
 
 .graph .react-activity-calendar__calendar {
   display: block;
-  width: 100%;
-  min-width: 32rem;
+  max-width: 100%;
   height: auto;
 }
 

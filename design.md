@@ -8,10 +8,11 @@ system needs to grow.
 editorial poster, not a quiet index and not a card-stack clone
 
 ## World
-A shop ticket on warm paper. The name is a condensed stamp across the first
-viewport. Oxide is the only chromatic color: status, the masthead rule, the
-current job. Sections are a stack — identity, scrolling stack, experience,
-pinned work, contribution grid. Dark mode is the same ticket under a lamp.
+A shop ticket on gray paper. The name is a condensed stamp across the first
+viewport. Both modes carry a fixed grain. Dark mode is black, white, and
+gray. The stamp, the masthead rule, and the status dot stay in
+that scale. Sections are a stack — identity, scrolling stack, experience,
+pinned work, contribution grid.
 
 ## Macrostructure family
 - Home: Poster Ticket — status line, display name, bio, socials, Madrid clock,
@@ -21,12 +22,13 @@ pinned work, contribution grid. Dark mode is the same ticket under a lamp.
 - Catalogue pages (projects): the shell paints immediately. The repo list
   streams behind search params.
 
-## Theme — custom "shop oxide"
-- `--color-paper`   oklch(96.5% 0.012 95) · dark oklch(18% 0.018 55)
-- `--color-ink`     oklch(24% 0.03 55)    · dark oklch(94% 0.015 95)
-- `--color-stamp`   oklch(46% 0.14 32)    · dark oklch(74% 0.13 58)
+## Theme — gray paper
+- `--color-paper`   oklch(96.8% 0 0) · dark oklch(12% 0 0)
+- `--color-ink`     oklch(16% 0 0)   · dark oklch(94% 0 0)
+- `--color-stamp`   oklch(18% 0 0)   · dark oklch(92% 0 0)
 - `--color-focus`   = stamp
 
+A fixed fractal-noise grain sits over both modes. Chroma stays at 0.
 The contribution grid stays ink at five opacity steps, never GitHub green.
 
 ## Typography

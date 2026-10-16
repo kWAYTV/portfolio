@@ -2,12 +2,14 @@
 
 import { analytics } from "@repo/analytics";
 import { useTranslations } from "next-intl";
-import { useTheme } from "next-themes";
 import { useCallback, useEffect, useState } from "react";
 import { ThemeIcon } from "@/components/icons";
+import { useTheme } from "@/modules/theming/components/theme-provider";
 
 export function ThemeToggle() {
-  const { resolvedTheme, setTheme } = useTheme();
+  const theme = useTheme();
+  const resolvedTheme = theme?.resolvedTheme;
+  const setTheme = theme?.setTheme;
   const t = useTranslations("theme");
   const [mounted, setMounted] = useState(false);
 
@@ -18,7 +20,7 @@ export function ThemeToggle() {
   const isDark = mounted && resolvedTheme === "dark";
   const nextTheme = isDark ? "light" : "dark";
   const handleClick = useCallback(() => {
-    setTheme(nextTheme);
+    setTheme?.(nextTheme);
     analytics.themeToggle(nextTheme);
   }, [nextTheme, setTheme]);
 
