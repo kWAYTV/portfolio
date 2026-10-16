@@ -1,22 +1,23 @@
-/* Hallmark · pre-emit critique: P5 H4 E5 S4 R5 V4
- * Hallmark · genre: modern-minimal · macrostructure: Index-First · theme: custom (graphite)
- * theme_axes: light / geist-sans / neutral · nav: N1 · footer: Ft2
- * enrichment: E9 contribution heatmap · design-system: design.md · designed-as-app
+/* Hallmark · pre-emit critique: P4 H5 E4 S4 R4 V4
+ * Hallmark · genre: editorial · macrostructure: Poster Ticket · theme: custom (shop oxide)
+ * theme_axes: light / condensed-grotesk / warm · nav: N1 · footer: Ft2
+ * enrichment: none · design-system: design.md
  */
 :root {
-  --color-paper: oklch(100% 0 0);
-  --color-paper-2: oklch(97% 0 0);
-  --color-paper-3: oklch(94% 0 0);
-  --color-rule: oklch(91% 0 0);
-  --color-rule-2: oklch(84% 0 0);
-  --color-ink: oklch(16% 0 0);
-  --color-ink-2: oklch(36% 0 0);
-  --color-muted: oklch(52% 0 0);
-  --color-focus: oklch(16% 0 0);
-  --color-shadow: oklch(0% 0 0 / 0.06);
+  --color-paper: oklch(96.5% 0.012 95);
+  --color-paper-2: oklch(93% 0.016 90);
+  --color-paper-3: oklch(88.5% 0.022 85);
+  --color-rule: oklch(82% 0.02 80);
+  --color-rule-2: oklch(70% 0.03 70);
+  --color-ink: oklch(24% 0.03 55);
+  --color-ink-2: oklch(38% 0.028 55);
+  --color-muted: oklch(46% 0.02 60);
+  --color-stamp: oklch(46% 0.14 32);
+  --color-focus: var(--color-stamp);
+  --color-shadow: oklch(24% 0.03 55 / 0.08);
 
   --font-body: var(--font-geist-sans), ui-sans-serif, system-ui, sans-serif;
-  --font-display: var(--font-body);
+  --font-display: var(--font-display-face), var(--font-body);
   --font-mono:
     var(--font-geist-mono), ui-monospace, "SFMono-Regular", monospace;
 
@@ -53,19 +54,20 @@
   --cell: 0.625rem;
   --cell-gap: 2px;
 
-  --measure: 60ch;
-  --shell: 44rem;
+  --measure: 62ch;
+  --shell: 68rem;
 }
 
 .dark {
-  --color-paper: oklch(12% 0 0);
-  --color-paper-2: oklch(16% 0 0);
-  --color-paper-3: oklch(20% 0 0);
-  --color-rule: oklch(24% 0 0);
-  --color-rule-2: oklch(32% 0 0);
-  --color-ink: oklch(94% 0 0);
-  --color-ink-2: oklch(78% 0 0);
-  --color-muted: oklch(62% 0 0);
-  --color-focus: oklch(94% 0 0);
-  --color-shadow: oklch(0% 0 0 / 0.4);
+  --color-paper: oklch(18% 0.018 55);
+  --color-paper-2: oklch(22% 0.02 55);
+  --color-paper-3: oklch(27% 0.024 50);
+  --color-rule: oklch(34% 0.02 55);
+  --color-rule-2: oklch(46% 0.03 50);
+  --color-ink: oklch(94% 0.015 95);
+  --color-ink-2: oklch(82% 0.02 90);
+  --color-muted: oklch(72% 0.02 80);
+  --color-stamp: oklch(74% 0.13 58);
+  --color-focus: var(--color-stamp);
+  --color-shadow: oklch(0% 0 0 / 0.45);
 }

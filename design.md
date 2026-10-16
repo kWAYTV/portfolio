@@ -5,86 +5,52 @@ emitting code. Do not regenerate per page — extend or amend this file when the
 system needs to grow.
 
 ## Genre
-modern-minimal (Geist school — single sans family, monochrome, composed, quiet)
+editorial poster, not a quiet index and not a card-stack clone
 
 ## World
-A short personal page that fits in one narrow column. The GitHub contribution
-grid is the one piece of instrumentation; everything else is a list. Surfaces
-are softly rounded, never pill-shaped. Dark mode is the same sheet inverted.
+A shop ticket on warm paper. The name is a condensed stamp across the first
+viewport. Oxide is the only chromatic color: status, the masthead rule, the
+current job. Sections are a stack — identity, scrolling stack, experience,
+pinned work, contribution grid. Dark mode is the same ticket under a lamp.
 
 ## Macrostructure family
-- Home: Index-First — compact identity header (name, role, one paragraph,
-  social chips), then stacked indexes: activity grid, pinned work. No hero
-  figure, no display type.
-- Content pages (about, privacy): the same document rhythm — small title, lede,
-  sections with a body-size heading and a hairline above.
-- Catalogue pages (projects): rows with a letter mark, title, sub line, and mono
-  meta. Filters are a rounded input and small sort tabs.
+- Home: Poster Ticket — status line, display name, bio, socials, Madrid clock,
+  then a marquee, a timeline, featured repos, the activity grid.
+- Content pages (about, privacy): the same paper and display titles, smaller
+  than the home stamp.
+- Catalogue pages (projects): the shell paints immediately. The repo list
+  streams behind search params.
 
-## Theme — custom "graphite", zero chroma
-- `--color-paper`   oklch(100% 0 0)  · dark oklch(12% 0 0)
-- `--color-paper-2` oklch(97% 0 0)   · dark oklch(16% 0 0)
-- `--color-paper-3` oklch(94% 0 0)   · dark oklch(20% 0 0)
-- `--color-rule`    oklch(91% 0 0)   · dark oklch(24% 0 0)
-- `--color-rule-2`  oklch(84% 0 0)   · dark oklch(32% 0 0)
-- `--color-ink`     oklch(16% 0 0)   · dark oklch(94% 0 0)
-- `--color-ink-2`   oklch(36% 0 0)   · dark oklch(78% 0 0)
-- `--color-muted`   oklch(52% 0 0)   · dark oklch(62% 0 0)
-- `--color-focus`   = ink
+## Theme — custom "shop oxide"
+- `--color-paper`   oklch(96.5% 0.012 95) · dark oklch(18% 0.018 55)
+- `--color-ink`     oklch(24% 0.03 55)    · dark oklch(94% 0.015 95)
+- `--color-stamp`   oklch(46% 0.14 32)    · dark oklch(74% 0.13 58)
+- `--color-focus`   = stamp
 
-There is no accent. Emphasis is weight and proximity. The contribution grid is
-ink at five opacity steps (`color-mix` against paper) so it always matches the
-sheet it sits on.
+The contribution grid stays ink at five opacity steps, never GitHub green.
 
 ## Typography
-- One family: Geist Sans. Geist Mono only for numerals, dates, and labels.
-- Page title / name: `--text-xl` (1.25rem), weight 500, tracking -0.015em
-- Section heading: `--text-md`, weight 500, ink. Never uppercase.
-- Body: `--text-md` (0.9375rem), weight 400, line-height 1.6, ink-2
-- Meta: `--text-sm` (0.8125rem), muted; mono + tabular-nums for numbers
-- Measure: 60ch
+- Display: Barlow Condensed, weight 700, uppercase only on the home name.
+- Body: Geist Sans. Geist Mono for the clock, dates, and counts.
+- Body size stays `--text-md`. Measure 62ch.
 
 ## Shell
-- `--shell: 44rem`. One column. Inline padding clamp(1.25rem, 5vw, 2rem).
-- Sections separated by `--space-2xl`; inside a section, `--space-md`.
-
-## Radius
-- `--radius-cell` 2px — heatmap cells
-- `--radius-control` 6px — inputs, chips, nav hover, buttons
-- `--radius-mark` 8px — 32px letter marks
-- `--radius-surface` 10px — row hover surface, cookie banner
-Nothing is a pill. `corner-shape: squircle` is applied as a progressive
-enhancement on surfaces.
+- `--shell: 68rem`. One column. The marquee bleeds to the shell padding.
+- Masthead keeps wordmark, about, projects, locale, sound, theme.
 
 ## Motion
-- Composed page: no reveals, no route choreography, no counters.
-- Feedback only: colour and background transitions 120–200ms, `--ease-out`.
-- The heatmap readout swaps text instantly; hover is enough.
-- Reduced motion: transitions collapse to 0s.
-
-## Microinteractions stance
-- Silent success
-- Hover gated behind `(hover: hover) and (pointer: fine)`
-- Row hover paints a `--radius-surface` background that bleeds 12px past the
-  content edge (`inset` pseudo), so text never shifts.
-- Readouts update through `aria-live="polite"`; the grid is a labelled list.
-
-## Nav / footer
-- Nav: N1 — wordmark left, two text links (about, projects), then the locale
-  and theme controls. One row, hairline below, no tagline.
-- Footer: Ft2 — one inline row: year · source · privacy. Hairline above.
-
-## Per-page allowances
-- Home is the only page that carries the contribution grid.
-- Never invent metrics. Totals, streaks, and active days are computed from the
-  GitHub calendar; levels come from GitHub's own quartiles.
-- The grid mirrors GitHub's 7 × 53 layout on purpose — it is the reader's
-  mental model — but is coloured with the site's ink, not GitHub's green.
+- Sections rise once on mount (opacity + 10px). Reduced motion kills it.
+- Stack names scroll on a 28s linear marquee and pause on hover.
+- The open-to-work dot pulses. Row hovers stay color-only.
+- Clicks on links and buttons play a 40ms square blip. A header toggle
+  persists mute in `localStorage` under `sound:v1`.
 
 ## Rendering
-- Everything is prerendered. GitHub data is `use cache` with hourly life.
-- Only project search params are dynamic, behind a row skeleton.
+- Home activity and featured repos are `use cache` and belong in the static
+  shell. Project search stays dynamic.
+- Repo listing is one GitHub page (a second only if the first is full), cached
+  for days. Do not paginate the whole account on the request path.
 
 ## Product constraint
-The site is a static document. No IDE chrome, terminals, command palettes,
-blog, or fake source views.
+Personal site for Martín Vila. No invented metrics, no IDE chrome, no copied
+third-party portfolio layout.
