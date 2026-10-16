@@ -62,7 +62,7 @@ export function ContributionGraph({
   total: number;
 }) {
   const t = useTranslations("graph");
-  const frameRef = useRef<HTMLElement>(null);
+  const frameRef = useRef<HTMLElement | null>(null);
   const [blockSize, setBlockSize] = useState(BLOCK_MAX);
   const [active, setActive] = useState<Activity | null>(null);
 
@@ -73,7 +73,10 @@ export function ContributionGraph({
   const weeks = Math.max(1, Math.ceil(data.length / 7));
 
   useLayoutEffect(() => {
-    const frame = frameRef.current;
+    const frame: HTMLElement | null = frameRef.current;
+    if (frame === null) {
+      return;
+    }
 
     const fit = () => {
       const next = blockSizeFor(frame.clientWidth, weeks);
