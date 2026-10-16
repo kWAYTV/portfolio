@@ -11,6 +11,8 @@ import {
 } from "react";
 
 const STORAGE_KEY = "sound:v1";
+const INTERACTIVE =
+  "a, button, [role='button'], input, textarea, select, summary, [role='tab']";
 
 const SoundContext = createContext<{
   enabled: boolean;
@@ -18,39 +20,78 @@ const SoundContext = createContext<{
 } | null>(null);
 
 let audioCtx: AudioContext | null = null;
+let lastHover = 0;
+let lastPointer = 0;
 
-function playClick() {
+function context() {
   const AudioCtx = window.AudioContext;
   if (!AudioCtx) {
-    return;
+    return null;
   }
   const ctx = audioCtx ?? new AudioCtx();
   audioCtx = ctx;
   if (ctx.state === "suspended") {
     ctx.resume().catch(() => undefined);
   }
-  const now = ctx.currentTime;
+  return ctx;
+}
+
+function blip(
+  from: number,
+  to: number,
+  gainValue: number,
+  duration: number,
+  when = 0
+) {
+  const ctx = context();
+  if (!ctx) {
+    return;
+  }
+  const now = ctx.currentTime + when;
   const osc = ctx.createOscillator();
   const gain = ctx.createGain();
-  osc.type = "square";
-  osc.frequency.setValueAtTime(210, now);
-  osc.frequency.exponentialRampToValueAtTime(90, now + 0.035);
-  gain.gain.setValueAtTime(0.035, now);
-  gain.gain.exponentialRampToValueAtTime(0.0001, now + 0.04);
+  osc.type = "sine";
+  osc.frequency.setValueAtTime(from, now);
+  osc.frequency.exponentialRampToValueAtTime(Math.max(to, 1), now + duration);
+  gain.gain.setValueAtTime(0.0001, now);
+  gain.gain.exponentialRampToValueAtTime(gainValue, now + 0.004);
+  gain.gain.exponentialRampToValueAtTime(0.0001, now + duration);
   osc.connect(gain);
   gain.connect(ctx.destination);
   osc.start(now);
-  osc.stop(now + 0.045);
+  osc.stop(now + duration + 0.02);
 }
 
-function isClickable(target: EventTarget | null) {
+function playPress() {
+  blip(460, 240, 0.018, 0.04);
+}
+
+function playHover() {
+  blip(920, 760, 0.007, 0.02);
+}
+
+function playFocus() {
+  blip(540, 540, 0.01, 0.032);
+}
+
+function playSwitch() {
+  blip(480, 480, 0.012, 0.03);
+  blip(720, 720, 0.01, 0.04, 0.045);
+}
+
+function playFall() {
+  blip(640, 220, 0.014, 0.07);
+}
+
+function playRise() {
+  blip(280, 640, 0.014, 0.07);
+}
+
+function controlOf(target: EventTarget | null) {
   if (!(target instanceof Element)) {
-    return false;
+    return null;
   }
-  if (target.closest("[data-sound-toggle], input, textarea, select")) {
-    return false;
-  }
-  return Boolean(target.closest("a, button, [role='button']"));
+  return target.closest(INTERACTIVE);
 }
 
 export function SoundProvider({ children }: { children: React.ReactNode }) {
@@ -69,14 +110,63 @@ export function SoundProvider({ children }: { children: React.ReactNode }) {
   }, []);
 
   useEffect(() => {
-    const onPointer = (event: PointerEvent) => {
-      if (!(enabledRef.current && isClickable(event.target))) {
+    const onOver = (event: PointerEvent) => {
+      if (!enabledRef.current) {
         return;
       }
-      playClick();
+      const next = controlOf(event.target);
+      if (!(next && next !== controlOf(event.relatedTarget))) {
+        return;
+      }
+      const now = performance.now();
+      if (now - lastHover < 70) {
+        return;
+      }
+      lastHover = now;
+      playHover();
     };
-    document.addEventListener("pointerdown", onPointer);
-    return () => document.removeEventListener("pointerdown", onPointer);
+
+    const onDown = (event: PointerEvent) => {
+      if (!enabledRef.current) {
+        return;
+      }
+      const el = controlOf(event.target);
+      if (!el) {
+        return;
+      }
+      lastPointer = performance.now();
+      if (el.closest("[data-sound-toggle]")) {
+        playFall();
+        return;
+      }
+      if (el.closest("[data-sound='switch']")) {
+        playSwitch();
+        return;
+      }
+      playPress();
+    };
+
+    const onFocus = (event: FocusEvent) => {
+      if (!enabledRef.current) {
+        return;
+      }
+      if (performance.now() - lastPointer < 500) {
+        return;
+      }
+      if (!controlOf(event.target)) {
+        return;
+      }
+      playFocus();
+    };
+
+    document.addEventListener("pointerover", onOver);
+    document.addEventListener("pointerdown", onDown);
+    document.addEventListener("focusin", onFocus);
+    return () => {
+      document.removeEventListener("pointerover", onOver);
+      document.removeEventListener("pointerdown", onDown);
+      document.removeEventListener("focusin", onFocus);
+    };
   }, []);
 
   const toggle = useCallback(() => {
@@ -86,6 +176,9 @@ export function SoundProvider({ children }: { children: React.ReactNode }) {
         localStorage.setItem(STORAGE_KEY, next ? "1" : "0");
       } catch {
         // private mode
+      }
+      if (next) {
+        playRise();
       }
       return next;
     });

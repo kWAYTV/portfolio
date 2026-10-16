@@ -27,6 +27,7 @@ export function ThemeToggle() {
       aria-label={t(nextTheme)}
       aria-pressed={isDark}
       className="control icon-control"
+      data-sound="switch"
       onClick={handleClick}
       title={t(nextTheme)}
       type="button"

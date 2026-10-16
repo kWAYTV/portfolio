@@ -34,6 +34,7 @@ function LocaleOption({
   return (
     <LocaleLink
       className="control"
+      data-sound="switch"
       // biome-ignore lint/suspicious/noExplicitAny: pathname is a validated app route
       href={pathname as any}
       hrefLang={loc}
