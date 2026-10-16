@@ -21,7 +21,13 @@
   "hero": {
     "role": "Desarrollador de software",
     "headline": "Construyo software pequeño y deliberado.",
-    "bio": "Servicios backend, aplicaciones web y las herramientas que los rodean. Autodidacta, desde España, actualmente buscando nuevo trabajo."
+    "bio": "Servicios backend, aplicaciones web y las herramientas que los rodean. Autodidacta, desde España, actualmente buscando nuevo trabajo.",
+    "open": "Disponible",
+    "place": "España",
+    "stack": "Stack",
+    "time": "Hora local",
+    "soundOn": "Sonido activado",
+    "soundOff": "Sonido desactivado"
   },
   "graph": {
     "title": "Actividad",

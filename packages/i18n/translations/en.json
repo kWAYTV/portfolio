@@ -21,7 +21,13 @@
   "hero": {
     "role": "Software developer",
     "headline": "I build small, deliberate software.",
-    "bio": "Backend services, web apps, and the tools around them. Self-taught, based in Spain, currently looking for new work."
+    "bio": "Backend services, web apps, and the tools around them. Self-taught, based in Spain, currently looking for new work.",
+    "open": "Open to work",
+    "place": "Spain",
+    "stack": "Stack",
+    "time": "Local time",
+    "soundOn": "Sound on",
+    "soundOff": "Sound off"
   },
   "graph": {
     "title": "Activity",
