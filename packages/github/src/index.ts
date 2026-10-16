@@ -61,16 +61,28 @@ export async function getGitHubRepos({
   username,
   extraRepos = [],
 }: GetGitHubReposOptions): Promise<GitHubRepo[]> {
-  const [userRepos, ...extraReposData] = await Promise.all([
-    octokit.paginate(octokit.repos.listForUser, {
+  const [listed, extraReposData] = await Promise.all([
+    octokit.repos.listForUser({
       per_page: 100,
       sort: "updated",
       username,
     }),
-    ...extraRepos.map(({ owner, repo }) =>
-      octokit.repos.get({ owner, repo }).then((res) => res.data)
+    Promise.all(
+      extraRepos.map(({ owner, repo }) =>
+        octokit.repos.get({ owner, repo }).then((res) => res.data)
+      )
     ),
   ]);
+  const userRepos = [...listed.data];
+  if (userRepos.length === 100) {
+    const next = await octokit.repos.listForUser({
+      page: 2,
+      per_page: 100,
+      sort: "updated",
+      username,
+    });
+    userRepos.push(...next.data);
+  }
 
   const repos = [...userRepos, ...extraReposData];
 

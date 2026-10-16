@@ -16,7 +16,7 @@ const EXTRA_REPOS = [{ owner: "versend", repo: "core" }];
 export async function getGitHubRepos() {
   "use cache";
   cacheTag("github-repos");
-  cacheLife("hours");
+  cacheLife("days");
 
   const token = env.GITHUB_TOKEN;
   if (!token) {
