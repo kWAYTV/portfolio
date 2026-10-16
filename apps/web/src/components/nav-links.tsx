@@ -1,5 +1,6 @@
 "use client";
 
+import { Segment } from "@/components/segment";
 import { LocaleLink, useLocalePathname } from "@/modules/i18n/routing";
 
 export function NavLinks({
@@ -12,7 +13,7 @@ export function NavLinks({
   const pathname = useLocalePathname();
 
   return (
-    <nav aria-label={menuLabel} className="masthead-nav">
+    <Segment className="masthead-nav" label={menuLabel}>
       {items.map((item) => {
         const active =
           pathname === item.href || pathname.startsWith(`${item.href}/`);
@@ -27,6 +28,6 @@ export function NavLinks({
           </LocaleLink>
         );
       })}
-    </nav>
+    </Segment>
   );
 }

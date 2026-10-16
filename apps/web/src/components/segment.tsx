@@ -185,9 +185,11 @@ function useRubberThumb(
 
 export function Segment({
   children,
+  className,
   label,
 }: {
   children: ReactNode;
+  className?: string;
   label: string;
 }) {
   const rootRef = useRef<HTMLElement>(null);
@@ -195,7 +197,11 @@ export function Segment({
   useRubberThumb(rootRef, thumbRef);
 
   return (
-    <nav aria-label={label} className="segment" ref={rootRef}>
+    <nav
+      aria-label={label}
+      className={className ? `segment ${className}` : "segment"}
+      ref={rootRef}
+    >
       <span aria-hidden="true" className="segment-thumb" ref={thumbRef} />
       {children}
     </nav>
