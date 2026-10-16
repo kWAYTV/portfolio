@@ -3,59 +3,68 @@
 import type { ContributionDay } from "@repo/github";
 import { useTranslations } from "next-intl";
 import {
-  type ComponentProps,
   type CSSProperties,
-  cloneElement,
+  type PointerEvent,
   useCallback,
   useEffect,
-  useLayoutEffect,
   useMemo,
   useRef,
   useState,
 } from "react";
-import {
-  type Activity,
-  ActivityCalendar,
-  type ThemeInput,
-} from "react-activity-calendar";
 
-type RenderBlock = NonNullable<
-  ComponentProps<typeof ActivityCalendar>["renderBlock"]
->;
-
+const WEEK = 7;
 const LEVELS = [0, 1, 2, 3, 4] as const;
-const BLOCK_MARGIN = 2;
-const BLOCK_MAX = 8;
-const BLOCK_MIN = 3;
-const DAYS_PER_WEEK = 7;
+/** A leading partial month narrower than this only fits its label on wide columns. */
+const SHORT_MONTH_SPAN = 3;
 const REDUCED_MOTION = "(prefers-reduced-motion: reduce)";
 
 type Reveal = "in" | "pending" | undefined;
 
-const THEME: ThemeInput = {
-  dark: [
-    "var(--cell-0)",
-    "var(--cell-1)",
-    "var(--cell-2)",
-    "var(--cell-3)",
-    "var(--cell-4)",
-  ],
-  light: [
-    "var(--cell-0)",
-    "var(--cell-1)",
-    "var(--cell-2)",
-    "var(--cell-3)",
-    "var(--cell-4)",
-  ],
-};
+interface MonthMark {
+  label: string;
+  short: boolean;
+  span: number;
+  week: number;
+}
 
 function utcDate(date: string) {
   return new Date(`${date}T00:00:00Z`);
 }
 
-function blockSizeFor(width: number, weeks: number) {
-  const fitted = Math.floor((width + BLOCK_MARGIN) / weeks) - BLOCK_MARGIN;
-  return Math.min(BLOCK_MAX, Math.max(BLOCK_MIN, fitted));
+/** One label per month, anchored to the column that starts it. */
+function buildMonths(
+  days: ContributionDay[],
+  offset: number,
+  weeks: number,
+  locale: string
+): MonthMark[] {
+  const formatter = new Intl.DateTimeFormat(locale, {
+    month: "short",
+    timeZone: "UTC",
+  });
+  const starts: Array<{ label: string; week: number }> = [];
+  let lastMonth = "";
+
+  for (const [index, day] of days.entries()) {
+    const month = day.date.slice(0, 7);
+    if (month === lastMonth) {
+      continue;
+    }
+    lastMonth = month;
+    starts.push({
+      label: formatter.format(utcDate(day.date)),
+      week: Math.floor((index + offset) / WEEK),
+    });
+  }
+
+  return starts.flatMap((mark, index) => {
+    const end = starts[index + 1]?.week ?? weeks;
+    const span = end - mark.week;
+    if (span < 1) {
+      return [];
+    }
+    return [{ ...mark, short: index === 0 && span < SHORT_MONTH_SPAN, span }];
+  });
 }
 
 export function ContributionGraph({
@@ -69,27 +78,12 @@ export function ContributionGraph({
 }) {
   const t = useTranslations("graph");
   const frameRef = useRef<HTMLElement | null>(null);
-  const [blockSize, setBlockSize] = useState(BLOCK_MAX);
-  const [active, setActive] = useState<Activity | null>(null);
+  const [active, setActive] = useState<number | null>(null);
+  // Server renders "pending"; the sweep starts when the grid scrolls into view.
   const [reveal, setReveal] = useState<Reveal>("pending");
 
-  const data = useMemo<Activity[]>(
-    () => days.map(({ count, date, level }) => ({ count, date, level })),
-    [days]
-  );
-  const weeks = Math.max(1, Math.ceil(data.length / DAYS_PER_WEEK));
-
-  // Column of each day in the calendar grid. The first week is padded to its
-  // weekday, so the offset of the first date shifts every index.
-  const columnByDate = useMemo(() => {
-    const offset = data.length ? utcDate(data[0].date).getUTCDay() : 0;
-    return new Map(
-      data.map((day, index) => [
-        day.date,
-        Math.floor((index + offset) / DAYS_PER_WEEK),
-      ])
-    );
-  }, [data]);
+  const offset = days[0]?.weekday ?? 0;
+  const weeks = Math.max(1, Math.ceil((days.length + offset) / WEEK));
 
   useEffect(() => {
     const frame = frameRef.current;
@@ -115,32 +109,10 @@ export function ContributionGraph({
     return () => observer.disconnect();
   }, []);
 
-  useLayoutEffect(() => {
-    const frame: HTMLElement | null = frameRef.current;
-    if (frame === null) {
-      return;
-    }
-
-    const fit = () => {
-      const next = blockSizeFor(frame.clientWidth, weeks);
-      setBlockSize((current) => (current === next ? current : next));
-    };
-
-    fit();
-    const observer = new ResizeObserver(fit);
-    observer.observe(frame);
-    return () => observer.disconnect();
-  }, [weeks]);
-
-  const months = useMemo(() => {
-    const formatter = new Intl.DateTimeFormat(locale, {
-      month: "short",
-      timeZone: "UTC",
-    });
-    return Array.from({ length: 12 }, (_, month) =>
-      formatter.format(new Date(Date.UTC(2020, month, 1)))
-    );
-  }, [locale]);
+  const months = useMemo(
+    () => buildMonths(days, offset, weeks, locale),
+    [days, locale, offset, weeks]
+  );
 
   const dayFormatter = useMemo(
     () =>
@@ -155,7 +127,7 @@ export function ContributionGraph({
   );
 
   const describe = useCallback(
-    (day: Activity) =>
+    (day: ContributionDay) =>
       t("count", {
         count: day.count,
         date: dayFormatter.format(utcDate(day.date)),
@@ -163,47 +135,61 @@ export function ContributionGraph({
     [dayFormatter, t]
   );
 
-  const renderBlock = useCallback<RenderBlock>(
-    (block, activity) =>
-      cloneElement(block, {
-        "aria-label": describe(activity),
-        onMouseEnter: () => setActive(activity),
-        onMouseLeave: () => setActive(null),
-        style: {
-          "--col": columnByDate.get(activity.date) ?? 0,
-        } as CSSProperties,
-      }),
-    [columnByDate, describe]
-  );
+  const handlePointerOver = useCallback((event: PointerEvent<HTMLElement>) => {
+    const index = (event.target as HTMLElement).dataset.i;
+    setActive(index === undefined ? null : Number(index));
+  }, []);
 
-  const readout = active ? describe(active) : t("total", { count: total });
+  const handlePointerLeave = useCallback(() => {
+    setActive(null);
+  }, []);
+
+  const activeDay = active === null ? undefined : days[active];
+  const readout = activeDay
+    ? describe(activeDay)
+    : t("total", { count: total });
+
+  const sheetStyle = { "--weeks": weeks } as CSSProperties;
 
   return (
-    <figure
-      aria-label={t("label")}
-      className="graph"
-      data-reveal={reveal}
-      ref={frameRef}
-    >
-      <ActivityCalendar
-        blockMargin={BLOCK_MARGIN}
-        blockRadius={2}
-        blockSize={blockSize}
-        className="graph-calendar"
-        colorScheme="light"
-        data={data}
-        fontSize={blockSize >= 6 ? 12 : 10}
-        labels={{
-          legend: { less: t("less"), more: t("more") },
-          months,
-          totalCount: t("total", { count: total }),
-        }}
-        maxLevel={4}
-        renderBlock={renderBlock}
-        showColorLegend={false}
-        showTotalCount={false}
-        theme={THEME}
-      />
+    <figure className="graph" data-reveal={reveal} ref={frameRef}>
+      <div className="graph-sheet" style={sheetStyle}>
+        <div aria-hidden="true" className="graph-months">
+          {months.map((mark) => (
+            <span
+              data-short={mark.short || undefined}
+              key={mark.week}
+              style={{ gridColumn: `${mark.week + 1} / span ${mark.span}` }}
+            >
+              {mark.label}
+            </span>
+          ))}
+        </div>
+        <ol
+          aria-label={t("label")}
+          className="graph-grid"
+          onPointerLeave={handlePointerLeave}
+          onPointerOver={handlePointerOver}
+        >
+          {Array.from({ length: offset }, (_, i) => (
+            <li aria-hidden="true" className="cell is-empty" key={`pad-${i}`} />
+          ))}
+          {days.map((day, index) => (
+            <li
+              aria-label={describe(day)}
+              className="cell"
+              data-i={index}
+              data-level={day.level}
+              key={day.date}
+              style={
+                {
+                  "--col": Math.floor((index + offset) / WEEK),
+                } as CSSProperties
+              }
+            />
+          ))}
+        </ol>
+      </div>
       <figcaption className="graph-foot">
         <p aria-live="polite" className="graph-readout">
           {readout}

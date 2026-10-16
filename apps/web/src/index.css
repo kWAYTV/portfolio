@@ -852,35 +852,79 @@ a.repo:active::before {
   --cell-2: color-mix(in oklab, var(--color-ink) 50%, var(--color-paper));
   --cell-3: color-mix(in oklab, var(--color-ink) 74%, var(--color-paper));
   --cell-4: var(--color-ink);
-
   display: flex;
   flex-direction: column;
   gap: var(--space-sm);
   min-width: 0;
   margin: 0;
+
+  container-type: inline-size;
 }
 
-.graph .react-activity-calendar {
-  gap: 0;
-  width: max-content !important;
-  max-width: 100%;
+/*
+ * The year is 53 columns of 1fr, so cells scale with the column instead of
+ * being pinned to a pixel size. Gaps step up with the container so the grid
+ * keeps GitHub's cell-to-gap proportion from phone to the 68rem shell.
+ */
+.graph-sheet {
+  --cell-gap: 1px;
+
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2xs);
+  min-width: 0;
+}
+
+@container (min-width: 26rem) {
+  .graph-sheet {
+    --cell-gap: 2px;
+  }
+}
+
+@container (min-width: 36rem) {
+  .graph-sheet {
+    --cell-gap: 3px;
+  }
+}
+
+@container (min-width: 52rem) {
+  .graph-sheet {
+    --cell-gap: 4px;
+  }
+}
+
+.graph-months,
+.graph-grid {
+  display: grid;
+  grid-template-columns: repeat(var(--weeks, 53), minmax(0, 1fr));
+  column-gap: var(--cell-gap);
+}
+
+.graph-months {
   font-family: var(--font-mono);
+  font-size: clamp(0.5625rem, 2.4cqw, var(--text-xs));
+  line-height: 1.2;
   color: var(--color-muted);
 }
 
-.graph .react-activity-calendar__scroll-container {
-  max-width: 100%;
-  overflow: hidden !important;
+.graph-months span {
+  min-width: 0;
+  white-space: nowrap;
 }
 
-.graph .react-activity-calendar__calendar {
-  display: block;
-  max-width: 100%;
-  height: auto;
+@container (max-width: 36rem) {
+  .graph-months [data-short] {
+    visibility: hidden;
+  }
 }
 
-.graph .react-activity-calendar rect {
-  stroke: color-mix(in oklab, var(--color-ink) 10%, transparent);
+.graph-grid {
+  grid-template-rows: repeat(7, auto);
+  grid-auto-flow: column;
+  row-gap: var(--cell-gap);
+  padding: 0;
+  margin: 0;
+  list-style: none;
 }
 
 .cell {
@@ -905,6 +949,25 @@ a.repo:active::before {
 
 .cell[data-level="4"] {
   background: var(--cell-4);
+}
+
+.graph-grid .cell {
+  width: auto;
+  height: auto;
+  aspect-ratio: 1;
+  outline: 1px solid transparent;
+  outline-offset: -1px;
+  border-radius: min(var(--radius-cell), 15%);
+}
+
+.graph-grid .cell.is-empty {
+  background: transparent;
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .graph-grid .cell:not(.is-empty):hover {
+    outline-color: var(--color-ink);
+  }
 }
 
 .graph-foot {
@@ -1236,16 +1299,11 @@ a.repo:active::before {
  * renders `data-reveal="pending"`; hydration flips it to `in` when the grid
  * intersects, or drops it under reduced motion. If JS never lands the pending
  * cells still fade in on their own after a beat. */
-.graph .react-activity-calendar rect {
-  transform-origin: center;
-  transform-box: fill-box;
-}
-
-.graph[data-reveal="pending"] .react-activity-calendar rect {
+.graph[data-reveal="pending"] .graph-grid .cell {
   animation: cell-fallback 260ms var(--ease-out) 1.5s both;
 }
 
-.graph[data-reveal="in"] .react-activity-calendar rect {
+.graph[data-reveal="in"] .graph-grid .cell {
   animation: cell-in 260ms var(--ease-out) both;
   animation-delay: calc(var(--col, 0) * 6ms);
 }
