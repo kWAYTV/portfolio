@@ -96,9 +96,6 @@ importers:
       react:
         specifier: 19.2.8
         version: 19.2.8
-      react-activity-calendar:
-        specifier: ^3.2.1
-        version: 3.2.1(react-dom@19.2.8(react@19.2.8))(react@19.2.8)
       react-dom:
         specifier: 19.2.8
         version: 19.2.8(react@19.2.8)
@@ -324,12 +321,6 @@ packages:
     peerDependencies:
       react: '>=16.8.0'
       react-dom: '>=16.8.0'
-
-  '@floating-ui/react@0.27.20':
-    resolution: {integrity: sha512-CMqMy7OaXl9W0eq1Uy7L7i2Y/anPvHmFmESd2CEw0t5YvZhcVCeo4MBevAmswRllX7Y2dEidA4ozGPunLSTQpw==}
-    peerDependencies:
-      react: '>=17.0.0'
-      react-dom: '>=17.0.0'
 
   '@floating-ui/utils@0.2.12':
     resolution: {integrity: sha512-HpCo8tmWzLVad5s2d19EhAz5zqrrQ6s69qd6moPMQvkOuSwDT1YgRfWSVuc4ennqrgv3OHppiOGMQ7oC13yIww==}
@@ -1941,9 +1932,6 @@ packages:
   csstype@3.2.3:
     resolution: {integrity: sha512-z1HGKcYy2xA8AGQfwrn0PAy+PB7X/GSj3UVJW9qKyn43xWa+gl5nXmU4qqLMRzWVLFC8KusUX8T/0kCiOYpAIQ==}
 
-  date-fns@4.4.0:
-    resolution: {integrity: sha512-+1UMbeh68lH1SegH83CGWwpb6OHHbpSgr3+s5Eww5M4CAgswBpoWS0AjTOfEJ33HiYKz1hdj/KTFprzXHmq/6w==}
-
   decimal.js@10.6.0:
     resolution: {integrity: sha512-YpgQiITW3JXGntzdUmyUR1V812Hn8T1YVXhCu+wO3OpS4eU9l4YdD3qjyiKdV6mvV29zapkMeD390UVEf2lkUg==}
 
@@ -2365,11 +2353,6 @@ packages:
   rc9@3.0.1:
     resolution: {integrity: sha512-gMDyleLWVE+i6Sgtc0QbbY6pEKqYs97NGi6isHQPqYlLemPoO8dxQ3uGi0f4NiP98c+jMW6cG1Kx9dDwfvqARQ==}
 
-  react-activity-calendar@3.2.1:
-    resolution: {integrity: sha512-FcdwCu7V0XzGfx3MNQ7qFuIA0IGnJ0yPu46jvDjfA33OlqIkcth096Mdpl1exR3HwLv2nbK2yJAKyBqdzk4DHw==}
-    peerDependencies:
-      react: ^18.0.0 || ^19.0.0
-
   react-dom@19.2.8:
     resolution: {integrity: sha512-rVprimfGBG3DR+Tq0IQG2DT5PxKth1WIGDmj5yPmlzr4YBe7uyE+Du4oVqTDXZSHGGGXRtTJEGSSePyQCMBglQ==}
     peerDependencies:
@@ -2512,9 +2495,6 @@ packages:
         optional: true
       babel-plugin-macros:
         optional: true
-
-  tabbable@6.5.0:
-    resolution: {integrity: sha512-wieBHXygIm7OyQOu5hQlkk62/WyCFYGlWg7L6/ZCUZwx0o398Zkn4pVmMyfYhfMG8kGrj/Krt8eIk6UKC6VzwA==}
 
   tailwind-merge@3.7.0:
     resolution: {integrity: sha512-XPPUyAc+cvspz3lHTcR/QgPfW2A0lv/xQNIjX3HGhLR+Nq2lHaLq5MtTesHn8GUr3W3DguT2KT5x3NVgRtYwmA==}
@@ -2740,14 +2720,6 @@ snapshots:
       '@floating-ui/dom': 1.8.0
       react: 19.2.8
       react-dom: 19.2.8(react@19.2.8)
-
-  '@floating-ui/react@0.27.20(react-dom@19.2.8(react@19.2.8))(react@19.2.8)':
-    dependencies:
-      '@floating-ui/react-dom': 2.1.9(react-dom@19.2.8(react@19.2.8))(react@19.2.8)
-      '@floating-ui/utils': 0.2.12
-      react: 19.2.8
-      react-dom: 19.2.8(react@19.2.8)
-      tabbable: 6.5.0
 
   '@floating-ui/utils@0.2.12': {}
 
@@ -4176,8 +4148,6 @@ snapshots:
 
   csstype@3.2.3: {}
 
-  date-fns@4.4.0: {}
-
   decimal.js@10.6.0: {}
 
   deepmerge@4.3.1: {}
@@ -4627,14 +4597,6 @@ snapshots:
       defu: 6.1.7
       destr: 2.0.5
 
-  react-activity-calendar@3.2.1(react-dom@19.2.8(react@19.2.8))(react@19.2.8):
-    dependencies:
-      '@floating-ui/react': 0.27.20(react-dom@19.2.8(react@19.2.8))(react@19.2.8)
-      date-fns: 4.4.0
-      react: 19.2.8
-    transitivePeerDependencies:
-      - react-dom
-
   react-dom@19.2.8(react@19.2.8):
     dependencies:
       react: 19.2.8
@@ -4776,8 +4738,6 @@ snapshots:
     dependencies:
       client-only: 0.0.1
       react: 19.2.8
-
-  tabbable@6.5.0: {}
 
   tailwind-merge@3.7.0: {}
 
