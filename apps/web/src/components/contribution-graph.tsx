@@ -4,8 +4,10 @@ import type { ContributionDay } from "@repo/github";
 import { useTranslations } from "next-intl";
 import {
   type ComponentProps,
+  type CSSProperties,
   cloneElement,
   useCallback,
+  useEffect,
   useLayoutEffect,
   useMemo,
   useRef,
@@ -25,6 +27,10 @@ const LEVELS = [0, 1, 2, 3, 4] as const;
 const BLOCK_MARGIN = 2;
 const BLOCK_MAX = 8;
 const BLOCK_MIN = 3;
+const DAYS_PER_WEEK = 7;
+const REDUCED_MOTION = "(prefers-reduced-motion: reduce)";
+
+type Reveal = "in" | "pending" | undefined;
 
 const THEME: ThemeInput = {
   dark: [
@@ -65,12 +71,49 @@ export function ContributionGraph({
   const frameRef = useRef<HTMLElement | null>(null);
   const [blockSize, setBlockSize] = useState(BLOCK_MAX);
   const [active, setActive] = useState<Activity | null>(null);
+  const [reveal, setReveal] = useState<Reveal>("pending");
 
   const data = useMemo<Activity[]>(
     () => days.map(({ count, date, level }) => ({ count, date, level })),
     [days]
   );
-  const weeks = Math.max(1, Math.ceil(data.length / 7));
+  const weeks = Math.max(1, Math.ceil(data.length / DAYS_PER_WEEK));
+
+  // Column of each day in the calendar grid. The first week is padded to its
+  // weekday, so the offset of the first date shifts every index.
+  const columnByDate = useMemo(() => {
+    const offset = data.length ? utcDate(data[0].date).getUTCDay() : 0;
+    return new Map(
+      data.map((day, index) => [
+        day.date,
+        Math.floor((index + offset) / DAYS_PER_WEEK),
+      ])
+    );
+  }, [data]);
+
+  useEffect(() => {
+    const frame = frameRef.current;
+    if (
+      frame === null ||
+      typeof IntersectionObserver === "undefined" ||
+      window.matchMedia(REDUCED_MOTION).matches
+    ) {
+      setReveal(undefined);
+      return;
+    }
+
+    const observer = new IntersectionObserver(
+      (entries) => {
+        if (entries.some((entry) => entry.isIntersecting)) {
+          setReveal("in");
+          observer.disconnect();
+        }
+      },
+      { threshold: 0.2 }
+    );
+    observer.observe(frame);
+    return () => observer.disconnect();
+  }, []);
 
   useLayoutEffect(() => {
     const frame: HTMLElement | null = frameRef.current;
@@ -126,14 +169,22 @@ export function ContributionGraph({
         "aria-label": describe(activity),
         onMouseEnter: () => setActive(activity),
         onMouseLeave: () => setActive(null),
+        style: {
+          "--col": columnByDate.get(activity.date) ?? 0,
+        } as CSSProperties,
       }),
-    [describe]
+    [columnByDate, describe]
   );
 
   const readout = active ? describe(active) : t("total", { count: total });
 
   return (
-    <figure aria-label={t("label")} className="graph" ref={frameRef}>
+    <figure
+      aria-label={t("label")}
+      className="graph"
+      data-reveal={reveal}
+      ref={frameRef}
+    >
       <ActivityCalendar
         blockMargin={BLOCK_MARGIN}
         blockRadius={2}
