@@ -432,6 +432,7 @@ button {
 .skill-mark {
   display: inline-flex;
   color: var(--mark);
+  cursor: pointer;
 }
 
 .dark .skill-mark {
@@ -443,8 +444,30 @@ button {
   height: 1.65rem;
 }
 
-.marquee:hover .marquee-track {
+.marquee:hover .marquee-track,
+body:has([data-slot="tooltip-content"][data-state="open"]) .marquee-track {
   animation-play-state: paused;
+}
+
+[data-slot="tooltip-content"] {
+  font-family: var(--font-display);
+  font-size: var(--text-sm);
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  animation: tip-in 140ms var(--ease-out) both;
+}
+
+@keyframes tip-in {
+  from {
+    opacity: 0;
+    translate: 0 4px;
+  }
+
+  to {
+    opacity: 1;
+    translate: 0;
+  }
 }
 
 .document > * {
