@@ -1,9 +1,10 @@
 import { getTranslations, setRequestLocale } from "next-intl/server";
-import { Suspense } from "react";
+import { Suspense, ViewTransition } from "react";
 import { Pagination } from "@/components/pagination";
 import { ProjectFilters } from "@/components/project-filters";
 import { RepoList } from "@/components/repo-list";
 import { Bone, RowsSkeleton } from "@/components/skeleton";
+import { PageTransition } from "@/modules/motion/page-transition";
 import { getPageImageUrl } from "@/modules/og/lib/og";
 import { getGitHubRepos } from "@/modules/projects/lib/github";
 import {
@@ -42,22 +43,32 @@ export default async function ProjectsPage({
   const t = await getTranslations({ locale, namespace: "projects" });
 
   return (
-    <article className="document">
-      <header className="page-head">
-        <h1 className="page-title" data-testid="projects-shell">
-          {t("title")}
-        </h1>
-        <p className="lede">{t("subtitle")}</p>
-      </header>
-      <section className="section">
-        <Suspense fallback={<FiltersSkeleton />}>
-          <ProjectFilters />
-        </Suspense>
-        <Suspense fallback={<CatalogueSkeleton label={t("loading")} />}>
-          <ProjectCatalogue locale={locale} searchParams={searchParams} />
-        </Suspense>
-      </section>
-    </article>
+    <PageTransition>
+      <article className="document">
+        <header className="page-head">
+          <h1 className="page-title" data-testid="projects-shell">
+            {t("title")}
+          </h1>
+          <p className="lede">{t("subtitle")}</p>
+        </header>
+        <section className="section">
+          <Suspense fallback={<FiltersSkeleton />}>
+            <ProjectFilters />
+          </Suspense>
+          <Suspense
+            fallback={
+              <ViewTransition default="none" exit="bones-out">
+                <CatalogueSkeleton label={t("loading")} />
+              </ViewTransition>
+            }
+          >
+            <ViewTransition default="none" enter="rows-in">
+              <ProjectCatalogue locale={locale} searchParams={searchParams} />
+            </ViewTransition>
+          </Suspense>
+        </section>
+      </article>
+    </PageTransition>
   );
 }
 

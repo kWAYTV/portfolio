@@ -1,3 +1,4 @@
+import type { CSSProperties } from "react";
 import { StarIcon } from "@/components/icons";
 
 export interface RepoItem {
@@ -25,8 +26,8 @@ export function RepoList({
 
   return (
     <ul className="repos">
-      {repos.map((repo) => (
-        <li key={repo.key}>
+      {repos.map((repo, index) => (
+        <li key={repo.key} style={{ "--i": index } as CSSProperties}>
           <a
             className="repo"
             href={repo.url}
