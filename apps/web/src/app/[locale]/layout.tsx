@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { Geist, Geist_Mono } from "next/font/google";
+import { Barlow_Condensed, Geist, Geist_Mono } from "next/font/google";
 import { notFound } from "next/navigation";
 import { NextIntlClientProvider } from "next-intl";
 import { getMessages, setRequestLocale } from "next-intl/server";
@@ -29,6 +29,13 @@ const geistMono = Geist_Mono({
   weight: ["400", "500"],
 });
 
+const display = Barlow_Condensed({
+  display: "swap",
+  subsets: ["latin"],
+  variable: "--font-display-face",
+  weight: ["600", "700"],
+});
+
 export function generateStaticParams() {
   return getStaticParams();
 }
@@ -56,7 +63,9 @@ export default async function LocaleLayout({
 
   return (
     <html lang={locale} suppressHydrationWarning>
-      <body className={`${geistSans.variable} ${geistMono.variable}`}>
+      <body
+        className={`${geistSans.variable} ${geistMono.variable} ${display.variable}`}
+      >
         <UmamiScript
           scriptUrl={env.NEXT_PUBLIC_UMAMI_URL}
           websiteId={env.NEXT_PUBLIC_UMAMI_WEBSITE_ID}

@@ -3,6 +3,7 @@ import { LocaleSwitch } from "@/components/locale-switch";
 import { NavLinks } from "@/components/nav-links";
 import { ThemeToggle } from "@/components/theme-toggle";
 import { LocaleLink } from "@/modules/i18n/routing";
+import { SoundToggle } from "@/modules/motion/sound";
 
 export async function SiteHeader() {
   const t = await getTranslations("nav");
@@ -22,6 +23,7 @@ export async function SiteHeader() {
       />
       <div className="masthead-controls">
         <LocaleSwitch />
+        <SoundToggle />
         <ThemeToggle />
       </div>
     </header>

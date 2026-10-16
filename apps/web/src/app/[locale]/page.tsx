@@ -6,12 +6,14 @@ import { ArrowIcon } from "@/components/icons";
 import { RepoList } from "@/components/repo-list";
 import { Bone, RowsSkeleton } from "@/components/skeleton";
 import { SocialLinks } from "@/components/social-links";
+import { experience } from "@/modules/about/consts/experience";
+import { LocalClock } from "@/modules/home/components/local-clock";
+import { SkillRail } from "@/modules/home/components/skill-rail";
 import { LocaleLink } from "@/modules/i18n/routing";
 import { getPageImageUrl } from "@/modules/og/lib/og";
 import { getFeaturedRepos } from "@/modules/projects/lib/featured";
 import {
   getGitHubContributionCalendar,
-  getGitHubPinnedRepos,
   getGitHubRepos,
 } from "@/modules/projects/lib/github";
 
@@ -39,27 +41,68 @@ export default async function HomePage({
   const { locale } = await params;
   setRequestLocale(locale);
   const t = await getTranslations({ locale, namespace: "hero" });
+  const tRoot = await getTranslations({ locale });
   const tCommon = await getTranslations({ locale, namespace: "common" });
+  const tAbout = await getTranslations({ locale, namespace: "about" });
 
   return (
     <article className="document">
-      <header className="intro">
-        <div>
-          <h1 className="page-title" data-testid="home-shell">
-            {tCommon("siteName")}
-          </h1>
-          <p className="role">{t("role")}</p>
-        </div>
+      <header className="ticket">
+        <p className="ticket-status">
+          <span aria-hidden="true" className="live-dot" />
+          {t("open")}
+          <span aria-hidden="true">·</span>
+          {t("place")}
+        </p>
+        <h1 className="page-title" data-testid="home-shell">
+          {tCommon("siteName")}
+        </h1>
+        <p className="role">{t("role")}</p>
         <p className="lede">
           <strong>{t("headline")}</strong> {t("bio")}
         </p>
-        <SocialLinks />
+        <div className="ticket-foot">
+          <SocialLinks />
+          <LocalClock />
+        </div>
       </header>
-      <Suspense fallback={<ActivitySkeleton />}>
-        <Activity locale={locale} />
-      </Suspense>
+      <SkillRail label={t("stack")} />
+      <section aria-labelledby="experience" className="section">
+        <div className="section-head">
+          <h2 id="experience">{tAbout("experience")}</h2>
+          <LocaleLink className="control" href="/about">
+            {tAbout("title")}
+            <ArrowIcon />
+          </LocaleLink>
+        </div>
+        <ol className="timeline">
+          {experience.map((item, index) => (
+            <li className="timeline-item" key={item.id}>
+              <span
+                aria-hidden="true"
+                className="timeline-dot"
+                data-current={index === 0 ? "true" : undefined}
+              />
+              <div className="timeline-body">
+                <span className="timeline-title">
+                  {tRoot(`experience.${item.key}.role`)}
+                </span>
+                <span className="timeline-sub">
+                  {tRoot(`experience.${item.key}.company`)}
+                </span>
+              </div>
+              <span className="timeline-meta">
+                {tRoot(`experience.${item.key}.period`)}
+              </span>
+            </li>
+          ))}
+        </ol>
+      </section>
       <Suspense fallback={<WorkSkeleton />}>
         <FeaturedWork locale={locale} />
+      </Suspense>
+      <Suspense fallback={<ActivitySkeleton />}>
+        <Activity locale={locale} />
       </Suspense>
     </article>
   );
@@ -132,18 +175,16 @@ async function Activity({ locale }: { locale: string }) {
 
 async function FeaturedWork({ locale }: { locale: string }) {
   const t = await getTranslations({ locale, namespace: "projects" });
-  const pinned = await getGitHubPinnedRepos();
-  const repos: PinnedRepo[] =
-    pinned.length > 0
-      ? pinned
-      : getFeaturedRepos(await getGitHubRepos()).map((repo) => ({
-          description: repo.description,
-          fullName: repo.full_name,
-          language: repo.language,
-          name: repo.name,
-          stars: repo.stargazers_count,
-          url: repo.html_url,
-        }));
+  const repos: PinnedRepo[] = getFeaturedRepos(await getGitHubRepos()).map(
+    (repo) => ({
+      description: repo.description,
+      fullName: repo.full_name,
+      language: repo.language,
+      name: repo.name,
+      stars: repo.stargazers_count,
+      url: repo.html_url,
+    })
+  );
 
   return (
     <section aria-labelledby="work" className="section">

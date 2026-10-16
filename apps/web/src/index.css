@@ -1,7 +1,7 @@
-/* Hallmark · pre-emit critique: P5 H4 E5 S4 R5 V4
- * Hallmark · genre: modern-minimal · macrostructure: Index-First · theme: custom (graphite)
- * tone: technical · anchor hue: none (zero chroma) · nav: N1 · footer: Ft2
- * enrichment: E9 contribution heatmap · design-system: design.md · designed-as-app
+/* Hallmark · pre-emit critique: P4 H5 E4 S4 R4 V4
+ * Hallmark · genre: editorial · macrostructure: Poster Ticket · theme: custom (shop oxide)
+ * tone: technical · anchor hue: warm · nav: N1 · footer: Ft2
+ * enrichment: none · design-system: design.md
  */
 @import "tailwindcss";
 @import "../../../tokens.css";
@@ -141,6 +141,7 @@ button {
   gap: var(--space-xs) var(--space-lg);
   align-items: center;
   padding-block: var(--space-md);
+  border-top: 3px solid var(--color-stamp);
   border-bottom: 1px solid var(--color-rule);
 }
 
@@ -338,11 +339,151 @@ button {
 
 .page-title {
   min-width: 0;
-  font-size: var(--text-xl);
-  font-weight: 500;
-  line-height: 1.3;
-  letter-spacing: var(--tracking-tight);
+  font-family: var(--font-display);
+  font-size: clamp(2.25rem, 6vw, 3.5rem);
+  font-weight: 700;
+  line-height: 0.92;
+  letter-spacing: -0.03em;
   overflow-wrap: anywhere;
+}
+
+.ticket {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-md);
+  padding-bottom: var(--space-lg);
+  border-bottom: 1px solid var(--color-rule);
+}
+
+.ticket .page-title {
+  font-size: clamp(3.4rem, 11vw, 6.75rem);
+  line-height: 0.84;
+  text-transform: uppercase;
+}
+
+.ticket-status {
+  display: flex;
+  gap: var(--space-xs);
+  align-items: center;
+  font-family: var(--font-mono);
+  font-size: var(--text-sm);
+  color: var(--color-stamp);
+}
+
+.live-dot {
+  width: 0.45rem;
+  height: 0.45rem;
+  background: var(--color-stamp);
+  border-radius: 50%;
+  box-shadow: 0 0 0 0 color-mix(in oklab, var(--color-stamp) 55%, transparent);
+  animation: pulse-dot 1.8s var(--ease-out) infinite;
+}
+
+.ticket-foot {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-md) var(--space-xl);
+  align-items: flex-end;
+  justify-content: space-between;
+}
+
+.clock {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3xs);
+  margin: 0;
+  margin-left: auto;
+  font-family: var(--font-mono);
+  font-size: var(--text-lg);
+  font-variant-numeric: tabular-nums;
+  line-height: 1;
+}
+
+@media (max-width: 640px) {
+  .clock {
+    margin-left: 0;
+  }
+}
+
+.marquee {
+  margin-inline: calc(-1 * clamp(var(--space-lg), 5vw, var(--space-xl)));
+  overflow: clip;
+  border-block: 1px solid var(--color-rule);
+  mask-image: linear-gradient(
+    90deg,
+    transparent,
+    #000 6%,
+    #000 94%,
+    transparent
+  );
+}
+
+.marquee-track {
+  display: flex;
+  gap: var(--space-lg);
+  align-items: center;
+  width: max-content;
+  padding-block: var(--space-sm);
+  margin: 0;
+  list-style: none;
+  animation: marquee 42s linear infinite;
+}
+
+.skill-mark {
+  display: inline-flex;
+  color: var(--mark);
+}
+
+.dark .skill-mark {
+  color: var(--mark-on-dark, var(--mark));
+}
+
+.skill-mark svg {
+  width: 1.65rem;
+  height: 1.65rem;
+}
+
+.marquee:hover .marquee-track {
+  animation-play-state: paused;
+}
+
+.document > * {
+  animation: rise 520ms var(--ease-out) both;
+}
+
+.document > *:nth-child(2) {
+  animation-delay: 70ms;
+}
+
+.document > *:nth-child(3) {
+  animation-delay: 120ms;
+}
+
+.document > *:nth-child(4) {
+  animation-delay: 170ms;
+}
+
+.document > *:nth-child(5) {
+  animation-delay: 220ms;
+}
+
+@keyframes rise {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+}
+
+@keyframes marquee {
+  to {
+    transform: translateX(-50%);
+  }
+}
+
+@keyframes pulse-dot {
+  70% {
+    box-shadow: 0 0 0 6px transparent;
+  }
 }
 
 .role {
@@ -714,6 +855,11 @@ a.repo:active::before {
   border-radius: 50%;
 }
 
+.timeline-dot[data-current="true"] {
+  background: var(--color-stamp);
+  border-color: var(--color-stamp);
+}
+
 .timeline-body {
   display: flex;
   flex-direction: column;
@@ -965,6 +1111,7 @@ a.repo:active::before {
 /* ---------- reduced motion ---------- */
 
 @media (prefers-reduced-motion: reduce) {
+  /* biome-ignore lint/style/noDescendingSpecificity: this reset has to follow every animation */
   *,
   ::before,
   ::after {
