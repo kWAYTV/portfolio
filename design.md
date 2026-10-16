@@ -41,11 +41,42 @@ The contribution grid stays ink at five opacity steps, never GitHub green.
 - Masthead keeps wordmark, about, projects, locale, sound, theme.
 
 ## Motion
-- Sections rise once on mount (opacity + 10px). Reduced motion kills it.
+Transform and opacity only. `--ease-out` for everything that settles,
+`--dur-micro` 120ms / `--dur-short` 200ms / `--dur-long` 400ms. Hover motion
+is gated to `(hover: hover) and (pointer: fine)`. Reduced motion zeroes every
+duration and delay, including view transitions.
+- Sections rise once on mount (opacity + 10px). The home name stamps in from
+  a 1.04 scale. Timeline rows and repo rows cascade by `--i` (35–40ms steps).
 - Stack names scroll on a 28s linear marquee and pause on hover.
-- The open-to-work dot pulses. Row hovers stay color-only.
-- Clicks on links and buttons play a 40ms square blip. A header toggle
-  persists mute in `localStorage` under `sound:v1`.
+- The open-to-work dot pulses.
+- Press: every control, chip, button and skill mark squashes to 0.97 on
+  `:active` (icon controls 0.94). Chips lift 1px on hover. Repo rows go
+  ink-on-paper on the mark and fill the star on hover; the row itself stays
+  color-only. Skill marks lift and grow 1.15 on hover.
+- The masthead nav is a `Segment`: a rubber thumb slides to the current page.
+- Route changes are React `<ViewTransition>`s. The old document fades out in
+  `--dur-micro`; the new one shows live so its mount cascade plays. The
+  masthead is anchored by `view-transition-name`, the colophon morphs.
+- Projects catalogue: the skeleton exits (`bones-out`), the rows enter
+  (`rows-in`) through the same Suspense boundary.
+- Theme flips behind a 420ms circular wipe from the toggle via
+  `document.startViewTransition`. Skipped without support or under reduced
+  motion.
+- The contribution grid sweeps in column by column (6ms per week) the first
+  time it scrolls into view.
+
+## Sound
+Synthesised on a shared bus: master gain 0.9 into a soft compressor so peaks
+are tamed and quiet voices still read. Each interaction has its own voice.
+- Press (buttons, chips): a 2.6kHz click plus a 60ms square drop 420→170Hz.
+- Navigate (same-site links): the click plus a square drop 620→300Hz.
+- Hover (mouse only, 70ms throttle): an 18ms sine tick 1500→1300Hz.
+- Keyboard focus: a 45ms triangle at 720Hz.
+- Switch (locale): two square notes 440 then 587Hz.
+- Theme: a filtered noise sweep 500→2600Hz under a triangle rise 330→660Hz.
+- Mute: a falling triangle pair; unmute: a rising 523/659/784Hz arpeggio.
+A header toggle persists mute in `localStorage` under `sound:v1`. Elements opt
+into a voice with `data-sound="press|switch|theme"`.
 
 ## Rendering
 - Home activity and featured repos are `use cache` and belong in the static
