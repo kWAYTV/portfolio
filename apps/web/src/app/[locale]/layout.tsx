@@ -30,11 +30,12 @@ const geistMono = Geist_Mono({
   weight: ["400", "500"],
 });
 
+// Only the 700 cut is drawn (titles and the rail tip): one font file, not two.
 const display = Barlow_Condensed({
   display: "swap",
   subsets: ["latin"],
   variable: "--font-display-face",
-  weight: ["600", "700"],
+  weight: "700",
 });
 
 export function generateStaticParams() {
@@ -72,22 +73,7 @@ export default async function LocaleLayout({
           scriptUrl={env.NEXT_PUBLIC_UMAMI_URL}
           websiteId={env.NEXT_PUBLIC_UMAMI_WEBSITE_ID}
         />
-        <svg aria-hidden="true" className="paper-grain">
-          <filter id="paper-grain">
-            <feTurbulence
-              baseFrequency="0.8"
-              numOctaves="2"
-              stitchTiles="stitch"
-              type="fractalNoise"
-            />
-            <feComponentTransfer>
-              <feFuncR intercept="-0.55" slope="2.2" type="linear" />
-              <feFuncG intercept="-0.55" slope="2.2" type="linear" />
-              <feFuncB intercept="-0.55" slope="2.2" type="linear" />
-            </feComponentTransfer>
-          </filter>
-          <rect filter="url(#paper-grain)" height="100%" width="100%" />
-        </svg>
+        <div className="paper-grain" />
         <Providers>
           <NextIntlClientProvider locale={locale} messages={messages}>
             <div className="site-shell">

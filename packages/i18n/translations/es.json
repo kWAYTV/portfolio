@@ -25,6 +25,7 @@
     "open": "Disponible",
     "place": "España",
     "stack": "Stack",
+    "site": "Web de {name}",
     "time": "Hora local",
     "soundOn": "Sonido activado",
     "soundOff": "Sonido desactivado"

@@ -68,7 +68,7 @@ export default async function HomePage({
             <LocalClock />
           </div>
         </header>
-        <SkillRail label={t("stack")} />
+        <SkillRail />
         <section aria-labelledby="experience" className="section">
           <div className="section-head">
             <h2 id="experience">{tAbout("experience")}</h2>

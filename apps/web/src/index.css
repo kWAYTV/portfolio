@@ -26,19 +26,35 @@ html {
   background: var(--color-paper);
 }
 
+/*
+ * Grain is a 256px noise tile rasterised once and repeated, not a live
+ * viewport-sized feTurbulence: WebKit computes that filter on the CPU on
+ * every repaint, which is what made scrolling and theme switches crawl on
+ * phones. No blend mode either — multiplying paper by grey noise equals
+ * compositing black at some alpha, and screening equals white at some alpha,
+ * so each tile bakes its alpha ramp (matched to the old filter's measured
+ * mean and spread) and composites normally. The height is the large viewport
+ * so the layer does not resize as the mobile toolbar collapses.
+ */
 .paper-grain {
+  --grain-light: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='256' height='256'%3E%3Cfilter id='g' filterUnits='userSpaceOnUse' x='0' y='0' width='256' height='256' color-interpolation-filters='sRGB'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 -0.59 0 0 0 0.42'/%3E%3C/filter%3E%3Crect width='256' height='256' filter='url(%23g)'/%3E%3C/svg%3E");
+  --grain-dark: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='256' height='256'%3E%3Cfilter id='g' filterUnits='userSpaceOnUse' x='0' y='0' width='256' height='256' color-interpolation-filters='sRGB'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 1 0 0 0 0 1 0 0 0 0 1 0.9 0 0 0 -0.076'/%3E%3C/filter%3E%3Crect width='256' height='256' filter='url(%23g)'/%3E%3C/svg%3E");
+
   position: fixed;
-  inset: 0;
+  top: 0;
+  left: 0;
   z-index: 2;
   width: 100%;
-  height: 100%;
+  height: 100lvh;
   pointer-events: none;
-  mix-blend-mode: multiply;
+  background-image: var(--grain-light);
+  background-repeat: repeat;
+  background-size: 256px 256px;
   opacity: 0.16;
 }
 
 html.dark .paper-grain {
-  mix-blend-mode: screen;
+  background-image: var(--grain-dark);
   opacity: 0.22;
 }
 
@@ -78,9 +94,6 @@ body {
   color: var(--color-ink);
   background: var(--color-paper);
   text-rendering: optimizeLegibility;
-  transition:
-    color var(--dur-short) ease,
-    background-color var(--dur-short) ease;
 }
 
 ::selection {
@@ -180,6 +193,37 @@ button {
   margin-right: calc(-1 * var(--space-2xs));
 }
 
+/*
+ * Phones get an explicit two-row masthead. Letting the row wrap left the
+ * layout to label widths: "about · projects" fit on one line at 440px while
+ * "sobre mí · proyectos" pushed the controls under the wordmark, so switching
+ * locale moved the whole header. Both languages now share one structure.
+ */
+@media (max-width: 40rem) {
+  .masthead {
+    display: grid;
+    grid-template-areas:
+      "wordmark controls"
+      "nav nav";
+    grid-template-columns: minmax(0, 1fr) auto;
+    row-gap: var(--space-2xs);
+  }
+
+  .wordmark {
+    grid-area: wordmark;
+    margin-right: 0;
+  }
+
+  .masthead-nav {
+    grid-area: nav;
+    margin-left: calc(-1 * var(--space-xs));
+  }
+
+  .masthead-controls {
+    grid-area: controls;
+  }
+}
+
 /* ---------- controls ---------- */
 
 /* Press feedback shared by every pressable: a 3% squash, 120ms out. */
@@ -248,6 +292,23 @@ button {
 span.control:active {
   background: none;
   transform: none;
+}
+
+/* 28px controls keep their drawn size on touch screens but accept a 44px tap. */
+@media (pointer: coarse) {
+  .control,
+  .icon-control,
+  .chip {
+    position: relative;
+  }
+
+  .control::after,
+  .icon-control::after,
+  .chip::after {
+    position: absolute;
+    inset: -0.5rem -0.25rem;
+    content: "";
+  }
 }
 
 .icon-control {
@@ -414,7 +475,7 @@ span.control:active {
 /* The name lands like a rubber stamp: slightly oversized, then settles. */
 @keyframes stamp {
   from {
-    opacity: 0;
+    opacity: 0.01;
     transform: scale(1.04);
   }
 }
@@ -429,11 +490,22 @@ span.control:active {
 }
 
 .live-dot {
+  position: relative;
+  z-index: 0;
   width: 0.45rem;
   height: 0.45rem;
   background: var(--color-stamp);
   border-radius: 50%;
-  box-shadow: 0 0 0 0 color-mix(in oklab, var(--color-stamp) 55%, transparent);
+}
+
+/* The halo scales and fades on the compositor instead of repainting a box-shadow every frame. */
+.live-dot::after {
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  content: "";
+  background: color-mix(in oklab, var(--color-stamp) 55%, transparent);
+  border-radius: 50%;
   animation: pulse-dot 1.8s var(--ease-out) infinite;
 }
 
@@ -515,28 +587,58 @@ span.control:active {
 }
 
 .marquee:hover .marquee-track,
-body:has([data-slot="tooltip-content"][data-state="open"]) .marquee-track {
+.marquee:focus-within .marquee-track {
   animation-play-state: paused;
 }
 
-[data-slot="tooltip-content"] {
+/* Hosts the marquee and its one shared tip (see skill-tip.tsx). */
+.rail {
+  position: relative;
+}
+
+.rail-tip {
+  position: absolute;
+  top: var(--y);
+  left: var(--x);
+  z-index: 5;
+  padding: 0.375rem 0.75rem;
   font-family: var(--font-display);
   font-size: var(--text-sm);
-  font-weight: 600;
+  font-weight: 700;
+  line-height: 1.2;
+  color: var(--color-paper);
   text-transform: uppercase;
   letter-spacing: 0.08em;
+  white-space: nowrap;
+  pointer-events: none;
+  background: var(--color-ink);
+  border-radius: var(--radius-control);
+  translate: -50% -100%;
   animation: tip-in 140ms var(--ease-out) both;
+}
+
+.rail-tip::after {
+  position: absolute;
+  bottom: -4px;
+  left: 50%;
+  width: 0.625rem;
+  height: 0.625rem;
+  content: "";
+  background: inherit;
+  border-radius: 2px;
+  rotate: 45deg;
+  translate: -50%;
 }
 
 @keyframes tip-in {
   from {
     opacity: 0;
-    translate: 0 4px;
+    transform: translateY(4px);
   }
 
   to {
     opacity: 1;
-    translate: 0;
+    transform: translateY(0);
   }
 }
 
@@ -560,9 +662,16 @@ body:has([data-slot="tooltip-content"][data-state="open"]) .marquee-track {
   animation-delay: 220ms;
 }
 
+/*
+ * Mount fades start at 0.01, not 0. Chrome never counts text that was first
+ * painted at opacity 0 as a Largest Contentful Paint candidate, so a hero that
+ * fades in from 0 hands LCP to whatever small client-rendered text paints
+ * last (here the clock, after hydration). At 0.01 the hero is invisible to
+ * the eye but counted at first paint.
+ */
 @keyframes rise {
   from {
-    opacity: 0;
+    opacity: 0.01;
     transform: translateY(10px);
   }
 }
@@ -574,8 +683,10 @@ body:has([data-slot="tooltip-content"][data-state="open"]) .marquee-track {
 }
 
 @keyframes pulse-dot {
-  70% {
-    box-shadow: 0 0 0 6px transparent;
+  70%,
+  100% {
+    opacity: 0;
+    transform: scale(2.7);
   }
 }
 
@@ -868,6 +979,10 @@ a.repo:active::before {
  */
 .graph-sheet {
   --cell-gap: 1px;
+  --cell: calc(
+    (100cqw - (var(--weeks, 53) - 1) * var(--cell-gap)) /
+    var(--weeks, 53)
+  );
 
   display: flex;
   flex-direction: column;
@@ -919,7 +1034,7 @@ a.repo:active::before {
 }
 
 .graph-grid {
-  grid-template-rows: repeat(7, auto);
+  grid-template-rows: repeat(7, var(--cell));
   grid-auto-flow: column;
   row-gap: var(--cell-gap);
   padding: 0;
@@ -954,7 +1069,6 @@ a.repo:active::before {
 .graph-grid .cell {
   width: auto;
   height: auto;
-  aspect-ratio: 1;
   outline: 1px solid transparent;
   outline-offset: -1px;
   border-radius: min(var(--radius-cell), 15%);
@@ -1296,11 +1410,28 @@ a.repo:active::before {
 /* ---------- contribution sweep ---------- */
 
 /* Cells pop in column by column once the grid scrolls into view. The server
- * renders `data-reveal="pending"`; hydration flips it to `in` when the grid
- * intersects, or drops it under reduced motion. If JS never lands the pending
- * cells still fade in on their own after a beat. */
-.graph[data-reveal="pending"] .graph-grid .cell {
-  animation: cell-fallback 260ms var(--ease-out) 1.5s both;
+ * renders `data-reveal="pending"`; hydration moves it to `armed`, then `in`
+ * when the grid intersects, or drops it under reduced motion.
+ *
+ * Until the sweep, the grid's 365 cells are not rendered at all: resolving
+ * their styles was a third of the home page's first layout, for content a
+ * screen below the fold. The box keeps its final height (rows are a fixed
+ * `--cell`), so nothing shifts when the cells arrive. If JS never lands, a
+ * discrete animation unlocks the pending grid after a beat. */
+.graph[data-reveal="pending"] .graph-grid,
+.graph[data-reveal="armed"] .graph-grid {
+  contain-intrinsic-block-size: calc(7 * var(--cell) + 6 * var(--cell-gap));
+  content-visibility: hidden;
+}
+
+.graph[data-reveal="pending"] .graph-grid {
+  animation: grid-unlock 0s linear 1.5s forwards;
+}
+
+@keyframes grid-unlock {
+  to {
+    content-visibility: visible;
+  }
 }
 
 .graph[data-reveal="in"] .graph-grid .cell {
@@ -1312,12 +1443,6 @@ a.repo:active::before {
   from {
     opacity: 0;
     transform: scale(0.6);
-  }
-}
-
-@keyframes cell-fallback {
-  from {
-    opacity: 0;
   }
 }
 
@@ -1385,10 +1510,6 @@ a.repo:active::before {
 /* Theme flip: the new palette wipes out from the toggle as a circle. The
  * `theme-flip` class is held on <html> for the duration so the masthead and
  * colophon fold back into the root snapshot and ride the same wipe. */
-html.theme-flip body {
-  transition: none;
-}
-
 html.theme-flip .masthead,
 html.theme-flip .colophon {
   view-transition-name: none;

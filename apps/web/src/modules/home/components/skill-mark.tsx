@@ -1,12 +1,4 @@
-"use client";
-
 import type { CSSProperties } from "react";
-
-import {
-  Tooltip,
-  TooltipContent,
-  TooltipTrigger,
-} from "@/components/ui/tooltip";
 
 function channel(hex: string, start: number) {
   return Number.parseInt(hex.slice(start, start + 2), 16);
@@ -23,46 +15,47 @@ function onDark(hex: string) {
   return `#${hex}`;
 }
 
+/**
+ * A server-rendered link to a tool's homepage. The icon is a `<use>` of a
+ * symbol in the shared `/skills.svg` sprite and the short title lives in
+ * `data-title` for the rail's single tip, so the mark itself ships no
+ * JavaScript.
+ * `label` is the full link purpose ("Go website") for screen readers.
+ */
 export function SkillMark({
   hex,
   href,
-  path,
+  iconHref,
+  label,
   tabIndex,
   title,
-  viewBox = "0 0 24 24",
 }: {
   hex: string;
   href: string;
-  path: string;
+  iconHref: string;
+  label: string;
   tabIndex?: number;
   title: string;
-  viewBox?: string;
 }) {
   return (
-    <Tooltip>
-      <TooltipTrigger asChild>
-        <a
-          className="skill-mark"
-          href={href}
-          rel="noreferrer noopener"
-          style={
-            {
-              "--mark": `#${hex}`,
-              "--mark-on-dark": onDark(hex),
-            } as CSSProperties
-          }
-          tabIndex={tabIndex}
-          target="_blank"
-        >
-          <svg aria-hidden="true" viewBox={viewBox}>
-            <path d={path} fill="currentColor" />
-          </svg>
-          <span className="sr-only">{title}</span>
-        </a>
-      </TooltipTrigger>
-      <TooltipContent side="top" sideOffset={8}>
-        {title}
-      </TooltipContent>
-    </Tooltip>
+    <a
+      className="skill-mark"
+      data-title={title}
+      href={href}
+      rel="noreferrer noopener"
+      style={
+        {
+          "--mark": `#${hex}`,
+          "--mark-on-dark": onDark(hex),
+        } as CSSProperties
+      }
+      tabIndex={tabIndex}
+      target="_blank"
+    >
+      <svg aria-hidden="true">
+        <use href={iconHref} />
+      </svg>
+      <span className="sr-only">{label}</span>
+    </a>
   );
 }
