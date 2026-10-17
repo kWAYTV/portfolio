@@ -1,13 +1,6 @@
 "use client";
 
-import {
-  createContext,
-  use,
-  useCallback,
-  useEffect,
-  useRef,
-  useState,
-} from "react";
+import { createContext, use, useCallback, useEffect, useState } from "react";
 
 const STORAGE_KEY = "theme";
 const MEDIA = "(prefers-color-scheme: dark)";
@@ -43,37 +36,17 @@ function applyTheme(theme: ResolvedTheme) {
   root.style.colorScheme = theme;
 }
 
-/**
- * A user-driven switch cross-fades two snapshots on the compositor instead of
- * transitioning `color`/`background` on `body`, which restyled and repainted
- * the whole page on every frame for 200ms and stuttered on phones.
- */
-function switchTheme(theme: ResolvedTheme) {
-  if (
-    typeof document.startViewTransition !== "function" ||
-    window.matchMedia("(prefers-reduced-motion: reduce)").matches
-  ) {
-    applyTheme(theme);
-    return;
-  }
-  document.startViewTransition(() => applyTheme(theme));
-}
-
 export function ThemeProvider({ children }: { children: React.ReactNode }) {
   const [theme, setThemeState] = useState<Theme | null>(null);
   const [resolvedTheme, setResolvedTheme] = useState<ResolvedTheme | undefined>(
     undefined
   );
 
-  // The theme a user switch is applying itself; the sync effect must not race it.
-  const switchingRef = useRef<Theme | null>(null);
-
   const setTheme = useCallback((next: Theme) => {
-    switchingRef.current = next;
     setThemeState(next);
     const resolved = next === "system" ? systemTheme() : next;
     setResolvedTheme(resolved);
-    switchTheme(resolved);
+    applyTheme(resolved);
     try {
       localStorage.setItem(STORAGE_KEY, next);
     } catch {
@@ -100,12 +73,8 @@ export function ThemeProvider({ children }: { children: React.ReactNode }) {
     }
 
     const resolved = theme === "system" ? systemTheme() : theme;
-    const ownedBySwitch = switchingRef.current === theme;
-    switchingRef.current = null;
-    if (!ownedBySwitch) {
-      setResolvedTheme(resolved);
-      applyTheme(resolved);
-    }
+    setResolvedTheme(resolved);
+    applyTheme(resolved);
 
     if (theme !== "system") {
       return;

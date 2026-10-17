@@ -19,72 +19,264 @@ const SoundContext = createContext<{
   toggle: () => void;
 } | null>(null);
 
-let audioCtx: AudioContext | null = null;
+/**
+ * Every voice is synthesised on the fly, so the palette ships zero bytes of
+ * audio. The bus is `voice → master gain → compressor → speakers`: the
+ * compressor lets presses sit well above hovers without clipping when the two
+ * overlap, and the master gain is the one knob for overall loudness.
+ */
+const MASTER_GAIN = 0.9;
+const SILENCE = 0.0001;
+const HOVER_INTERVAL_MS = 70;
+const KEYBOARD_GRACE_MS = 500;
+
+interface Bus {
+  ctx: AudioContext;
+  master: GainNode;
+  noise: AudioBuffer;
+}
+
+let bus: Bus | null = null;
 let lastHover = 0;
 let lastPointer = 0;
 
-function context() {
+function whiteNoise(ctx: AudioContext) {
+  const length = Math.ceil(ctx.sampleRate * 0.25);
+  const buffer = ctx.createBuffer(1, length, ctx.sampleRate);
+  const data = buffer.getChannelData(0);
+  for (let i = 0; i < length; i += 1) {
+    data[i] = Math.random() * 2 - 1;
+  }
+  return buffer;
+}
+
+function openBus(): Bus | null {
+  if (bus) {
+    if (bus.ctx.state === "suspended") {
+      bus.ctx.resume().catch(() => undefined);
+    }
+    return bus;
+  }
   const AudioCtx = window.AudioContext;
   if (!AudioCtx) {
     return null;
   }
-  const ctx = audioCtx ?? new AudioCtx();
-  audioCtx = ctx;
-  if (ctx.state === "suspended") {
-    ctx.resume().catch(() => undefined);
-  }
-  return ctx;
+  const ctx = new AudioCtx();
+  const master = ctx.createGain();
+  master.gain.value = MASTER_GAIN;
+  const compressor = ctx.createDynamicsCompressor();
+  compressor.threshold.value = -18;
+  compressor.knee.value = 12;
+  compressor.ratio.value = 4;
+  compressor.attack.value = 0.002;
+  compressor.release.value = 0.08;
+  master.connect(compressor);
+  compressor.connect(ctx.destination);
+  bus = { ctx, master, noise: whiteNoise(ctx) };
+  return bus;
 }
 
-function blip(
-  from: number,
-  to: number,
-  gainValue: number,
-  duration: number,
-  when = 0
-) {
-  const ctx = context();
-  if (!ctx) {
+interface Tone {
+  /** Attack in seconds; longer softens the onset. */
+  attack?: number;
+  /** Low-pass cutoff in Hz; tames square and triangle waves. */
+  cutoff?: number;
+  duration: number;
+  from: number;
+  gain: number;
+  to?: number;
+  wave: OscillatorType;
+  when?: number;
+}
+
+function tone({
+  attack = 0.003,
+  cutoff,
+  duration,
+  from,
+  gain: peak,
+  to = from,
+  wave,
+  when = 0,
+}: Tone) {
+  const live = openBus();
+  if (!live) {
     return;
   }
+  const { ctx, master } = live;
   const now = ctx.currentTime + when;
   const osc = ctx.createOscillator();
   const gain = ctx.createGain();
-  osc.type = "sine";
+  osc.type = wave;
   osc.frequency.setValueAtTime(from, now);
-  osc.frequency.exponentialRampToValueAtTime(Math.max(to, 1), now + duration);
-  gain.gain.setValueAtTime(0.0001, now);
-  gain.gain.exponentialRampToValueAtTime(gainValue, now + 0.004);
-  gain.gain.exponentialRampToValueAtTime(0.0001, now + duration);
-  osc.connect(gain);
-  gain.connect(ctx.destination);
+  if (to !== from) {
+    osc.frequency.exponentialRampToValueAtTime(to, now + duration);
+  }
+  gain.gain.setValueAtTime(SILENCE, now);
+  gain.gain.exponentialRampToValueAtTime(peak, now + attack);
+  gain.gain.exponentialRampToValueAtTime(SILENCE, now + duration);
+
+  let head: AudioNode = osc;
+  if (cutoff) {
+    const filter = ctx.createBiquadFilter();
+    filter.type = "lowpass";
+    filter.frequency.value = cutoff;
+    head.connect(filter);
+    head = filter;
+  }
+  head.connect(gain);
+  gain.connect(master);
   osc.start(now);
   osc.stop(now + duration + 0.02);
 }
 
+interface Click {
+  duration: number;
+  frequency: number;
+  gain: number;
+  /** Where the band-pass ends; a sweep reads as a "whoosh". */
+  to?: number;
+  when?: number;
+}
+
+/** A burst of filtered noise: the mechanical part of a key press. */
+function click({ duration, frequency, gain: peak, to, when = 0 }: Click) {
+  const live = openBus();
+  if (!live) {
+    return;
+  }
+  const { ctx, master, noise } = live;
+  const now = ctx.currentTime + when;
+  const source = ctx.createBufferSource();
+  source.buffer = noise;
+  const filter = ctx.createBiquadFilter();
+  filter.type = "bandpass";
+  filter.Q.value = 0.9;
+  filter.frequency.setValueAtTime(frequency, now);
+  if (to) {
+    filter.frequency.exponentialRampToValueAtTime(to, now + duration);
+  }
+  const gain = ctx.createGain();
+  gain.gain.setValueAtTime(SILENCE, now);
+  gain.gain.exponentialRampToValueAtTime(peak, now + 0.001);
+  gain.gain.exponentialRampToValueAtTime(SILENCE, now + duration);
+  source.connect(filter);
+  filter.connect(gain);
+  gain.connect(master);
+  source.start(now);
+  source.stop(now + duration + 0.02);
+}
+
+/* ---------- palette ----------
+ * Loudness is a hierarchy: hover is a whisper, press is the anchor, and the
+ * confirmations (switch, theme, sound on/off) are melodic so they read as
+ * "something changed" rather than "something was pressed".
+ */
+
+/** Low woody tock: buttons and outbound links. */
 function playPress() {
-  blip(460, 240, 0.018, 0.04);
+  click({ duration: 0.012, frequency: 2600, gain: 0.1 });
+  tone({
+    cutoff: 1600,
+    duration: 0.06,
+    from: 420,
+    gain: 0.22,
+    to: 170,
+    wave: "square",
+  });
 }
 
+/** Same tock, higher and lighter: moving to another page of this site. */
+function playNav() {
+  click({ duration: 0.01, frequency: 3200, gain: 0.08 });
+  tone({
+    cutoff: 2000,
+    duration: 0.05,
+    from: 620,
+    gain: 0.18,
+    to: 300,
+    wave: "square",
+  });
+}
+
+/** Faint glass tick for pointer hover; rate-limited by the caller. */
 function playHover() {
-  blip(920, 760, 0.007, 0.02);
+  tone({
+    duration: 0.018,
+    from: 1500,
+    gain: 0.045,
+    to: 1300,
+    wave: "sine",
+  });
 }
 
+/** Keyboard focus landing: a short round tone, no transient. */
 function playFocus() {
-  blip(540, 540, 0.01, 0.032);
+  tone({
+    attack: 0.005,
+    duration: 0.045,
+    from: 720,
+    gain: 0.08,
+    wave: "triangle",
+  });
 }
 
+/** Two rising notes: a setting flipped (locale, sort). */
 function playSwitch() {
-  blip(480, 480, 0.012, 0.03);
-  blip(720, 720, 0.01, 0.04, 0.045);
+  tone({
+    cutoff: 2200,
+    duration: 0.045,
+    from: 440,
+    gain: 0.16,
+    wave: "square",
+  });
+  tone({
+    cutoff: 2200,
+    duration: 0.06,
+    from: 587,
+    gain: 0.16,
+    wave: "square",
+    when: 0.055,
+  });
 }
 
+/** Paper flip: a noise sweep under a rising triangle, for the theme toggle. */
+function playFlip() {
+  click({ duration: 0.16, frequency: 500, gain: 0.12, to: 2600 });
+  tone({
+    attack: 0.01,
+    duration: 0.14,
+    from: 330,
+    gain: 0.14,
+    to: 660,
+    wave: "triangle",
+  });
+}
+
+/** Sound off: two falling notes. */
 function playFall() {
-  blip(640, 220, 0.014, 0.07);
+  tone({ duration: 0.06, from: 587, gain: 0.18, wave: "triangle" });
+  tone({
+    duration: 0.09,
+    from: 392,
+    gain: 0.18,
+    wave: "triangle",
+    when: 0.065,
+  });
 }
 
+/** Sound on: a major arpeggio, the one melodic flourish in the palette. */
 function playRise() {
-  blip(280, 640, 0.014, 0.07);
+  const notes = [523, 659, 784];
+  notes.forEach((frequency, index) => {
+    tone({
+      duration: index === notes.length - 1 ? 0.11 : 0.06,
+      from: frequency,
+      gain: 0.18,
+      wave: "triangle",
+      when: index * 0.06,
+    });
+  });
 }
 
 function controlOf(target: EventTarget | null) {
@@ -92,6 +284,27 @@ function controlOf(target: EventTarget | null) {
     return null;
   }
   return target.closest(INTERACTIVE);
+}
+
+function isSiteLink(el: Element) {
+  if (!(el instanceof HTMLAnchorElement) || el.target === "_blank") {
+    return false;
+  }
+  return el.origin === window.location.origin;
+}
+
+function voiceFor(el: Element) {
+  const voice = el.closest<HTMLElement>("[data-sound]")?.dataset.sound;
+  switch (voice) {
+    case "switch":
+      return playSwitch;
+    case "theme":
+      return playFlip;
+    case "press":
+      return playPress;
+    default:
+      return isSiteLink(el) ? playNav : playPress;
+  }
 }
 
 export function SoundProvider({ children }: { children: React.ReactNode }) {
@@ -111,7 +324,8 @@ export function SoundProvider({ children }: { children: React.ReactNode }) {
 
   useEffect(() => {
     const onOver = (event: PointerEvent) => {
-      if (!enabledRef.current) {
+      // Touch fires pointerover right before pointerdown; only mice hover.
+      if (!enabledRef.current || event.pointerType !== "mouse") {
         return;
       }
       const next = controlOf(event.target);
@@ -119,7 +333,7 @@ export function SoundProvider({ children }: { children: React.ReactNode }) {
         return;
       }
       const now = performance.now();
-      if (now - lastHover < 70) {
+      if (now - lastHover < HOVER_INTERVAL_MS) {
         return;
       }
       lastHover = now;
@@ -139,18 +353,14 @@ export function SoundProvider({ children }: { children: React.ReactNode }) {
         playFall();
         return;
       }
-      if (el.closest("[data-sound='switch']")) {
-        playSwitch();
-        return;
-      }
-      playPress();
+      voiceFor(el)();
     };
 
     const onFocus = (event: FocusEvent) => {
       if (!enabledRef.current) {
         return;
       }
-      if (performance.now() - lastPointer < 500) {
+      if (performance.now() - lastPointer < KEYBOARD_GRACE_MS) {
         return;
       }
       if (!controlOf(event.target)) {

@@ -6,7 +6,9 @@ import {
   type CSSProperties,
   type PointerEvent,
   useCallback,
+  useEffect,
   useMemo,
+  useRef,
   useState,
 } from "react";
 
@@ -14,6 +16,9 @@ const WEEK = 7;
 const LEVELS = [0, 1, 2, 3, 4] as const;
 /** A leading partial month narrower than this only fits its label on wide columns. */
 const SHORT_MONTH_SPAN = 3;
+const REDUCED_MOTION = "(prefers-reduced-motion: reduce)";
+
+type Reveal = "in" | "pending" | undefined;
 
 interface MonthMark {
   label: string;
@@ -72,10 +77,37 @@ export function ContributionGraph({
   total: number;
 }) {
   const t = useTranslations("graph");
+  const frameRef = useRef<HTMLElement | null>(null);
   const [active, setActive] = useState<number | null>(null);
+  // Server renders "pending"; the sweep starts when the grid scrolls into view.
+  const [reveal, setReveal] = useState<Reveal>("pending");
 
   const offset = days[0]?.weekday ?? 0;
   const weeks = Math.max(1, Math.ceil((days.length + offset) / WEEK));
+
+  useEffect(() => {
+    const frame = frameRef.current;
+    if (
+      frame === null ||
+      typeof IntersectionObserver === "undefined" ||
+      window.matchMedia(REDUCED_MOTION).matches
+    ) {
+      setReveal(undefined);
+      return;
+    }
+
+    const observer = new IntersectionObserver(
+      (entries) => {
+        if (entries.some((entry) => entry.isIntersecting)) {
+          setReveal("in");
+          observer.disconnect();
+        }
+      },
+      { threshold: 0.2 }
+    );
+    observer.observe(frame);
+    return () => observer.disconnect();
+  }, []);
 
   const months = useMemo(
     () => buildMonths(days, offset, weeks, locale),
@@ -120,7 +152,7 @@ export function ContributionGraph({
   const sheetStyle = { "--weeks": weeks } as CSSProperties;
 
   return (
-    <figure className="graph">
+    <figure className="graph" data-reveal={reveal} ref={frameRef}>
       <div className="graph-sheet" style={sheetStyle}>
         <div aria-hidden="true" className="graph-months">
           {months.map((mark) => (
@@ -149,6 +181,11 @@ export function ContributionGraph({
               data-i={index}
               data-level={day.level}
               key={day.date}
+              style={
+                {
+                  "--col": Math.floor((index + offset) / WEEK),
+                } as CSSProperties
+              }
             />
           ))}
         </ol>
