@@ -1,3 +1,5 @@
+import type { CSSProperties } from "react";
+
 const ROWS = [0, 1, 2, 3, 4, 5, 6, 7];
 
 export function Bone({ className }: { className?: string }) {
@@ -8,7 +10,11 @@ export function RowsSkeleton({ count = 8 }: { count?: number }) {
   return (
     <ul className="repos">
       {ROWS.slice(0, count).map((i) => (
-        <li className="repo is-bone" key={i}>
+        <li
+          className="repo is-bone"
+          key={i}
+          style={{ "--i": i } as CSSProperties}
+        >
           <Bone className="bone-mark" />
           <span className="repo-body">
             <Bone className="bone-title" />
