@@ -475,7 +475,7 @@ span.control:active {
 /* The name lands like a rubber stamp: slightly oversized, then settles. */
 @keyframes stamp {
   from {
-    opacity: 0;
+    opacity: 0.01;
     transform: scale(1.04);
   }
 }
@@ -632,9 +632,16 @@ body:has([data-slot="tooltip-content"][data-state="open"]) .marquee-track {
   animation-delay: 220ms;
 }
 
+/*
+ * Mount fades start at 0.01, not 0. Chrome never counts text that was first
+ * painted at opacity 0 as a Largest Contentful Paint candidate, so a hero that
+ * fades in from 0 hands LCP to whatever small client-rendered text paints
+ * last (here the clock, after hydration). At 0.01 the hero is invisible to
+ * the eye but counted at first paint.
+ */
 @keyframes rise {
   from {
-    opacity: 0;
+    opacity: 0.01;
     transform: translateY(10px);
   }
 }
