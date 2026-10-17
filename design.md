@@ -49,7 +49,11 @@ is gated to `(hover: hover) and (pointer: fine)`. Reduced motion zeroes every
 duration and delay, including view transitions.
 - Sections rise once on mount (opacity + 10px). The home name stamps in from
   a 1.04 scale. Timeline rows and repo rows cascade by `--i` (35–40ms steps).
-- Stack names scroll on a 28s linear marquee and pause on hover.
+  Mount fades start at opacity 0.01, never 0: Chrome drops text first painted
+  at 0 from Largest Contentful Paint, which would hand LCP to the clock.
+- Stack names scroll on a 28s linear marquee and pause on hover. Marks are
+  server HTML drawing from one `/skills.svg` sprite; a single shared tip
+  (ink, 140ms rise) follows the hovered or focused mark.
 - The open-to-work dot pulses on transform and opacity only (never
   `box-shadow`).
 - The grain is a 256px noise tile repeated over a fixed layer, never a live
@@ -68,7 +72,9 @@ duration and delay, including view transitions.
   `document.startViewTransition`. Skipped without support or under reduced
   motion. Body colours never transition on their own.
 - The contribution grid sweeps in column by column (6ms per week) the first
-  time it scrolls into view.
+  time it scrolls into view. Until then the 365 cells are `content-visibility:
+  hidden` behind a fixed-height sheet, so they cost nothing at first paint and
+  the page never shifts. If scripts never run, a 1.5s CSS unlock shows them.
 
 ## Sound
 Synthesised on a shared bus: master gain 0.9 into a soft compressor so peaks
