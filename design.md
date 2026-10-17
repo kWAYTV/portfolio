@@ -38,7 +38,9 @@ The contribution grid stays ink at five opacity steps, never GitHub green.
 
 ## Shell
 - `--shell: 68rem`. One column. The marquee bleeds to the shell padding.
-- Masthead keeps wordmark, about, projects, locale, sound, theme.
+- Masthead keeps wordmark, about, projects, locale, sound, theme. Under
+  40rem it is two fixed rows — wordmark + controls, then the links — so label
+  length in either language never changes its height.
 
 ## Motion
 - Sections rise once on mount (opacity + 10px). Reduced motion kills it.
@@ -46,6 +48,10 @@ The contribution grid stays ink at five opacity steps, never GitHub green.
 - The open-to-work dot pulses. Row hovers stay color-only.
 - Clicks on links and buttons play a 40ms square blip. A header toggle
   persists mute in `localStorage` under `sound:v1`.
+- A theme switch cross-fades the page through a 200ms view transition; body
+  colours never transition on their own.
+- The grain is a 256px noise tile repeated over a fixed layer, never a live
+  viewport-sized filter and never a blend mode.
 
 ## Rendering
 - Home activity and featured repos are `use cache` and belong in the static
