@@ -199,6 +199,37 @@ button {
   margin-right: calc(-1 * var(--space-2xs));
 }
 
+/*
+ * Phones get an explicit two-row masthead. Letting the row wrap left the
+ * layout to label widths: "about · projects" fit on one line at 440px while
+ * "sobre mí · proyectos" pushed the controls under the wordmark, so switching
+ * locale moved the whole header. Both languages now share one structure.
+ */
+@media (max-width: 40rem) {
+  .masthead {
+    display: grid;
+    grid-template-areas:
+      "wordmark controls"
+      "nav nav";
+    grid-template-columns: minmax(0, 1fr) auto;
+    row-gap: var(--space-2xs);
+  }
+
+  .wordmark {
+    grid-area: wordmark;
+    margin-right: 0;
+  }
+
+  .masthead-nav {
+    grid-area: nav;
+    margin-left: calc(-1 * var(--space-xs));
+  }
+
+  .masthead-controls {
+    grid-area: controls;
+  }
+}
+
 /* ---------- controls ---------- */
 
 .control {
