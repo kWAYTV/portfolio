@@ -94,9 +94,12 @@ body {
   color: var(--color-ink);
   background: var(--color-paper);
   text-rendering: optimizeLegibility;
-  transition:
-    color var(--dur-short) ease,
-    background-color var(--dur-short) ease;
+}
+
+/* Theme switches cross-fade two snapshots (see theme-provider) rather than transitioning body colours. */
+::view-transition-old(root),
+::view-transition-new(root) {
+  animation-duration: var(--dur-short);
 }
 
 ::selection {
