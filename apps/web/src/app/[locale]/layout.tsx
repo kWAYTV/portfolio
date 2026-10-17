@@ -30,11 +30,12 @@ const geistMono = Geist_Mono({
   weight: ["400", "500"],
 });
 
+// Only the 700 cut is drawn (titles and the rail tip): one font file, not two.
 const display = Barlow_Condensed({
   display: "swap",
   subsets: ["latin"],
   variable: "--font-display-face",
-  weight: ["600", "700"],
+  weight: "700",
 });
 
 export function generateStaticParams() {
