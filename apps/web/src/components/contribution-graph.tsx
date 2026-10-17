@@ -1,24 +1,12 @@
-"use client";
-
 import type { ContributionDay } from "@repo/github";
-import { useTranslations } from "next-intl";
-import {
-  type CSSProperties,
-  type PointerEvent,
-  useCallback,
-  useEffect,
-  useMemo,
-  useRef,
-  useState,
-} from "react";
+import { getTranslations } from "next-intl/server";
+import type { CSSProperties } from "react";
+import { GraphFrame } from "@/components/graph-frame";
 
 const WEEK = 7;
 const LEVELS = [0, 1, 2, 3, 4] as const;
 /** A leading partial month narrower than this only fits its label on wide columns. */
 const SHORT_MONTH_SPAN = 3;
-const REDUCED_MOTION = "(prefers-reduced-motion: reduce)";
-
-type Reveal = "in" | "pending" | undefined;
 
 interface MonthMark {
   label: string;
@@ -67,7 +55,12 @@ function buildMonths(
   });
 }
 
-export function ContributionGraph({
+/**
+ * Rendered on the server: a year of cells with their labels already formatted,
+ * so the client neither receives the day list nor formats 365 dates on
+ * hydration. `GraphFrame` adds the reveal and hover behaviour around it.
+ */
+export async function ContributionGraph({
   days,
   locale,
   total,
@@ -76,84 +69,38 @@ export function ContributionGraph({
   locale: string;
   total: number;
 }) {
-  const t = useTranslations("graph");
-  const frameRef = useRef<HTMLElement | null>(null);
-  const [active, setActive] = useState<number | null>(null);
-  // Server renders "pending"; the sweep starts when the grid scrolls into view.
-  const [reveal, setReveal] = useState<Reveal>("pending");
+  const t = await getTranslations({ locale, namespace: "graph" });
 
   const offset = days[0]?.weekday ?? 0;
   const weeks = Math.max(1, Math.ceil((days.length + offset) / WEEK));
+  const months = buildMonths(days, offset, weeks, locale);
 
-  useEffect(() => {
-    const frame = frameRef.current;
-    if (
-      frame === null ||
-      typeof IntersectionObserver === "undefined" ||
-      window.matchMedia(REDUCED_MOTION).matches
-    ) {
-      setReveal(undefined);
-      return;
-    }
-
-    const observer = new IntersectionObserver(
-      (entries) => {
-        if (entries.some((entry) => entry.isIntersecting)) {
-          setReveal("in");
-          observer.disconnect();
-        }
-      },
-      { threshold: 0.2 }
-    );
-    observer.observe(frame);
-    return () => observer.disconnect();
-  }, []);
-
-  const months = useMemo(
-    () => buildMonths(days, offset, weeks, locale),
-    [days, locale, offset, weeks]
-  );
-
-  const dayFormatter = useMemo(
-    () =>
-      new Intl.DateTimeFormat(locale, {
-        day: "numeric",
-        month: "short",
-        timeZone: "UTC",
-        weekday: "short",
-        year: "numeric",
-      }),
-    [locale]
-  );
-
-  const describe = useCallback(
-    (day: ContributionDay) =>
-      t("count", {
-        count: day.count,
-        date: dayFormatter.format(utcDate(day.date)),
-      }),
-    [dayFormatter, t]
-  );
-
-  const handlePointerOver = useCallback((event: PointerEvent<HTMLElement>) => {
-    const index = (event.target as HTMLElement).dataset.i;
-    setActive(index === undefined ? null : Number(index));
-  }, []);
-
-  const handlePointerLeave = useCallback(() => {
-    setActive(null);
-  }, []);
-
-  const activeDay = active === null ? undefined : days[active];
-  const readout = activeDay
-    ? describe(activeDay)
-    : t("total", { count: total });
-
-  const sheetStyle = { "--weeks": weeks } as CSSProperties;
+  const dayFormatter = new Intl.DateTimeFormat(locale, {
+    day: "numeric",
+    month: "short",
+    timeZone: "UTC",
+    weekday: "short",
+    year: "numeric",
+  });
+  const describe = (day: ContributionDay) =>
+    t("count", {
+      count: day.count,
+      date: dayFormatter.format(utcDate(day.date)),
+    });
 
   return (
-    <figure className="graph" data-reveal={reveal} ref={frameRef}>
-      <div className="graph-sheet" style={sheetStyle}>
+    <GraphFrame
+      gridLabel={t("label")}
+      legend={
+        <div aria-hidden="true" className="graph-legend">
+          <span>{t("less")}</span>
+          {LEVELS.map((level) => (
+            <i className="cell" data-level={level} key={level} />
+          ))}
+          <span>{t("more")}</span>
+        </div>
+      }
+      months={
         <div aria-hidden="true" className="graph-months">
           {months.map((mark) => (
             <span
@@ -165,43 +112,26 @@ export function ContributionGraph({
             </span>
           ))}
         </div>
-        <ol
-          aria-label={t("label")}
-          className="graph-grid"
-          onPointerLeave={handlePointerLeave}
-          onPointerOver={handlePointerOver}
-        >
-          {Array.from({ length: offset }, (_, i) => (
-            <li aria-hidden="true" className="cell is-empty" key={`pad-${i}`} />
-          ))}
-          {days.map((day, index) => (
-            <li
-              aria-label={describe(day)}
-              className="cell"
-              data-i={index}
-              data-level={day.level}
-              key={day.date}
-              style={
-                {
-                  "--col": Math.floor((index + offset) / WEEK),
-                } as CSSProperties
-              }
-            />
-          ))}
-        </ol>
-      </div>
-      <figcaption className="graph-foot">
-        <p aria-live="polite" className="graph-readout">
-          {readout}
-        </p>
-        <div aria-hidden="true" className="graph-legend">
-          <span>{t("less")}</span>
-          {LEVELS.map((level) => (
-            <i className="cell" data-level={level} key={level} />
-          ))}
-          <span>{t("more")}</span>
-        </div>
-      </figcaption>
-    </figure>
+      }
+      sheetStyle={{ "--weeks": weeks } as CSSProperties}
+      totalLabel={t("total", { count: total })}
+    >
+      {Array.from({ length: offset }, (_, i) => (
+        <li aria-hidden="true" className="cell is-empty" key={`pad-${i}`} />
+      ))}
+      {days.map((day, index) => (
+        <li
+          aria-label={describe(day)}
+          className="cell"
+          data-level={day.level}
+          key={day.date}
+          style={
+            {
+              "--col": Math.floor((index + offset) / WEEK),
+            } as CSSProperties
+          }
+        />
+      ))}
+    </GraphFrame>
   );
 }
