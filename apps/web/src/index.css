@@ -587,28 +587,58 @@ span.control:active {
 }
 
 .marquee:hover .marquee-track,
-body:has([data-slot="tooltip-content"][data-state="open"]) .marquee-track {
+.marquee:focus-within .marquee-track {
   animation-play-state: paused;
 }
 
-[data-slot="tooltip-content"] {
+/* Hosts the marquee and its one shared tip (see skill-tip.tsx). */
+.rail {
+  position: relative;
+}
+
+.rail-tip {
+  position: absolute;
+  top: var(--y);
+  left: var(--x);
+  z-index: 5;
+  padding: 0.375rem 0.75rem;
   font-family: var(--font-display);
   font-size: var(--text-sm);
-  font-weight: 600;
+  font-weight: 700;
+  line-height: 1.2;
+  color: var(--color-paper);
   text-transform: uppercase;
   letter-spacing: 0.08em;
+  white-space: nowrap;
+  pointer-events: none;
+  background: var(--color-ink);
+  border-radius: var(--radius-control);
+  translate: -50% -100%;
   animation: tip-in 140ms var(--ease-out) both;
+}
+
+.rail-tip::after {
+  position: absolute;
+  bottom: -4px;
+  left: 50%;
+  width: 0.625rem;
+  height: 0.625rem;
+  content: "";
+  background: inherit;
+  border-radius: 2px;
+  rotate: 45deg;
+  translate: -50%;
 }
 
 @keyframes tip-in {
   from {
     opacity: 0;
-    translate: 0 4px;
+    transform: translateY(4px);
   }
 
   to {
     opacity: 1;
-    translate: 0;
+    transform: translateY(0);
   }
 }
 
