@@ -24,11 +24,27 @@ const SoundContext = createContext<{
  * audio. The bus is `voice → master gain → compressor → speakers`: the
  * compressor lets presses sit well above hovers without clipping when the two
  * overlap, and the master gain is the one knob for overall loudness.
+ *
+ * The bus is built on mount so the graph and noise buffer exist before the
+ * first interaction. Autoplay policy still parks a context created outside a
+ * gesture in `suspended`, so the first activating event resumes it from a
+ * capture-phase listener. That listener covers `touchend`/`click` on purpose:
+ * `pointerdown` is not a user gesture for touch (nor in WebKit), which is why
+ * taps used to stay silent until the sound toggle's `click` resumed the bus.
  */
 const MASTER_GAIN = 0.9;
 const SILENCE = 0.0001;
 const HOVER_INTERVAL_MS = 70;
 const KEYBOARD_GRACE_MS = 500;
+const PENDING_TTL_MS = 400;
+const UNLOCK_EVENTS = [
+  "pointerdown",
+  "pointerup",
+  "touchend",
+  "mousedown",
+  "keydown",
+  "click",
+] as const;
 
 interface Bus {
   ctx: AudioContext;
@@ -37,6 +53,8 @@ interface Bus {
 }
 
 let bus: Bus | null = null;
+let armed = false;
+let pending: { at: number; voice: () => void } | null = null;
 let lastHover = 0;
 let lastPointer = 0;
 
@@ -50,18 +68,60 @@ function whiteNoise(ctx: AudioContext) {
   return buffer;
 }
 
+function isRunning(ctx: AudioContext) {
+  // iOS also reports a non-standard "interrupted" state; treat it as parked.
+  return ctx.state === "running";
+}
+
+/**
+ * Resume from inside a gesture. Starting a one-frame silent source is the
+ * belt to `resume()`'s braces: Chrome also unblocks a context when a source
+ * starts during a gesture, and older WebKit only unlocks on a played buffer.
+ */
+function unlock() {
+  const ctx = bus?.ctx;
+  if (!ctx || isRunning(ctx)) {
+    return;
+  }
+  ctx.resume().catch(() => undefined);
+  try {
+    const kick = ctx.createBufferSource();
+    kick.buffer = ctx.createBuffer(1, 1, ctx.sampleRate);
+    kick.connect(ctx.destination);
+    kick.start(0);
+  } catch {
+    // Nothing to do; resume() alone is enough on current engines.
+  }
+}
+
+function arm() {
+  if (armed) {
+    return;
+  }
+  armed = true;
+  for (const type of UNLOCK_EVENTS) {
+    document.addEventListener(type, unlock, { capture: true, passive: true });
+  }
+}
+
+function disarm() {
+  if (!armed) {
+    return;
+  }
+  armed = false;
+  for (const type of UNLOCK_EVENTS) {
+    document.removeEventListener(type, unlock, { capture: true });
+  }
+}
+
 function openBus(): Bus | null {
   if (bus) {
-    if (bus.ctx.state === "suspended") {
-      bus.ctx.resume().catch(() => undefined);
-    }
     return bus;
   }
-  const AudioCtx = window.AudioContext;
-  if (!AudioCtx) {
+  if (typeof window === "undefined" || !window.AudioContext) {
     return null;
   }
-  const ctx = new AudioCtx();
+  const ctx = new AudioContext({ latencyHint: "interactive" });
   const master = ctx.createGain();
   master.gain.value = MASTER_GAIN;
   const compressor = ctx.createDynamicsCompressor();
@@ -73,7 +133,49 @@ function openBus(): Bus | null {
   master.connect(compressor);
   compressor.connect(ctx.destination);
   bus = { ctx, master, noise: whiteNoise(ctx) };
+
+  // Whenever the context parks (autoplay, iOS interruption, tab discard) the
+  // next gesture re-opens it; once it runs the listeners come off again.
+  const sync = () => {
+    if (!isRunning(ctx)) {
+      arm();
+      return;
+    }
+    disarm();
+    const held = pending;
+    pending = null;
+    if (held && performance.now() - held.at < PENDING_TTL_MS) {
+      held.voice();
+    }
+  };
+  ctx.addEventListener("statechange", sync);
+  document.addEventListener("visibilitychange", () => {
+    if (document.visibilityState === "visible" && !isRunning(ctx)) {
+      ctx.resume().catch(() => undefined);
+    }
+  });
+  sync();
   return bus;
+}
+
+/**
+ * Voices only schedule against a running clock. While the context is parked
+ * its `currentTime` is frozen, so anything scheduled then would pile up at
+ * the same instant and fire as one loud blip on resume. Instead the latest
+ * voice is held until `statechange` reports the clock running (a tap's
+ * `touchend` lands within the TTL); anything older is dropped as stale.
+ */
+function play(voice: () => void) {
+  const live = openBus();
+  if (!live) {
+    return;
+  }
+  if (isRunning(live.ctx)) {
+    voice();
+    return;
+  }
+  pending = { at: performance.now(), voice };
+  unlock();
 }
 
 interface Tone {
@@ -323,9 +425,17 @@ export function SoundProvider({ children }: { children: React.ReactNode }) {
   }, []);
 
   useEffect(() => {
+    // Build the graph now so the first press only pays for the resume.
+    openBus();
+
     const onOver = (event: PointerEvent) => {
       // Touch fires pointerover right before pointerdown; only mice hover.
       if (!enabledRef.current || event.pointerType !== "mouse") {
+        return;
+      }
+      // Hover is not a gesture, so it can never wake the bus; a whisper that
+      // would fire late on the next click is worse than none.
+      if (!(bus && isRunning(bus.ctx))) {
         return;
       }
       const next = controlOf(event.target);
@@ -350,10 +460,10 @@ export function SoundProvider({ children }: { children: React.ReactNode }) {
       }
       lastPointer = performance.now();
       if (el.closest("[data-sound-toggle]")) {
-        playFall();
+        play(playFall);
         return;
       }
-      voiceFor(el)();
+      play(voiceFor(el));
     };
 
     const onFocus = (event: FocusEvent) => {
@@ -366,7 +476,7 @@ export function SoundProvider({ children }: { children: React.ReactNode }) {
       if (!controlOf(event.target)) {
         return;
       }
-      playFocus();
+      play(playFocus);
     };
 
     document.addEventListener("pointerover", onOver);
@@ -380,18 +490,17 @@ export function SoundProvider({ children }: { children: React.ReactNode }) {
   }, []);
 
   const toggle = useCallback(() => {
-    setEnabled((current) => {
-      const next = !current;
-      try {
-        localStorage.setItem(STORAGE_KEY, next ? "1" : "0");
-      } catch {
-        // private mode
-      }
-      if (next) {
-        playRise();
-      }
-      return next;
-    });
+    const next = !enabledRef.current;
+    enabledRef.current = next;
+    setEnabled(next);
+    try {
+      localStorage.setItem(STORAGE_KEY, next ? "1" : "0");
+    } catch {
+      // private mode
+    }
+    if (next) {
+      play(playRise);
+    }
   }, []);
 
   return <SoundContext value={{ enabled, toggle }}>{children}</SoundContext>;
