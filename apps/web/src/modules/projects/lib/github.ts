@@ -11,7 +11,10 @@ import {
 import { cacheLife, cacheTag } from "next/cache";
 
 export const GITHUB_USER = "kWAYTV";
-const EXTRA_REPOS = [{ owner: "versend", repo: "core" }];
+const EXTRA_REPOS = [
+  { owner: "versend", repo: "core" },
+  { owner: "percdotdev", repo: "ps5-webkit-autoloader-esp32" },
+];
 
 export async function getGitHubRepos() {
   "use cache";
