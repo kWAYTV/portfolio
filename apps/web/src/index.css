@@ -13,8 +13,7 @@
   --font-mono: var(--font-mono);
 }
 
-html,
-body {
+html {
   overflow-x: clip;
 }
 
@@ -674,6 +673,11 @@ span.control:active {
     opacity: 0.01;
     transform: translateY(10px);
   }
+
+  to {
+    opacity: 1;
+    transform: none;
+  }
 }
 
 @keyframes marquee {
@@ -793,7 +797,9 @@ span.control:active {
   display: flex;
   flex-direction: column;
   gap: var(--space-xs);
-  margin-block: calc(-1 * var(--space-xs));
+  padding: 0;
+  margin: 0;
+  list-style: none;
 }
 
 /* Rows cascade in 35ms apart; `--i` is set inline by the list. */
@@ -819,7 +825,6 @@ span.control:active {
   content: "";
   background: var(--color-paper-2);
   border-radius: var(--radius-surface);
-  corner-shape: squircle;
   opacity: 0;
   transition: opacity var(--dur-micro) ease;
 }
@@ -838,7 +843,6 @@ span.control:active {
   background: var(--color-paper-2);
   border: 1px solid var(--color-rule);
   border-radius: var(--radius-mark);
-  corner-shape: squircle;
   transition:
     color var(--dur-micro) ease,
     background-color var(--dur-micro) ease,
