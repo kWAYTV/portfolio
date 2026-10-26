@@ -6,8 +6,7 @@ const EASE = "cubic-bezier(0.23, 1, 0.32, 1)";
 const DILATE_MS = 160;
 const LAND_MS = 140;
 const SQUASH = 3;
-const INSET_PATTERN =
-  /inset\(\s*([-\d.]+)px\s+([-\d.]+)px\s+([-\d.]+)px\s+([-\d.]+)px/;
+const INSET_VALUES = /[-\d.]+/gu;
 
 interface Box {
   h: number;
@@ -40,12 +39,15 @@ function parseInset(
   value: string,
   width: number
 ): { l: number; r: number } | null {
-  const match = value.match(INSET_PATTERN);
-  if (!match) {
+  if (!value.startsWith("inset(")) {
     return null;
   }
-  const right = Number(match[2]);
-  const left = Number(match[4]);
+  const values = value.match(INSET_VALUES);
+  if (!values || values.length < 4) {
+    return null;
+  }
+  const right = Number(values[1]);
+  const left = Number(values[3]);
   if (Number.isNaN(right) || Number.isNaN(left)) {
     return null;
   }

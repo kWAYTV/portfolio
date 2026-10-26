@@ -16,5 +16,20 @@
       "!**/.source",
       "!**/.agents"
     ]
-  }
+  },
+  "overrides": [
+    {
+      "includes": ["**/*.css"],
+      "linter": {
+        "rules": {
+          "style": {
+            "noDescendingSpecificity": "off"
+          },
+          "suspicious": {
+            "useBaseline": "off"
+          }
+        }
+      }
+    }
+  ]
 }

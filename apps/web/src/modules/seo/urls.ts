@@ -1,7 +1,7 @@
 import { env } from "@repo/env/web";
 import { getPathname, routing } from "@/modules/i18n/routing";
 
-const TRAILING_SLASH = /\/$/;
+const TRAILING_SLASH = /\/$/u;
 
 export function getSiteUrl(): string {
   return env.NEXT_PUBLIC_SITE_URL.replace(TRAILING_SLASH, "");

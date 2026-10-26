@@ -2,7 +2,7 @@ import { createHash } from "node:crypto";
 import { skills } from "@/modules/home/consts/skills";
 
 export function symbolId(title: string) {
-  return `skill-${title.toLowerCase().replace(/[^a-z0-9]+/g, "-")}`;
+  return `skill-${title.toLowerCase().replace(/[^a-z0-9]+/gu, "-")}`;
 }
 
 /**

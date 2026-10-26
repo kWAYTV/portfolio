@@ -15,9 +15,6 @@
 
 html {
   overflow-x: clip;
-}
-
-html {
   color: var(--color-ink);
   color-scheme: light;
   scrollbar-color: var(--color-rule-2) var(--color-paper);
@@ -171,6 +168,8 @@ button {
   padding-block: var(--space-md);
   border-top: 3px solid var(--color-stamp);
   border-bottom: 1px solid var(--color-rule);
+  view-transition-name: masthead;
+  view-transition-class: pinned;
 }
 
 .wordmark {
@@ -1332,6 +1331,8 @@ a.repo:active::before {
   justify-content: space-between;
   padding-block: var(--space-md) var(--space-lg);
   border-top: 1px solid var(--color-rule);
+  view-transition-name: colophon;
+  view-transition-class: morph;
 }
 
 .colophon nav {
@@ -1459,16 +1460,6 @@ a.repo:active::before {
   pointer-events: none;
 }
 
-.masthead {
-  view-transition-name: masthead;
-  view-transition-class: pinned;
-}
-
-.colophon {
-  view-transition-name: colophon;
-  view-transition-class: morph;
-}
-
 ::view-transition-group(root),
 ::view-transition-group(.morph) {
   animation-duration: var(--dur-short);
@@ -1536,7 +1527,6 @@ html.theme-flip::view-transition-new(root) {
 /* ---------- reduced motion ---------- */
 
 @media (prefers-reduced-motion: reduce) {
-  /* biome-ignore lint/style/noDescendingSpecificity: this reset has to follow every animation */
   *,
   ::before,
   ::after {
