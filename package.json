@@ -21,7 +21,7 @@
     "update": "pnpm dlx taze -r -w -f"
   },
   "lint-staged": {
-    "{apps,packages}/**/*.{js,jsx,ts,tsx,json,jsonc,css,scss,md,mdx}": [
+    "{apps,packages}/**/*.{js,jsx,mjs,cjs,ts,tsx,mts,cts,json,jsonc,css,scss,md,mdx,html,yaml,yml}": [
       "pnpm dlx ultracite fix"
     ]
   },
@@ -31,15 +31,15 @@
     "zod": "catalog:"
   },
   "devDependencies": {
-    "@biomejs/biome": "2.5.11",
+    "@biomejs/biome": "2.6.3",
     "@repo/config": "workspace:*",
-    "@types/node": "^24.13.3",
-    "bumpp": "^10.4.1",
+    "@types/node": "^24.19.2",
+    "bumpp": "^12.3.0",
     "husky": "latest",
     "lint-staged": "latest",
-    "turbo": "^2.10.12",
+    "turbo": "^2.11.10",
     "typescript": "catalog:",
-    "ultracite": "7.10.7"
+    "ultracite": "8.1.0"
   },
-  "packageManager": "pnpm@10.34.5"
+  "packageManager": "pnpm@10.34.9"
 }

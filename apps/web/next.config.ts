@@ -8,6 +8,7 @@ const nextConfig: NextConfig = {
   cacheComponents: true,
   devIndicators: false,
   experimental: {
+    agentUpgrade: "latest",
     // Lets `@next/playwright` `instant()` lock dynamic data in measured builds only.
     exposeTestingApiInProductionBuild: process.env.EXPOSE_TESTING_API === "1",
     // One ~9KB stylesheet: inlining it removes the only render-blocking request.

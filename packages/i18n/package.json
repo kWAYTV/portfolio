@@ -11,7 +11,7 @@
   },
   "devDependencies": {
     "@repo/config": "workspace:*",
-    "@types/node": "^25.9.5",
+    "@types/node": "^25.9.9",
     "typescript": "catalog:"
   }
 }
