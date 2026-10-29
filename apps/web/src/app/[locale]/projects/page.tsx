@@ -1,4 +1,4 @@
-import { getTranslations, setRequestLocale } from "next-intl/server";
+import { getLocale, getTranslations } from "next-intl/server";
 import { Suspense, ViewTransition } from "react";
 import { Pagination } from "@/components/pagination";
 import { ProjectFilters } from "@/components/project-filters";
@@ -15,13 +15,11 @@ import {
 
 type SearchParams = Promise<{ page?: string; q?: string; sort?: string }>;
 
-export async function generateMetadata({
-  params,
-}: {
-  params: Promise<{ locale: string }>;
-}) {
-  const { locale } = await params;
-  const t = await getTranslations({ locale, namespace: "projects" });
+export async function generateMetadata() {
+  const [locale, t] = await Promise.all([
+    getLocale(),
+    getTranslations("projects"),
+  ]);
   return {
     description: t("subtitle"),
     openGraph: {
@@ -32,15 +30,11 @@ export async function generateMetadata({
 }
 
 export default async function ProjectsPage({
-  params,
   searchParams,
 }: {
-  params: Promise<{ locale: string }>;
   searchParams: SearchParams;
 }) {
-  const { locale } = await params;
-  setRequestLocale(locale);
-  const t = await getTranslations({ locale, namespace: "projects" });
+  const t = await getTranslations("projects");
 
   return (
     <PageTransition>
@@ -63,7 +57,7 @@ export default async function ProjectsPage({
             }
           >
             <ViewTransition default="none" enter="rows-in">
-              <ProjectCatalogue locale={locale} searchParams={searchParams} />
+              <ProjectCatalogue searchParams={searchParams} />
             </ViewTransition>
           </Suspense>
         </section>
@@ -91,17 +85,15 @@ function CatalogueSkeleton({ label }: { label: string }) {
 }
 
 async function ProjectCatalogue({
-  locale,
   searchParams,
 }: {
-  locale: string;
   searchParams: SearchParams;
 }) {
   const query = await searchParams;
   const q = query.q ?? "";
   const sort = parseProjectSort(query.sort);
   const page = Number.parseInt(query.page ?? "1", 10) || 1;
-  const t = await getTranslations({ locale, namespace: "projects" });
+  const t = await getTranslations("projects");
   const result = queryProjects(await getGitHubRepos(), { page, q, sort });
   const filterQuery = new URLSearchParams();
   if (q) {
@@ -121,7 +113,6 @@ async function ProjectCatalogue({
         <p className="meta">{t("noProjects")}</p>
       ) : (
         <RepoList
-          locale={locale}
           repos={result.repos.map((repo) => ({
             description: repo.description,
             key: String(repo.id),

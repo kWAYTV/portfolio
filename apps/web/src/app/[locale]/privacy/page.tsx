@@ -1,28 +1,17 @@
 import type { Metadata } from "next";
-import { getTranslations, setRequestLocale } from "next-intl/server";
+import { getTranslations } from "next-intl/server";
 import { PageTransition } from "@/modules/motion/page-transition";
 import { CookiePreferencesButton } from "@/modules/privacy/components/cookie-preferences-button";
 
-export async function generateMetadata({
-  params,
-}: {
-  params: Promise<{ locale: string }>;
-}): Promise<Metadata> {
-  const { locale } = await params;
-  const t = await getTranslations({ locale, namespace: "privacy" });
+export async function generateMetadata(): Promise<Metadata> {
+  const t = await getTranslations("privacy");
   return {
     description: t("subtitle"),
     title: `${t("title")} · Martin Vila`,
   };
 }
 
-export default async function PrivacyPage({
-  params,
-}: {
-  params: Promise<{ locale: string }>;
-}) {
-  const { locale } = await params;
-  setRequestLocale(locale);
+export default async function PrivacyPage() {
   const t = await getTranslations("privacy");
 
   return (

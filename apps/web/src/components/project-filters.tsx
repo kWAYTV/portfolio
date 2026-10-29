@@ -4,7 +4,7 @@ import { useSearchParams } from "next/navigation";
 import { useTranslations } from "next-intl";
 import { SearchIcon } from "@/components/icons";
 import { Segment } from "@/components/segment";
-import { LocaleLink } from "@/modules/i18n/routing";
+import { LocaleLink } from "@/modules/i18n/navigation";
 import {
   type ProjectSort,
   parseProjectSort,

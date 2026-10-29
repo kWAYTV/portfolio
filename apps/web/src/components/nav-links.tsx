@@ -1,7 +1,7 @@
 "use client";
 
 import { Segment } from "@/components/segment";
-import { LocaleLink, useLocalePathname } from "@/modules/i18n/routing";
+import { LocaleLink, useLocalePathname } from "@/modules/i18n/navigation";
 
 export function NavLinks({
   items,

@@ -8,7 +8,7 @@ import {
 } from "@repo/analytics";
 import { useTranslations } from "next-intl";
 import { useCallback, useEffect, useState } from "react";
-import { LocaleLink } from "@/modules/i18n/routing";
+import { LocaleLink } from "@/modules/i18n/navigation";
 
 type ConsentValue = "accepted" | "declined";
 
