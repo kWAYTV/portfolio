@@ -1,5 +1,6 @@
 import { env } from "@repo/env/web";
-import { getPathname, routing } from "@/modules/i18n/routing";
+import { getPathname } from "@/modules/i18n/navigation";
+import { routing } from "@/modules/i18n/routing";
 
 const TRAILING_SLASH = /\/$/u;
 

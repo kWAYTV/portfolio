@@ -2,7 +2,7 @@ import { getTranslations } from "next-intl/server";
 import { LocaleSwitch } from "@/components/locale-switch";
 import { NavLinks } from "@/components/nav-links";
 import { ThemeToggle } from "@/components/theme-toggle";
-import { LocaleLink } from "@/modules/i18n/routing";
+import { LocaleLink } from "@/modules/i18n/navigation";
 import { SoundToggle } from "@/modules/motion/sound";
 
 export async function SiteHeader() {

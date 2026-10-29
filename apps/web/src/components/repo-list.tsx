@@ -1,3 +1,4 @@
+import { getLocale } from "next-intl/server";
 import type { CSSProperties } from "react";
 import { StarIcon } from "@/components/icons";
 
@@ -15,13 +16,8 @@ function initial(name: string) {
   return bare.charAt(0).toUpperCase();
 }
 
-export function RepoList({
-  locale,
-  repos,
-}: {
-  locale: string;
-  repos: RepoItem[];
-}) {
+export async function RepoList({ repos }: { repos: RepoItem[] }) {
+  const locale = await getLocale();
   const numbers = new Intl.NumberFormat(locale);
 
   return (

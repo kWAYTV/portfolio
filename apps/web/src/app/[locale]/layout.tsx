@@ -1,8 +1,6 @@
 import type { Metadata } from "next";
-import { Barlow_Condensed, Geist, Geist_Mono } from "next/font/google";
-import { notFound } from "next/navigation";
 import { NextIntlClientProvider } from "next-intl";
-import { getMessages, setRequestLocale } from "next-intl/server";
+import { getLocale, getMessages } from "next-intl/server";
 import type { PropsWithChildren } from "react";
 
 import "../../index.css";
@@ -12,31 +10,9 @@ import Providers from "@/components/providers";
 import { SiteFooter } from "@/components/site-footer";
 import { SiteHeader } from "@/components/site-header";
 import { UmamiScript } from "@/modules/analytics/components/umami-script";
-import { routing } from "@/modules/i18n/routing";
 import { getStaticParams } from "@/modules/i18n/static";
+import { fontVariables } from "@/modules/theming/fonts";
 import { ThemeScript } from "@/modules/theming/theme-script";
-
-const geistSans = Geist({
-  display: "swap",
-  subsets: ["latin"],
-  variable: "--font-geist-sans",
-  weight: ["400", "500", "600"],
-});
-
-const geistMono = Geist_Mono({
-  display: "swap",
-  subsets: ["latin"],
-  variable: "--font-geist-mono",
-  weight: ["400", "500"],
-});
-
-// Only the 700 cut is drawn (titles and the rail tip): one font file, not two.
-const display = Barlow_Condensed({
-  display: "swap",
-  subsets: ["latin"],
-  variable: "--font-display-face",
-  weight: "700",
-});
 
 export function generateStaticParams() {
   return getStaticParams();
@@ -49,25 +25,13 @@ export const metadata: Metadata = {
   title: "Martín Vila",
 };
 
-export default async function LocaleLayout({
-  children,
-  params,
-}: PropsWithChildren<{ params: Promise<{ locale: string }> }>) {
-  const { locale } = await params;
-
-  setRequestLocale(locale);
-
-  if (!routing.locales.includes(locale)) {
-    notFound();
-  }
-
+export default async function LocaleLayout({ children }: PropsWithChildren) {
+  const locale = await getLocale();
   const messages = await getMessages();
 
   return (
     <html lang={locale} suppressHydrationWarning>
-      <body
-        className={`${geistSans.variable} ${geistMono.variable} ${display.variable}`}
-      >
+      <body className={fontVariables}>
         <ThemeScript />
         <UmamiScript
           scriptUrl={env.NEXT_PUBLIC_UMAMI_URL}

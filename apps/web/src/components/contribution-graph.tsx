@@ -1,5 +1,5 @@
 import type { ContributionDay } from "@repo/github";
-import { getTranslations } from "next-intl/server";
+import { getLocale, getTranslations } from "next-intl/server";
 import type { CSSProperties } from "react";
 import { GraphFrame } from "@/components/graph-frame";
 
@@ -62,14 +62,13 @@ function buildMonths(
  */
 export async function ContributionGraph({
   days,
-  locale,
   total,
 }: {
   days: ContributionDay[];
-  locale: string;
   total: number;
 }) {
-  const t = await getTranslations({ locale, namespace: "graph" });
+  const locale = await getLocale();
+  const t = await getTranslations("graph");
 
   const offset = days[0]?.weekday ?? 0;
   const weeks = Math.max(1, Math.ceil((days.length + offset) / WEEK));

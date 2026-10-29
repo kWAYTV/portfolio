@@ -1,6 +1,6 @@
 import { cacheLife } from "next/cache";
 import { getTranslations } from "next-intl/server";
-import { LocaleLink } from "@/modules/i18n/routing";
+import { LocaleLink } from "@/modules/i18n/navigation";
 
 // biome-ignore lint/suspicious/useAwait: async required for "use cache"
 async function getCopyrightYear() {

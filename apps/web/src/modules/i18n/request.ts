@@ -1,5 +1,8 @@
 import { getMessagesForLocale } from "@repo/i18n";
 import { cacheLife } from "next/cache";
+import { notFound } from "next/navigation";
+import { locale as rootLocale } from "next/root-params";
+import { hasLocale } from "next-intl";
 import { getRequestConfig } from "next-intl/server";
 import { routing } from "@/modules/i18n/routing";
 
@@ -9,13 +12,20 @@ async function getCachedMessages(locale: string) {
   return await getMessagesForLocale(locale);
 }
 
-/** Cookie fallback removed to enable static prerendering. Locale always comes from [locale] segment. */
-export default getRequestConfig(async ({ requestLocale }) => {
-  const requested = await requestLocale;
-  const locale =
-    requested && routing.locales.includes(requested)
-      ? requested
-      : routing.defaultLocale;
+/**
+ * Locale comes from the `[locale]` root param. An explicit `locale` argument
+ * still wins for Route Handlers and Server Actions, where `next/root-params`
+ * is not available yet.
+ */
+export default getRequestConfig(async ({ locale }) => {
+  if (!locale) {
+    const paramValue = await rootLocale();
+    if (hasLocale(routing.locales, paramValue)) {
+      locale = paramValue;
+    } else {
+      notFound();
+    }
+  }
 
   return {
     locale,
