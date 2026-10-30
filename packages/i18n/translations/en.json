@@ -109,7 +109,7 @@
     "changePreferences": "Reset consent"
   },
   "cookies": {
-    "bannerText": "This website uses cookies.",
+    "bannerText": "This website uses cookies",
     "accept": "Accept",
     "decline": "Decline"
   },

@@ -176,7 +176,6 @@ button {
 .wordmark {
   margin-right: auto;
   font-weight: 500;
-  letter-spacing: var(--tracking-tight);
   white-space: nowrap;
 }
 
@@ -328,8 +327,8 @@ span.control:active {
 }
 
 .icon-control svg {
-  width: 15px;
-  height: 15px;
+  width: 14px;
+  height: 14px;
 }
 
 .icon-control[aria-pressed="true"] .dial {
@@ -451,7 +450,7 @@ span.control:active {
   font-size: clamp(2.25rem, 6vw, 3.5rem);
   font-weight: 700;
   line-height: 0.92;
-  letter-spacing: -0.03em;
+  letter-spacing: -0.02em;
   overflow-wrap: anywhere;
 }
 
@@ -467,6 +466,7 @@ span.control:active {
   font-size: clamp(3.4rem, 11vw, 6.75rem);
   line-height: 0.84;
   text-transform: uppercase;
+  letter-spacing: -0.03em;
   transform-origin: left center;
   animation: stamp 480ms var(--ease-out) 60ms both;
 }
@@ -569,8 +569,8 @@ span.control:active {
 }
 
 .skill-mark svg {
-  width: 1.65rem;
-  height: 1.65rem;
+  width: 1.75rem;
+  height: 1.75rem;
   transition: transform var(--dur-short) var(--ease-out);
 }
 
@@ -606,8 +606,6 @@ span.control:active {
   font-weight: 700;
   line-height: 1.2;
   color: var(--color-paper);
-  text-transform: uppercase;
-  letter-spacing: 0.08em;
   white-space: nowrap;
   pointer-events: none;
   background: var(--color-ink);
@@ -738,7 +736,6 @@ span.control:active {
   font-size: var(--text-md);
   font-weight: 500;
   line-height: 1.4;
-  letter-spacing: var(--tracking-tight);
 }
 
 /* ---------- chips ---------- */
@@ -753,7 +750,7 @@ span.control:active {
   display: inline-flex;
   gap: var(--space-xs);
   align-items: center;
-  height: 1.875rem;
+  height: 2rem;
   padding-inline: var(--space-sm);
   font-size: var(--text-sm);
   font-weight: 500;
@@ -887,8 +884,8 @@ span.control:active {
 }
 
 .repo-stars svg {
-  width: 12px;
-  height: 12px;
+  width: 14px;
+  height: 14px;
   transition: fill var(--dur-micro) ease;
 }
 
@@ -1219,7 +1216,7 @@ a.repo:active::before {
   gap: var(--space-xs);
   align-items: center;
   width: 100%;
-  height: 2.125rem;
+  height: 2.25rem;
   padding-inline: var(--space-sm) var(--space-2xs);
   color: var(--color-muted);
   background: var(--color-paper);
@@ -1302,7 +1299,7 @@ a.repo:active::before {
 
 .bone-search {
   width: min(100%, 18rem);
-  height: 2.125rem;
+  height: 2.25rem;
   border-radius: var(--radius-control);
 }
 
