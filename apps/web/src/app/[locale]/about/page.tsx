@@ -1,18 +1,16 @@
 import type { Metadata } from "next";
-import { getTranslations, setRequestLocale } from "next-intl/server";
+import { getLocale, getTranslations } from "next-intl/server";
 import type { CSSProperties } from "react";
 import { SocialLinks } from "@/components/social-links";
 import { experience } from "@/modules/about/consts/experience";
 import { PageTransition } from "@/modules/motion/page-transition";
 import { getPageImageUrl } from "@/modules/og/lib/og";
 
-export async function generateMetadata({
-  params,
-}: {
-  params: Promise<{ locale: string }>;
-}): Promise<Metadata> {
-  const { locale } = await params;
-  const t = await getTranslations({ locale, namespace: "about" });
+export async function generateMetadata(): Promise<Metadata> {
+  const [locale, t] = await Promise.all([
+    getLocale(),
+    getTranslations("about"),
+  ]);
   return {
     description: t("subtitle"),
     openGraph: {
@@ -22,13 +20,7 @@ export async function generateMetadata({
   };
 }
 
-export default async function AboutPage({
-  params,
-}: {
-  params: Promise<{ locale: string }>;
-}) {
-  const { locale } = await params;
-  setRequestLocale(locale);
+export default async function AboutPage() {
   const t = await getTranslations();
 
   return (

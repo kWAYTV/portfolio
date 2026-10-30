@@ -5,7 +5,7 @@ import { config, type Locale } from "@repo/i18n/config";
 import { useLocale, useTranslations } from "next-intl";
 import { useCallback } from "react";
 import { Segment } from "@/components/segment";
-import { LocaleLink, useLocalePathname } from "@/modules/i18n/routing";
+import { LocaleLink, useLocalePathname } from "@/modules/i18n/navigation";
 
 const locales = Object.keys(config.locales) as Locale[];
 

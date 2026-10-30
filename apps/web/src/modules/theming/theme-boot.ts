@@ -1,0 +1,2 @@
+/** Runs before paint so the stored theme wins over the default light scheme. */
+export const themeBootScript = `(function(){try{var root=document.documentElement;var theme=localStorage.getItem("theme")||"system";if(theme==="system"){theme=window.matchMedia("(prefers-color-scheme: dark)").matches?"dark":"light"}root.classList.remove("light","dark");root.classList.add(theme);if(theme==="light"||theme==="dark")root.style.colorScheme=theme}catch(e){}})();`;

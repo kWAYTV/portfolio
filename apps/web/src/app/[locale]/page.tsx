@@ -1,5 +1,5 @@
 import { type PinnedRepo, summarizeContributions } from "@repo/github";
-import { getTranslations, setRequestLocale } from "next-intl/server";
+import { getLocale, getTranslations } from "next-intl/server";
 import { type CSSProperties, Suspense } from "react";
 import { ContributionGraph } from "@/components/contribution-graph";
 import { ArrowIcon } from "@/components/icons";
@@ -9,7 +9,7 @@ import { SocialLinks } from "@/components/social-links";
 import { experience } from "@/modules/about/consts/experience";
 import { LocalClock } from "@/modules/home/components/local-clock";
 import { SkillRail } from "@/modules/home/components/skill-rail";
-import { LocaleLink } from "@/modules/i18n/routing";
+import { LocaleLink } from "@/modules/i18n/navigation";
 import { PageTransition } from "@/modules/motion/page-transition";
 import { getPageImageUrl } from "@/modules/og/lib/og";
 import { getFeaturedRepos } from "@/modules/projects/lib/featured";
@@ -18,13 +18,11 @@ import {
   getGitHubRepos,
 } from "@/modules/projects/lib/github";
 
-export async function generateMetadata({
-  params,
-}: {
-  params: Promise<{ locale: string }>;
-}) {
-  const { locale } = await params;
-  const t = await getTranslations({ locale, namespace: "common" });
+export async function generateMetadata() {
+  const [locale, t] = await Promise.all([
+    getLocale(),
+    getTranslations("common"),
+  ]);
   return {
     description: t("siteDescription"),
     openGraph: {
@@ -34,17 +32,11 @@ export async function generateMetadata({
   };
 }
 
-export default async function HomePage({
-  params,
-}: {
-  params: Promise<{ locale: string }>;
-}) {
-  const { locale } = await params;
-  setRequestLocale(locale);
-  const t = await getTranslations({ locale, namespace: "hero" });
-  const tRoot = await getTranslations({ locale });
-  const tCommon = await getTranslations({ locale, namespace: "common" });
-  const tAbout = await getTranslations({ locale, namespace: "about" });
+export default async function HomePage() {
+  const t = await getTranslations("hero");
+  const tRoot = await getTranslations();
+  const tCommon = await getTranslations("common");
+  const tAbout = await getTranslations("about");
 
   return (
     <PageTransition>
@@ -105,10 +97,10 @@ export default async function HomePage({
           </ol>
         </section>
         <Suspense fallback={<WorkSkeleton />}>
-          <FeaturedWork locale={locale} />
+          <FeaturedWork />
         </Suspense>
         <Suspense fallback={<ActivitySkeleton />}>
-          <Activity locale={locale} />
+          <Activity />
         </Suspense>
       </article>
     </PageTransition>
@@ -137,8 +129,9 @@ function WorkSkeleton() {
   );
 }
 
-async function Activity({ locale }: { locale: string }) {
-  const t = await getTranslations({ locale, namespace: "graph" });
+async function Activity() {
+  const locale = await getLocale();
+  const t = await getTranslations("graph");
   const calendar = await getGitHubContributionCalendar();
 
   if (!calendar || calendar.days.length === 0) {
@@ -157,11 +150,7 @@ async function Activity({ locale }: { locale: string }) {
       <div className="section-head">
         <h2 id="activity">{t("title")}</h2>
       </div>
-      <ContributionGraph
-        days={calendar.days}
-        locale={locale}
-        total={calendar.total}
-      />
+      <ContributionGraph days={calendar.days} total={calendar.total} />
       <dl className="facts">
         <div>
           <dd>{numbers.format(stats.activeDays)}</dd>
@@ -180,8 +169,8 @@ async function Activity({ locale }: { locale: string }) {
   );
 }
 
-async function FeaturedWork({ locale }: { locale: string }) {
-  const t = await getTranslations({ locale, namespace: "projects" });
+async function FeaturedWork() {
+  const t = await getTranslations("projects");
   const repos: PinnedRepo[] = getFeaturedRepos(await getGitHubRepos()).map(
     (repo) => ({
       description: repo.description,
@@ -206,7 +195,6 @@ async function FeaturedWork({ locale }: { locale: string }) {
         <p className="meta">{t("noProjects")}</p>
       ) : (
         <RepoList
-          locale={locale}
           repos={repos.map((repo) => ({
             description: repo.description,
             key: repo.fullName,

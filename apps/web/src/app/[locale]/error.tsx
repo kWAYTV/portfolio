@@ -2,7 +2,7 @@
 
 import { useTranslations } from "next-intl";
 import { useEffect } from "react";
-import { LocaleLink } from "@/modules/i18n/routing";
+import { LocaleLink } from "@/modules/i18n/navigation";
 import { PageTransition } from "@/modules/motion/page-transition";
 
 export default function ErrorBoundary({

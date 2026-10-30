@@ -8,8 +8,11 @@ const nextConfig: NextConfig = {
   cacheComponents: true,
   devIndicators: false,
   experimental: {
+    agentUpgrade: "latest",
     // Lets `@next/playwright` `instant()` lock dynamic data in measured builds only.
     exposeTestingApiInProductionBuild: process.env.EXPOSE_TESTING_API === "1",
+    // `[locale]/layout.tsx` is the root layout, so unmatched URLs use this.
+    globalNotFound: true,
     // One ~9KB stylesheet: inlining it removes the only render-blocking request.
     inlineCss: true,
   },
